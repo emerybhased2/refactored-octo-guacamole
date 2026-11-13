@@ -98,6 +98,7 @@ public final class NetworkManager extends WebSocketServer {
                 case "climb" -> { Player p = s.player; if (p != null) s.world.submit(() -> s.world.toggleClimb(p)); }
                 case "logout" -> { accounts.logout(str(m, "token")); s.account = null; }
                 case "dev-info" -> c.send("{\"t\":\"dev\",\"on\":" + DEV + "}"); // lets the dev bar show its tools only on dev servers
+                case "dev-xp" -> { if (DEV && s.world != null && s.player != null) { double n = num(m, "n"); if (Double.isFinite(n) && n > 0 && n <= 1e8) { final Player pp = s.player; s.world.submit(() -> pp.xp += n); } } } // dev only: +XP to test evolutions
                 case "dev-disaster" -> { if (DEV && s.world != null) { String id = str(m, "id"); s.world.submit(() -> s.world.triggerDisaster(id)); } }
                 case "dev-coins" -> { if (DEV && s.account != null) { double n = num(m, "n"); if (Double.isFinite(n) && n > 0 && n <= 1_000_000) { accounts.addCoins(s.account, (long) n); c.send(shopState(s.account).toString()); } } }
                 default -> { }

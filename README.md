@@ -38,6 +38,9 @@ most abilities (only Charge and Extra Boost move you; the rest are catalogued bu
 every later version; shop/events/accounts UI (accounts exist server-side, gated off); admin panel; Safari/mobile verification; visual-regression tests; binary protocol; PostgreSQL adapter.
 
 
+## Mobile
+On phones/tablets the game shows on-screen controls automatically (joystick + BOOST/ABILITY/CLIMB/CHAT). Use landscape for the best view. The original **Evolution Tray** upgrade picker is on by default on touch devices and in the 2026 version (Settings > "New upgrade tray" toggles it everywhere).
+
 ## Deploying (single public port)
 `Dockerfile` builds the Java server and runs it with the Node web server; the web server listens on `$PORT` (default 8080), serves the client and proxies WebSockets on `/ws` to the game server, so one public port is enough (e.g. Sevalla/any Docker host: build from this repo's Dockerfile, container port 8080). Account data lives in `/app/database` (mount a persistent disk there to keep accounts across redeploys). **Never set `MOPE_DEV` in production** (it enables the dev-only coin/disaster cheats).
 

@@ -76,7 +76,7 @@
         else if (!k) { const p = lay.panel; if (mx < p.x || mx > p.x + p.w || my < p.y || my > p.y + p.h) this.treeOpen = false; }
         return true;
       }
-      const b = choiceAt(choiceLayout(this.choices(you), this.cfg, vw, vh), mx, my);
+      const b = this.hideChoices ? null : choiceAt(choiceLayout(this.choices(you), this.cfg, vw, vh), mx, my); // hideChoices: the Evolution Tray replaces the archived button row
       if (b) { this.onEvolve(b.id); return true; }
       return false;
     }
@@ -85,7 +85,7 @@
       const C = this.cfg.choices;
       if (!this.treeOpen) {
         this.buttons = choiceLayout(this.choices(you), this.cfg, vw, vh);
-        for (const b of this.buttons) {
+        for (const b of (this.hideChoices ? [] : this.buttons)) {
           const a = this.animals.find((x) => x.id === b.id), hov = this.mx >= b.x && this.mx <= b.x + b.w && this.my >= b.y && this.my <= b.y + b.h;
           ctx.save(); ctx.globalAlpha = C.fillAlpha; ctx.fillStyle = C.biomeColors[a.biome]; ctx.fillRect(b.x, b.y, b.w, b.h);
           if (hov) { ctx.globalAlpha = C.highlightAlpha; ctx.fillStyle = '#fff'; ctx.fillRect(b.x, b.y, b.w, b.h); }

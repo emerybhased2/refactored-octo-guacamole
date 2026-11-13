@@ -377,5 +377,21 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
     const E = J('data/progression/evolution.json').filter((e) => e.releaseDate === '2026-11-13'); assert.ok(E.length > 400); assert.ok(J('data/progression/evolution.json').filter((e) => e.releaseDate < '2026-11-13').every((e) => e.removalDate)); // old trees stay available to older versions only
   });
 
+  // ---- mobile + Evolution Tray
+  await t('touch: joystick maths (dead zone, clamping, angle) and tray model (available first, soon sorted by XP, progress)', () => {
+    const { stick } = require('../client/touch.js'), { trayModel } = require('../client/ui/EvolveTray.js');
+    assert.strictEqual(stick(100, 100, 104, 100).mag, 0); const r = stick(100, 100, 100 + 200, 100); assert.deepStrictEqual([r.mag, r.angle, r.dx], [1, 0, 56]); assert.ok(Math.abs(stick(0, 0, 0, -56).angle + Math.PI / 2) < 1e-9);
+    const animals = [{ id: 'a', name: 'A', tier: 1, biome: 'land', xpRequired: 0 }, { id: 'b', name: 'B', tier: 2, biome: 'land', xpRequired: 100, ability: 'extra_boost' }, { id: 'c', name: 'C', tier: 2, biome: 'ocean', xpRequired: 100 }, { id: 'd', name: 'D', tier: 2, biome: 'arctic', xpRequired: 300 }, { id: 'e', name: 'E', tier: 2, biome: 'desert', xpRequired: 200 }];
+    const edges = ['b', 'c', 'd', 'e'].map((to) => ({ from: 'a', to })), m = trayModel(animals, edges, { a: 'a', xp: 150 }, ['b', 'c']);
+    assert.deepStrictEqual(m.available.map((c) => [c.id, c.suggested || false, c.ability]), [['b', true, 'Extra Boost'], ['c', false, 'No special ability']]);
+    assert.deepStrictEqual(m.soon.map((c) => [c.id, c.progress]), [['e', 0.75], ['d', 0.5]]); assert.deepStrictEqual(trayModel(animals, edges, { a: 'zz', xp: 0 }, []).soon, []);
+  });
+  await t('mobile: viewport meta, touch UI + tray markup, scripts, coarse-pointer CSS, tray default on touch/wiki versions', () => {
+    const html = fs.readFileSync(path.join(ROOT, 'client/index.html'), 'utf8'), css = fs.readFileSync(path.join(ROOT, 'client/css/style.css'), 'utf8'), cs = fs.readFileSync(path.join(ROOT, 'client/client.js'), 'utf8');
+    for (const id of ['evoTray', 'evoRow', 'evoDetail', 'touchUi', 'tuBase', 'tuBoost', 'tuAbility', 'tuClimb', 'tuChat']) assert.ok(html.includes('id="' + id + '"'), id);
+    assert.ok(/viewport-fit=cover/.test(html) && /user-scalable=no/.test(html) && html.includes('touch.js') && html.includes('EvolveTray.js')); assert.ok(/@media \(pointer: coarse\)/.test(css) && /touch-action: none/.test(css));
+    assert.ok(/default: touchDevice \|\| !!\(vi0\.features && vi0\.features\.wikiSourced\)/.test(cs));
+  });
+
   console.log(`unit: ${pass} passed, ${fail} failed`); process.exit(fail ? 1 : 0);
 })();

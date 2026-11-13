@@ -142,6 +142,11 @@ function client(port = PORT) {
       const d = client(PORT_DEV); await d.ready; d.send({ t: 'dev-info' }); assert.strictEqual((await d.until('dev')).on, true); d.ws.close();
       const n = client(PORT); await n.ready; n.send({ t: 'dev-info' }); assert.strictEqual((await n.until('dev')).on, false); n.ws.close();
     });
+    await t('dev-xp (dev server only): XP makes evolution choices appear; normal server ignores it', async () => {
+      const c = client(PORT_DEV); await c.ready; c.send({ t: 'join', name: 'Xp', v: '2021-06-12' }); await c.until('welcome'); c.send({ t: 'dev-xp', n: 500 });
+      const t0 = Date.now(); let ev = []; while (Date.now() - t0 < 4000 && !ev.length) { await sleep(100); const m = c.msgs.filter((x) => x.t === 'snap').pop(); if (m && m.you && m.you.ev) ev = m.you.ev; } assert.ok(ev.length > 0, 'no evolution offered after dev-xp'); c.ws.close();
+      const n = client(PORT); await n.ready; n.send({ t: 'join', name: 'Xp2', v: '2021-06-12' }); await n.until('welcome'); n.send({ t: 'dev-xp', n: 500 }); await sleep(1500); const m2 = n.msgs.filter((x) => x.t === 'snap').pop(); assert.ok(!m2 || !m2.you.ev || m2.you.ev.length === 0); n.ws.close();
+    });
     await t('sessions: resume restores coins/inventory; logout invalidates the token', async () => {
       const c = await login(PORT_DEV); c.send({ t: 'dev-coins', v: '2019-12-30', n: 500 }); await c.until('shop'); c.ws.close();
       const c2 = client(PORT_DEV); await c2.ready; c2.send({ t: 'resume', v: '2019-12-30', token: c.token }); const r = await c2.until('auth'); assert.deepStrictEqual([r.ok, r.user, r.coins], [true, c.user, 500]);

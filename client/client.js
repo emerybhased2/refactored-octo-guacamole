@@ -13,6 +13,8 @@
   const chats = new Map();
   let frames = 0, fpsT = performance.now(), lastInputSent = 0, lastSent = '', lastFrame = performance.now(), dbg = { fps: 0, ping: 0, kbps: 0, mem: '-' }, lastBytes = 0;
   const upgrade = new M.UpgradeMenu((id) => net.send({ t: 'evolve', id }), DEV);
+  const touchDevice = M.isTouchDevice();
+  const tray = new M.EvolveTray(document, { onEvolve: (id) => net.send({ t: 'evolve', id }), touch: touchDevice, icon: (a) => M.Sprites.getIcon(a) }); // ORIGINAL upgrade picker (default on touch devices and in the wiki-sourced version)
   const menu = new M.MainMenu({ onPlay: (name, m) => startJoin(name, devMode() === 'arena' ? 'arena' : m), onSpectate: (name) => startJoin(name, 'spectate') });
   const devMode = () => (DEV && $('modeSelect') ? $('modeSelect').value : 'normal');
   const shopUI = new M.Shop.ShopUI((m) => net.send(Object.assign({ v: selectedVersion }, m)));
@@ -38,6 +40,7 @@
     selectedVersion = id; const cfg = await M.MenuVersionManager.select(id);
     const vi0 = M.MenuVersionManager.current; shopUI.setStyle((cfg && cfg.shopWindow) || null); shopUI.setVersion({ shop: vi0.shopItems ? { items: vi0.shopItems } : null, animals: vi0.animalDefs || [] });
     if (vi0.features && vi0.features.accounts) { if (!net.open && !net.wantOpen) net.connect(); } refreshAccountUI();
+    if (cfg.options && !cfg.options.checkboxes.some((o) => o.id === 'evoTray')) cfg.options.checkboxes.push({ id: 'evoTray', label: 'New upgrade tray', color: cfg.options.checkboxes[0].color, implemented: true, default: touchDevice || !!(vi0.features && vi0.features.wikiSourced) }); // project-only option, not part of any archived menu
     menu.setConfig(cfg); setGfx(renderer.quality); if ($('versionLabel')) $('versionLabel').textContent = M.MenuVersionManager.current.label; if (window.__arenaUi) window.__arenaUi();
   }
   function startJoin(name, m) {
@@ -48,7 +51,7 @@
   net.on('auth', (m) => { if (m.ok) { Object.assign(acct, { user: m.user, coins: m.coins || 0, owned: m.owned || [], equipped: m.equipped || {} }); try { localStorage.setItem(tokenKey(), m.token); } catch (e) {} document.getElementById('authModal').style.display = 'none'; document.getElementById('authPass').value = ''; refreshAccountUI(); } else authErr(m.err || 'failed'); });
   // dev tools (only when ?dev=1 AND the server runs with MOPE_DEV=1; ordinary servers ignore these messages)
   net.on('dev', (m) => { const on = !!m.on && DEV; $('devTools').style.display = on ? 'inline' : 'none'; if (on && !$('devDisaster').options.length) for (const id of ['rainstorm', 'duststorm', 'heatwave', 'snowstorm', 'tsunami', 'volcanic_eruption', 'land_tornado', 'fire_tornado']) $('devDisaster').add(new Option(id)); });
-  if (DEV) { $('devCoins').addEventListener('click', () => { if (!acct.user) { $('devMsg').textContent = 'log in first'; return; } $('devMsg').textContent = ''; net.send({ t: 'dev-coins', v: selectedVersion, n: 1000 }); }); $('devDisasterGo').addEventListener('click', () => net.send({ t: 'dev-disaster', id: $('devDisaster').value })); }
+  if (DEV) { $('devXp').addEventListener('click', () => net.send({ t: 'dev-xp', n: you ? Math.max(200, you.xp * 3) : 200 })); $('devCoins').addEventListener('click', () => { if (!acct.user) { $('devMsg').textContent = 'log in first'; return; } $('devMsg').textContent = ''; net.send({ t: 'dev-coins', v: selectedVersion, n: 1000 }); }); $('devDisasterGo').addEventListener('click', () => net.send({ t: 'dev-disaster', id: $('devDisaster').value })); }
   net.on('shop', (m) => { Object.assign(acct, { coins: m.coins, owned: m.owned, equipped: m.equipped }); shopUI.purchased(); refreshAccountUI(); });
   net.on('shop-error', (m) => { shopUI.error(m.err); authErr(m.err); });
   net.on('coins', (m) => { acct.coins = m.coins; lastEarned = m.earned || 0; refreshAccountUI(); if (lastEarned > 0) { document.getElementById('plusCoinsLabel').textContent = '+' + lastEarned; document.getElementById('plusCoins').style.display = 'block'; } });
@@ -57,7 +60,7 @@
   net.on('welcome', (m) => {
     V = m.version; V.__sandbox = m.mode === 'sandbox'; V.__arena = m.mode === 'arena'; camMoved = false; spectating = m.mode === 'spectate'; V.__spectate = spectating; zones = []; prevYou = null; myClimb = false; document.getElementById('plusCoins').style.display = 'none'; specName = ''; arenaState = ''; arenaMsg = ''; lakes = m.lakes || []; terrain = m.terrain || []; mode = 'play'; chats.clear();
     you = { id: m.id, x: 0, y: 0, xp: 0, hp: 100, w: 100, a: V.startAnimal, ev: [], cd: 0 }; if (spectating) pred = null;
-    upgrade.setVersion(V); menu.hide(); connecting(false); setStatus(''); $('deathMsg').style.display = 'none'; interp.snaps.length = 0; pred = null;
+    upgrade.setVersion(V); tray.setVersion(V); touch.enable(touchDevice, { climb: !!(V.features && V.features.climbing), chat: !!(V.features && V.features.chat) }); menu.hide(); connecting(false); setStatus(''); $('deathMsg').style.display = 'none'; interp.snaps.length = 0; pred = null;
   });
   net.on('snap', (m) => {
     if (mode !== 'play') return;
@@ -95,6 +98,13 @@
   input.on('arrowdown', (e) => { if (mode === 'play' && V.__sandbox) { net.send({ t: 'sandbox', d: -1 }); e.preventDefault(); } });
   input.on('u', () => { if (mode === 'play') upgrade.toggleTree(); });
   input.on('s', () => { if (mode === 'play' && !spectating && feature('climbing')) net.send({ t: 'climb' }); }); // 2020-03-03: 'PRESS S TO CLIMB UP/DOWN trees'
+  const touch = new M.TouchControls(document, input, {
+    boost: (on) => { if (mode === 'play' && !spectating) boost = on; },
+    ability: () => { if (mode !== 'play') return; if (spectating) { net.send({ t: 'leave' }); spectating = false; mode = 'menu'; wantJoin = false; menu.show(); return; } net.send({ t: 'ability' }); },
+    climb: () => { if (mode === 'play' && !spectating && feature('climbing')) net.send({ t: 'climb' }); },
+    chat: () => { if (mode === 'play' && feature('chat') && !menu.options.noNames) openChat(); },
+    spectating: () => mode === 'play' && spectating, next: () => net.send({ t: 'spectate-next' }),
+  });
   $('gCanvas').addEventListener('mousemove', (e) => upgrade.mouse(e.clientX, e.clientY));
   $('gCanvas').addEventListener('mousedown', (e) => { if (e.button !== 0 || mode !== 'play') return; if (spectating) { net.send({ t: 'spectate-next' }); return; } if (!upgrade.click(e.clientX, e.clientY, renderer.vw, renderer.vh, you)) boost = true; });
   addEventListener('mouseup', () => (boost = false));
@@ -112,7 +122,8 @@
       const ctx = renderer.ctx; if (an) M.HUD.draw(ctx, renderer.vw, renderer.vh, V, you, an, lb, DEV ? dbg : null, count);
       ctx.save(); ctx.fillStyle = 'rgba(0,0,0,0.5)'; ctx.fillRect(renderer.vw / 2 - 190, 10, 380, 54); ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.font = 'bold 20px Arial'; ctx.fillText('Spectating: ' + (specName || '...'), renderer.vw / 2, 34); ctx.font = '13px Arial'; ctx.fillStyle = '#ddd'; ctx.fillText('[Space] / click: next player    [Esc]: leave', renderer.vw / 2, 54); ctx.restore(); return;
     }
-    if (mode === 'menu' || !V || !you || !pred) { renderer.ctx.fillStyle = getComputedStyle(document.body).backgroundColor; renderer.ctx.fillRect(0, 0, renderer.vw, renderer.vh); return; }
+    document.body.classList.toggle('playing', mode === 'play');
+    if (mode === 'menu' || !V || !you || !pred) { tray.hide(); renderer.ctx.fillStyle = getComputedStyle(document.body).backgroundColor; renderer.ctx.fillRect(0, 0, renderer.vw, renderer.vh); return; }
     const inp = input.current(renderer.vw, renderer.vh);
     if (mode === 'play') {
       const b = boost ? 1 : 0, key = inp.angle.toFixed(2) + ':' + inp.mag.toFixed(2) + ':' + b;
@@ -125,7 +136,9 @@
     renderer.drawWorld(camera, V, lakes, interp.sample(performance.now()), foods, you.id, pred, chats, performance.now(), terrain); if (V.disasterDefs && zones.length) M.Disasters.draw(renderer.ctx, camera, renderer.vw, renderer.vh, zones, V.disasterDefs, performance.now());
     const ctx = renderer.ctx;
     M.HUD.draw(ctx, renderer.vw, renderer.vh, V, you, V.animals[pred.ai], lb, DEV ? dbg : null, count);
+    upgrade.hideChoices = !!menu.options.evoTray;
     if (mode === 'play') upgrade.draw(ctx, renderer.vw, renderer.vh, you, t);
+    if (mode === 'play' && !spectating && menu.options.evoTray && !upgrade.treeOpen) tray.update(you, upgrade.choices(you), t); else tray.hide();
     if (menu.options.snowfall) M.Extras.Snow.draw(ctx, renderer.vw, renderer.vh, t);
     if (V.__arena && arenaState) { ctx.save(); ctx.textAlign = 'center'; ctx.font = 'bold 26px Arial'; ctx.fillStyle = '#F1C34C'; ctx.strokeStyle = 'rgba(0,0,0,.7)'; ctx.lineWidth = 4; const msg = arenaState === 'waiting' ? 'Waiting for an opponent...' : arenaState === 'fight' ? '1v1 ARENA' : ''; if (msg) { ctx.strokeText(msg, renderer.vw / 2, 90); ctx.fillText(msg, renderer.vw / 2, 90); } ctx.restore(); }
   }

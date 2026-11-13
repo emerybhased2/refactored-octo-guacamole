@@ -1,5 +1,11 @@
 # Project changelog
 
+## 0.9.0 - Mobile support + Evolution Tray
+- **Mobile:** touch controls (floating left-thumb joystick, BOOST / ABILITY / CLIMB / CHAT buttons, tap-to-spectate), responsive menu/shop/settings, compact leaderboard on short screens, no pinch/scroll/pull-to-refresh, safe-area insets, devbar hidden while playing on touch devices.
+- **Evolution Tray (original UI, not an archived menu):** bottom sheet with every animal you can evolve into now (biome-coloured cards, tier chip, best-fit star, ability) plus the nearest upcoming ones with XP progress; collapses to a one-line "Next: X 7/150 XP" chip; on touch the first tap selects and shows details, a second tap on EVOLVE confirms. Default on touch devices and in the wiki-sourced version; a "New upgrade tray" option in settings enables it in any version (historical menus stay the default elsewhere).
+- Dev: `dev-xp` message + "+XP" button (MOPE_DEV only).
+- Tests: client/data 66, integration 29.
+
 ## 0.8.0 - Version 7: 2026-11-13 (wiki-sourced)
 - New playable version built from the Mope.io Wiki: 97-animal current roster, 17 tiers, wiki XP thresholds, all-to-all evolution by tier, removed animals (Snowman/Snowgirl/Bigfoot...) gone, 375 skins (Halloween 2020-25, Summer, Christmas, Gold-trim, Golden, Locked, Storefront, Cosmic...) with original generated art, version dropdown for all captures.
 - Corrections: Queen Flame / Tully Monster are skins (removed as animals from the 2021 version).
