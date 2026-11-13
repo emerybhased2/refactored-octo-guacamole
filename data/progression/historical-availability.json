@@ -1,0 +1,53 @@
+{
+ "versions": {
+  "2017-02-13": {
+   "animals": [
+    "arcticfox",
+    "arctichare",
+    "bear",
+    "cheetah",
+    "chipmunk",
+    "crab",
+    "croc",
+    "deer",
+    "donkey",
+    "dragon",
+    "fox",
+    "gorilla",
+    "hippo",
+    "jellyfish",
+    "killerwhale",
+    "kraken",
+    "lion",
+    "mammoth",
+    "mole",
+    "mouse",
+    "muskox",
+    "octopus",
+    "penguin",
+    "pig",
+    "polarbear",
+    "pufferfish",
+    "rabbit",
+    "reindeer",
+    "rhino",
+    "seahorse",
+    "seal",
+    "shark",
+    "shrimp",
+    "snowleopard",
+    "squid",
+    "stingray",
+    "swordfish",
+    "trout",
+    "turtle",
+    "walrus",
+    "wolf",
+    "wolverine",
+    "yeti",
+    "zebra"
+   ],
+   "confidence": "roster verified; tiers/xp/tree inferred"
+  }
+ }
+}

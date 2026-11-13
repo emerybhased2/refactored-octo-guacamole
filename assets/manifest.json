@@ -1,0 +1,48 @@
+{
+  "_note": "status: original (archived; provenance recorded) | placeholder (generated at runtime). Keep variants per version.",
+  "versions": {
+    "2017-02-13": {
+      "menus": {
+        "logo": {
+          "path": "assets/menus/2017-02-13/logo.png",
+          "status": "original",
+          "provenance": "Arquivo.pt capture 20170213101026 of http://mope.io/img/logo.png; page footer: 'You may use images/videos of mope.io commercially. All rights reserved.' (Stan Tatarnykov)"
+        },
+        "mode_norm": {
+          "path": "assets/menus/2017-02-13/mode_norm.png",
+          "status": "original",
+          "provenance": "Arquivo.pt capture 20170213101039 of http://mope.io/img/mode_norm.png; page footer: 'You may use images/videos of mope.io commercially. All rights reserved.' (Stan Tatarnykov)"
+        },
+        "mode_sandbox": {
+          "path": "assets/menus/2017-02-13/mode_sandbox.png",
+          "status": "original",
+          "provenance": "Arquivo.pt capture 20170213101050 of http://mope.io/img/mode_sandbox.png; page footer: 'You may use images/videos of mope.io commercially. All rights reserved.' (Stan Tatarnykov)"
+        },
+        "settings": {
+          "path": "assets/menus/2017-02-13/settings.png",
+          "status": "original",
+          "provenance": "Arquivo.pt capture 20170213101102 of http://mope.io/img/settings.png; page footer: 'You may use images/videos of mope.io commercially. All rights reserved.' (Stan Tatarnykov)"
+        },
+        "sound_on": {
+          "path": "assets/menus/2017-02-13/sound_on.png",
+          "status": "original",
+          "provenance": "Arquivo.pt capture 20170213101116 of http://mope.io/img/sound_on.png; page footer: 'You may use images/videos of mope.io commercially. All rights reserved.' (Stan Tatarnykov)"
+        },
+        "close": {
+          "path": "assets/menus/2017-02-13/x.png",
+          "status": "original",
+          "provenance": "Arquivo.pt capture 20170213101127 of http://mope.io/img/x.png; page footer: 'You may use images/videos of mope.io commercially. All rights reserved.' (Stan Tatarnykov)"
+        }
+      },
+      "animals": {
+        "status": "placeholder",
+        "note": "No skins captured for this date; coloured by verified base colour from the archived client",
+        "count": 44
+      },
+      "food": {
+        "status": "placeholder",
+        "note": "banana/rasp/pear/coconut/lillypad images not captured"
+      }
+    }
+  }
+}

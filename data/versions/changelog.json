@@ -1,0 +1,41 @@
+[
+ {
+  "version": "0.1",
+  "date": "2017-02-13",
+  "confidence": "verified (existence of roster/biomes/features from archived client); balance inferred",
+  "changes": [
+   {
+    "type": "capture",
+    "name": "Earliest archived capture (Arquivo.pt 20170213100949)"
+   },
+   {
+    "type": "animals_present",
+    "count": 44
+   },
+   {
+    "type": "biomes_present",
+    "names": [
+     "land",
+     "ocean",
+     "arctic"
+    ]
+   },
+   {
+    "type": "feature_present",
+    "names": [
+     "sandbox mode",
+     "chat",
+     "run (hold click) using water",
+     "party links",
+     "region/server select",
+     "settings panel"
+    ]
+   },
+   {
+    "type": "update_note",
+    "date": "2017-02-10",
+    "name": "Arctic teleporting, upgrade UI sorted by biome, sandbox up/down upgrade, music removed (from page update panel)"
+   }
+  ]
+ }
+]

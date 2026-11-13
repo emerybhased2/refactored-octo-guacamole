@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Mope.io Historical Evolution</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<!-- Structure mirrors the archived 2017-02-13 index.html (ids kept); content/geometry comes from the version's menu config. -->
+<div id="gameAreaWrapper">
+  <input id="chatinput" type="text" class="chat-input" placeholder="Chat here..." maxlength="35" autocomplete="off">
+  <canvas tabindex="1" id="gCanvas"></canvas>
+</div>
+<div id="connecting"><p id="desc">Connecting...</p><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+<div id="startMenuWrapper">
+  <div id="startMenu">
+    <img id="logo" alt="logo">
+    <div id="onconnectDiv">
+      <button id="button_GMnormal" class="button" type="button"><img alt="Normal"></button>
+      <button id="button_GMsandbox" class="button" type="button"><img alt="Sandbox"></button>
+      <div id="nickInputContainer"><input id="nickInput" autofocus maxlength="15" autocomplete="off"></div>
+      <button id="settingsButton" class="button" type="button"><img alt="Settings"></button>
+      <button id="button_mute" class="button" type="button"><img id="button_mute_img" alt="Sound"></button>
+      <a><button id="startButton" type="button">Play</button></a>
+      <p id="spawnXpLabel"></p>
+    </div>
+    <div id="optionsDiv">
+      <button id="closeBut" type="button" class="button"><img alt="Close"></button>
+      <h3>Region/Server:</h3>
+      <select id="regionSelect"></select>
+      <select id="serverSelect"></select>
+      <h3>Options:</h3>
+      <div id="optionsList"></div>
+    </div>
+  </div>
+  <div id="howToPlayDiv"></div>
+  <div id="updatesDiv"></div>
+</div>
+<div id="devbar"><label>Historical version: <select id="versionSelect"></select></label><span id="versionLabel"></span></div>
+<div id="status"></div>
+<div id="deathMsg"></div>
+<script src="interpolation.js"></script>
+<script src="camera.js"></script>
+<script src="input.js"></script>
+<script src="networking.js"></script>
+<script src="sprites.js"></script>
+<script src="ui/MenuVersionManager.js"></script>
+<script src="ui/MenuRenderer.js"></script>
+<script src="ui/MenuAnimations.js"></script>
+<script src="ui/MainMenu.js"></script>
+<script src="ui/UpgradeMenu.js"></script>
+<script src="ui/Leaderboard.js"></script>
+<script src="ui/HUD.js"></script>
+<script src="ui/Settings.js"></script>
+<script src="ui/Shop.js"></script>
+<script src="renderer.js"></script>
+<script src="client.js"></script>
+</body>
+</html>

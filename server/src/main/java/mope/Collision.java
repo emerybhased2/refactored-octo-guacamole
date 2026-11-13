@@ -1,0 +1,15 @@
+package mope;
+
+/** Circle collision helpers and Mope eat rules. */
+public final class Collision {
+    private Collision() {}
+    public static double dist2(Entity a, Entity b) { double dx = a.x - b.x, dy = a.y - b.y; return dx * dx + dy * dy; }
+    public static boolean overlap(Entity a, Entity b) { double r = a.radius + b.radius; return dist2(a, b) <= r * r; }
+    /** Predator eats prey when prey's center lies inside predator's body and predator tier is strictly higher. */
+    public static boolean canEat(Player pred, Player prey) {
+        if (pred == prey || pred.dead || prey.dead || prey.protectedUntilTick > pred.world.tick) return false;
+        if (!pred.world.sandbox && pred.animal.tier <= prey.animal.tier) return false;
+        double r = pred.radius * 0.9;
+        return dist2(pred, prey) <= r * r;
+    }
+}
