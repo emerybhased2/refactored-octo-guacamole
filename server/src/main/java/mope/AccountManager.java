@@ -123,6 +123,19 @@ public final class AccountManager implements AutoCloseable {
             } catch (SQLException e) { db.rollback(); return false; } finally { db.setAutoCommit(true); }
         } catch (SQLException e) { throw new IllegalStateException(e); }
     }
+    /** Atomic bundle purchase: the bundle id plus every contained item not yet owned are added for one price. */
+    public synchronized boolean buyBundle(String user, String bundle, int price, java.util.List<String> contents) {
+        if (price < 0 || owned(user).contains(bundle) || coins(user) < price) return false;
+        try {
+            db.setAutoCommit(false);
+            try (PreparedStatement a = db.prepareStatement("UPDATE wallet SET coins = coins - ? WHERE username=? AND coins >= ?"); PreparedStatement b = db.prepareStatement("INSERT OR IGNORE INTO inventory(username,item) VALUES(?,?)")) {
+                a.setInt(1, price); a.setString(2, user); a.setInt(3, price); if (a.executeUpdate() != 1 && price > 0) { db.rollback(); return false; }
+                java.util.List<String> all = new java.util.ArrayList<>(contents); all.add(bundle);
+                for (String it : all) { b.setString(1, user); b.setString(2, it); b.executeUpdate(); }
+                db.commit(); return true;
+            } catch (SQLException e) { db.rollback(); return false; } finally { db.setAutoCommit(true); }
+        } catch (SQLException e) { throw new IllegalStateException(e); }
+    }
     public synchronized java.util.Map<String, String> equipped(String user) {
         java.util.Map<String, String> out = new java.util.HashMap<>();
         try (PreparedStatement ps = db.prepareStatement("SELECT animal,item FROM equipped WHERE username=?")) { ps.setString(1, user); try (ResultSet rs = ps.executeQuery()) { while (rs.next()) out.put(rs.getString(1), rs.getString(2)); } }

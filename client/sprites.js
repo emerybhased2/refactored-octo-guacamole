@@ -44,7 +44,9 @@
   function getAbilityIcon(def) { if (!def || !def.icon) return null; const im = image(def.icon); return ready(im) ? im : null; }
   function getTile(biome) { if (!biome || !biome.tile) return null; const im = image(biome.tile); return ready(im) ? im : null; }
   function getTerrain(def) { if (!def || def.spriteStatus === 'none') return null; const im = image(def.sprite); return ready(im) ? im : null; }
+  /** Classic Theme (2021 Legacy Pack): the project's own 2017-02-13 art for animals that existed then; null otherwise. */
+  function getClassic(animal) { const im = image('assets/animals/2017-02-13/' + animal.id + '.png'); return ready(im) ? im : null; }
   function getSkin(item) { if (!item || !item.sprite) return null; const im = image(item.sprite); return ready(im) ? im : null; }
-  M.Sprites = { getSkin, get, getIcon, getFood, getAbilityIcon, getTile, getTerrain, TERRAIN_FRAC: 0.8, TILE_WORLD: 256, BODY_FRAC, FOOD_FRAC, SIZE, shade };
+  M.Sprites = { getClassic, getSkin, get, getIcon, getFood, getAbilityIcon, getTile, getTerrain, TERRAIN_FRAC: 0.8, TILE_WORLD: 256, BODY_FRAC, FOOD_FRAC, SIZE, shade };
   if (typeof module !== 'undefined') module.exports = M.Sprites;
 })(typeof window !== 'undefined' ? window : globalThis);

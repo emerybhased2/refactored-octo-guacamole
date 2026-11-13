@@ -16,6 +16,9 @@ get 20180421014215 img/logo.png logo_2018-04-21.png
 get 20190825113653 ""         index_2019-08-25.html
 get 20190825113700 "main.css?v=1.224" main_2019-08-25.css
 get 20190327115440 img/logo.png logo_2019.png
+get 20210612030212 "" index_2021-06-12.html   # 2021: React UI, see ui_build/ui_bundle.js (20210612030300), ui_build/static/css/main.css (20210612030257); Arquivo rate-limits (429): retry with a pause
+get 20210612030300 "ui_build/ui_bundle.js" ui_bundle_2021-06-12.js
+get 20210612030257 "ui_build/static/css/main.css" ui_main_2021-06-12.css
 get 20200613000000 "" index_2020-06-13.html   # nearest capture is substituted; verify with cmp
 get 20200613000000 "main.css" main_2020-06-13.css
 get 20191230093554 "" index_2019-12-30.html   # NOTE: no main.css exists for this date (Arquivo substitutes the 2018 file), do not fetch one

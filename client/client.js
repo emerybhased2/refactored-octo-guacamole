@@ -30,13 +30,14 @@
   document.getElementById('facebookLoginBtn').addEventListener('click', openAuth); document.getElementById('googleLoginBtn').addEventListener('click', openAuth);
   document.getElementById('authClose').addEventListener('click', () => (document.getElementById('authModal').style.display = 'none'));
   document.getElementById('authLogin').addEventListener('click', () => doAuth('login')); document.getElementById('authRegister').addEventListener('click', () => doAuth('register'));
-  document.getElementById('shopbutton').addEventListener('click', () => shopUI.show()); document.getElementById('shopClose').addEventListener('click', () => shopUI.hide());
+  document.getElementById('shopbutton').addEventListener('click', () => shopUI.show()); document.getElementById('storeButton').addEventListener('click', () => shopUI.show()); // browsing is allowed logged out; purchases ask to log in
+  document.getElementById('footerLinks').addEventListener('click', (e) => { if (e.target.dataset && e.target.dataset.action === 'updates') document.getElementById('updatesDiv').scrollIntoView({ behavior: 'smooth' }); }); document.getElementById('shopClose').addEventListener('click', () => shopUI.hide());
   document.getElementById('logoutbut').addEventListener('click', () => { let t = null; try { t = localStorage.getItem(tokenKey()); localStorage.removeItem(tokenKey()); } catch (e) {} if (t) net.send({ t: 'logout', token: t }); Object.assign(acct, { user: null, coins: 0, owned: [], equipped: {} }); refreshAccountUI(); });
   async function loadVersion(id) {
     selectedVersion = id; const cfg = await M.MenuVersionManager.select(id);
     const vi0 = M.MenuVersionManager.current; shopUI.setStyle((cfg && cfg.shopWindow) || null); shopUI.setVersion({ shop: vi0.shopItems ? { items: vi0.shopItems } : null, animals: vi0.animalDefs || [] });
     if (vi0.features && vi0.features.accounts) { if (!net.open && !net.wantOpen) net.connect(); } refreshAccountUI();
-    menu.setConfig(cfg); if ($('versionLabel')) $('versionLabel').textContent = M.MenuVersionManager.current.label; if (window.__arenaUi) window.__arenaUi();
+    menu.setConfig(cfg); setGfx(renderer.quality); if ($('versionLabel')) $('versionLabel').textContent = M.MenuVersionManager.current.label; if (window.__arenaUi) window.__arenaUi();
   }
   function startJoin(name, m) {
     lastJoin = { t: 'join', name, v: selectedVersion, mode: m }; if (m === 'arena' && $('arenaAnimal')) lastJoin.animal = $('arenaAnimal').value; wantJoin = true; connecting(true); setStatus('');
@@ -44,7 +45,7 @@
   }
   net.on('open', () => { if (wantJoin && lastJoin) net.send(lastJoin); let t = null; try { t = localStorage.getItem(tokenKey()); } catch (e) {} const vi = M.MenuVersionManager.current; if (t && !acct.user && vi && vi.features && vi.features.accounts) net.send({ t: 'resume', token: t, v: selectedVersion }); });
   net.on('auth', (m) => { if (m.ok) { Object.assign(acct, { user: m.user, coins: m.coins || 0, owned: m.owned || [], equipped: m.equipped || {} }); try { localStorage.setItem(tokenKey(), m.token); } catch (e) {} document.getElementById('authModal').style.display = 'none'; document.getElementById('authPass').value = ''; refreshAccountUI(); } else authErr(m.err || 'failed'); });
-  net.on('shop', (m) => { Object.assign(acct, { coins: m.coins, owned: m.owned, equipped: m.equipped }); shopUI.error(''); refreshAccountUI(); });
+  net.on('shop', (m) => { Object.assign(acct, { coins: m.coins, owned: m.owned, equipped: m.equipped }); shopUI.purchased(); refreshAccountUI(); });
   net.on('shop-error', (m) => { shopUI.error(m.err); authErr(m.err); });
   net.on('coins', (m) => { acct.coins = m.coins; lastEarned = m.earned || 0; refreshAccountUI(); if (lastEarned > 0) { document.getElementById('plusCoinsLabel').textContent = '+' + lastEarned; document.getElementById('plusCoins').style.display = 'block'; } });
   net.on('disaster', (m) => { const el = document.getElementById('disasterMsg'); el.textContent = 'Disaster: ' + m.name + '!'; el.style.display = 'block'; clearTimeout(el._t); el._t = setTimeout(() => (el.style.display = 'none'), 4500); });
@@ -58,7 +59,7 @@
     if (mode !== 'play') return;
     you = Object.assign({}, m.you); count = m.n;
     interp.push(performance.now(), m.p.map((p) => ({ id: p[0], x: p[1], y: p[2], ai: p[3], angle: p[4], hp: p[5], name: p[6], skin: p[7] || null, climb: p[8] === 1 }))); zones = m.dz || []; const meT = m.p.find((q) => q[0] === you.id); mySkin = meT ? meT[7] : null; myClimb = !!(meT && meT[8] === 1);
-    if (V.features && V.features.sounds && prevYou && !spectating) { const maxFood = Math.max(...V.foods.map((f) => f.xp)) * Math.pow(1.35, Math.max(0, (V.animals.find((a) => a.id === you.a) || { tier: 1 }).tier - 1)); const snd = M.Sound.classify(prevYou, you, maxFood); if (snd) { M.Sound.muted = menu.muted; M.Sound.play(snd); } } prevYou = { xp: you.xp, w: you.w, a: you.a }; foods = m.f; lb = m.lb;
+    if (V.features && V.features.sounds && prevYou && !spectating) { const maxFood = Math.max(...V.foods.map((f) => f.xp)) * Math.pow(1.35, Math.max(0, (V.animals.find((a) => a.id === you.a) || { tier: 1 }).tier - 1)); const snd = M.Sound.classify(prevYou, you, maxFood); if (snd) { M.Sound.muted = menu.muted; M.Sound.play(snd); } } if (V.features && V.features.noXpPopups && !menu.options.noXpPopups && !spectating) { const gn = M.Extras.xpGain(prevYou, you); if (gn >= 5) M.Extras.popup(document, gn); } prevYou = { xp: you.xp, w: you.w, a: you.a }; foods = m.f; lb = m.lb;
     const ai = V.animals.findIndex((a) => a.id === you.a);
     if (m.arena) arenaState = m.arena;
     if (spectating) { specName = m.spec || ''; if (!camMoved) { camera.snap(you.x, you.y); camMoved = true; } return; } // spectators have no body: the camera just follows the target
@@ -100,7 +101,7 @@
     requestAnimationFrame(frame);
     const dt = Math.min(0.1, (t - lastFrame) / 1000); lastFrame = t;
     frames++; if (t - fpsT >= 1000) { dbg.fps = frames; frames = 0; fpsT = t; dbg.ping = net.ping; dbg.kbps = ((net.bytesIn - lastBytes) / 1024).toFixed(1); lastBytes = net.bytesIn; dbg.mem = performance.memory ? Math.round(performance.memory.usedJSHeapSize / 1048576) + 'MB' : 'n/a'; }
-    renderer.begin(); renderer.opts = { lowGraphics: menu.options.lowGraphics, noImages: menu.options.noImages, noNames: menu.options.noNames };
+    renderer.begin(); renderer.opts = { classic: !!(acct.user && acct.equipped && acct.equipped.__theme === 'classic_theme'), lowGraphics: menu.options.lowGraphics, noImages: menu.options.noImages, noNames: menu.options.noNames };
     if (spectating && mode === 'play' && V && you && you.a) {
       renderer.begin(); const an = V.animals.find((x) => x.id === you.a); camera.follow(you.x, you.y, an ? an.tier : 1, dt);
       renderer.drawWorld(camera, V, lakes, interp.sample(performance.now()), foods, -1, null, chats, performance.now(), terrain); if (V.disasterDefs && zones.length) M.Disasters.draw(renderer.ctx, camera, renderer.vw, renderer.vh, zones, V.disasterDefs, performance.now());
@@ -121,13 +122,15 @@
     const ctx = renderer.ctx;
     M.HUD.draw(ctx, renderer.vw, renderer.vh, V, you, V.animals[pred.ai], lb, DEV ? dbg : null, count);
     if (mode === 'play') upgrade.draw(ctx, renderer.vw, renderer.vh, you, t);
+    if (menu.options.snowfall) M.Extras.Snow.draw(ctx, renderer.vw, renderer.vh, t);
     if (V.__arena && arenaState) { ctx.save(); ctx.textAlign = 'center'; ctx.font = 'bold 26px Arial'; ctx.fillStyle = '#F1C34C'; ctx.strokeStyle = 'rgba(0,0,0,.7)'; ctx.lineWidth = 4; const msg = arenaState === 'waiting' ? 'Waiting for an opponent...' : arenaState === 'fight' ? '1v1 ARENA' : ''; if (msg) { ctx.strokeText(msg, renderer.vw / 2, 90); ctx.fillText(msg, renderer.vw / 2, 90); } ctx.restore(); }
   }
   addEventListener('resize', () => renderer.resize());
   addEventListener('pointerdown', () => M.Sound.unlock(), { once: true });
   // ---- 2020 settings: graphics (HD / lower resolution, 'it may look blurrier') + FPS readout
-  const setGfx = (q) => { renderer.quality = q; try { localStorage.setItem('mope.gfx', String(q)); } catch (e) {} renderer.resize(); document.getElementById('graphicsBut_mid').classList.toggle('sel', q < 1); document.getElementById('graphicsBut_hd').classList.toggle('sel', q >= 1); };
-  document.getElementById('graphicsBut_mid').addEventListener('click', () => setGfx(0.6)); document.getElementById('graphicsBut_hd').addEventListener('click', () => setGfx(1));
+  const setGfx = (q) => { renderer.quality = q; try { localStorage.setItem('mope.gfx', String(q)); } catch (e) {} renderer.resize(); const three = !!(menu.cfg && menu.cfg.graphics && menu.cfg.graphics.levels); const lowQ = three ? 0.45 : 0.6; for (const [id, on] of [['graphicsBut_low', q <= 0.45], ['graphicsBut_mid', three ? (q > 0.45 && q < 1) : q < 1], ['graphicsBut_hd', q >= 1]]) document.getElementById(id).classList.toggle('sel', on); };
+  const gq = (which) => { const three = !!(menu.cfg && menu.cfg.graphics && menu.cfg.graphics.levels); return which === 'low' ? 0.45 : which === 'mid' ? (three ? 0.7 : 0.6) : 1; };
+  document.getElementById('graphicsBut_low').addEventListener('click', () => setGfx(gq('low'))); document.getElementById('graphicsBut_mid').addEventListener('click', () => setGfx(gq('mid'))); document.getElementById('graphicsBut_hd').addEventListener('click', () => setGfx(gq('hi')));
   { let q = 1; try { q = parseFloat(localStorage.getItem('mope.gfx')) || 1; } catch (e) {} setGfx(q); }
   setInterval(() => { const el = document.getElementById('graphics_fps'); if (el && el.offsetParent) el.textContent = 'FPS: ' + dbg.fps; }, 1000);
 
