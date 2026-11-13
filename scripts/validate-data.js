@@ -15,6 +15,8 @@ function validate() {
   } catch (e) { return { errors: ['JSON load failed: ' + e.message], warnings }; }
 
   const placeholders = [];
+  for (const a of abilities) if (a.iconStatus === 'recreated' && !fs.existsSync(path.join(ROOT, a.icon || ''))) err(`ability ${a.id}: icon missing (${a.icon})`);
+  for (const b of biomes) if (b.tileStatus === 'recreated' && !fs.existsSync(path.join(ROOT, b.tile || ''))) err(`biome ${b.id}: tile missing (${b.tile})`);
   const ids = new Map(), tierSet = new Set(tiers.map((t) => t.tier)), biomeIds = new Set(biomes.map((b) => b.id)), abilityIds = new Set(abilities.map((a) => a.id));
   for (const t of tiers) if (tiers.filter((x) => x.tier === t.tier).length > 1) err('duplicate tier ' + t.tier);
   for (const a of animals) {

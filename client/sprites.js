@@ -40,6 +40,9 @@
     return cv;
   }
   function getFood(def) { if (def.spriteStatus === 'recreated' || def.spriteStatus === 'original') { const im = image(def.sprite); if (ready(im)) return im; } return null; }
-  M.Sprites = { get, getIcon, getFood, BODY_FRAC, FOOD_FRAC, SIZE, shade };
+  /** Ability icon / terrain tile images, or null until loaded (callers fall back to flat colour / no icon). */
+  function getAbilityIcon(def) { if (!def || !def.icon) return null; const im = image(def.icon); return ready(im) ? im : null; }
+  function getTile(biome) { if (!biome || !biome.tile) return null; const im = image(biome.tile); return ready(im) ? im : null; }
+  M.Sprites = { get, getIcon, getFood, getAbilityIcon, getTile, TILE_WORLD: 256, BODY_FRAC, FOOD_FRAC, SIZE, shade };
   if (typeof module !== 'undefined') module.exports = M.Sprites;
 })(typeof window !== 'undefined' ? window : globalThis);

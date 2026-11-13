@@ -17,7 +17,9 @@
   "hazards": [],
   "confidence": "verified existence; layout inferred",
   "clientBiomeNum": 0,
-  "buttonColor": "#26A73A"
+  "buttonColor": "#26A73A",
+  "tile": "assets/biomes/land.png",
+  "tileStatus": "recreated"
  },
  {
   "id": "ocean",
@@ -34,7 +36,9 @@
   "hazards": [],
   "confidence": "verified existence; layout inferred",
   "clientBiomeNum": 1,
-  "buttonColor": "#1C91B8"
+  "buttonColor": "#1C91B8",
+  "tile": "assets/biomes/ocean.png",
+  "tileStatus": "recreated"
  },
  {
   "id": "arctic",
@@ -54,6 +58,8 @@
   "hazards": [],
   "confidence": "verified existence; layout inferred",
   "clientBiomeNum": 2,
-  "buttonColor": "#B2B2B2"
+  "buttonColor": "#B2B2B2",
+  "tile": "assets/biomes/arctic.png",
+  "tileStatus": "recreated"
  }
 ]

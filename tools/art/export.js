@@ -14,6 +14,7 @@ for (let i = 0; i < args.length; i++) { if (args[i] === '--version') version = a
   await page.addScriptTag({ content: fs.readFileSync(path.join(__dirname, 'draw.js'), 'utf8') });
   await page.addScriptTag({ content: fs.readFileSync(path.join(__dirname, 'specs.js'), 'utf8') });
   await page.addScriptTag({ content: fs.readFileSync(path.join(__dirname, 'food.js'), 'utf8') });
+  await page.addScriptTag({ content: fs.readFileSync(path.join(__dirname, 'gui.js'), 'utf8') });
   const list = animals.filter((a) => !only.length || only.includes(a.id));
   const out = await page.evaluate((list) => {
     const res = {}, src = document.createElement('canvas'); src.width = src.height = 256;
@@ -45,5 +46,19 @@ for (let i = 0; i < args.length; i++) { if (args[i] === '--version') version = a
   for (const [id, url] of Object.entries(fo)) fs.writeFileSync(path.join(fdir, id + '.png'), Buffer.from(url.split(',')[1], 'base64'));
   console.log(`exported ${Object.keys(fo).length} food sprites to assets/food`);
   if (sheet) { const p3 = await b.newPage(); await p3.setContent('<body style="margin:0;background:#4fbf5a"><canvas id=s width=1024 height=128></canvas></body>'); await p3.evaluate(async (fo) => { const c = document.getElementById('s').getContext('2d'); let i = 0; for (const u of Object.values(fo)) { const im = new Image(); im.src = u; await im.decode(); c.drawImage(im, i++ * 128, 0); } }, fo); const fpng = await p3.evaluate(() => document.getElementById('s').toDataURL('image/png')); fs.writeFileSync(sheet.replace('.png', '_food.png'), Buffer.from(fpng.split(',')[1], 'base64')); }
+  // GUI: ability icons (64x64), muted-sound icon, terrain tiles (256x256)
+  if (!only.length) {
+    const abil = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/abilities/abilities.json'), 'utf8')).map((a) => a.id);
+    const biomes = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/biomes/biomes.json'), 'utf8'));
+    const gu = await page.evaluate(({ abil, biomes }) => { const r = { abilities: {}, tiles: {} }, cv = document.createElement('canvas');
+      cv.width = cv.height = 64; for (const id of abil) { window.MopeGui.abilityIcon(cv.getContext('2d'), id, 64); r.abilities[id] = cv.toDataURL(); }
+      cv.width = cv.height = 60; window.MopeGui.soundOff(cv.getContext('2d'), 60); r.soundOff = cv.toDataURL();
+      cv.width = cv.height = 256; for (const b of biomes) { window.MopeGui.tile(cv.getContext('2d'), b.id, b.color, 256); r.tiles[b.id] = cv.toDataURL(); } return r; }, { abil, biomes });
+    const w = (f, url) => { fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, Buffer.from(url.split(',')[1], 'base64')); };
+    for (const [id, u] of Object.entries(gu.abilities)) w(path.join(ROOT, 'assets/icons/abilities', id + '.png'), u);
+    w(path.join(ROOT, 'assets/menus', version, 'sound_off.png'), gu.soundOff);
+    for (const [id, u] of Object.entries(gu.tiles)) w(path.join(ROOT, 'assets/biomes', id + '.png'), u);
+    console.log(`exported ${Object.keys(gu.abilities).length} ability icons, sound_off, ${Object.keys(gu.tiles).length} terrain tiles`);
+  }
   await b.close();
 })();

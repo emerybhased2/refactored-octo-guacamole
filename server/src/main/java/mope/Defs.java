@@ -19,7 +19,7 @@ public final class Defs {
     }
     public static class Lakes { public int count; public double radius; }
     public static class AbilityDef {
-        public String id, name, type, releaseDate, removalDate;
+        public String id, name, type, releaseDate, removalDate, icon, iconStatus;
         public double cooldownMs, durationMs, speedMultiplier, damage, range;
         public List<String> biomes;
         public boolean implemented, verified;
