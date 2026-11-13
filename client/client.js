@@ -141,9 +141,13 @@
   (async function boot() {
     try {
       const list = await M.MenuVersionManager.init();
-      if (DEV) { const sel = $('versionSelect'); $('devbar').style.display = 'flex'; const arenaUi = () => { const vi = M.MenuVersionManager.current; $('arenaCtl').style.display = vi && vi.features && vi.features.arena ? 'inline' : 'none'; const aa = $('arenaAnimal'); aa.innerHTML = ''; for (const a of (vi && vi.animalDefs) || []) if (a.biome === 'land' && a.tier >= 5) aa.add(new Option(a.name + ' (T' + a.tier + ')', a.id)); }; window.__arenaUi = arenaUi; for (const v of list) sel.add(new Option(v.date + ' - ' + v.label, v.id)); sel.onchange = () => loadVersion(sel.value); }
-      const want = params.get('v'), id = list.find((v) => v.id === want) ? want : list[0].id;
-      if (DEV) $('versionSelect').value = id;
+      // Version dropdown for EVERYONE (all captures are playable); arena control stays dev-only
+      const sel = $('versionSelect'); $('devbar').style.display = 'flex'; for (const v of list) sel.add(new Option(v.date + ' - ' + v.label, v.id));
+      const arenaUi = () => { const vi = M.MenuVersionManager.current; $('arenaCtl').style.display = DEV && vi && vi.features && vi.features.arena ? 'inline' : 'none'; const aa = $('arenaAnimal'); aa.innerHTML = ''; for (const a of (vi && vi.animalDefs) || []) if (a.biome === 'land' && a.tier >= 5) aa.add(new Option(a.name + ' (T' + a.tier + ')', a.id)); }; window.__arenaUi = arenaUi;
+      sel.onchange = () => { try { localStorage.setItem('mope.version', sel.value); } catch (e) {} const u = new URL(location.href); u.searchParams.set('v', sel.value); history.replaceState(null, '', u); loadVersion(sel.value); };
+      let saved = null; try { saved = localStorage.getItem('mope.version'); } catch (e) {}
+      const want = params.get('v') || saved, id = list.find((v) => v.id === want) ? want : list[0].id;
+      sel.value = id;
       await loadVersion(id); menu.show(); requestAnimationFrame(frame);
     } catch (e) { setStatus('Failed to load: ' + e.message); console.error(e); }
   })();
