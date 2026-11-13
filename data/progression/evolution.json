@@ -1424,30 +1424,6 @@
     "basis": "same-biome next tier (inferred)"
   },
   {
-    "from": "elephant",
-    "to": "queenflame",
-    "releaseDate": "2021-06-12",
-    "removalDate": null,
-    "confidence": "inferred",
-    "basis": "copied from phoenix edges for queenflame (inferred)"
-  },
-  {
-    "from": "queenflame",
-    "to": "blackdragon",
-    "releaseDate": "2021-06-12",
-    "removalDate": null,
-    "confidence": "inferred",
-    "basis": "copied from phoenix edges for queenflame (inferred)"
-  },
-  {
-    "from": "trex",
-    "to": "queenflame",
-    "releaseDate": "2021-06-12",
-    "removalDate": null,
-    "confidence": "inferred",
-    "basis": "copied from phoenix edges for queenflame (inferred)"
-  },
-  {
     "from": "polarbear",
     "to": "snowgirl",
     "releaseDate": "2021-06-12",
@@ -1486,21 +1462,5 @@
     "removalDate": null,
     "confidence": "inferred",
     "basis": "copied from icemonster edges for santa (inferred)"
-  },
-  {
-    "from": "tullymonster",
-    "to": "pufferfish",
-    "releaseDate": "2021-06-12",
-    "removalDate": null,
-    "confidence": "inferred",
-    "basis": "copied from stingray edges for tullymonster (inferred)"
-  },
-  {
-    "from": "turtle",
-    "to": "tullymonster",
-    "releaseDate": "2021-06-12",
-    "removalDate": null,
-    "confidence": "inferred",
-    "basis": "copied from stingray edges for tullymonster (inferred)"
   }
 ]

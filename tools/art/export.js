@@ -61,6 +61,16 @@ for (let i = 0; i < args.length; i++) { if (args[i] === '--version') version = a
     const sk = await page.evaluate((items) => { const r = {}, src = document.createElement('canvas'); src.width = src.height = 256; for (const it of items) { const spec = window.MopeSkinSpecs[it.id]; window.MopeArt.drawAnimal(src.getContext('2d'), spec, 256); const dst = document.createElement('canvas'); dst.width = dst.height = 256; const d = dst.getContext('2d'); d.translate(128, 128); d.rotate(-Math.PI / 2); d.drawImage(src, -128, -128); r[it.id] = dst.toDataURL('image/png'); } return r; }, items);
     for (const it of items) { const dest = path.join(ROOT, it.sprite); fs.mkdirSync(path.dirname(dest), { recursive: true }); fs.writeFileSync(dest, Buffer.from(sk[it.id].split(',')[1], 'base64')); }
     console.log(`exported ${items.length} skins`); }
+  // wiki-sourced skins (names from the wiki; art generated here by skins.js)
+  { const fsk = path.join(ROOT, 'data/shop/skins-wiki.json');
+    if (fs.existsSync(fsk)) {
+      const items = JSON.parse(fs.readFileSync(fsk, 'utf8')).items.filter((i) => !only.length || only.includes(i.id) || only.includes(i.animal));
+      await page.addScriptTag({ content: fs.readFileSync(path.join(__dirname, 'skins.js'), 'utf8') });
+      const out = await page.evaluate((items) => { const r = {}, src = document.createElement('canvas'); src.width = src.height = 256; for (const it of items) { const spec = window.MopeSkinGen.make(window.MopeSpecs[it.animal], it.animal, it); window.MopeArt.drawAnimal(src.getContext('2d'), spec, 256); const dst = document.createElement('canvas'); dst.width = dst.height = 256; const d = dst.getContext('2d'); d.translate(128, 128); d.rotate(-Math.PI / 2); if (spec.ghost) d.globalAlpha = 0.72; d.drawImage(src, -128, -128); r[it.id] = dst.toDataURL('image/png'); } return r; }, items);
+      for (const it of items) { const dest = path.join(ROOT, it.sprite); fs.mkdirSync(path.dirname(dest), { recursive: true }); fs.writeFileSync(dest, Buffer.from(out[it.id].split(',')[1], 'base64')); }
+      console.log(`exported ${items.length} wiki skins`);
+      if (process.env.SKIN_SHEET) { const p2 = await b.newPage(); await p2.setContent('<body style="margin:0;background:#4fbf5a"><canvas id=s width=1280 height=' + (Math.ceil(items.length / 10) * 128) + '></canvas></body>'); await p2.evaluate(async ({ out, items }) => { const c = document.getElementById('s').getContext('2d'); let i = 0; for (const it of items) { await new Promise((res) => { const im = new Image(); im.onload = () => { c.drawImage(im, (i % 10) * 128, Math.floor(i / 10) * 128, 128, 128); c.fillStyle = '#fff'; c.font = '9px Arial'; c.fillText(it.name.slice(0, 20), (i % 10) * 128 + 2, Math.floor(i / 10) * 128 + 10); i++; res(); }; im.src = out[it.id]; }); } }, { out, items }); await (await p2.$('#s')).screenshot({ path: process.env.SKIN_SHEET }); }
+    } }
   // GUI: ability icons (64x64), muted-sound icon, terrain tiles (256x256)
   if (!only.length) {
     const abil = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/abilities/abilities.json'), 'utf8')).map((a) => a.id);

@@ -1,7 +1,7 @@
 {
   "id": "2021-06-12",
   "date": "2021-06-12",
-  "label": "June 12, 2021 - New React UI, Storefront, Queen Flame",
+  "label": "June 12, 2021 - New React UI, Storefront",
   "confidence": "mixed",
   "notes": "Evidenced by the archived 2021-06-12 homepage (React UI bundle: menu texts, settings, shop categories/filters, update notes May 22-June 9 2021, real CSS). No client.js exists for 2021: ids, abilities, numbers are inferred. Arquivo's 2022-2023 captures are Cloudflare challenge pages, so this is the last version with real evidence.",
   "menu": "data/menus/main-2021-06-12.json",

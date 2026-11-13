@@ -7,7 +7,7 @@
 ## 0.7.0 - Version 6: 2021-06-12 (React UI, Storefront)
 - Built from the real 2021 homepage bundle and CSS (2022-2023 captures are Cloudflare pages, so this is the last evidenced version): mint 2021 menu, STORE button, settings (SOUND, graphics LOW/MEDIUM/HIGH, No XP Popups, Snowfall), footer links, verbatim May-June 2021 update notes.
 - Storefront: Skins/Features/Deals + My ... categories, filters, purchase confirmation, FREE/NEW/SALE tags, Gold bundle (atomic bundle purchase on the server), Classic Theme feature, free skins; gold Blue Whale/Black Widow/Cassowary skins.
-- Animals: Queen Flame, Snowgirl, Santa, Tully Monster (existence verified, placement inferred). Total 86.
+- Animals: Snowgirl and Santa (existence verified, placement inferred). **Correction (found via the Mope.io Wiki):** Queen Flame and Tully Monster, first modelled as animals, are King Dragon / Seahorse *skins*; removed as animals.
 - Tests: server 143, client/data 60, integration 26.
 
 ## 0.6.1 - Style-tightening pass (all art)

@@ -20,7 +20,7 @@ Not available in the archive for 2017-02-13:
 
 ## 2021-06-12 additions
 - Captured and used: `shop/mopecoin.png` (as `assets/shop/mopecoin_2021.png`), UI CSS/bundle texts. Captured but NOT shipped (copyrighted art, study only): skins/mouse.png, aiboss gujjar/sultan.
-- Original recreations: Queen Flame, Snowgirl, Santa, Tully Monster, gold_bluewhale/blackwidow/cassowary skins. Unresolvable: halloween_doomedarius, skinsBundle_locked_release1, Sunset/Storm Cloud Lion skins (names only), shop tab images (coins/skins/deals.png), Lato fonts.
+- Original recreations: Snowgirl, Santa, gold_bluewhale/blackwidow/cassowary skins. Resolved later via the wiki: halloween_doomedarius = Camel Halloween 2020 skin 'Doomedarius' (camel not in this roster), skinsBundle_locked_release1 = Locked skins pack. Unresolvable: Sunset/Storm Cloud Lion skins (names only), shop tab images (coins/skins/deals.png), Lato fonts.
 - 2022-2023: nothing usable exists (Cloudflare challenge pages only).
 
 ## 2020-06-13 additions

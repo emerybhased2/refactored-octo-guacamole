@@ -267,12 +267,10 @@
       {
         "type": "animals_added",
         "names": [
-          "Queen Flame",
           "Snowgirl",
-          "Santa",
-          "Tully Monster"
+          "Santa"
         ],
-        "note": "named in the update notes; tiers/biomes inferred"
+        "note": "named in the update notes/wiki; tiers/biomes inferred. Queen Flame and Tully Monster are storefront SKINS (King Dragon / Seahorse), not animals."
       },
       {
         "type": "settings",

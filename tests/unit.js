@@ -259,7 +259,7 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
     const m19 = J(v19.menu); assert.strictEqual(m19.account, undefined); assert.strictEqual(MenuRenderer.elementsPresent(m19).account, false);
   });
   await t('shop catalog: 59 skins exist (verified) but only the named/inferred items exist; prices flagged inferred; art + coin icon present', () => {
-    assert.strictEqual(shopData.verifiedTotalSkins, 59); assert.strictEqual(shopData.items.length, 15); for (const id of ['azure_blackdragon', 'golden_blackdragon', 'golden_kingdragon', 'snowman', 'bigfoot', 'mouse_skin_1', 'mouse_skin_2', 'tigershark', 'hammerhead']) assert.ok(shopData.items.some((i) => i.id === id), id);
+    assert.strictEqual(shopData.verifiedTotalSkins, 59); assert.strictEqual(shopData.items.length, 14); for (const id of ['azure_blackdragon', 'golden_blackdragon', 'golden_kingdragon', 'snowman', 'bigfoot', 'mouse_skin_1', 'mouse_skin_2', 'tigershark', 'hammerhead']) assert.ok(shopData.items.some((i) => i.id === id), id);
     for (const it of shopData.items) { assert.ok(Number.isInteger(it.price) && it.price >= 0, it.id); assert.ok(/inferred|behaviour/.test(it.confidence), it.id); if (it.type === 'bundle' || it.type === 'feature') continue; assert.ok(all.some((a) => a.id === it.animal), it.id); if (it.type === 'skin') { const i = png(it.sprite); assert.deepStrictEqual([i.w, i.h, i.type], [256, 256, 6], it.id); assert.ok(it.family); } }
     const c = png(shopData.currency.icon); assert.deepStrictEqual([c.w, c.h], [64, 64]); assert.ok(/NOT implemented/.test(shopData.currency.earnNote)); assert.strictEqual(v4.economy.coinsPerXp, 0.01);
     assert.ok(shopData.items.find((i) => i.id === 'snowman').type === 'animal'); assert.ok(!J(v19.menu).panels.updates.sections.some((s) => /shop/i.test(JSON.stringify(s))));
@@ -321,10 +321,10 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
 
   // ---- 2021-06-12
   const v6 = J('versions/2021/june-12/version.json');
-  await t('2021-06-12: version, 4 evidenced animals (inferred placement), art, edges, reachable', () => {
+  await t('2021-06-12: version, 2 evidenced animals (Queen Flame/Tully Monster are skins, not animals) (inferred placement), art, edges, reachable', () => {
     assert.strictEqual(v6.date, '2021-06-12'); const A = J('data/progression/animals.json'), by = Object.fromEntries(A.map((a) => [a.id, a]));
-    for (const id of ['queenflame', 'snowgirl', 'santa', 'tullymonster']) { assert.ok(by[id], id); assert.strictEqual(by[id].releaseDate, '2021-06-12'); assert.ok(/verified/.test(by[id].confidence.existence)); assert.ok(/inferred/.test(by[id].confidence.tier)); assert.ok(fs.existsSync(path.join(ROOT, by[id].sprite)), id); }
-    const E = J('data/progression/evolution.json').filter((e) => e.releaseDate === '2021-06-12'); for (const id of ['queenflame', 'snowgirl', 'santa', 'tullymonster']) assert.ok(E.some((e) => e.to === id), id + ' reachable');
+    for (const id of ['snowgirl', 'santa']) { assert.ok(by[id], id); assert.strictEqual(by[id].releaseDate, '2021-06-12'); assert.ok(/verified/.test(by[id].confidence.existence)); assert.ok(/inferred/.test(by[id].confidence.tier)); assert.ok(fs.existsSync(path.join(ROOT, by[id].sprite)), id); }
+    const E = J('data/progression/evolution.json').filter((e) => e.releaseDate === '2021-06-12'); for (const id of ['snowgirl', 'santa']) assert.ok(E.some((e) => e.to === id), id + ' reachable');
   });
   await t('2021-06-12: menu config is the verified React UI (mint panel, 266x92 Play, STORE, settings texts, verbatim updates)', () => {
     const m = J(v6.menu); assert.strictEqual(m.theme, '2021'); assert.deepStrictEqual([m.play.w, m.play.h, m.play.background], [266, 92, '#0faa29']); assert.strictEqual(m.menuPanel.border, '4px solid #8af5af'); assert.strictEqual(m.store.label, 'STORE');

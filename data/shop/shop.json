@@ -182,15 +182,6 @@
       "price": 0,
       "releaseDate": "2021-06-12",
       "confidence": "EXISTENCE verified (2021-05-22 note: 'Legacy Pack... Equip Classic Theme'); behaviour inferred: swaps your animal art to the project's 2017 set where it exists"
-    },
-    {
-      "id": "queenflame",
-      "type": "animal",
-      "animal": "queenflame",
-      "name": "Queen Flame",
-      "price": 6000,
-      "releaseDate": "2021-06-12",
-      "confidence": "existence verified; shop availability/price inferred"
     }
   ],
   "featured2021": {
@@ -204,6 +195,6 @@
       "skinsBundle_locked_release1",
       "skinsBundle_gold_release1"
     ],
-    "note": "VERIFIED ids from the 2021-06-12 bundle. halloween_doomedarius and skinsBundle_locked_release1 are not resolvable (no names/contents captured): listed in docs/MISSING_ASSETS.md, not implemented."
+    "note": "VERIFIED ids from the 2021-06-12 bundle. Resolved via the Mope.io Wiki: halloween_doomedarius = 'Doomedarius', a Camel Halloween 2020 skin (Camel is not in the 2021 roster here); skinsBundle_locked_release1 = the Locked skins pack."
   }
 }
