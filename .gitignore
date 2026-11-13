@@ -38,3 +38,4 @@ server/build/
 server/.gradle/
 database/*.db
 database/*.db-journal
+archive/
