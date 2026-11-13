@@ -1,0 +1,8 @@
+{
+  "version": "2017-04-07", "confidence": "low",
+  "xpBar": { "w": 320, "h": 20, "marginBottom": 24, "fill": "#f2c94c", "back": "rgba(0,0,0,0.45)" },
+  "healthBar": { "w": 320, "h": 10, "marginBottom": 50, "fill": "#e24b4b", "back": "rgba(0,0,0,0.45)" },
+  "waterBar": null,
+  "leaderboard": { "max": 10, "width": 190, "marginTop": 12, "marginRight": 12, "title": "Leaderboard" },
+  "playerName": true, "chat": null
+}

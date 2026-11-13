@@ -1,0 +1,20 @@
+[
+  { "id": "mouse", "name": "Mouse", "aliases": [], "tier": 1, "biome": "land", "xpRequired": 0, "health": 100, "speed": 1.0, "size": 1.0, "damage": 10, "ability": null,
+    "sprite": "assets/animals/2017-04-07/mouse.png", "spriteStatus": "placeholder", "placeholderColor": "#a89f91",
+    "description": "A tiny mouse. Eat berries to grow.", "releaseDate": "2017-04-07", "removalDate": null, "classification": ["starter"], "confidence": "medium" },
+  { "id": "rabbit", "name": "Rabbit", "aliases": [], "tier": 2, "biome": "land", "xpRequired": 60, "health": 100, "speed": 1.05, "size": 1.3, "damage": 10, "ability": null,
+    "sprite": "assets/animals/2017-04-07/rabbit.png", "spriteStatus": "placeholder", "placeholderColor": "#d9c7b0",
+    "description": "Quick herbivore.", "releaseDate": "2017-04-07", "removalDate": null, "classification": [], "confidence": "low" },
+  { "id": "deer", "name": "Deer", "aliases": [], "tier": 3, "biome": "land", "xpRequired": 250, "health": 100, "speed": 1.15, "size": 1.7, "damage": 10, "ability": null,
+    "sprite": "assets/animals/2017-04-07/deer.png", "spriteStatus": "placeholder", "placeholderColor": "#b8864b",
+    "description": "Swift grazer.", "releaseDate": "2017-04-07", "removalDate": null, "classification": [], "confidence": "low" },
+  { "id": "fox", "name": "Fox", "aliases": [], "tier": 3, "biome": "land", "xpRequired": 250, "health": 100, "speed": 1.15, "size": 1.7, "damage": 10, "ability": null,
+    "sprite": "assets/animals/2017-04-07/fox.png", "spriteStatus": "placeholder", "placeholderColor": "#e0742c",
+    "description": "Cunning hunter.", "releaseDate": "2017-04-07", "removalDate": null, "classification": [], "confidence": "low" },
+  { "id": "wolf", "name": "Wolf", "aliases": [], "tier": 4, "biome": "land", "xpRequired": 800, "health": 100, "speed": 1.2, "size": 2.2, "damage": 10, "ability": null,
+    "sprite": "assets/animals/2017-04-07/wolf.png", "spriteStatus": "placeholder", "placeholderColor": "#7d8590",
+    "description": "Pack predator.", "releaseDate": "2017-04-07", "removalDate": null, "classification": [], "confidence": "low" },
+  { "id": "bear", "name": "Bear", "aliases": [], "tier": 5, "biome": "land", "xpRequired": 2000, "health": 100, "speed": 1.1, "size": 3.0, "damage": 10, "ability": null,
+    "sprite": "assets/animals/2017-04-07/bear.png", "spriteStatus": "placeholder", "placeholderColor": "#6b4a2f",
+    "description": "Top of the baseline food chain.", "releaseDate": "2017-04-07", "removalDate": null, "classification": [], "confidence": "low" }
+]

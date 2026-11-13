@@ -1,0 +1,4 @@
+{
+  "_note": "Historical stat changes: id -> [{from, health?, speed?, size?, damage?}]. Latest 'from' <= version date wins. Empty until researched.",
+  "changes": {}
+}

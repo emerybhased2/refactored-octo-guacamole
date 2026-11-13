@@ -1,0 +1,8 @@
+[
+  { "from": "mouse",  "to": "rabbit", "releaseDate": "2017-04-07", "removalDate": null, "confidence": "low" },
+  { "from": "rabbit", "to": "deer",   "releaseDate": "2017-04-07", "removalDate": null, "confidence": "low" },
+  { "from": "rabbit", "to": "fox",    "releaseDate": "2017-04-07", "removalDate": null, "confidence": "low" },
+  { "from": "deer",   "to": "wolf",   "releaseDate": "2017-04-07", "removalDate": null, "confidence": "low" },
+  { "from": "fox",    "to": "wolf",   "releaseDate": "2017-04-07", "removalDate": null, "confidence": "low" },
+  { "from": "wolf",   "to": "bear",   "releaseDate": "2017-04-07", "removalDate": null, "confidence": "low" }
+]

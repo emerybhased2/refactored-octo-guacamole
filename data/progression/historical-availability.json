@@ -1,0 +1,6 @@
+{
+  "_note": "Expected roster per version, cross-checked by tools/validate. Availability itself is derived from release/removal dates.",
+  "versions": {
+    "2017-04-07": { "animals": ["mouse", "rabbit", "deer", "fox", "wolf", "bear"], "confidence": "low" }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "_note": "Maps assets to historical versions. status: original (archived, provenance recorded) | placeholder (generated at runtime by client/sprites.js, no file on disk).",
+  "versions": {
+    "2017-04-07": {
+      "animals": {
+        "mouse": { "path": "assets/animals/2017-04-07/mouse.png", "status": "placeholder", "provenance": null },
+        "rabbit": { "path": "assets/animals/2017-04-07/rabbit.png", "status": "placeholder", "provenance": null },
+        "deer": { "path": "assets/animals/2017-04-07/deer.png", "status": "placeholder", "provenance": null },
+        "fox": { "path": "assets/animals/2017-04-07/fox.png", "status": "placeholder", "provenance": null },
+        "wolf": { "path": "assets/animals/2017-04-07/wolf.png", "status": "placeholder", "provenance": null },
+        "bear": { "path": "assets/animals/2017-04-07/bear.png", "status": "placeholder", "provenance": null }
+      },
+      "food": { "berry": { "status": "placeholder" }, "carrot": { "status": "placeholder" } },
+      "menus": { "logo": { "status": "placeholder", "note": "Text logo drawn with canvas; original logo graphic not obtained." } }
+    }
+  }
+}

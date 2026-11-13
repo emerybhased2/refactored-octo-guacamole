@@ -29,3 +29,12 @@ game28.dta
 
 # Log files
 warnings.log
+
+# Mope project
+.run/
+node_modules/
+server/target/
+server/build/
+server/.gradle/
+database/*.db
+database/*.db-journal

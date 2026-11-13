@@ -1,0 +1,9 @@
+[
+  { "version": "0.1", "date": "2017-04-07", "confidence": "low",
+    "changes": [
+      { "type": "game_launch", "name": "Mope.io launch baseline (reconstruction)" },
+      { "type": "biome_added", "name": "Land" },
+      { "type": "animal_added", "name": "Mouse" }, { "type": "animal_added", "name": "Rabbit" }, { "type": "animal_added", "name": "Deer" },
+      { "type": "animal_added", "name": "Fox" }, { "type": "animal_added", "name": "Wolf" }, { "type": "animal_added", "name": "Bear" }
+    ] }
+]
