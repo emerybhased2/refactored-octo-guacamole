@@ -9,6 +9,9 @@ public final class World {
     public static final int EATEN = 1, THIRST = 4; // reason codes (match the archived client's death codes)
     public final VersionManager.Config cfg;
     public final boolean sandbox, arena;
+    /** Game mode of this world (normal, classic, zombie, royale, team, wild, pandemic) and its state; redemption = 1v1 vs AI bosses. */
+    public final String mode; public final Modes.State ms;
+    public boolean redemption, redPro; public int redLevel = 1;
     public final double size;
     public final Random rnd;
     public final EvolutionEngine evolution;
@@ -28,6 +31,8 @@ public final class World {
     public static final int ARENA_WAIT_SECONDS = 4;
     public long tick;
     public Consumer<Player> onDeath = p -> {};
+    /** Pays out p.bonusCoins (mode rewards: royale win, team perks/apocalypse, Redemption) and zeroes it. */
+    public Consumer<Player> onReward = p -> {};
     private final Queue<Runnable> inbox = new ConcurrentLinkedQueue<>();
     private final ArrayList<Entity> tmp = new ArrayList<>();
     private final List<Animal> sandboxOrder = new ArrayList<>();
@@ -40,8 +45,10 @@ public final class World {
     public World(VersionManager.Config cfg, long seed, boolean sandbox) { this(cfg, seed, sandbox, false); }
 
     /** arena = small 1v1 world (INFERRED rules: health-based contact combat, no healing, bot opponent after a short wait). */
-    public World(VersionManager.Config cfg, long seed, boolean sandbox, boolean arena) {
-        this.cfg = cfg; this.size = cfg.worldSize; this.rnd = new Random(seed); this.sandbox = sandbox; this.arena = arena;
+    public World(VersionManager.Config cfg, long seed, boolean sandbox, boolean arena) { this(cfg, seed, sandbox, arena, "normal"); }
+
+    public World(VersionManager.Config cfg, long seed, boolean sandbox, boolean arena, String mode) {
+        this.mode = mode; this.cfg = cfg; this.size = cfg.worldSize; this.rnd = new Random(seed); this.sandbox = sandbox; this.arena = arena;
         evolution = new EvolutionEngine(cfg.animals, cfg.edges, cfg.startAnimal);
         abilities = new AbilityEngine(cfg.abilities, cfg.date);
         biomes = new BiomeEngine(cfg.biomes, size);
@@ -76,8 +83,9 @@ public final class World {
         List<String> bo = cfg.biomeIds;
         sandboxOrder.sort(Comparator.comparingInt((Animal a) -> a.tier).thenComparingInt(a -> bo.indexOf(a.biome)).thenComparingInt(a -> a.internalId));
         disasters = new Disasters(this);
+        ms = Modes.WORLD_MODES.contains(mode) && !mode.equals("normal") && !mode.equals("classic") && !arena && !sandbox ? Modes.create(this, mode) : null;
         if (!arena && !sandbox) disasters.addPermanentHazards(); // e.g. the poison lake ringed by hills (2020)
-        if (!sandbox && !arena) for (int i = 0; i < cfg.bots; i++) join("Bot" + (i + 1), null, true);
+        if (!sandbox && !arena) for (int i = 0; i < (mode.equals("royale") ? Math.max(cfg.bots, 30) : cfg.bots); i++) join("Bot" + (i + 1), null, true); // battle royale needs >= 25 players (wiki)
     }
 
     /** Food is worth more to bigger animals so the 18-tier XP curve stays reachable. INFERRED balance rule (1.35^(tier-1)). */
@@ -101,7 +109,7 @@ public final class World {
         teleportToBiome(p, p.animal.biome);
         p.protectedUntilTick = tick + 2L * cfg.tickRate;
         rollVariant(p);
-        players.put(p.id, p);
+        players.put(p.id, p); Modes.onJoin(this, p);
         return p;
     }
     /** Arena join: fixed animal, left/right spawn, full health. */
@@ -144,7 +152,7 @@ public final class World {
     /** Server-side evolution. The client only ever requests; XP and edges are validated here. */
     public boolean evolve(Player p, String targetId) {
         if (p.dead || sandbox || !evolution.canEvolve(p.animal, targetId, p.xp, p::canHaveRare)) return false;
-        String prev = p.animal.id; setAnimalAndMove(p, cfg.animals.get(targetId)); carrySkin(p, prev); rollVariant(p); p.climbing = false;
+        String prev = p.animal.id; setAnimalAndMove(p, cfg.animals.get(targetId)); carrySkin(p, prev); rollVariant(p); p.climbing = false; Modes.onEvolve(this, p);
         return true;
     }
     /** A skin family (e.g. golden) carries over to the next animal if the player owns a matching skin for it (archived note: 'Golden KD upgrade if evolving from BD'). */
@@ -163,6 +171,14 @@ public final class World {
     public boolean toggleClimb(Player p) {
         if (!cfg.feature("climbing") || p.dead || !cfg.climbers.contains(p.animal.id)) return false;
         p.climbing = !p.climbing; return true;
+    }
+    /** Ability key: activates the ability, then lets the game mode adjust cooldown/duration (Wild Mope, team perks). */
+    public boolean useAbility(Player p) {
+        long now = nowMs(); if (!abilities.activate(p, now, null)) return false;
+        double cm = Modes.cooldownMul(this, p), dm = Modes.durationMul(this);
+        if (cm != 1) p.abilityReadyAt = now + (long) ((p.abilityReadyAt - now) * cm);
+        if (dm != 1) p.abilityActiveUntil = now + (long) ((p.abilityActiveUntil - now) * dm);
+        return true;
     }
     /** Dev/test hook: start a disaster now. */
     public boolean triggerDisaster(String id) { return disasters.trigger(id) != null; }
@@ -196,12 +212,12 @@ public final class World {
         disasters.tick(dt, dying); // always: cheap when idle, and it resets per-player multipliers once a disaster ends
 
         for (Player p : players.values()) {
-            if (p.bot) Bot.think(this, p);
+            if (p.bot) { if (arena) arenaBotThink(p); else Bot.think(this, p); }
             double mag = Math.max(0, Math.min(1, p.inputMag));
             boolean running = p.boost && p.water > 5 && mag > 0.05;
             if (mag > 0.05) {
                 p.angle = p.inputAngle;
-                double sp = 220 * p.animal.speed * mag * abilities.speedMultiplier(p, (long) now) * (running ? 1.5 : 1) * p.disasterSpeed;
+                double sp = 220 * p.animal.speed * mag * abilities.speedMultiplier(p, (long) now) * (running ? 1.5 : 1) * p.disasterSpeed * Modes.speedMul(this, p);
                 double nx = p.x + Math.cos(p.angle) * sp * dt, ny = p.y + Math.sin(p.angle) * sp * dt;
                 nx = Math.max(p.radius, Math.min(size - p.radius, nx)); ny = Math.max(p.radius, Math.min(size - p.radius, ny));
                 if (biomes.canEnter(p.animal, nx, ny)) { p.x = nx; p.y = ny; }
@@ -226,23 +242,36 @@ public final class World {
             tree.query(p.x, p.y, p.radius + 40, tmp);
             for (Entity e : tmp) {
                 if (e instanceof Food f) {
-                    if (!f.removed && Collision.overlap(p, f)) { foods.consumed(f); p.xp += f.def.xp * foodXpScale(p.animal.tier); p.health = Math.min(p.maxHealth(), p.health + f.def.health); }
-                } else if (e instanceof Player o && Collision.canEat(p, o)) {
-                    p.xp += 20 * o.animal.tier + o.xp * 0.25; p.kills++;
+                    if (!f.removed && Collision.overlap(p, f)) { foods.consumed(f); p.xp += f.def.xp * foodXpScale(p.animal.tier) * Modes.foodXpMul(this, p); p.health = Math.min(p.maxHealth(), p.health + f.def.health); }
+                } else if (e instanceof Player o && Modes.canEat(this, p, o)) {
+                    p.xp += (20 * o.animal.tier + o.xp * 0.25) * Modes.killXpMul(this, p, o); p.kills++;
                     die(o, p.name, EATEN, dying);
                 }
             }
         }
-        for (Player o : dying) { players.remove(o.id); onDeath.accept(o); if (o.bot && !arena) { Player nb = join(o.name, null, true); nb.kills = 0; } }
+        if (!arena) Modes.tick(this, dt, dying);
+        for (Player o : dying) { players.remove(o.id); onDeath.accept(o); if (o.bot && !arena && !(ms != null && mode.equals("royale"))) { Player nb = join(o.name, null, true); nb.kills = 0; } }
         foods.tick(now);
 
         if (tick % Math.max(1, cfg.tickRate / cfg.netRate) == 0) broadcast();
     }
 
+    /** Arena/boss AI: chase the other fighter (equal tiers never hunt in the normal bot brain). */
+    private void arenaBotThink(Player b) {
+        for (Player o : players.values()) if (o != b && !o.dead) { b.inputAngle = Math.atan2(o.y - b.y, o.x - b.x); b.inputMag = arenaState.equals("fight") ? 1 : 0; return; }
+        b.inputMag = 0;
+    }
+    /** 1v1 Redemption: spawn the boss of the current level (a tier 15-16 animal, tougher each level; pro mode is tougher still). */
+    private void spawnBoss(Player human) {
+        List<Animal> pool = new ArrayList<>(); for (Animal a : cfg.animals.values()) if (a.tier >= 15 && a.tier <= 16 && !a.id.equals(human.animal.id)) pool.add(a);
+        if (pool.isEmpty()) pool.add(human.animal); Animal a = pool.get(rnd.nextInt(pool.size()));
+        Player b = joinArena("Boss " + redLevel, null, true, a.id); b.boss = true; b.protectedUntilTick = tick + 2L * cfg.tickRate; b.healthMul = (redPro ? 1.5 : 1.0) + 0.2 * (redLevel - 1); b.health = b.maxHealth();
+    }
     /** Arena rules (INFERRED): contact damage both ways each tick, scaled by relative size; no healing; last one standing wins. */
     private void arenaTick(double dt, List<Player> dying) {
         List<Player> alive = new ArrayList<>(); for (Player p : players.values()) if (!p.dead) alive.add(p);
         if (arenaState.equals("waiting")) {
+            if (redemption) { if (alive.size() == 1 && tick - arenaStartTick >= 2L * cfg.tickRate) { spawnBoss(alive.get(0)); arenaState = "fight"; } return; }
             if (alive.size() >= 2) arenaState = "fight";
             else if (!arenaBot && alive.size() == 1 && tick - arenaStartTick >= (long) ARENA_WAIT_SECONDS * cfg.tickRate) { // nobody joined: a bot of the same animal fills in
                 arenaBot = true; Player b = joinArena("Opponent", null, true, alive.get(0).animal.id); b.protectedUntilTick = 0;
@@ -259,6 +288,12 @@ public final class World {
             : a.health <= 0 ? a : b.health <= 0 ? b : null;
         if (loser != null) {
             Player winner = loser == a ? b : a;
+            if (redemption && loser.boss) { // defeated a boss: next level, or the final reward after level 10
+                die(loser, winner.name, EATEN, dying); winner.kills++;
+                if (redLevel >= 10) { winner.bonusCoins += redPro ? 750 : 400; onReward.accept(winner); arenaState = "over"; if (!winner.bot && winner.sender != null) winner.sender.send("{\"t\":\"won\",\"by\":\"all 10 bosses\",\"reward\":" + (redPro ? 750 : 400) + "}"); }
+                else { redLevel++; winner.health = Math.min(winner.maxHealth(), winner.health + 0.5 * (winner.maxHealth() - winner.health)); winner.protectedUntilTick = tick + 2L * cfg.tickRate; spawnBoss(winner); }
+                return;
+            }
             die(loser, winner.name, EATEN, dying); arenaState = "over"; winner.kills++;
             if (!winner.bot && winner.sender != null) winner.sender.send("{\"t\":\"won\",\"by\":" + Data.GSON.toJson(loser.name) + "}");
         }
@@ -303,7 +338,7 @@ public final class World {
             if (!first) s.append(','); first = false;
             s.append('[').append(o.id).append(',').append(r1(o.x)).append(',').append(r1(o.y)).append(',')
              .append(cfg.animalOrder.indexOf(o.animal.id)).append(',').append(r2(o.angle)).append(',').append((int) (100 * o.health / o.maxHealth())).append(',')
-             .append(Data.GSON.toJson(o.name)); if (o.skinId() != null || o.climbing) { s.append(',').append(o.skinId() == null ? "null" : Data.GSON.toJson(o.skinId())); if (o.climbing) s.append(",1"); } s.append(']');
+             .append(Data.GSON.toJson(o.name)); int fl = Modes.flags(o); if (o.skinId() != null || o.climbing || fl != 0) { s.append(',').append(o.skinId() == null ? "null" : Data.GSON.toJson(o.skinId())); if (o.climbing || fl != 0) s.append(o.climbing ? ",1" : ",0"); if (fl != 0) s.append(',').append(fl); } s.append(']');
         }
         s.append("],\"f\":[");
         first = true;
@@ -311,7 +346,7 @@ public final class World {
             if (!first) s.append(','); first = false;
             s.append('[').append(f.id).append(',').append(r1(f.x)).append(',').append(r1(f.y)).append(',').append(f.typeIndex).append(']');
         }
-        s.append("],\"lb\":").append(lbJson).append(disasters.snapshotNear(me.x, me.y, tick, cfg.tickRate)).append('}');
+        s.append("],\"lb\":").append(lbJson).append(disasters.snapshotNear(me.x, me.y, tick, cfg.tickRate)).append(Modes.extraJson(this, me)).append(redemption ? ",\"red\":{\"lv\":" + redLevel + ",\"pro\":" + (redPro ? 1 : 0) + "}" : "").append('}');
         return s.toString();
     }
     private static String r1(double v) { return Double.toString(Math.round(v * 10) / 10.0); }

@@ -293,8 +293,61 @@ public final class SelfTest {
             am.recordGame("alice", 500, 3); am.recordGame("alice", 200, 1);
             eq("stats best_xp", am.stats("alice")[0], 500L); eq("stats kills", am.stats("alice")[1], 4L);
         }
+        modeTests(vm);
         System.out.printf("SelfTest: %d passed, %d failed%n", passed, failed);
         System.exit(failed == 0 ? 0 : 1);
+    }
+
+    static void modeTests(VersionManager vm) throws Exception {
+        VersionManager.Config v6 = vm.get("2021-06-12");
+        // ---- Classic Mode: Land + Ocean, 14 tiers, wiki tier table
+        VersionManager.Config cl = Modes.classicConfig(vm.get("2017-02-13"));
+        eq("classic: 23 animals (14 land + 9 ocean)", cl.animals.size(), 23); eq("classic: land+ocean only", cl.biomeIds, List.of("land", "ocean")); eq("classic: 14 tiers", cl.tiers.size(), 14);
+        check("classic: wiki tier table (Mouse 1, Fox 4, Hippo 13, Dragon 14, Shark 12)", cl.animals.get("mouse").tier == 1 && cl.animals.get("fox").tier == 4 && cl.animals.get("hippo").tier == 13 && cl.animals.get("dragon").tier == 14 && cl.animals.get("shark").tier == 12);
+        Set<String> rc = new HashSet<>(cl.starters); boolean gc = true; while (gc) { gc = false; for (Defs.Edge e : cl.edges) if (rc.contains(e.from) && rc.add(e.to)) gc = true; }
+        check("classic: every animal reachable from the starters", rc.containsAll(cl.animals.keySet()));
+        // ---- Wild Mope
+        World ww = new World(quiet(v6), 71, false, false, "wild"); Player wp = human(ww, "Wd", null);
+        check("wild: speed x1.10, cooldown x0.8, duration x1.3", Modes.speedMul(ww, wp) == 1.10 && Modes.cooldownMul(ww, wp) == 0.8 && Modes.durationMul(ww) == 1.3);
+        // ---- Team Mode
+        World tw = new World(quiet(v6), 72, false, false, "team"); Player ta = human(tw, "A", null), tb = human(tw, "B", null), tc = human(tw, "C", null);
+        check("team: three players land on three different teams", Set.of(ta.team, tb.team, tc.team).size() == 3);
+        Player tx = human(tw, "X", null); tx.team = ta.team; ta.setAnimal(v6.animals.get("lion")); tx.setAnimal(v6.animals.get("mouse")); place(ta, 3000, 3000); place(tx, 3000, 3000);
+        check("team: teammates cannot eat each other, enemies can", !Modes.canEat(tw, ta, tx) && (tx.team = ta.team % 3 + 1) > 0 && Modes.canEat(tw, ta, tx));
+        Modes.Stone st = tw.ms.stones.get(0); ta.team = 1; place(ta, st.x, st.y); ta.setAnimal(v6.animals.get("mouse"));
+        for (int i = 0; i < 400 && st.owner != 1; i++) tw.tick();
+        check("team: standing on a neutral stone captures it for your team", st.owner == 1);
+        Player en = human(tw, "En", null); en.team = 2; place(en, st.x, st.y); place(ta, 100, 100); for (int i = 0; i < 1500 && st.owner != 2; i++) { tw.tick(); place(en, st.x, st.y); }
+        check("team: an enemy captured stone is first neutralised, then taken", st.owner == 2);
+        for (Modes.Stone s2 : tw.ms.stones) { s2.owner = 3; s2.hp = 100; } List<Player> dy = new ArrayList<>(); tw.tick();
+        check("team: 10+ stones start the meteor apocalypse", tw.ms.apocalypseUntil > 0); for (int i = 0; i < 40; i++) tw.tick(); check("team: meteors fall during the apocalypse", !tw.ms.meteors.isEmpty());
+        // ---- Zombie Infection
+        World zw = new World(quiet(v6), 73, false, false, "zombie"); Player z = human(zw, "Z", null), h = human(zw, "H", null);
+        z.zombie = true; z.infection = 100; z.setAnimal(v6.animals.get("mouse")); h.setAnimal(v6.animals.get("mouse")); place(z, 3000, 3000); place(h, 3000, 3000);
+        for (int i = 0; i < 90; i++) { zw.tick(); place(z, 3000, 3000); place(h, 3000, 3000); }
+        check("zombie: touching a zombie raises infection", h.infection > 5 || h.zombie);
+        h.infection = 50; h.zombie = false; Modes.onEvolve(zw, h); check("zombie: evolving cures infection and zombification", h.infection == 0 && !h.zombie);
+        Player big = human(zw, "Big", null); big.setAnimal(v6.animals.get("mouse")); Player zl = human(zw, "Zl", null); zl.zombie = true; zl.setAnimal(v6.animals.get("lion")); big.setAnimal(v6.animals.get("elephant")); place(big, 3500, 3500); place(zl, 3500, 3500);
+        check("zombie: zombies never eat each other; a higher tier animal still eats a zombie", !Modes.canEat(zw, zl, z) && Modes.canEat(zw, big, zl));
+        // ---- Viral Pandemic
+        World pw = new World(quiet(v6), 74, false, false, "pandemic"); Player pp = human(pw, "P", null); pp.setAnimal(v6.animals.get("mouse")); pp.immunity = 100;
+        Modes.Virus vir = pw.ms.viruses.get(0); vir.vx = 0; vir.vy = 0; place(pp, vir.x, vir.y); double im0 = pp.immunity; pw.tick(); place(pp, vir.x, vir.y); for (int i = 0; i < 60; i++) { for (Modes.Virus q : pw.ms.viruses) { q.vx = 0; q.vy = 0; } pw.tick(); place(pp, vir.x, vir.y); }
+        check("pandemic: virus exposure drains immunity", pp.immunity < im0 - 5);
+        pp.immunity = 100; pp.maskUntilTick = pw.tick + 1000; for (int i = 0; i < 60; i++) { pw.tick(); place(pp, vir.x, vir.y); } check("pandemic: a mask blocks it", pp.immunity == 100);
+        // ---- Battle Royale
+        World rw = new World(quiet(v6), 75, false, false, "royale"); Player ra = human(rw, "Ra", null), rb = human(rw, "Rb", null);
+        check("royale: the zone shrinks over time", rw.ms.r > 0); double r0 = rw.ms.r; for (int i = 0; i < 60 * 30; i++) { rw.tick(); if (rw.players.isEmpty()) break; } check("royale: the safe zone has shrunk after the first phase", rw.ms.r < r0);
+        Player rc2 = human(rw, "Out", null); rc2.x = rw.ms.cx + rw.ms.r + 500; rc2.y = rw.ms.cy; rc2.protectedUntilTick = 0; double hp0 = rc2.health; rw.tick(); check("royale: standing outside the zone costs health", rc2.health < hp0 || rc2.dead);
+        // ---- 1v1 Redemption
+        World dw = new World(NetworkManager.arenaConfig(v6), 76, false, true); dw.redemption = true; dw.arenaBot = true; Player dp = dw.joinArena("Me", null, false, "dragon");
+        for (int i = 0; i < 200; i++) dw.tick(); check("redemption: a level-1 boss appears and the fight starts", dw.arenaState.equals("fight") && dw.players.values().stream().anyMatch(q -> q.boss) && dw.redLevel == 1);
+        Player boss = dw.players.values().stream().filter(q -> q.boss).findFirst().get(); double bossMax = boss.maxHealth(); boss.health = 0.01; dp.protectedUntilTick = 0; boss.protectedUntilTick = 0; place(dp, boss.x, boss.y); dp.protectedUntilTick = 0; for (int i = 0; i < 40; i++) { dw.tick(); if (dw.redLevel > 1) break; place(dp, boss.x, boss.y); }
+        check("redemption: defeating a boss advances the level with a tougher boss", dw.redLevel == 2 && dw.players.values().stream().anyMatch(q -> q.boss && q.maxHealth() > bossMax));
+        // ---- Redemption credits
+        try (AccountManager am = new AccountManager("jdbc:sqlite::memory:")) { am.register("cred", "hunter22"); am.addCoins("cred", 1000);
+            check("credits: buying a pack adds credits and spends coins", am.buyCredits("cred", 500, 5) && am.credits("cred") == 5 && am.coins("cred") == 500);
+            check("credits: cannot buy without coins", !am.buyCredits("cred", 900, 10) && am.credits("cred") == 5);
+            boolean ok = true; for (int i = 0; i < 5; i++) ok &= am.useCredit("cred"); check("credits: each round uses one credit; none left -> refused", ok && !am.useCredit("cred") && am.credits("cred") == 0); }
     }
 
     /** Resolving a version dated before any animal's release must yield no animals (no anachronisms). */

@@ -52,6 +52,7 @@
     const gfx = $('options_graphicsButs'); gfx.style.display = cfg.graphics ? '' : 'none'; if (cfg.graphics) { $('graphics_title').textContent = cfg.graphics.title; $('graphicsBut_mid').textContent = cfg.graphics.lowLabel; $('graphicsBut_hd').textContent = cfg.graphics.hdLabel; }
     const hs = doc.querySelectorAll('#optionsDiv > h3'); if (hs.length >= 2) { hs[0].textContent = (cfg.options && cfg.options.settingsTitle) || 'Region/Server:'; hs[1].textContent = (cfg.options && cfg.options.optionsLabel) || 'Options:'; }
     doc.body.classList.toggle('t2021', cfg.theme === '2021');
+    const wb = $('wardrobeButton'); wb.style.display = has.account ? 'block' : 'none'; // versions with accounts + shop
     const sb = $('storeButton'); sb.style.display = cfg.store ? 'block' : 'none'; if (cfg.store) sb.textContent = cfg.store.label;
     const fl = $('footerLinks'); fl.style.display = cfg.footerLinks ? 'flex' : 'none'; fl.innerHTML = ''; for (const l of cfg.footerLinks || []) { const sp = doc.createElement('span'); sp.textContent = l.label; sp.dataset.action = l.action; fl.appendChild(sp); }
     const gl = $('graphicsBut_low'); gl.style.display = cfg.graphics && cfg.graphics.levels ? '' : 'none'; if (cfg.graphics && cfg.graphics.levels) { gl.textContent = cfg.graphics.levels[0]; $('graphicsBut_mid').textContent = cfg.graphics.levels[1]; $('graphicsBut_hd').textContent = cfg.graphics.levels[2]; }

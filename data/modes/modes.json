@@ -1,0 +1,113 @@
+{
+  "source": "Mope.io Wiki 'Game Modes' and the individual mode pages (CC BY-SA, facts only); dates verified, rules summarised",
+  "note": "Original dates are shown in the menu; every implemented mode is playable in every version as a bonus (a version's own era is noted).",
+  "modes": [
+    {
+      "id": "normal",
+      "name": "Free For All",
+      "released": "2016-10-02",
+      "removed": null,
+      "implemented": true,
+      "confidence": "verified (the main game)",
+      "description": "The standard game: eat, grow, evolve."
+    },
+    {
+      "id": "sandbox",
+      "name": "Sandbox",
+      "released": "2017-02-04",
+      "removed": "2017-02-18",
+      "implemented": true,
+      "confidence": "wiki-verified dates; rules from the archived 2017 client",
+      "description": "Upgrade/downgrade with the arrow keys; all animals can damage each other.",
+      "onlyIn": [
+        "2017-02-13"
+      ]
+    },
+    {
+      "id": "arena",
+      "name": "1v1 Arena",
+      "released": "2019-06-18",
+      "removed": null,
+      "implemented": true,
+      "confidence": "wiki: sub-mode for tier 15+ animals; rules inferred",
+      "description": "Duel in an enclosed arena (no healing). A bot fills in if nobody joins."
+    },
+    {
+      "id": "redemption",
+      "name": "1v1 Redemption",
+      "released": "2021-02-16",
+      "removed": "2026-06-20",
+      "implemented": true,
+      "confidence": "wiki: tier 15-16, 10 AI bosses, 1 credit per round, Noob 400 / Pro 750 coins; boss stats inferred",
+      "description": "Fight 10 increasingly tough AI bosses for coins. Costs one Redemption credit (buy them in the Store).",
+      "needs": "account + credits",
+      "tiers": [
+        15,
+        16
+      ]
+    },
+    {
+      "id": "classic",
+      "name": "Classic Mode",
+      "released": "2018-02-16",
+      "removed": "2019-03-01",
+      "implemented": true,
+      "confidence": "wiki: replica of Dec 2016, Land + Ocean only, 14 tiers ending in Dragon; removal date approximate",
+      "description": "Old Mope: two biomes, 14 tiers, no later features (menus and art of the 2017 build)."
+    },
+    {
+      "id": "zombie",
+      "name": "Zombie Infection",
+      "released": "2018-10-27",
+      "removed": "2018-11-23",
+      "implemented": true,
+      "confidence": "wiki rules (infection bar, zombies bite anything, evolve to cure); numbers inferred; infection orbs/lotus/healing stones not simulated",
+      "description": "Avoid the virus. Fully infected animals become zombies."
+    },
+    {
+      "id": "royale",
+      "name": "Battle Royale",
+      "released": "2018-10-06",
+      "removed": "2018-11-23",
+      "implemented": true,
+      "confidence": "wiki rules (shrinking red zone, last alive wins, 25+ players, ghosts spectate); eggs/ghost toggle not simulated; numbers inferred",
+      "description": "A red zone shrinks; be the last animal alive."
+    },
+    {
+      "id": "team",
+      "name": "Team Mode",
+      "released": "2018-10-06",
+      "removed": "2024-11-15",
+      "implemented": true,
+      "confidence": "wiki (2022 version): 3 teams, Team Stones, perks, 10-stone meteor apocalypse; only 5 of the 13 perks simulated",
+      "description": "Yellow, Cyan and Purple fight over Team Stones."
+    },
+    {
+      "id": "wild",
+      "name": "Wild Mope",
+      "released": "2018-10-27",
+      "removed": "2024-11-15",
+      "implemented": true,
+      "confidence": "wiki: abilities stronger (speed +10%, cooldown -20%, longer duration); per-animal wave buffs not simulated",
+      "description": "Everything hits harder, moves faster and recharges quicker."
+    },
+    {
+      "id": "pandemic",
+      "name": "Viral Pandemic",
+      "released": "2020-03-28",
+      "removed": "2020-05-18",
+      "implemented": true,
+      "confidence": "wiki rules (immunity bar, infection, masks 90 s, aloe 45 s, sneezing); quarantine in holes not simulated",
+      "description": "Avoid viruses; masks and aloe vera protect you."
+    },
+    {
+      "id": "beta",
+      "name": "Beta Mope.io",
+      "released": null,
+      "removed": null,
+      "implemented": false,
+      "confidence": "wiki: a preview server for unreleased features that alternates between open and closed",
+      "description": "Not implemented: it is a rotating test server, not a ruleset. The unreleased animals are drawn but not playable."
+    }
+  ]
+}

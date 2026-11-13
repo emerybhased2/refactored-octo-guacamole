@@ -8,7 +8,7 @@
   }
   const LABEL = { login: 'Log in to buy', buy: 'Buy', poor: 'Not enough coins', owned: 'Owned', equip: 'Equip', equipped: 'Unequip' };
   /** 2021 storefront listing (categories/filters verified from the bundle; filter semantics INFERRED). */
-  const CAT_TYPES = { Skins: ['skin'], Features: ['feature', 'animal'], Deals: ['bundle'] };
+  const CAT_TYPES = { Skins: ['skin'], Features: ['feature', 'animal', 'credits'], Deals: ['bundle'] };
   function listItems(items, category, filter, acct) {
     const mine = /^My /.test(category), base = mine ? category.slice(3) : category, types = CAT_TYPES[base] || [], own = (acct && acct.owned) || [];
     let out = items.filter((i) => types.includes(i.type) && (mine ? own.includes(i.id) : true));
@@ -41,7 +41,7 @@
         const cv = document.createElement('canvas'); cv.width = cv.height = 96; const img = document.createElement('div'); img.className = 'image'; img.style.position = 'relative'; img.appendChild(cv); card.appendChild(img);
         const an = V.animals.find((a) => a.id === item.animal); let src = null;
         if (item.type === 'skin') src = M.Sprites.getSkin(item); else if (item.type === 'bundle') { const first = V.shop.items.find((i) => i.id === (item.contains || [])[0]); src = first && M.Sprites.getSkin(first); } else if (an) src = M.Sprites.getIcon(an);
-        if (src) { const c = cv.getContext('2d'); c.translate(48, 48); if (item.type !== 'animal') c.rotate(Math.PI / 2); c.drawImage(src, -48, -48, 96, 96); }
+        if (src && item.type !== 'credits') { const c = cv.getContext('2d'); c.translate(48, 48); if (item.type !== 'animal') c.rotate(Math.PI / 2); c.drawImage(src, -48, -48, 96, 96); }
         if (item.isNew || (item.listPrice != null && item.listPrice > item.price) || item.free) { const tag = document.createElement('span'); tag.className = 'tag'; tag.textContent = item.free ? 'FREE' : item.isNew ? 'NEW' : 'SALE'; img.appendChild(tag); }
         const b = document.createElement('b'); b.textContent = item.name; card.appendChild(b);
         const pb = document.createElement('div'); pb.className = 'priceBar'; pb.innerHTML = (item.listPrice != null && item.listPrice > item.price ? '<s>' + item.listPrice + '</s>' : '') + (item.price === 0 ? 'FREE' : item.price + ' coins'); card.appendChild(pb);
@@ -71,9 +71,10 @@
       if (sf) return this.renderStore();
       const tabs = document.getElementById('shopTabs'); if (tabs && this.style) { tabs.innerHTML = ''; for (const [k, n] of [['skin', 'Skins'], ['animal', 'Animals']]) { const b = document.createElement('button'); b.textContent = n; b.className = this.tab === k ? 'sel' : ''; b.addEventListener('click', () => { this.tab = k; this.render(); }); tabs.appendChild(b); } }
       for (const item of V.shop.items) {
-        if (this.style && item.type !== this.tab) continue;
+        if (this.style && item.type !== this.tab && !(this.tab === 'animal' && item.type === 'credits')) continue;
         const st = itemState(item, this.acct), card = document.createElement('div'); card.className = 'shopItem';
         const cv = document.createElement('canvas'); cv.width = cv.height = 96; const img = document.createElement('div'); img.className = 'image'; img.appendChild(cv); card.appendChild(img);
+        if (item.type === 'credits') { const c2 = cv.getContext('2d'); c2.fillStyle = '#ffe15a'; c2.font = 'bold 40px Arial'; c2.textAlign = 'center'; c2.fillText(item.credits + 'x', 48, 50); c2.font = 'bold 14px Arial'; c2.fillStyle = '#fff'; c2.fillText('credits', 48, 72); }
         const an = V.animals.find((a) => a.id === item.animal), tint = this.style && an && this.style.biomeTints && this.style.biomeTints[an.biome]; if (tint) { const dot = document.createElement('i'); dot.style.cssText = 'position:absolute;top:4px;right:4px;width:14px;height:14px;border-radius:50%;border:2px solid #fff;background:' + tint; img.style.position = 'relative'; img.appendChild(dot); }
         const src = item.type === 'skin' ? M.Sprites.getSkin(item) : (V.animals.find((a) => a.id === item.animal) && M.Sprites.getIcon(V.animals.find((a) => a.id === item.animal)));
         if (src) { const c = cv.getContext('2d'); c.translate(48, 48); if (item.type === 'skin') c.rotate(Math.PI / 2); c.drawImage(src, -48, -48, 96, 96); }

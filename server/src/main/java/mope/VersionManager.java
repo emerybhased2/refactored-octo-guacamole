@@ -118,11 +118,12 @@ public final class VersionManager {
             });
         }
         c.animals.values().removeIf(a -> !c.biomeIds.contains(a.biome)); // availability is decided AFTER per-version biome overrides
-        for (Defs.Edge e : Data.read("data/progression/evolution.json", Defs.Edge[].class))
+        if (o.has("classic")) applyClassic(c, o.getAsJsonObject("classic"));
+        else for (Defs.Edge e : Data.read("data/progression/evolution.json", Defs.Edge[].class))
             if (Data.active(e.releaseDate, e.removalDate, c.date) && c.animals.containsKey(e.from) && c.animals.containsKey(e.to)) c.edges.add(e);
         for (Defs.Tier t : Data.read("data/progression/tiers.json", Defs.Tier[].class)) if (Data.active(t.releaseDate, t.removalDate, c.date)) {
             if (t.categories != null) for (Defs.Cat k : t.categories) if (!c.date.isBefore(LocalDate.parse(k.from))) t.name = k.name; // e.g. tier 15 is "Apex" from 2019
-            c.tiers.add(t);
+            if (!o.has("classic") || t.tier <= o.getAsJsonObject("classic").get("maxTier").getAsInt()) c.tiers.add(t);
         }
         for (Defs.FoodDef f : Data.read("data/food/foods.json", Defs.FoodDef[].class))
             if (c.foodIds.contains(f.id) && Data.active(f.releaseDate, f.removalDate, c.date)) c.foods.add(f);
@@ -147,6 +148,19 @@ public final class VersionManager {
     }
 
     private static List<String> strings(JsonArray a) { List<String> l = new ArrayList<>(); a.forEach(e -> l.add(e.getAsString())); return l; }
+
+    /** Classic Mode: whitelist + tier table from data/modes/classic.json, project XP curve, rule-based evolution edges. */
+    private static void applyClassic(Config c, JsonObject cl) {
+        JsonObject tiers = cl.getAsJsonObject("tiers"); JsonObject curve = Data.read("data/progression/xp-requirements.json").getAsJsonObject().getAsJsonObject("tierXpCurve");
+        c.animals.values().removeIf(a -> !tiers.has(a.id));
+        for (Animal a : c.animals.values()) { a.tier = tiers.get(a.id).getAsInt(); a.xpRequired = curve.get(String.valueOf(a.tier)).getAsDouble(); a.releaseDate = "2016-12-02"; }
+        List<Animal> all = new ArrayList<>(c.animals.values());
+        Set<String> hasIn = new HashSet<>();
+        for (Animal a : all) { List<Animal> same = new ArrayList<>(), any = new ArrayList<>(); for (Animal b : all) if (b.tier == a.tier + 1) { any.add(b); if (b.biome.equals(a.biome)) same.add(b); }
+            for (Animal b : same.isEmpty() ? any : same) { Defs.Edge e = new Defs.Edge(); e.from = a.id; e.to = b.id; e.releaseDate = "2016-12-02"; e.confidence = "inferred (Classic Mode)"; c.edges.add(e); hasIn.add(b.id); } }
+        for (Animal b : all) if (b.tier > 1 && !hasIn.contains(b.id)) for (Animal a : all) if (a.tier == b.tier - 1) { Defs.Edge e = new Defs.Edge(); e.from = a.id; e.to = b.id; e.releaseDate = "2016-12-02"; e.confidence = "inferred (Classic Mode)"; c.edges.add(e); }
+        c.starters = strings(cl.getAsJsonArray("starters")); c.startAnimal = c.starters.get(0);
+    }
 
     /** Applies, in order, every entry whose "from" date is <= at (later entries override earlier ones). */
     private static void applyLatest(JsonArray arr, LocalDate at, java.util.function.Consumer<JsonElement> fn) {

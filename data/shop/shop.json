@@ -182,6 +182,33 @@
       "price": 0,
       "releaseDate": "2021-06-12",
       "confidence": "EXISTENCE verified (2021-05-22 note: 'Legacy Pack... Equip Classic Theme'); behaviour inferred: swaps your animal art to the project's 2017 set where it exists"
+    },
+    {
+      "id": "redemption_credits_5",
+      "type": "credits",
+      "name": "5 Redemption credits",
+      "credits": 5,
+      "price": 500,
+      "releaseDate": "2019-12-30",
+      "confidence": "EXISTENCE verified (Mope.io Wiki: Redemption credit packs of 5/10/20 existed 2021-2026); price inferred; available in every shop version so the mode is playable (original dates: 2021-02-16 to 2026-06-20)"
+    },
+    {
+      "id": "redemption_credits_10",
+      "type": "credits",
+      "name": "10 Redemption credits",
+      "credits": 10,
+      "price": 900,
+      "releaseDate": "2019-12-30",
+      "confidence": "EXISTENCE verified (Mope.io Wiki: Redemption credit packs of 5/10/20 existed 2021-2026); price inferred; available in every shop version so the mode is playable (original dates: 2021-02-16 to 2026-06-20)"
+    },
+    {
+      "id": "redemption_credits_20",
+      "type": "credits",
+      "name": "20 Redemption credits",
+      "credits": 20,
+      "price": 1600,
+      "releaseDate": "2019-12-30",
+      "confidence": "EXISTENCE verified (Mope.io Wiki: Redemption credit packs of 5/10/20 existed 2021-2026); price inferred; available in every shop version so the mode is playable (original dates: 2021-02-16 to 2026-06-20)"
     }
   ],
   "featured2021": {

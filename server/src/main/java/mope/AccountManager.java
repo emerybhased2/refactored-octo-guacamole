@@ -24,6 +24,7 @@ public final class AccountManager implements AutoCloseable {
                 s.execute("CREATE TABLE IF NOT EXISTS settings(username TEXT PRIMARY KEY, json TEXT NOT NULL)");
                 s.execute("CREATE TABLE IF NOT EXISTS wallet(username TEXT PRIMARY KEY, coins INTEGER NOT NULL DEFAULT 0 CHECK(coins >= 0))");
                 s.execute("CREATE TABLE IF NOT EXISTS inventory(username TEXT NOT NULL, item TEXT NOT NULL, PRIMARY KEY(username, item))");
+                s.execute("CREATE TABLE IF NOT EXISTS credits(username TEXT PRIMARY KEY, n INTEGER NOT NULL DEFAULT 0 CHECK(n >= 0))");
                 s.execute("CREATE TABLE IF NOT EXISTS equipped(username TEXT NOT NULL, animal TEXT NOT NULL, item TEXT NOT NULL, PRIMARY KEY(username, animal))");
             }
         } catch (SQLException e) { throw new IllegalStateException(e); }
@@ -104,6 +105,27 @@ public final class AccountManager implements AutoCloseable {
     public synchronized void addCoins(String user, long n) {
         if (n <= 0) return;
         try (PreparedStatement ps = db.prepareStatement("INSERT INTO wallet(username,coins) VALUES(?,?) ON CONFLICT(username) DO UPDATE SET coins = coins + excluded.coins")) { ps.setString(1, user); ps.setLong(2, n); ps.executeUpdate(); }
+        catch (SQLException e) { throw new IllegalStateException(e); }
+    }
+    /** 1v1 Redemption credits (a consumable bought with coins; one per round). */
+    public synchronized int credits(String user) {
+        try (PreparedStatement ps = db.prepareStatement("SELECT n FROM credits WHERE username=?")) { ps.setString(1, user); try (ResultSet rs = ps.executeQuery()) { return rs.next() ? rs.getInt(1) : 0; } }
+        catch (SQLException e) { throw new IllegalStateException(e); }
+    }
+    /** Atomic: spends `price` coins and adds `n` credits, or does nothing. */
+    public synchronized boolean buyCredits(String user, int price, int n) {
+        if (price < 0 || n <= 0 || coins(user) < price) return false;
+        try {
+            db.setAutoCommit(false);
+            try (PreparedStatement a = db.prepareStatement("UPDATE wallet SET coins = coins - ? WHERE username=? AND coins >= ?"); PreparedStatement b = db.prepareStatement("INSERT INTO credits(username,n) VALUES(?,?) ON CONFLICT(username) DO UPDATE SET n = n + excluded.n")) {
+                a.setInt(1, price); a.setString(2, user); a.setInt(3, price); if (a.executeUpdate() != 1 && price > 0) { db.rollback(); return false; }
+                b.setString(1, user); b.setInt(2, n); b.executeUpdate(); db.commit(); return true;
+            } catch (SQLException e) { db.rollback(); return false; } finally { db.setAutoCommit(true); }
+        } catch (SQLException e) { throw new IllegalStateException(e); }
+    }
+    /** Atomically uses one credit; false when there is none. */
+    public synchronized boolean useCredit(String user) {
+        try (PreparedStatement ps = db.prepareStatement("UPDATE credits SET n = n - 1 WHERE username=? AND n >= 1")) { ps.setString(1, user); return ps.executeUpdate() == 1; }
         catch (SQLException e) { throw new IllegalStateException(e); }
     }
     public synchronized java.util.Set<String> owned(String user) {

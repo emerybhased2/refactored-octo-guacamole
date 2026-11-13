@@ -29,9 +29,16 @@ public final class NetworkManager extends WebSocketServer {
         setReuseAddr(true);
     }
 
-    public World world(String versionId, boolean sandbox) {
-        return worlds.computeIfAbsent(versionId + (sandbox ? "|sandbox" : ""), key -> {
-            World w = new World(versions.get(versionId), seed + key.hashCode(), sandbox);
+    public World world(String versionId, boolean sandbox) { return world(versionId, sandbox ? "sandbox" : "normal"); }
+    private VersionManager.Config classicCfg;
+    /** Classic Mode: the 2017 build restricted to Land + Ocean, 14 tiers (data/modes/classic.json). */
+    synchronized VersionManager.Config classicConfig() { if (classicCfg == null) classicCfg = Modes.classicConfig(versions.get("2017-02-13")); return classicCfg; }
+    /** Shared world per (version, mode): normal, sandbox, classic, zombie, royale, team, wild, pandemic. */
+    public World world(String versionId, String mode) {
+        final String md = mode == null ? "normal" : mode;
+        return worlds.computeIfAbsent(versionId + (md.equals("normal") ? "" : "|" + md), key -> {
+            World w = new World(md.equals("classic") ? classicConfig() : versions.get(versionId), seed + key.hashCode(), md.equals("sandbox"), false, md.equals("sandbox") ? "normal" : md);
+            w.onReward = p -> { if (p.bonusCoins <= 0 || p.account == null || p.bot) { p.bonusCoins = 0; return; } long n = (long) p.bonusCoins; p.bonusCoins = 0; accounts.addCoins(p.account, n); if (p.sender != null) p.sender.send("{\"t\":\"coins\",\"coins\":" + accounts.coins(p.account) + ",\"earned\":" + n + ",\"bonus\":1}"); };
             w.onDeath = p -> {
                 if (p.account == null || p.bot) return;
                 accounts.recordGame(p.account, (long) p.xp, p.kills);
@@ -59,6 +66,13 @@ public final class NetworkManager extends WebSocketServer {
         arenas.removeIf(a -> { boolean done = a.arenaState.equals("over") || a.players.isEmpty() && a.tick > 10; if (done) a.stop(); return done; });
         if (waitingArena != null && waitingArena.arenaState.equals("waiting") && !waitingArena.arenaBot && waitingArena.players.size() == 1) { World w = waitingArena; waitingArena = null; return w; }
         World w = new World(arenaConfig(v), seed + arenas.size() + System.nanoTime(), false, true); w.arenaStartTick = 0; w.start(); arenas.add(w); waitingArena = w; return w;
+    }
+    /** 1v1 Redemption: always a private match against AI bosses. */
+    synchronized World redemptionFor(VersionManager.Config v, boolean pro) {
+        arenas.removeIf(a -> { boolean done = a.arenaState.equals("over") || a.players.isEmpty() && a.tick > 10; if (done) a.stop(); return done; });
+        World w = new World(arenaConfig(v), seed + System.nanoTime(), false, true); w.redemption = true; w.redPro = pro; w.arenaBot = true; w.arenaStartTick = 0;
+        w.onReward = p -> { if (p.bonusCoins <= 0 || p.account == null || p.bot) { p.bonusCoins = 0; return; } long n = (long) p.bonusCoins; p.bonusCoins = 0; accounts.addCoins(p.account, n); if (p.sender != null) p.sender.send("{\"t\":\"coins\",\"coins\":" + accounts.coins(p.account) + ",\"earned\":" + n + ",\"bonus\":1}"); };
+        w.start(); arenas.add(w); return w;
     }
 
     @Override public void onOpen(WebSocket c, ClientHandshake h) { sessions.put(c, new Session()); }
@@ -90,7 +104,7 @@ public final class NetworkManager extends WebSocketServer {
                     p.boost = m.has("b") && m.get("b").isJsonPrimitive() && m.get("b").getAsInt() == 1;
                 }
                 case "evolve" -> { Player p = s.player; String id = str(m, "id"); if (p != null && id != null) s.world.submit(() -> s.world.evolve(p, id)); }
-                case "ability" -> { Player p = s.player; if (p != null) s.world.submit(() -> s.world.abilities.activate(p, s.world.nowMs(), null)); }
+                case "ability" -> { Player p = s.player; if (p != null) s.world.submit(() -> s.world.useAbility(p)); }
                 case "chat" -> { Player p = s.player; String txt = str(m, "m"); if (p != null && txt != null) { String clean = txt.replaceAll("[\\p{Cntrl}<>]", "").trim(); if (clean.length() > 35) clean = clean.substring(0, 35); if (!clean.isEmpty()) { final String fc = clean; s.world.submit(() -> s.world.chat(p, fc)); } } }
                 case "sandbox" -> { Player p = s.player; double d = num(m, "d"); if (p != null && Double.isFinite(d)) s.world.submit(() -> s.world.sandboxStep(p, (int) d)); }
                 case "register", "login", "resume" -> auth(c, s, t, m);
@@ -107,7 +121,7 @@ public final class NetworkManager extends WebSocketServer {
     }
 
     private JsonObject shopState(String user) {
-        JsonObject o = new JsonObject(); o.addProperty("t", "shop"); o.addProperty("coins", accounts.coins(user));
+        JsonObject o = new JsonObject(); o.addProperty("t", "shop"); o.addProperty("coins", accounts.coins(user)); o.addProperty("credits", accounts.credits(user));
         o.add("owned", Data.GSON.toJsonTree(accounts.owned(user))); o.add("equipped", Data.GSON.toJsonTree(accounts.equipped(user))); return o;
     }
     private void shopMsg(WebSocket c, Session s, String t, JsonObject m) {
@@ -117,7 +131,7 @@ public final class NetworkManager extends WebSocketServer {
         String item = str(m, "item"); Defs.ShopItem it = null; if (item != null) for (Defs.ShopItem x : v.shop) if (x.id.equals(item)) it = x;
         switch (t) {
             case "shop-info" -> { }
-            case "buy" -> { if (it == null) { c.send("{\"t\":\"shop-error\",\"err\":\"unknown item\"}"); return; } if (!("bundle".equals(it.type) ? accounts.buyBundle(s.account, it.id, it.price, it.contains == null ? java.util.List.of() : it.contains) : accounts.buy(s.account, it.id, it.price))) { c.send("{\"t\":\"shop-error\",\"err\":\"cannot buy (owned or not enough coins)\"}"); return; } }
+            case "buy" -> { if (it == null) { c.send("{\"t\":\"shop-error\",\"err\":\"unknown item\"}"); return; } if (!("credits".equals(it.type) ? (it.credits != null && accounts.buyCredits(s.account, it.price, it.credits)) : "bundle".equals(it.type) ? accounts.buyBundle(s.account, it.id, it.price, it.contains == null ? java.util.List.of() : it.contains) : accounts.buy(s.account, it.id, it.price))) { c.send("{\"t\":\"shop-error\",\"err\":\"cannot buy (owned or not enough coins)\"}"); return; } }
             case "equip" -> { if (it == null || !("skin".equals(it.type) || "feature".equals(it.type)) || !accounts.setEquipped(s.account, "feature".equals(it.type) ? "__theme" : it.animal, it.id)) { c.send("{\"t\":\"shop-error\",\"err\":\"cannot equip\"}"); return; } }
             case "unequip" -> { String an = str(m, "animal"); if (an == null || !accounts.setEquipped(s.account, an, null)) { c.send("{\"t\":\"shop-error\",\"err\":\"cannot unequip\"}"); return; } }
             default -> { return; }
@@ -152,17 +166,29 @@ public final class NetworkManager extends WebSocketServer {
         if (name.length() > 16) name = name.substring(0, 16);
         if (name.isEmpty()) name = "Mope";
         final String fn = name, req = str(m, "mode") == null ? "normal" : str(m, "mode");
-        final String mode = req.equals("sandbox") && v.modes.contains("sandbox") ? "sandbox"
+        final String animalReq = str(m, "animal"), of = str(m, "of");
+        // client-visible mode ("arena" also covers Redemption); gm = the actual game mode
+        final String gm = req.equals("sandbox") && v.modes.contains("sandbox") ? "sandbox"
             : req.equals("spectate") && v.feature("spectate") ? "spectate"
-            : req.equals("arena") && v.feature("arena") ? "arena" : "normal";
-        final String animalReq = str(m, "animal");
-        World w = mode.equals("arena") ? arenaFor(v) : world(v.id, mode.equals("sandbox"));
+            : req.equals("arena") && v.feature("arena") ? "arena"
+            : req.equals("redemption") && v.feature("accounts") && v.feature("shop") ? "redemption"
+            : Modes.WORLD_MODES.contains(req) ? req : "normal";
+        final String mode = gm.equals("redemption") ? "arena" : (Modes.WORLD_MODES.contains(gm) ? "normal" : gm);
+        if (gm.equals("redemption")) {
+            if (s.account == null) { c.send("{\"t\":\"error\",\"err\":\"log in to play 1v1 Redemption\"}"); return; }
+            if (!accounts.useCredit(s.account)) { c.send("{\"t\":\"error\",\"err\":\"you need a Redemption credit (buy credits in the Store)\"}"); return; }
+            c.send("{\"t\":\"shop\",\"coins\":" + accounts.coins(s.account) + ",\"credits\":" + accounts.credits(s.account) + ",\"owned\":" + Data.GSON.toJson(accounts.owned(s.account)) + ",\"equipped\":" + Data.GSON.toJson(accounts.equipped(s.account)) + "}");
+        }
+        final boolean pro = "pro".equals(str(m, "difficulty"));
+        World w = gm.equals("redemption") ? redemptionFor(v, pro) : mode.equals("arena") ? arenaFor(v) : gm.equals("sandbox") ? world(v.id, "sandbox") : gm.equals("spectate") ? world(v.id, of != null && Modes.WORLD_MODES.contains(of) ? of : "normal") : world(v.id, gm);
         s.world = w;
         w.submit(() -> {
-            JsonObject o = new JsonObject(); o.addProperty("t", "welcome"); o.addProperty("mode", mode); o.add("version", mode.equals("arena") ? w.cfg.clientJson() : v.clientJson());
+            JsonObject o = new JsonObject(); o.addProperty("t", "welcome"); o.addProperty("mode", mode); o.addProperty("gm", gm); o.add("version", w.cfg == v ? v.clientJson() : w.cfg.clientJson());
             if (mode.equals("spectate")) { s.spec = w.addSpectator(c::send); o.addProperty("id", -1); }
             else {
-                Player p = mode.equals("arena") ? w.joinArena(fn, c::send, false, animalReq == null ? "lion" : animalReq) : w.join(fn, c::send, false);
+                String aid = animalReq == null ? "lion" : animalReq;
+                if (gm.equals("redemption")) { Animal ra = w.cfg.animals.get(aid); if (ra == null || ra.tier < 15 || ra.tier > 16) { aid = w.cfg.animals.values().stream().filter(x -> x.tier >= 15 && x.tier <= 16).map(x -> x.id).findFirst().orElse(aid); } }
+                Player p = mode.equals("arena") ? w.joinArena(fn, c::send, false, aid) : w.join(fn, c::send, false);
                 p.account = v.feature("accounts") ? s.account : null; if (p.account != null) applyAccount(p, p.account); s.player = p; o.addProperty("id", p.id);
             }
             com.google.gson.JsonArray lk = new com.google.gson.JsonArray(); for (double[] l : w.lakes) lk.add(Data.GSON.toJsonTree(l)); o.add("lakes", lk);

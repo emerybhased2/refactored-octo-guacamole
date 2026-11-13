@@ -42,6 +42,7 @@
         if (img) { const h = fr / M.Sprites.FOOD_FRAC; ctx.drawImage(img, sx - h, sy - h, 2 * h, 2 * h); ctx.strokeStyle = edge; ctx.lineWidth = Math.max(1.5, 2.2 * z); ctx.beginPath(); ctx.arc(sx, sy, fr * 1.06, 0, 7); ctx.stroke(); }
         else { ctx.fillStyle = def.color; ctx.beginPath(); ctx.arc(sx, sy, fr, 0, 7); ctx.fill(); ctx.strokeStyle = edge; ctx.lineWidth = Math.max(1.5, 2.5 * z); ctx.stroke(); }
       }
+      if (this.underAnimals) this.underAnimals(ctx, cam, vw, vh, now);
       const list = players.filter((p) => p.id !== meId); if (myPred) list.push(myPred);
       list.sort((a, b) => v.animals[a.ai].size - v.animals[b.ai].size);
       const myTier = myPred ? v.animals[myPred.ai].tier : 0;
@@ -58,6 +59,10 @@
       if (this.opts.noImages) { ctx.fillStyle = a.placeholderColor; ctx.beginPath(); ctx.arc(0, 0, pr, 0, 7); ctx.fill(); }
       else { const h = pr / M.Sprites.BODY_FRAC, skinItem = p.skin ? ((v.shop ? v.shop.items : []).concat(v.variants || [])).find((i) => i.id === p.skin) : null, skin = skinItem ? M.Sprites.getSkin(skinItem) : null; ctx.drawImage(skin || (isMe && this.opts.classic && M.Sprites.getClassic(a)) || M.Sprites.get(a), -h, -h, 2 * h, 2 * h); } // equipped skin if loaded, else the normal sprite // frame sized so the drawn body matches the hitbox
       ctx.globalAlpha = 1; ctx.restore();
+      if (p.flags) { const f = M.ModeHud.flagsOf(p.flags); // team outline / zombie tint / infected glow (mode overlays)
+        if (f.team) { ctx.strokeStyle = M.ModeHud.TEAM_COL[f.team]; ctx.lineWidth = Math.max(3, 4 * cam.zoom); ctx.beginPath(); ctx.arc(sx, sy, pr * 1.04, 0, 7); ctx.stroke(); }
+        if (f.zombie) { ctx.save(); ctx.globalAlpha = 0.45; ctx.fillStyle = '#5ac83a'; ctx.beginPath(); ctx.arc(sx, sy, pr * 0.95, 0, 7); ctx.fill(); ctx.restore(); }
+        else if (f.infected) { ctx.save(); ctx.globalAlpha = 0.22 + 0.12 * Math.sin(now / 200); ctx.fillStyle = '#c83a3a'; ctx.beginPath(); ctx.arc(sx, sy, pr * 0.95, 0, 7); ctx.fill(); ctx.restore(); } }
       if (!isMe && !v.__spectate) { // (spectators have no body, so no edible/dangerous outlines) outline: LIGHT-GREEN = you can eat it, RED = it can eat you (archived how-to-play text)
         const sand = v.__sandbox, col = sand || a.tier < myTier ? '#8dff8d' : a.tier > myTier ? '#ff4d4d' : null;
         if (col) { ctx.strokeStyle = col; ctx.lineWidth = Math.max(2, 3.5 * cam.zoom); ctx.beginPath(); ctx.arc(sx, sy, pr * 1.02, 0, 7); ctx.stroke(); }
