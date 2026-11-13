@@ -24,6 +24,8 @@
       bar(ctx, h.xpBar, cx, vh - h.xpBar.marginBottom, nxt ? you.xp / nxt : 1, you.xp + (nxt ? ' / ' + nxt + ' XP' : ' XP'));
       bar(ctx, h.healthBar, cx, vh - h.healthBar.marginBottom, you.hp / animal.health, null);
       if (v.features.waterBar && h.waterBar) bar(ctx, h.waterBar, cx, vh - h.waterBar.marginBottom, you.w / 100, null);
+      const tn = (v.tiers.find((t) => t.tier === animal.tier) || {}).name || ('Tier ' + animal.tier), tl = tn.startsWith('Tier') ? tn : 'Tier ' + animal.tier + ' - ' + tn; // tier categories (Apex, Monsters...) come from the version data
+      ctx.fillStyle = 'rgba(255,255,255,0.8)'; ctx.font = '12px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.fillText(tl, cx, vh - (v.features.waterBar && h.waterBar ? h.waterBar.marginBottom + h.waterBar.h : h.healthBar.marginBottom + h.healthBar.h) - 28);
       ctx.fillStyle = '#fff'; ctx.font = 'bold 16px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
       ctx.fillText(animal.name, cx, vh - (v.features.waterBar && h.waterBar ? h.waterBar.marginBottom + h.waterBar.h : h.healthBar.marginBottom + h.healthBar.h) - 10);
       M.Leaderboard.draw(ctx, vw, h.leaderboard, rows, you.id);

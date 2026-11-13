@@ -17,6 +17,7 @@ public final class World {
     public final FoodEngine foods;
     public final QuadTree tree;
     public final List<double[]> lakes = new ArrayList<>(); // x, y, radius
+    public final List<double[]> terrain = new ArrayList<>(); // typeIndex, x, y (static decoration; effects are not simulated)
     public final Map<Integer, Player> players = new LinkedHashMap<>();
     public long tick;
     public Consumer<Player> onDeath = p -> {};
@@ -41,12 +42,28 @@ public final class World {
             double r = b.lakes.radius, x0 = b.rect[0] * size, y0 = b.rect[1] * size, w = b.rect[2] * size, h = b.rect[3] * size;
             lakes.add(new double[] { x0 + r + rnd.nextDouble() * (w - 2 * r), y0 + r + rnd.nextDouble() * (h - 2 * r), r });
         }
+        for (int ti = 0; ti < cfg.terrain.size(); ti++) { // terrain objects: density per 1M px^2 of each allowed biome, placed inside the biome rect
+            Defs.TerrainDef td = cfg.terrain.get(ti);
+            for (Defs.BiomeDef b : cfg.biomes) if (td.biomes.contains(b.id)) {
+                double x0 = b.rect[0] * size, y0 = b.rect[1] * size, bw = b.rect[2] * size, bh = b.rect[3] * size;
+                int n = (int) Math.round(td.density * bw * bh / 1_000_000.0);
+                for (int k = 0; k < n; k++) { // keep terrain out of lakes (retry a few times, then skip)
+                    for (int tries = 0; tries < 8; tries++) {
+                        double tx = x0 + td.radius + rnd.nextDouble() * Math.max(1, bw - 2 * td.radius), ty = y0 + td.radius + rnd.nextDouble() * Math.max(1, bh - 2 * td.radius);
+                        boolean wet = false; for (double[] l : lakes) { double dx = tx - l[0], dy = ty - l[1], rr = l[2] + td.radius; if (dx * dx + dy * dy < rr * rr) { wet = true; break; } }
+                        if (!wet) { terrain.add(new double[] { ti, tx, ty }); break; }
+                    }
+                }
+            }
+        }
         sandboxOrder.addAll(cfg.animals.values());
         List<String> bo = cfg.biomeIds;
         sandboxOrder.sort(Comparator.comparingInt((Animal a) -> a.tier).thenComparingInt(a -> bo.indexOf(a.biome)).thenComparingInt(a -> a.internalId));
         if (!sandbox) for (int i = 0; i < cfg.bots; i++) join("Bot" + (i + 1), null, true);
     }
 
+    /** Food is worth more to bigger animals so the 18-tier XP curve stays reachable. INFERRED balance rule (1.35^(tier-1)). */
+    public static double foodXpScale(int tier) { return Math.pow(1.35, Math.max(0, tier - 1)); }
     public long nowMs() { return tick * 1000L / cfg.tickRate; }
     public void submit(Runnable r) { inbox.add(r); }
     public int humanCount() { int n = 0; for (Player p : players.values()) if (!p.bot) n++; return n; }
@@ -149,7 +166,7 @@ public final class World {
             tree.query(p.x, p.y, p.radius + 40, tmp);
             for (Entity e : tmp) {
                 if (e instanceof Food f) {
-                    if (!f.removed && Collision.overlap(p, f)) { foods.consumed(f); p.xp += f.def.xp; p.health = Math.min(p.maxHealth(), p.health + f.def.health); }
+                    if (!f.removed && Collision.overlap(p, f)) { foods.consumed(f); p.xp += f.def.xp * foodXpScale(p.animal.tier); p.health = Math.min(p.maxHealth(), p.health + f.def.health); }
                 } else if (e instanceof Player o && Collision.canEat(p, o)) {
                     p.xp += 20 * o.animal.tier + o.xp * 0.25; p.kills++;
                     die(o, p.name, EATEN, dying);

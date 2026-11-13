@@ -102,6 +102,7 @@ public final class NetworkManager extends WebSocketServer {
             s.player = p;
             JsonObject o = new JsonObject(); o.addProperty("t", "welcome"); o.addProperty("id", p.id); o.addProperty("mode", sb ? "sandbox" : "normal"); o.add("version", v.clientJson());
             com.google.gson.JsonArray lk = new com.google.gson.JsonArray(); for (double[] l : w.lakes) lk.add(Data.GSON.toJsonTree(l)); o.add("lakes", lk);
+            com.google.gson.JsonArray tr = new com.google.gson.JsonArray(); for (double[] t : w.terrain) tr.add(Data.GSON.toJsonTree(t)); o.add("terrain", tr);
             c.send(o.toString());
         });
     }

@@ -70,7 +70,8 @@
     for (const sd of [-1, 1]) {
       const x = sd * e.gap, y = e.y;
       if (e.sleepy) { P.ell(c, x, y, r * 1.15, r * 1.15, e.ring || pal.rim); }
-      P.ell(c, x, y, r, r, '#0b0b0b');
+      if (e.iris) P.ell(c, x, y, r, r, e.iris);
+      P.ell(c, x, y, e.iris ? r * 0.62 : r, e.iris ? r * 0.62 : r, '#0b0b0b');
       if (!tiny) { P.ell(c, x - r * 0.3, y - r * 0.32, r * 0.34, r * 0.34, '#fff'); P.ell(c, x + r * 0.32, y + r * 0.38, r * 0.14, r * 0.14, 'rgba(255,255,255,0.75)'); }
       if (e.angry) P.poly(c, [[x - sd * r * 1.3, y - r * 1.25 - sd * 0], [x + sd * r * 1.3, y - r * 0.2], [x - sd * r * 1.3, y - r * 0.4]].map((p) => [p[0], p[1]]), pal.dark);
     }
@@ -137,6 +138,16 @@
         P.line(c, [[sx, sy], [tx, ty]], 4, shade(o.c, -0.3));
       }
     },
+    fan(c, s, pal, o) { // peacock-style tail fan: feathers radiating behind the body, each with an eye spot
+      for (let i = 0; i < o.n; i++) { const a = -Math.PI / 2 + (i / (o.n - 1) - 0.5) * o.spread, x = Math.cos(a) * o.r, y = Math.sin(a) * o.r - s.body.ry * 0.25; c.save(); c.translate(x * 0.2, y * 0.2 - s.body.ry * 0.2); c.rotate(a + Math.PI / 2); P.ell(c, 0, -o.r * 0.55, 15, o.r * 0.62, shade(o.c, -0.18)); P.ell(c, 0, -o.r * 0.55, 12.5, o.r * 0.58, i % 2 ? o.c : shade(o.c, 0.08)); P.ell(c, 0, -o.r * 1.0, 8, 10, o.eye || '#2a58c8'); P.ell(c, 0, -o.r * 1.0, 3.6, 4.6, '#e8c43a'); c.restore(); }
+    },
+    jaws(c, s, pal, o) { // venus-flytrap style open trap
+      const hy = H(s).y + 14; for (const sd of [-1, 1]) { c.save(); c.translate(sd * 8, hy); c.rotate(sd * 0.55); P.ell(c, sd * 14, 20, 30, 44, shade(o.c, -0.25)); P.ell(c, sd * 14, 20, 27, 41, o.c); P.ell(c, sd * 14, 20, 19, 32, o.inner); for (let i = 0; i < 6; i++) P.poly(c, [[sd * (-9), -10 + i * 12], [sd * (-9) - sd * 4, -10 + i * 12 + 6], [sd * 2, -10 + i * 12 + 6]], '#f6f2e0'); c.restore(); }
+    },
+    pouch(c, s, pal, o) { const y = H(s).y + H(s).r * 0.4; P.ell(c, 0, y + o.len * 0.5, o.w, o.len * 0.62, shade(o.c, -0.15)); P.poly(c, [[-o.w * 0.55, y], [o.w * 0.55, y], [0, y + o.len]], o.c); P.ell(c, 0, y + o.len * 0.62, o.w * 0.78, o.len * 0.34, shade(o.c, 0.15)); },
+    crystals(c, s, pal, o) { const b = s.body; for (let i = 0; i < o.n; i++) { const a = o.from + (o.to - o.from) * i / (o.n - 1), x = Math.cos(a) * b.rx * 0.92, y = Math.sin(a) * b.ry * 0.92, L = o.len * (0.7 + 0.5 * ((i * 7) % 5) / 4); c.save(); c.translate(x, y); c.rotate(a + Math.PI / 2); P.poly(c, [[-o.w, 0], [0, -L], [o.w, 0], [o.w * 0.4, o.w * 0.9], [-o.w * 0.4, o.w * 0.9]], shade(o.c, -0.2)); P.poly(c, [[-o.w * 0.5, -2], [0, -L * 0.85], [o.w * 0.15, -2]], shade(o.c, 0.3)); c.restore(); } },
+    crown(c, s, pal, o) { const hy = H(s).y - H(s).r * 0.55; P.poly(c, [[-26, hy], [-26, hy - 20], [-14, hy - 8], [-7, hy - 28], [0, hy - 10], [7, hy - 28], [14, hy - 8], [26, hy - 20], [26, hy]], shade(o.c, -0.25)); P.poly(c, [[-23, hy - 2], [-23, hy - 16], [-13, hy - 6], [-7, hy - 24], [0, hy - 8], [7, hy - 24], [13, hy - 6], [23, hy - 16], [23, hy - 2]], o.c); for (const x of [-14, 0, 14]) P.ell(c, x, hy - 5, 3.6, 3.6, o.gem || '#d8362f'); },
+    comb(c, s, pal, o) { const hy = H(s).y - H(s).r * 0.62; for (let i = -1; i <= 1; i++) P.ell(c, i * 8, hy - Math.abs(i) * -3, 7, 9, o.c); P.ell(c, 0, H(s).y + H(s).r * 0.7, 5, 9, o.c); },
     underbody(c, s, pal, o) { /* drawn before body */ },
   };
 

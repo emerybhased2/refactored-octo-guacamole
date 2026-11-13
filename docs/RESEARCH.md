@@ -64,6 +64,28 @@ Sources: `index.html` (20180421014032), `main.css` (014110), `client.js` (014457
 ## Inferred for the new animals (NOT archived)
 Biome (all but Lemming), tier, XP, evolution links, stats; **tier 9** (Black Dragon) and its 12000 XP threshold; which animals spawn as starters beyond Mouse/Shrimp/Chipmunk (Snail and Lemming are assumed starters from their intro text); bot starter mix.
 
+
+## 2019-08-25 capture (version 3)
+
+**What exists in the archive for that date:** only `index.html` (20190825113653) and `main.css` (20190825113700). **There is no 2019 `client.js`** (Arquivo has a single client capture between 2018 and 2020: 2018-04-21), so ids, abilities, tiers, XP, stats and biome layout cannot be read from code. Evidence used:
+
+| Source | What it proves |
+|---|---|
+| Homepage update notes (Jun 18 - Aug 16, 2019) | These exist by 2019: T-Rex, Golden Eagle (a rarity), Komodo Dragon, Flytrap, King Crab, Ice Monster, Pelican, Black Widow, Black Dragon, Toucan (and a lava toucan), bees, ducks; a **Desert biome**; **lava**; melons and killable food; trees, hills and hiding holes; a **1v1 Arena** (inside-arena transparency); the **Spectate** button. |
+| 2019 skin captures (paths only) | Chicken, Woodpecker, Flamingo, Macaw, Peacock, Cassowary (2019-03-27); Leopard, Jaguar, Black Panther, lion variants, **King Dragon** (`blackdragon/1/kingdragon.png`, 2019-06-01). A giant scorpion (desert) and a "volcanic eruption" update image appear only in the 2019-12-30 crawl, so they are **not** placed in this version. |
+| Homepage CSS/HTML | Spectate button (200px), Play 2em / 50px (hover #067d26), column `top:30px`, scrollable update panel (max-height 400px, rgba(9,153,47,.52)), menu has no mute button, 2019 logo = 2018 wordmark (350x99). CSS contains FFA/TEAMS/BR/Arena button styles that are not in the page HTML (not reproduced). |
+
+### Tier structure (USER-PROVIDED, not archived)
+- 2017-02-13 and 2018-04-21: **16 tiers**.
+- 2019-08-25: **18 tiers**. Tier 15 = apex animals, tier 16 = monsters, tier 17 = Black Dragon, tier 18 = King Dragon, which needs **100,000,000 XP**.
+- Which animals count as apex/monster is **inferred**: apex = T-Rex, Elephant, King Crab, Blue Whale, Mammoth; monsters = Kraken, Dragon, Yeti, Ice Monster. Black Dragon and King Dragon live in the (inferred) Volcano biome. All placement per tier, the XP curve (1.35x food scaling, 10M for tier 17, 1M for tier 16...) and stats are **inferred**. Every record says so.
+
+### Inferred for 2019 (not evidenced by any file)
+Animal ids (unknown), abilities of the new animals, base colours, biome of each new animal, Volcano as a named biome (lava is evidenced), biome layout, foods for the desert and volcano (cactus fruit, ember fruit), terrain look/density, desert/volcano upgrade-button colours, option checkboxes, Spectate behaviour, the Arena.
+
+### Not implemented
+Spectate, 1v1 Arena/FFA/Teams/Battle-royale buttons, terrain effects (hide, mud, hills, ice, lava damage), the new animals' abilities, scorpion/snowman/skins events.
+
 ## Next versions
 Captures exist for 2018-07-16, 2019-03-27/04-14 and later. The Dec 2, 2016 "Classic Mope" (mope.io/oldmope) may be capturable and would be an earlier baseline.
 

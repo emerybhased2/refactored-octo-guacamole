@@ -13,6 +13,7 @@
       const go = () => { const n = $('nickInput').value.trim(); store.set('mope.nick', n); this.onPlay(n, this.mode); };
       $('startButton').addEventListener('click', go);
       $('nickInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') go(); });
+      $('btnSpectate').addEventListener('click', () => { const l = $('spawnXpLabel'); l.textContent = 'Spectating is not implemented yet'; setTimeout(() => (l.textContent = ''), 2500); }); // button is historical (2019); the mode is not built
       $('button_GMnormal').addEventListener('click', () => this.setMode('normal'));
       $('button_GMsandbox').addEventListener('click', () => this.setMode('sandbox'));
       $('settingsButton').addEventListener('click', () => { const o = $('optionsDiv'); o.style.display = o.style.display === 'block' ? 'none' : 'block'; });

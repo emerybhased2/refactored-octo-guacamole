@@ -37,7 +37,8 @@
     "settings": true,
     "sandbox": true,
     "mute": true,
-    "party": false
+    "party": false,
+    "spectate": false
   },
   "tickRate": 30,
   "netRate": 20,
@@ -48,5 +49,17 @@
     "shrimp",
     "chipmunk"
   ],
-  "startersNote": "Mouse, Shrimp and Chipmunk are the spawn animals named in the archived sandbox welcome text; humans spawn as startAnimal, bots use this list."
+  "startersNote": "Mouse, Shrimp and Chipmunk are the spawn animals named in the archived sandbox welcome text; humans spawn as startAnimal, bots use this list.",
+  "terrain": [
+    "bush",
+    "hill",
+    "mud",
+    "hole",
+    "rock",
+    "ice_patch"
+  ],
+  "tierStructure": {
+    "source": "USER-PROVIDED",
+    "tiers": 16
+  }
 }

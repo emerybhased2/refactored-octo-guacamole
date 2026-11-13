@@ -1,5 +1,12 @@
 # Project changelog
 
+## 0.4.0 - Version 3: 2019-08-25
+- New version from the 2019-08-25 homepage/CSS and 2019 skin captures (no 2019 client exists): 16 new animals (incl. King Dragon, Ice Monster, Komodo Dragon, birds, big cats), Desert and Volcano biomes, watermelon + inferred desert/volcano foods, 9 terrain object types with art, Spectate menu button.
+- **Tier model rebuilt (user-provided):** 16 tiers in 2017 and 2018; 18 in 2019 (apex 15, monsters 16, Black Dragon 17, King Dragon 18 at 100,000,000 XP). Tier/XP/biome are now per-version overrides; evolution links regenerated per version with validity windows; food XP scales with tier.
+- Validator is version-aware (tier monotonicity, reachability, layouts, terrain). Tests: server 88, client/data 44, integration 14.
+- Fixed: terrain no longer spawns inside lakes.
+
+
 ## 0.3.1 - Art polish
 - Redrew the weakest animals (kraken, octopus, squid, jellyfish, crab, king crab, yeti, penguin, seahorse, arctic fox, eagle, cobra, giraffe, wolf, croc, fox) with new engine primitives: tapered suckered tentacles, two-lobed pincers, bird wings, fur tufts, fangs, fan fins.
 - Soft body shading on all animals; exporter writes to each animal's declared sprite path (no stray files); regression test added.

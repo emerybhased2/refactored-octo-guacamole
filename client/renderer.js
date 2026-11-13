@@ -13,7 +13,7 @@
       const k = zoom * M.Sprites.TILE_WORLD / img.naturalWidth; if (p.setTransform) p.setTransform(new DOMMatrix([k, 0, 0, k, ox, oy])); return p;
     }
     begin() { this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); }
-    drawWorld(cam, v, lakes, players, foods, meId, myPred, chats, now) {
+    drawWorld(cam, v, lakes, players, foods, meId, myPred, chats, now, terrain) {
       const ctx = this.ctx, vw = this.vw, vh = this.vh, z = cam.zoom, ws = v.worldSize, low = this.opts.lowGraphics;
       ctx.fillStyle = '#1b3a1f'; ctx.fillRect(0, 0, vw, vh);
       for (const b of v.biomes) { // biome rectangles (layout inferred)
@@ -27,6 +27,9 @@
         for (let x = ((ox % step) + step) % step; x < vw; x += step) { ctx.moveTo(x, 0); ctx.lineTo(x, vh); }
         for (let y = ((oy % step) + step) % step; y < vh; y += step) { ctx.moveTo(0, y); ctx.lineTo(vw, y); }
         ctx.stroke();
+      }
+      if (terrain && terrain.length && !low) { // static decoration (effects such as hide/mud/hills are not simulated)
+        for (const o of terrain) { const def = v.terrain[o[0]]; if (!def || !cam.visible(o[1], o[2], def.radius, vw, vh)) continue; const img = M.Sprites.getTerrain(def); if (!img) continue; const [sx, sy] = cam.worldToScreen(o[1], o[2], vw, vh), h = def.radius * z / M.Sprites.TERRAIN_FRAC; ctx.drawImage(img, sx - h, sy - h, 2 * h, 2 * h); }
       }
       const edge = '#8dff8d';
       for (const f of foods) { // food: light-green outline = edible (archived how-to-play text)

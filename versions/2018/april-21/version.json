@@ -43,10 +43,23 @@
     "settings": true,
     "sandbox": false,
     "mute": true,
-    "party": false
+    "party": false,
+    "spectate": false
   },
   "tickRate": 30,
   "netRate": 20,
   "worldSize": 6000,
-  "bots": 30
+  "bots": 30,
+  "terrain": [
+    "bush",
+    "hill",
+    "mud",
+    "hole",
+    "rock",
+    "ice_patch"
+  ],
+  "tierStructure": {
+    "source": "USER-PROVIDED",
+    "tiers": 16
+  }
 }

@@ -1,13 +1,13 @@
 (function (g) {
   const M = (g.Mope = g.Mope || {});
-  const BIOME_ORDER = ['land', 'ocean', 'arctic']; // client biomeNum 0,1,2 in the archived client
+  const BIOME_ORDER = ['land', 'ocean', 'arctic', 'desert', 'volcano']; // land/ocean/arctic = client biomeNum 0,1,2 (archived); desert/volcano appended (2019, order inferred)
 
   /* ---------------- pure logic (unit-tested in Node) ---------------- */
 
   /** Order offered choices: sorted by biome (archived update note); the suggested choice (first/leftmost) is the first one in the animal's own biome, else the first overall (INFERRED rule). */
   function orderChoices(ids, animals, currentBiome) {
     const A = (id) => animals.find((a) => a.id === id);
-    const list = ids.slice().sort((a, b) => BIOME_ORDER.indexOf(A(a).biome) - BIOME_ORDER.indexOf(A(b).biome) || A(a).internalId - A(b).internalId);
+    const list = ids.slice().sort((a, b) => BIOME_ORDER.indexOf(A(a).biome) - BIOME_ORDER.indexOf(A(b).biome) || (A(a).internalId || 0) - (A(b).internalId || 0));
     const own = list.findIndex((id) => A(id).biome === currentBiome);
     if (own > 0) list.unshift(list.splice(own, 1)[0]);
     return list;

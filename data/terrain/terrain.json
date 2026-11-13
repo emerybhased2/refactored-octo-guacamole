@@ -1,0 +1,141 @@
+[
+ {
+  "id": "bush",
+  "name": "Red berry bush",
+  "kind": "cover",
+  "biomes": [
+   "land"
+  ],
+  "radius": 34,
+  "density": 5,
+  "releaseDate": "2017-02-13",
+  "confidence": "existence verified (2017 client text: hide inside red berry bushes); look/density inferred",
+  "effect": "hide (NOT implemented)",
+  "sprite": "assets/terrain/bush.png",
+  "spriteStatus": "recreated"
+ },
+ {
+  "id": "hill",
+  "name": "Hill",
+  "kind": "terrain",
+  "biomes": [
+   "land",
+   "arctic"
+  ],
+  "radius": 95,
+  "density": 1.6,
+  "releaseDate": "2017-02-13",
+  "confidence": "existence verified (2017 client text: climb hills); size/density inferred",
+  "effect": "bear/gorilla/seal/walrus move well on hills (NOT implemented)",
+  "sprite": "assets/terrain/hill.png",
+  "spriteStatus": "recreated"
+ },
+ {
+  "id": "mud",
+  "name": "Mud",
+  "kind": "terrain",
+  "biomes": [
+   "land"
+  ],
+  "radius": 58,
+  "density": 2.2,
+  "releaseDate": "2017-02-13",
+  "confidence": "existence verified (2017 client text: pigs move fast through mud); size/density inferred",
+  "effect": "pig fast, croc/hippo swim in mud (NOT implemented)",
+  "sprite": "assets/terrain/mud.png",
+  "spriteStatus": "recreated"
+ },
+ {
+  "id": "hole",
+  "name": "Hiding hole",
+  "kind": "cover",
+  "biomes": [
+   "land"
+  ],
+  "radius": 22,
+  "density": 3,
+  "releaseDate": "2017-02-13",
+  "confidence": "existence verified (2017 client text: Mole 'any hiding hole'); look/density inferred",
+  "effect": "hide / dig (NOT implemented)",
+  "sprite": "assets/terrain/hole.png",
+  "spriteStatus": "recreated"
+ },
+ {
+  "id": "rock",
+  "name": "Rock",
+  "kind": "terrain",
+  "biomes": [
+   "land",
+   "arctic",
+   "desert",
+   "volcano"
+  ],
+  "radius": 32,
+  "density": 2.4,
+  "releaseDate": "2017-02-13",
+  "confidence": "existence verified (2017 text: 'hills (rocks too!)'); look/density inferred",
+  "effect": "climbable (NOT implemented)",
+  "sprite": "assets/terrain/rock.png",
+  "spriteStatus": "recreated"
+ },
+ {
+  "id": "ice_patch",
+  "name": "Ice",
+  "kind": "terrain",
+  "biomes": [
+   "arctic"
+  ],
+  "radius": 70,
+  "density": 2.4,
+  "releaseDate": "2017-02-13",
+  "confidence": "existence verified (2017 text: slide on ice); look/density inferred",
+  "effect": "slide on ice (NOT implemented)",
+  "sprite": "assets/terrain/ice_patch.png",
+  "spriteStatus": "recreated"
+ },
+ {
+  "id": "tree",
+  "name": "Tree",
+  "kind": "obstacle",
+  "biomes": [
+   "land"
+  ],
+  "radius": 44,
+  "density": 3.4,
+  "releaseDate": "2019-08-25",
+  "confidence": "existence verified (2019-06-18 note: 'Objects going underneath Trees'); look/density inferred",
+  "effect": "decor (NOT implemented as an obstacle)",
+  "sprite": "assets/terrain/tree.png",
+  "spriteStatus": "recreated"
+ },
+ {
+  "id": "cactus",
+  "name": "Cactus",
+  "kind": "obstacle",
+  "biomes": [
+   "desert"
+  ],
+  "radius": 30,
+  "density": 6,
+  "releaseDate": "2019-08-25",
+  "confidence": "INFERRED (desert biome verified, its objects are not)",
+  "effect": "decor",
+  "sprite": "assets/terrain/cactus.png",
+  "spriteStatus": "recreated"
+ },
+ {
+  "id": "lava_pool",
+  "name": "Lava pool",
+  "kind": "hazard",
+  "biomes": [
+   "volcano"
+  ],
+  "radius": 80,
+  "density": 3,
+  "releaseDate": "2019-08-25",
+  "confidence": "INFERRED from lava references",
+  "effect": "decor (damage NOT implemented)",
+  "sprite": "assets/terrain/lava_pool.png",
+  "spriteStatus": "recreated"
+ }
+]

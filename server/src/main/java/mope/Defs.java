@@ -6,7 +6,13 @@ import java.util.List;
 public final class Defs {
     private Defs() {}
     public static class Edge { public String from, to, releaseDate, removalDate, confidence; }
-    public static class Tier { public int tier; public String name, color, releaseDate; }
+    public static class Cat { public String from, name; }
+    public static class Tier { public int tier; public String name, color, releaseDate; public List<Cat> categories; }
+    public static class TerrainDef {
+        public String id, name, kind, sprite, spriteStatus, releaseDate, removalDate, confidence, effect;
+        public double radius, density;
+        public List<String> biomes;
+    }
     public static class FoodDef {
         public String id, name, color, sprite, spriteStatus, releaseDate, removalDate, confidence;
         public double xp, health, radius, density, respawnMs;

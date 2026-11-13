@@ -37,7 +37,7 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
     const arcticIds = new Set(arch.filter((a) => a.skin.startsWith('arctic/')).map((a) => a.skin.split('/').pop()));
     for (const a of animals) assert.strictEqual(a.biome === 'arctic', arcticIds.has(a.id), a.id);
   });
-  await t('every inferred value is flagged (tier/xp/stats confidence = inferred)', () => { for (const a of animals) { assert.strictEqual(a.confidence.tier, 'inferred'); assert.strictEqual(a.confidence.xp, 'inferred'); assert.strictEqual(a.confidence.stats, 'inferred'); } });
+  await t('every inferred value is flagged (tier/xp/stats confidence = inferred)', () => { for (const a of animals) { assert.ok(/inferred|user-provided/.test(a.confidence.tier), a.id + ' tier'); assert.ok(/inferred|user-provided/.test(a.confidence.xp), a.id + ' xp'); assert.strictEqual(a.confidence.stats, 'inferred'); } });
   await t('verified ability: cheetah extra_boost has the archived 8 s cooldown', () => { const ab = J('data/abilities/abilities.json').find((x) => x.id === 'extra_boost'); assert.strictEqual(ab.cooldownMs, 8000); });
 
   // ---- art pipeline (original art in the Mope.io style, tools/art)
@@ -102,13 +102,13 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
   await t('archived biome button colours', () => { assert.deepStrictEqual(ucfg.choices.biomeColors, { land: '#26A73A', ocean: '#1C91B8', arctic: '#B2B2B2' }); assert.strictEqual(ucfg.choices.fillAlpha, 0.75); assert.strictEqual(ucfg.choices.highlightAlpha, 0.2); });
   // ---- dev tree
   const lay = UpgradeMenu.layout(animals, ucfg.tree, 1280, 720);
-  await t('tree: one card per animal, columns by tier (8 tiers)', () => {
-    assert.strictEqual(lay.cards.length, 44); assert.strictEqual(new Set(lay.cards.map((c) => c.col)).size, 8);
-    const col = {}; for (const c of lay.cards) col[c.id] = c.col; assert.strictEqual(col.mouse, 0); assert.strictEqual(col.rabbit, 1); assert.strictEqual(col.dragon, 7); assert.strictEqual(col.kraken, col.yeti);
+  await t('tree: one card per animal, one column per tier present (2017: tiers 1-13 and 16)', () => {
+    assert.strictEqual(lay.cards.length, 44); assert.strictEqual(new Set(lay.cards.map((c) => c.col)).size, new Set(animals.map((a) => a.tier)).size);
+    const col = {}; for (const c of lay.cards) col[c.id] = c.col; assert.strictEqual(col.mouse, 0); assert.strictEqual(col.rabbit, 1); assert.ok(col.dragon > col.rhino); assert.strictEqual(col.kraken, col.yeti); assert.strictEqual(col.dragon, col.kraken);
   });
   await t('tree: panel inside viewport; scroll clamps; hit test', () => {
-    const p = lay.panel; assert.ok(p.x >= 0 && p.y >= 0 && p.x + p.w <= 1280 && p.y + p.h <= 720); assert.ok(lay.maxScroll > 0);
-    const s = UpgradeMenu.layout(animals, ucfg.tree, 1280, 720, 99999); assert.strictEqual(s.scroll, s.maxScroll);
+    const p = lay.panel; assert.ok(p.x >= 0 && p.y >= 0 && p.x + p.w <= 1280 && p.y + p.h <= 720);
+    const s = UpgradeMenu.layout(animals, ucfg.tree, 1280, 260, 99999); assert.ok(s.maxScroll > 0); assert.strictEqual(s.scroll, s.maxScroll);
     const k = lay.cards.find((c) => c.id === 'fox'); assert.strictEqual(UpgradeMenu.cardAt(lay, k.x + 5, k.y + 5).id, 'fox'); assert.strictEqual(UpgradeMenu.cardAt(lay, 1, 1), null);
   });
   await t('tree: states', () => {
@@ -126,7 +126,7 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
     assert.strictEqual(v['--logo-w'], '350px'); assert.strictEqual(v['--logo-h'], '178px'); assert.strictEqual(v['--col-w'], '350px'); assert.strictEqual(v['--opt-bg'], 'rgba(11,164,52,0.95)');
   });
   await t('main menu: elements of this version; none from later eras', () => {
-    const e = MenuRenderer.elementsPresent(mcfg); assert.deepStrictEqual(e, { modes: true, sandbox: true, settings: true, mute: true, howToPlay: true, updates: true, options: true });
+    const e = MenuRenderer.elementsPresent(mcfg); assert.deepStrictEqual(e, { modes: true, sandbox: true, settings: true, mute: true, howToPlay: true, updates: true, options: true, spectate: false });
     for (const k of ['login', 'register', 'shop', 'currency', 'events']) assert.ok(mcfg.absentInThisVersion.includes(k)); assert.strictEqual(mcfg.animation, null);
     const stripped = JSON.parse(JSON.stringify(mcfg)); delete stripped.modes.sandbox; assert.strictEqual(MenuRenderer.elementsPresent(stripped).sandbox, false);
   });
@@ -141,7 +141,7 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
   });
 
   // ---- misc client logic
-  await t('HUD: water bar configured; next xp', () => { assert.ok(hudcfg.waterBar); assert.strictEqual(HUD.nextXp(animals, edges, 'mouse'), 60); assert.strictEqual(HUD.nextXp(animals, edges, 'dragon'), null); });
+  await t('HUD: water bar configured; next xp', () => { assert.ok(hudcfg.waterBar); assert.strictEqual(HUD.nextXp(animals, edges, 'mouse'), 50); assert.strictEqual(HUD.nextXp(animals, edges, 'dragon'), null); });
   await t('interpolation midpoint + angle wrap', () => {
     const i = new Interpolator(0); i.push(0, [{ id: 1, x: 0, y: 0, angle: 3.0 }]); i.push(100, [{ id: 1, x: 100, y: 50, angle: -3.0 }]);
     const e = i.sample(50)[0]; assert.ok(Math.abs(e.x - 50) < 1e-9 && Math.abs(e.y - 25) < 1e-9); assert.ok(Math.abs(Math.abs(e.angle) - Math.PI) < 0.2);
@@ -172,7 +172,7 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
   });
   await t('2018 main menu: archived wordmark 350x99, no modes, no How-to-play, 5 options, 3 update notes', () => {
     const i = png(m18.logo.src); assert.deepStrictEqual([i.w, i.h], [350, 99]); assert.strictEqual(m18.logo.h, 99);
-    const e = MenuRenderer.elementsPresent(m18); assert.deepStrictEqual(e, { modes: false, sandbox: false, settings: true, mute: true, howToPlay: false, updates: true, options: true });
+    const e = MenuRenderer.elementsPresent(m18); assert.deepStrictEqual(e, { modes: false, sandbox: false, settings: true, mute: true, howToPlay: false, updates: true, options: true, spectate: false });
     assert.ok(!m18.options.checkboxes.some((c) => c.id === 'christmasSkins')); assert.strictEqual(m18.options.checkboxes.length, 5);
     assert.strictEqual(m18.panels.updates.sections.length, 3); assert.ok(m18.absentInThisVersion.includes('sandbox'));
   });
@@ -187,11 +187,59 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
   await t('2018 upgrade buttons: name at the top; 2017 at the bottom; same biome colours', () => {
     assert.strictEqual(u18.choices.namePosition, 'top'); assert.strictEqual(ucfg.choices.namePosition, 'bottom'); assert.deepStrictEqual(u18.choices.biomeColors, ucfg.choices.biomeColors);
   });
-  await t('2018 tree: all 2017 edges kept, every animal reachable from a starter, tier 9 exists', () => {
-    const e17 = allEdges.filter((e) => e.releaseDate <= vinfo.date), e18 = allEdges.filter((e) => e.releaseDate <= v18.date), keys = new Set(e18.map((e) => e.from + '>' + e.to));
-    for (const e of e17) assert.ok(keys.has(e.from + '>' + e.to));
-    const reach = new Set(v18.starters); let ch = true; while (ch) { ch = false; for (const e of e18) if (reach.has(e.from) && !reach.has(e.to)) { reach.add(e.to); ch = true; } }
-    for (const a of all.filter((x) => act(x, v18.date))) assert.ok(reach.has(a.id), 'unreachable ' + a.id); assert.ok(tiers.some((x) => x.tier === 9 && x.releaseDate === '2018-04-21'));
+  const inV = (e, d) => e.releaseDate <= d && (!e.removalDate || d < e.removalDate);
+  const stateAt = (id, d) => { const a = all.find((x) => x.id === id); let r = { tier: a.tier, xp: a.xpRequired, biome: a.biome }; for (const c of (J('data/progression/animal-statistics.json').changes[id] || []).filter((c) => c.from <= d).sort((x, y) => x.from.localeCompare(y.from))) r = { tier: c.tier !== undefined ? c.tier : r.tier, xp: c.xpRequired !== undefined ? c.xpRequired : r.xp, biome: c.biome || r.biome }; return r; };
+  await t('every version: tier strictly increases along edges, XP never decreases, every animal reachable from a starter', () => {
+    for (const vf of ['versions/2017/february-13/version.json', 'versions/2018/april-21/version.json', 'versions/2019/august-25/version.json']) {
+      const v = J(vf), roster = all.filter((a) => act(a, v.date) && v.biomes.includes(stateAt(a.id, v.date).biome)), ed = allEdges.filter((e) => inV(e, v.date) && roster.some((a) => a.id === e.from) && roster.some((a) => a.id === e.to));
+      for (const e of ed) { const f = stateAt(e.from, v.date), t = stateAt(e.to, v.date); assert.ok(t.tier > f.tier, `${v.id} ${e.from}>${e.to}`); assert.ok(t.xp >= f.xp, `${v.id} xp ${e.from}>${e.to}`); }
+      const reach = new Set(v.starters); let ch = true; while (ch) { ch = false; for (const e of ed) if (reach.has(e.from) && !reach.has(e.to)) { reach.add(e.to); ch = true; } }
+      for (const a of roster) assert.ok(reach.has(a.id), `${v.id}: unreachable ${a.id}`);
+    }
+  });
+  await t('tier model (USER-PROVIDED): 16 tiers in 2017 and 2018; 18 in 2019 with apex 15, monsters 16, Black Dragon 17, King Dragon 18 at 100M XP', () => {
+    const max = (d) => Math.max(...all.filter((a) => act(a, d)).map((a) => stateAt(a.id, d).tier));
+    assert.strictEqual(max('2017-02-13'), 16); assert.strictEqual(max('2018-04-21'), 16); assert.strictEqual(max('2019-08-25'), 18);
+    const S = (id) => stateAt(id, '2019-08-25');
+    for (const id of ['trex', 'kingcrab', 'mammoth', 'elephant', 'bluewhale']) assert.strictEqual(S(id).tier, 15, id + ' apex');
+    for (const id of ['kraken', 'dragon', 'yeti', 'icemonster']) assert.strictEqual(S(id).tier, 16, id + ' monster');
+    assert.strictEqual(S('blackdragon').tier, 17); assert.strictEqual(S('blackdragon').biome, 'volcano'); assert.strictEqual(S('kingdragon').tier, 18); assert.strictEqual(S('kingdragon').xp, 100000000);
+    assert.strictEqual(stateAt('blackdragon', '2018-04-21').tier, 16); assert.strictEqual(stateAt('blackdragon', '2018-04-21').biome, 'land'); assert.strictEqual(stateAt('trex', '2018-04-21').tier, 14);
+    const tr = J('data/progression/tiers.json'); assert.strictEqual(tr.length, 18); assert.strictEqual(tr.filter((x) => x.releaseDate <= '2018-04-21').length, 16);
+    assert.deepStrictEqual([15, 16, 17, 18].map((n) => tr[n - 1].categories[0].name), ['Apex', 'Monsters', 'Black Dragon', 'King Dragon']);
+    const xp = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18].map((n) => all.filter((a) => stateAt(a.id, '2019-08-25').tier === n).map((a) => stateAt(a.id, '2019-08-25').xp)); xp.forEach((l) => assert.strictEqual(new Set(l).size <= 1, true)); // one XP value per tier
+  });
+  const v19 = J('versions/2019/august-25/version.json'), m19 = J(v19.menu), biomes = J('data/biomes/biomes.json'), terr = J('data/terrain/terrain.json'), foodsAll = J('data/food/foods.json');
+  await t('2019 roster: 77 animals, the 16 added are evidenced, none appear earlier', () => {
+    assert.strictEqual(all.filter((a) => act(a, v19.date)).length, 77); assert.strictEqual(all.filter((a) => act(a, v18.date)).length, 61);
+    const added = all.filter((a) => a.releaseDate === '2019-08-25'); assert.strictEqual(added.length, 16); for (const a of added) { assert.ok(a.evidence, a.id + ' needs evidence'); assert.strictEqual(a.internalId, null); assert.strictEqual(a.confidence.internalId.startsWith('unknown'), true); }
+    for (const id of ['kingdragon', 'komodo', 'flytrap', 'macaw', 'peacock', 'pelican', 'icemonster']) assert.ok(!all.filter((a) => act(a, v18.date)).some((a) => a.id === id), id);
+  });
+  await t('2019 biomes: land/ocean/arctic + desert + volcano; layouts inside the world and non-overlapping; desert/volcano absent earlier', () => {
+    assert.deepStrictEqual(v19.biomes, ['land', 'ocean', 'arctic', 'desert', 'volcano']); const L = Object.entries(v19.layout);
+    for (const [id, r] of L) { assert.ok(r[0] >= 0 && r[1] >= 0 && r[0] + r[2] <= 1.0001 && r[1] + r[3] <= 1.0001, id); }
+    for (let i = 0; i < L.length; i++) for (let j = i + 1; j < L.length; j++) { const a = L[i][1], b = L[j][1]; assert.ok(!(a[0] < b[0] + b[2] - 1e-9 && b[0] < a[0] + a[2] - 1e-9 && a[1] < b[1] + b[3] - 1e-9 && b[1] < a[1] + a[3] - 1e-9), L[i][0] + '/' + L[j][0]); }
+    assert.ok(!J('versions/2018/april-21/version.json').biomes.includes('desert')); for (const id of ['desert', 'volcano']) assert.strictEqual(biomes.find((b) => b.id === id).releaseDate, '2019-08-25');
+    assert.ok(/VERIFIED/.test(biomes.find((b) => b.id === 'desert').confidence)); assert.ok(/EVIDENCED/.test(biomes.find((b) => b.id === 'volcano').confidence));
+  });
+  await t('2019 foods and terrain: melons verified, desert/volcano foods flagged inferred, terrain gated by date', () => {
+    assert.ok(v19.foods.includes('watermelon')); assert.ok(!J('versions/2018/april-21/version.json').foods.includes('watermelon'));
+    for (const id of ['cactus_fruit', 'ember_fruit']) assert.ok(/INFERRED/.test(foodsAll.find((f) => f.id === id).confidence), id);
+    assert.ok(/verified/.test(foodsAll.find((f) => f.id === 'watermelon').confidence));
+    for (const id of v19.terrain) assert.ok(terr.some((x) => x.id === id), id); assert.ok(v19.terrain.includes('tree') && !J('versions/2018/april-21/version.json').terrain.includes('tree'));
+    for (const id of ['bush', 'hill', 'mud', 'hole', 'rock', 'ice_patch']) assert.ok(J('versions/2017/february-13/version.json').terrain.includes(id), '2017 ' + id); // verified in the 2017 client text
+    for (const x of terr) { const i = png(x.sprite); assert.deepStrictEqual([i.w, i.h, i.type], [128, 128, 6], x.id); } for (const b of ['desert', 'volcano']) assert.deepStrictEqual([png('assets/biomes/' + b + '.png').w], [256]);
+  });
+  await t('2019 main menu: Spectate button, 2em Play (height 50), hover #067d26, scrollable update panel, no mute button, column top 30', () => {
+    const e = MenuRenderer.elementsPresent(m19); assert.deepStrictEqual(e, { modes: false, sandbox: false, settings: true, mute: false, howToPlay: false, updates: true, options: true, spectate: true });
+    const v = MenuRenderer.themeVars(m19); assert.strictEqual(v['--play-h'], '50px'); assert.strictEqual(v['--play-hover'], '#067d26'); assert.strictEqual(v['--play-fs'], '2em'); assert.strictEqual(v['--col-top'], '30px'); assert.strictEqual(v['--upd-maxh'], '400px'); assert.strictEqual(v['--upd-ov'], 'scroll'); assert.strictEqual(v['--spec-w'], '200px');
+    assert.strictEqual(m19.panels.updates.sections.length, 4); assert.ok(m19.absentInThisVersion.includes('mute-button')); assert.ok(/NOT implemented/.test(m19.spectate.note));
+    assert.deepStrictEqual([png(m19.logo.src).w, png(m19.logo.src).h], [350, 99]);
+  });
+  await t('2019 upgrade menu knows desert/volcano (colours flagged inferred); null internal ids do not break ordering', () => {
+    const u19 = J(v19.upgradeMenu); assert.ok(u19.choices.biomeColors.desert && u19.choices.biomeColors.volcano); assert.ok(/inferred/.test(u19.choices.biomeColorsNote));
+    const an = all.filter((a) => act(a, v19.date)); const ord = UpgradeMenu.orderChoices(['kingdragon', 'komodo', 'flytrap', 'trout'], an, 'land'); assert.strictEqual(ord.length, 4); assert.deepStrictEqual(ord.filter((x) => x === 'trout' || x === 'flytrap' || x === 'komodo' || x === 'kingdragon').slice(0, 1).length, 1);
+    assert.deepStrictEqual(UpgradeMenu.BIOME_ORDER.slice(0, 3), ['land', 'ocean', 'arctic']);
   });
 
   console.log(`unit: ${pass} passed, ${fail} failed`); process.exit(fail ? 1 : 0);

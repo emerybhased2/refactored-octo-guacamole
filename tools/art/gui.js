@@ -70,6 +70,12 @@
     } else if (kind === 'ocean') {
       for (let i = 0; i < 26; i++) { const x = R() * S, y = R() * S, w = 18 + R() * 20; wrap(() => { ctx.strokeStyle = sh(base, 0.14); ctx.lineWidth = 3.5; ctx.lineCap = 'round'; ctx.beginPath(); ctx.arc(x, y + w * 0.6, w, Math.PI * 1.15, Math.PI * 1.85); ctx.stroke(); }); }
       for (let i = 0; i < 12; i++) { const x = R() * S, y = R() * S; wrap(() => { P.ell(ctx, x, y, 12 + R() * 14, 6 + R() * 6, sh(base, -0.06)); }); }
+    } else if (kind === 'desert') {
+      for (let i = 0; i < 14; i++) { const x = R() * S, y = R() * S, w = 40 + R() * 50; wrap(() => { ctx.strokeStyle = sh(base, -0.07); ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(x - w, y); ctx.quadraticCurveTo(x, y - 12, x + w, y); ctx.stroke(); ctx.strokeStyle = sh(base, 0.1); ctx.beginPath(); ctx.moveTo(x - w * 0.7, y + 7); ctx.quadraticCurveTo(x, y - 4, x + w * 0.7, y + 7); ctx.stroke(); }); }
+      for (let i = 0; i < 30; i++) { const x = R() * S, y = R() * S; wrap(() => P.ell(ctx, x, y, 1.5 + R() * 3, 1 + R() * 2, sh(base, R() > 0.5 ? -0.14 : 0.16))); }
+    } else if (kind === 'volcano') {
+      for (let i = 0; i < 20; i++) { const x = R() * S, y = R() * S; wrap(() => P.ell(ctx, x, y, 8 + R() * 18, 6 + R() * 12, sh(base, R() > 0.5 ? -0.12 : 0.08), R() * 3)); }
+      for (let i = 0; i < 9; i++) { let x = R() * S, y = R() * S; const pts = [[x, y]]; for (let k = 0; k < 4; k++) { x += (R() - 0.5) * 50; y += (R() - 0.3) * 40; pts.push([x, y]); } wrap(() => { P.line(ctx, pts, 5, '#8a2a14'); P.line(ctx, pts, 2.4, '#ff8a2a'); }); }
     } else { // arctic
       for (let i = 0; i < 9; i++) { let x = R() * S, y = R() * S; const pts = [[x, y]]; for (let k = 0; k < 4; k++) { x += (R() - 0.5) * 60; y += (R() - 0.2) * 40; pts.push([x, y]); } wrap(() => P.line(ctx, pts, 2.5, sh(base, -0.1))); }
       for (let i = 0; i < 28; i++) { const x = R() * S, y = R() * S; wrap(() => P.ell(ctx, x, y, 2 + R() * 3, 2 + R() * 3, '#ffffff')); }

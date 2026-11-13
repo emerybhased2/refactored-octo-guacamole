@@ -99,5 +99,69 @@
     "name": "Shorter wordmark logo (350x99); 'How to play' panel hidden; update panel now has Feb 16, Feb 13 and Jan 26 notes; 'Classic Mope' beta link (Dec 2, 2016 version)"
    }
   ]
+ },
+ {
+  "version": "0.3",
+  "date": "2019-08-25",
+  "confidence": "existence verified from the 2019-08-25 homepage notes and 2019 skin captures; structure per user",
+  "changes": [
+   {
+    "type": "animals_added",
+    "count": 16,
+    "names": [
+     "Chicken",
+     "Woodpecker",
+     "Toucan",
+     "Flamingo",
+     "Macaw",
+     "Pelican",
+     "Flytrap",
+     "Peacock",
+     "Leopard",
+     "Cassowary",
+     "Jaguar",
+     "Black Panther",
+     "Komodo Dragon",
+     "Black Widow",
+     "Ice Monster",
+     "King Dragon"
+    ]
+   },
+   {
+    "type": "biomes_added",
+    "names": [
+     "Desert",
+     "Volcano (inferred)"
+    ]
+   },
+   {
+    "type": "food_added",
+    "names": [
+     "Watermelon",
+     "Cactus fruit (inferred)",
+     "Ember fruit (inferred)"
+    ]
+   },
+   {
+    "type": "terrain_added",
+    "names": [
+     "Tree",
+     "Cactus (inferred)",
+     "Lava pool (inferred)"
+    ]
+   },
+   {
+    "type": "tiers",
+    "name": "18 tiers: apex=15, monsters=16, Black Dragon=17, King Dragon=18 at 100,000,000 XP (user-provided)"
+   },
+   {
+    "type": "menu_change",
+    "name": "Spectate button; larger Play button; scrollable update panel; no mute button; menu column top:30px"
+   },
+   {
+    "type": "feature_added",
+    "name": "1v1 Arena (mentioned in notes; not implemented)"
+   }
+  ]
  }
 ]

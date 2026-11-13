@@ -7,17 +7,18 @@
       '--logo-w': cfg.logo.w + 'px', '--logo-h': cfg.logo.h + 'px', '--logo-mt': cfg.logo.marginTop + 'px',
       '--nick-w': n.w + 'px', '--nick-border': n.border, '--nick-font': n.font, '--nick-pad': n.padding + 'px', '--nick-radius': n.radius + 'px', '--nick-bg': n.background, '--nick-color': n.color,
       '--play-w': p.w + 'px', '--play-h': p.h + 'px', '--play-mt': p.marginTop + 'px', '--play-bg': p.background, '--play-hover': p.hover, '--play-bb': p.borderBottom, '--play-color': p.color, '--play-radius': p.radius + 'px',
-      '--opt-bg': o.background, '--opt-top': o.top + 'px', '--sel-bg': o.select.background, '--sel-border': o.select.border, '--inactive-op': String(cfg.modes ? cfg.modes.inactiveOpacity : 0.4), '--onc-mt': (cfg.column.onconnectMarginTop || 0) + 'px',
+      '--opt-bg': o.background, '--opt-top': o.top + 'px', '--sel-bg': o.select.background, '--sel-border': o.select.border, '--inactive-op': String(cfg.modes ? cfg.modes.inactiveOpacity : 0.4), '--onc-mt': (cfg.column.onconnectMarginTop || 0) + 'px', '--col-top': (cfg.column.top || 0) + 'px', '--play-fs': p.fontSize || 'large',
     };
     const how = cfg.panels && cfg.panels.howToPlay, upd = cfg.panels && cfg.panels.updates;
     if (how) v['--how-bg'] = how.background;
-    if (upd) { v['--upd-bg'] = upd.background; v['--upd-text'] = upd.textColor || '#000000'; v['--upd-shadow'] = upd.textShadow || 'none'; v['--upd-title'] = upd.titleColor || '#095A00'; v['--upd-title-shadow'] = upd.titleShadow || 'none'; }
+    if (upd) { v['--upd-bg'] = upd.background; v['--upd-text'] = upd.textColor || '#000000'; v['--upd-shadow'] = upd.textShadow || 'none'; v['--upd-title'] = upd.titleColor || '#095A00'; v['--upd-title-shadow'] = upd.titleShadow || 'none'; v['--upd-maxh'] = upd.maxHeight ? upd.maxHeight + 'px' : 'none'; v['--upd-ov'] = upd.scroll ? 'scroll' : 'visible'; }
+    if (cfg.spectate) { v['--spec-bg'] = cfg.spectate.background; v['--spec-hover'] = cfg.spectate.hover; v['--spec-w'] = cfg.spectate.w + 'px'; }
     return v;
   }
   /** Pure: which optional menu elements this version's config actually contains (nothing from later eras leaks in). */
   function elementsPresent(cfg) {
     return { modes: !!(cfg.modes && cfg.modes.normal), sandbox: !!(cfg.modes && cfg.modes.sandbox), settings: !!(cfg.icons && cfg.icons.settings), mute: !!(cfg.icons && cfg.icons.mute),
-      howToPlay: !!(cfg.panels && cfg.panels.howToPlay), updates: !!(cfg.panels && cfg.panels.updates), options: !!cfg.options };
+      howToPlay: !!(cfg.panels && cfg.panels.howToPlay), updates: !!(cfg.panels && cfg.panels.updates), options: !!cfg.options, spectate: !!cfg.spectate };
   }
   /** Panels are either {title, items} or {sections:[{title, items}]} (the 2018 update panel stacks dated notes). */
   function fillList(el, panel) {
@@ -38,6 +39,7 @@
     $('settingsButton').style.display = has.settings ? '' : 'none'; if (has.settings) set('settingsButton', cfg.icons.settings);
     $('button_mute').style.display = has.mute ? '' : 'none'; if (has.mute) set('button_mute', cfg.icons.mute);
     set('closeBut', Object.assign({ title: 'Close' }, cfg.icons.close));
+    $('btnSpectate').style.display = has.spectate ? 'block' : 'none'; if (has.spectate) $('btnSpectate').textContent = cfg.spectate.label;
     const ni = $('nickInput'); ni.placeholder = cfg.nickname.placeholder; ni.maxLength = cfg.nickname.maxLength;
     $('startButton').textContent = cfg.play.label;
     $('howToPlayDiv').style.display = has.howToPlay ? '' : 'none'; if (has.howToPlay) fillList($('howToPlayDiv'), cfg.panels.howToPlay);

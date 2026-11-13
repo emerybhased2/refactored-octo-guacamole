@@ -6,7 +6,7 @@
 
   const renderer = new M.Renderer($('gCanvas')); renderer.resize();
   const camera = new M.Camera(), input = new M.Input($('gCanvas')), interp = new M.Interpolator(100), net = new M.Net(serverUrl);
-  let mode = 'menu', V = null, you = null, lakes = [], foods = [], lb = [], count = 0, pred = null, selectedVersion = null, lastJoin = null, wantJoin = false, boost = false;
+  let mode = 'menu', V = null, you = null, lakes = [], terrain = [], foods = [], lb = [], count = 0, pred = null, selectedVersion = null, lastJoin = null, wantJoin = false, boost = false;
   const chats = new Map();
   let frames = 0, fpsT = performance.now(), lastInputSent = 0, lastSent = '', lastFrame = performance.now(), dbg = { fps: 0, ping: 0, kbps: 0, mem: '-' }, lastBytes = 0;
   const upgrade = new M.UpgradeMenu((id) => net.send({ t: 'evolve', id }), DEV);
@@ -25,7 +25,7 @@
   net.on('open', () => { if (wantJoin && lastJoin) net.send(lastJoin); });
   net.on('close', () => { if (mode === 'play') { setStatus('Connection lost - reconnecting...'); } else if (wantJoin) { connecting(false); setStatus('Cannot reach server (' + serverUrl + ')'); } });
   net.on('welcome', (m) => {
-    V = m.version; V.__sandbox = m.mode === 'sandbox'; lakes = m.lakes || []; mode = 'play'; chats.clear();
+    V = m.version; V.__sandbox = m.mode === 'sandbox'; lakes = m.lakes || []; terrain = m.terrain || []; mode = 'play'; chats.clear();
     you = { id: m.id, x: 0, y: 0, xp: 0, hp: 100, w: 100, a: V.startAnimal, ev: [], cd: 0 };
     upgrade.setVersion(V); menu.hide(); connecting(false); setStatus(''); $('deathMsg').style.display = 'none'; interp.snaps.length = 0; pred = null;
   });
@@ -78,7 +78,7 @@
     }
     const k = 1 - Math.exp(-dt * 6); pred.x += (pred.serverX - pred.x) * k; pred.y += (pred.serverY - pred.y) * k;
     camera.follow(pred.x, pred.y, V.animals[pred.ai].tier, dt);
-    renderer.drawWorld(camera, V, lakes, interp.sample(performance.now()), foods, you.id, pred, chats, performance.now());
+    renderer.drawWorld(camera, V, lakes, interp.sample(performance.now()), foods, you.id, pred, chats, performance.now(), terrain);
     const ctx = renderer.ctx;
     M.HUD.draw(ctx, renderer.vw, renderer.vh, V, you, V.animals[pred.ai], lb, DEV ? dbg : null, count);
     if (mode === 'play') upgrade.draw(ctx, renderer.vw, renderer.vh, you, t);
@@ -94,5 +94,5 @@
       await loadVersion(id); menu.show(); requestAnimationFrame(frame);
     } catch (e) { setStatus('Failed to load: ' + e.message); console.error(e); }
   })();
-  window.__mope = { net, get state() { return { mode, you, V }; } };
+  window.__mope = { net, get state() { return { mode, you, V, lakes, terrain, foods }; } }; // debugging / automated tests
 })();

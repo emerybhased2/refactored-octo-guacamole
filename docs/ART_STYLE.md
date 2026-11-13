@@ -24,6 +24,9 @@ set `spriteStatus: "original"` in `animals.json`, drop the PNG in, and record th
 
 Engine decorations added for version 2: spiral shell (snail), cobra hood, spider legs, bird wings (eagle), ossicones (giraffe).
 
+## Version 3 additions (2019)
+New primitives: peacock-style feather fan, flytrap jaws, pelican pouch, ice crystals, crown, comb, eye iris colour. New generators: `terrain.js` (9 top-down objects), desert and volcano biome tiles, 3 foods. All original; the same exporter writes them to the paths declared in the data.
+
 ## Polish pass (after version 2)
 - **Depth:** every body gets a very soft highlight (upper-left) and shadow (lower), toned down on dark bodies so it never reads as a blob.
 - **Tentacles:** tapered, suckered tentacles that start at the back edge and trail behind (squid, octopus, kraken, jellyfish).

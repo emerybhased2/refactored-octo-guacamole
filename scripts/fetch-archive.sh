@@ -13,3 +13,6 @@ get 20180421014032 ""         index_2018-04-21.html
 get 20180421014457 client.js  client_2018-04-21.js
 get 20180421014110 main.css   main_2018-04-21.css
 get 20180421014215 img/logo.png logo_2018-04-21.png
+get 20190825113653 ""         index_2019-08-25.html
+get 20190825113700 "main.css?v=1.224" main_2019-08-25.css
+get 20190327115440 img/logo.png logo_2019.png

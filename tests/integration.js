@@ -45,13 +45,20 @@ function client() {
     await t('sandbox mode: separate world, arrow stepping wraps to top tier', async () => {
       const s = client(); await s.ready; s.send({ t: 'join', name: 'Sbx', v: '2017-02-13', mode: 'sandbox' }); const w = await s.until('welcome'); assert.strictEqual(w.mode, 'sandbox');
       await s.until('snap'); assert.deepStrictEqual(s.last.snap.you.ev, []); s.send({ t: 'sandbox', d: -1 }); await sleep(400);
-      const top = w.version.animals.find((x) => x.id === s.last.snap.you.a); assert.strictEqual(top.tier, 8); assert.ok(s.last.snap.n < 5, 'sandbox has no bots'); s.ws.close();
+      const top = w.version.animals.find((x) => x.id === s.last.snap.you.a); assert.strictEqual(top.tier, 16); assert.ok(s.last.snap.n < 5, 'sandbox has no bots'); s.ws.close();
     });
     await t('version 2018-04-21: 61 animals, normal mode only (sandbox request ignored), 2018 abilities', async () => {
       const c = client(); await c.ready; c.send({ t: 'join', name: 'Y2018', v: '2018-04-21', mode: 'sandbox' }); const w = await c.until('welcome');
       assert.strictEqual(w.version.animals.length, 61); assert.deepStrictEqual(w.version.modes, ['normal']); assert.strictEqual(w.mode, 'normal');
       assert.ok(w.version.abilities.some((x) => x.id === 'venom_spit')); assert.ok(w.version.animals.some((x) => x.id === 'tiger'));
       await c.until('snap'); assert.ok(c.last.snap.n >= 25); c.ws.close();
+    });
+    await t('version 2019-08-25: 77 animals, 5 biomes, 18 tiers, terrain + desert lakes in the welcome, spectate is a menu button only', async () => {
+      const c = client(); await c.ready; c.send({ t: 'join', name: 'Y2019', v: '2019-08-25', mode: 'sandbox' }); const w = await c.until('welcome');
+      assert.strictEqual(w.version.animals.length, 77); assert.deepStrictEqual(w.version.biomes.map((b) => b.id), ['land', 'ocean', 'arctic', 'desert', 'volcano']); assert.strictEqual(w.version.tiers.length, 18);
+      assert.strictEqual(w.version.tiers[17].name, 'King Dragon'); assert.strictEqual(w.version.animals.find((x) => x.id === 'kingdragon').xpRequired, 100000000); assert.strictEqual(w.mode, 'normal');
+      assert.ok(w.terrain.length > 50 && w.version.terrain.some((x) => x.id === 'tree') && w.lakes.length > 8); assert.ok(w.version.foods.some((f) => f.id === 'watermelon'));
+      await c.until('snap'); assert.ok(c.last.snap.n >= 30); c.ws.close();
     });
     await t('2017 build still serves 44 animals and no 2018 abilities', async () => {
       const c = client(); await c.ready; c.send({ t: 'join', name: 'Y2017', v: '2017-02-13' }); const w = await c.until('welcome');
