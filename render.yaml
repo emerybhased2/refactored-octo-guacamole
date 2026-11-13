@@ -1,0 +1,17 @@
+# Render Blueprint: deploys the project's Dockerfile as one web service (the game server runs inside the container).
+services:
+  - type: web
+    name: mope-historical
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free            # free plans have no persistent disk: accounts/coins reset on redeploy or spin-down
+    healthCheckPath: /
+    autoDeploy: true
+    # Render injects $PORT; the container's web server listens on it and proxies WebSockets on /ws.
+    # NEVER add MOPE_DEV here (it enables the dev-only coin/disaster cheats).
+    # To keep accounts, use a paid plan and uncomment:
+    # plan: starter
+    # disk:
+    #   name: mope-data
+    #   mountPath: /app/database
+    #   sizeGB: 1
