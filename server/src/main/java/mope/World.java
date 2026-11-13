@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 public final class World {
     public static final int EATEN = 1, THIRST = 4; // reason codes (match the archived client's death codes)
     public final VersionManager.Config cfg;
-    public final boolean sandbox;
+    public final boolean sandbox, arena;
     public final double size;
     public final Random rnd;
     public final EvolutionEngine evolution;
@@ -19,6 +19,12 @@ public final class World {
     public final List<double[]> lakes = new ArrayList<>(); // x, y, radius
     public final List<double[]> terrain = new ArrayList<>(); // typeIndex, x, y (static decoration; effects are not simulated)
     public final Map<Integer, Player> players = new LinkedHashMap<>();
+    /** A spectator has no body: it receives snapshots centred on a followed player (the XP leader by default). */
+    public static final class Spectator { public final Player.Sender sender; public int target = -1; public Spectator(Player.Sender s) { sender = s; } }
+    public final List<Spectator> spectators = new ArrayList<>();
+    public String arenaState = "waiting"; // waiting -> fight -> over
+    public boolean arenaBot; public long arenaStartTick;
+    public static final int ARENA_WAIT_SECONDS = 4;
     public long tick;
     public Consumer<Player> onDeath = p -> {};
     private final Queue<Runnable> inbox = new ConcurrentLinkedQueue<>();
@@ -30,15 +36,18 @@ public final class World {
 
     public World(VersionManager.Config cfg, long seed) { this(cfg, seed, false); }
 
-    public World(VersionManager.Config cfg, long seed, boolean sandbox) {
-        this.cfg = cfg; this.size = cfg.worldSize; this.rnd = new Random(seed); this.sandbox = sandbox;
+    public World(VersionManager.Config cfg, long seed, boolean sandbox) { this(cfg, seed, sandbox, false); }
+
+    /** arena = small 1v1 world (INFERRED rules: health-based contact combat, no healing, bot opponent after a short wait). */
+    public World(VersionManager.Config cfg, long seed, boolean sandbox, boolean arena) {
+        this.cfg = cfg; this.size = cfg.worldSize; this.rnd = new Random(seed); this.sandbox = sandbox; this.arena = arena;
         evolution = new EvolutionEngine(cfg.animals, cfg.edges, cfg.startAnimal);
         abilities = new AbilityEngine(cfg.abilities, cfg.date);
         biomes = new BiomeEngine(cfg.biomes, size);
         foods = new FoodEngine(cfg.foods, biomes, rnd);
         foods.fill();
         tree = new QuadTree(0, 0, size, size);
-        for (Defs.BiomeDef b : cfg.biomes) if (b.lakes != null) for (int i = 0; i < b.lakes.count; i++) {
+        if (!arena) for (Defs.BiomeDef b : cfg.biomes) if (b.lakes != null) for (int i = 0; i < b.lakes.count; i++) { // the 1v1 arena has no lakes
             double r = b.lakes.radius, x0 = b.rect[0] * size, y0 = b.rect[1] * size, w = b.rect[2] * size, h = b.rect[3] * size;
             lakes.add(new double[] { x0 + r + rnd.nextDouble() * (w - 2 * r), y0 + r + rnd.nextDouble() * (h - 2 * r), r });
         }
@@ -59,7 +68,7 @@ public final class World {
         sandboxOrder.addAll(cfg.animals.values());
         List<String> bo = cfg.biomeIds;
         sandboxOrder.sort(Comparator.comparingInt((Animal a) -> a.tier).thenComparingInt(a -> bo.indexOf(a.biome)).thenComparingInt(a -> a.internalId));
-        if (!sandbox) for (int i = 0; i < cfg.bots; i++) join("Bot" + (i + 1), null, true);
+        if (!sandbox && !arena) for (int i = 0; i < cfg.bots; i++) join("Bot" + (i + 1), null, true);
     }
 
     /** Food is worth more to bigger animals so the 18-tier XP curve stays reachable. INFERRED balance rule (1.35^(tier-1)). */
@@ -83,6 +92,24 @@ public final class World {
         p.protectedUntilTick = tick + 2L * cfg.tickRate;
         players.put(p.id, p);
         return p;
+    }
+    /** Arena join: fixed animal, left/right spawn, full health. */
+    public Player joinArena(String name, Player.Sender sender, boolean bot, String animalId) {
+        Player p = new Player(); p.world = this; p.id = nextId++; p.name = name; p.sender = sender; p.bot = bot;
+        Animal a = cfg.animals.get(animalId); if (a == null) a = evolution.start();
+        p.setAnimal(a); p.xp = 0; p.health = p.maxHealth(); p.water = 100;
+        boolean left = players.isEmpty() || players.values().stream().noneMatch(q -> q.x < size / 2);
+        p.x = left ? size * 0.25 : size * 0.75; p.y = size / 2; p.angle = left ? 0 : Math.PI;
+        players.put(p.id, p);
+        return p;
+    }
+    public Spectator addSpectator(Player.Sender s) { Spectator sp = new Spectator(s); spectators.add(sp); return sp; }
+    public void removeSpectator(Spectator sp) { spectators.remove(sp); }
+    /** Cycle the followed player through the current top-10 leaderboard. */
+    public void spectateNext(Spectator sp) {
+        List<Player> lb = leaderboard(); if (lb.isEmpty()) return;
+        int idx = -1; for (int i = 0; i < lb.size(); i++) if (lb.get(i).id == sp.target) idx = i;
+        sp.target = lb.get((idx + 1) % lb.size()).id;
     }
     public void leave(Player p) { players.remove(p.id); p.dead = true; }
 
@@ -148,7 +175,8 @@ public final class World {
                 nx = Math.max(p.radius, Math.min(size - p.radius, nx)); ny = Math.max(p.radius, Math.min(size - p.radius, ny));
                 if (biomes.canEnter(p.animal, nx, ny)) { p.x = nx; p.y = ny; }
             }
-            if (!p.bot && !sandbox) { // thirst (bots and sandbox are exempt)
+            if (arena) { p.water = 100; /* no healing in the arena (archived note: Black Dragon not healing in the 1v1 arena) */ }
+            else if (!p.bot && !sandbox) { // thirst (bots and sandbox are exempt)
                 if (inWater(p.x, p.y)) p.water = Math.min(100, p.water + 30 * dt);
                 else p.water = Math.max(0, p.water - (0.5 + (running ? 5 : 0)) * dt);
                 if (p.water <= 0) { p.health -= 6 * dt; if (p.health <= 0) { die(p, "thirst", THIRST, dying); continue; } }
@@ -160,7 +188,8 @@ public final class World {
         for (Player p : players.values()) if (!p.dead) tree.insert(p);
         for (Food f : foods.foods) tree.insert(f);
 
-        for (Player p : players.values()) {
+        if (arena) arenaTick(dt, dying);
+        else for (Player p : players.values()) {
             if (p.dead) continue;
             tmp.clear();
             tree.query(p.x, p.y, p.radius + 40, tmp);
@@ -173,10 +202,35 @@ public final class World {
                 }
             }
         }
-        for (Player o : dying) { players.remove(o.id); onDeath.accept(o); if (o.bot) { Player nb = join(o.name, null, true); nb.kills = 0; } }
+        for (Player o : dying) { players.remove(o.id); onDeath.accept(o); if (o.bot && !arena) { Player nb = join(o.name, null, true); nb.kills = 0; } }
         foods.tick(now);
 
         if (tick % Math.max(1, cfg.tickRate / cfg.netRate) == 0) broadcast();
+    }
+
+    /** Arena rules (INFERRED): contact damage both ways each tick, scaled by relative size; no healing; last one standing wins. */
+    private void arenaTick(double dt, List<Player> dying) {
+        List<Player> alive = new ArrayList<>(); for (Player p : players.values()) if (!p.dead) alive.add(p);
+        if (arenaState.equals("waiting")) {
+            if (alive.size() >= 2) arenaState = "fight";
+            else if (!arenaBot && alive.size() == 1 && tick - arenaStartTick >= (long) ARENA_WAIT_SECONDS * cfg.tickRate) { // nobody joined: a bot of the same animal fills in
+                arenaBot = true; Player b = joinArena("Opponent", null, true, alive.get(0).animal.id); b.protectedUntilTick = 0;
+            }
+            return;
+        }
+        if (!arenaState.equals("fight") || alive.size() < 2) return;
+        Player a = alive.get(0), b = alive.get(1);
+        if (Collision.overlap(a, b)) {
+            double base = 30 * dt;
+            b.health -= base * Math.sqrt(a.animal.size / b.animal.size); a.health -= base * Math.sqrt(b.animal.size / a.animal.size);
+        }
+        Player loser = (a.health <= 0 && b.health <= 0) ? (a.health < b.health ? a : b.health < a.health ? b : (rnd.nextBoolean() ? a : b)) // simultaneous knockout: higher remaining health wins
+            : a.health <= 0 ? a : b.health <= 0 ? b : null;
+        if (loser != null) {
+            Player winner = loser == a ? b : a;
+            die(loser, winner.name, EATEN, dying); arenaState = "over"; winner.kills++;
+            if (!winner.bot && winner.sender != null) winner.sender.send("{\"t\":\"won\",\"by\":" + Data.GSON.toJson(loser.name) + "}");
+        }
     }
 
     private List<Player> leaderboard() {
@@ -186,21 +240,26 @@ public final class World {
     }
 
     private void broadcast() {
-        String lbJson = null;
-        for (Player p : players.values()) {
-            if (p.bot || p.sender == null) continue;
-            if (lbJson == null) {
-                StringBuilder s = new StringBuilder("[");
-                for (Player q : leaderboard()) { if (s.length() > 1) s.append(','); s.append('[').append(Data.GSON.toJson(q.name)).append(',').append((long) q.xp).append(',').append(q.id).append(']'); }
-                lbJson = s.append(']').toString();
-            }
-            p.sender.send(snapshot(p, lbJson));
+        boolean anyHuman = false; for (Player p : players.values()) if (!p.bot && p.sender != null) { anyHuman = true; break; }
+        if (!anyHuman && spectators.isEmpty()) return;
+        StringBuilder s = new StringBuilder("[");
+        for (Player q : leaderboard()) { if (s.length() > 1) s.append(','); s.append('[').append(Data.GSON.toJson(q.name)).append(',').append((long) q.xp).append(',').append(q.id).append(']'); }
+        String lbJson = s.append(']').toString();
+        for (Player p : players.values()) if (!p.bot && p.sender != null) p.sender.send(snapshot(p, lbJson));
+        for (Spectator sp : spectators) {
+            Player t = players.get(sp.target);
+            if (t == null || t.dead) { List<Player> lb = leaderboard(); if (lb.isEmpty()) continue; t = lb.get(0); sp.target = t.id; }
+            sp.sender.send(snapshot(t, lbJson, t.name));
         }
     }
 
-    String snapshot(Player me, String lbJson) {
+    String snapshot(Player me, String lbJson) { return snapshot(me, lbJson, null); }
+
+    String snapshot(Player me, String lbJson, String spectating) {
         StringBuilder s = new StringBuilder(2048);
         s.append("{\"t\":\"snap\",\"k\":").append(tick)
+         .append(spectating == null ? "" : ",\"spec\":" + Data.GSON.toJson(spectating))
+         .append(arena ? ",\"arena\":\"" + arenaState + "\"" : "")
          .append(",\"n\":").append(players.size())
          .append(",\"you\":{\"id\":").append(me.id).append(",\"x\":").append(r1(me.x)).append(",\"y\":").append(r1(me.y))
          .append(",\"xp\":").append((long) me.xp).append(",\"hp\":").append((int) me.health).append(",\"w\":").append((int) me.water).append(",\"a\":\"").append(me.animal.id).append("\",\"ev\":[");

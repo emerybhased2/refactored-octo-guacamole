@@ -169,6 +169,38 @@ public final class SelfTest {
         World wq = new World(quiet(v19), 4); Player fp = human(wq, "F", null); fp.setAnimal(v19.animals.get("elephant")); place(fp, 3000, 3000); wq.foods.foods.add(new Food(99, v19.foods.get(0), 0, fp.x, fp.y)); double before = fp.xp; wq.tick();
         check("a tier-15 animal gets scaled food xp", fp.xp - before > 5 * 50);
 
+        // ---- Spectate (2019 feature button; behaviour inferred)
+        check("spectate is a 2019-only feature", v19.feature("spectate") && !v18.feature("spectate") && !v.feature("spectate"));
+        World wsp = new World(v19, 21, false); List<String> specMsgs = new ArrayList<>(); World.Spectator spx = wsp.addSpectator(specMsgs::add);
+        for (int i = 0; i < 60; i++) wsp.tick();
+        check("spectator receives snapshots naming the followed player", !specMsgs.isEmpty() && specMsgs.get(specMsgs.size() - 1).contains("\"spec\":\""));
+        int firstTarget = spx.target; wsp.spectateNext(spx); check("spectate-next moves to another player", spx.target != firstTarget && wsp.players.containsKey(spx.target));
+        Player followed = wsp.players.get(spx.target); wsp.leave(followed); for (int i = 0; i < 10; i++) wsp.tick();
+        check("spectator re-targets when the followed player disappears", spx.target != followed.id && wsp.players.containsKey(spx.target));
+        int specBefore = specMsgs.size(); wsp.removeSpectator(spx); for (int i = 0; i < 20; i++) wsp.tick(); check("removed spectator gets no more snapshots", specMsgs.size() == specBefore);
+        check("spectators are not players (world still has exactly its bots minus the one removed)", wsp.players.size() == v19.bots - 1);
+
+        // ---- 1v1 Arena (rules inferred; the archived facts: exists, opponents semi-transparent, no Black Dragon healing)
+        VersionManager.Config arenaCfg = NetworkManager.arenaConfig(v19);
+        check("arena config: land only, small, no food/terrain/bots", arenaCfg.biomeIds.equals(List.of("land")) && arenaCfg.worldSize == 1600 && arenaCfg.foods.isEmpty() && arenaCfg.terrain.isEmpty() && arenaCfg.bots == 0 && arenaCfg.animals.containsKey("lion") && !arenaCfg.animals.containsKey("shark"));
+        World war = new World(arenaCfg, 31, false, true); List<String> arMsgs = new ArrayList<>(); Player ap = war.joinArena("Hero", arMsgs::add, false, "lion");
+        eq("arena starts waiting with one fighter, no food and no lakes", List.of(war.arenaState, war.players.size(), war.foods.foods.size(), war.lakes.size()), List.of("waiting", 1, 0, 0));
+        for (int i = 0; i < 30 * (World.ARENA_WAIT_SECONDS + 1); i++) war.tick();
+        check("a bot opponent of the same animal joins after the wait", war.arenaBot && war.players.size() == 2 && war.arenaState.equals("fight") && war.players.values().stream().allMatch(pl -> pl.animal.id.equals("lion")));
+        Player foe = war.players.values().stream().filter(pl -> pl != ap).findFirst().get();
+        place(ap, 800, 800); place(foe, 1500, 800); ap.inputMag = 0; foe.inputMag = 0; foe.botThinkAt = Integer.MAX_VALUE; double hp0 = ap.health;
+        for (int i = 0; i < 30; i++) war.tick();
+        check("no contact, no damage, no healing in the arena", ap.health == hp0 && foe.health == hp0);
+        ap.health = 60; foe.health = 90; for (int i = 0; i < 30; i++) war.tick(); check("health does not regenerate", ap.health == 60 && foe.health == 90);
+        place(ap, 800, 800); place(foe, 800 + ap.radius, 800); double h1 = ap.health; for (int i = 0; i < 15; i++) war.tick();
+        check("contact damages both fighters", ap.health < h1 && foe.health < 90);
+        for (int i = 0; i < 30 * 8 && war.arenaState.equals("fight"); i++) war.tick();
+        check("the match ends with exactly one loser (no double knockout) and a winner message for a human winner", war.arenaState.equals("over") && war.players.values().stream().filter(pl -> !pl.dead).count() == 1 && (ap.dead || arMsgs.stream().anyMatch(m -> m.contains("\"t\":\"won\""))));
+        World war2 = new World(arenaCfg, 32, false, true); Player x1 = war2.joinArena("A", null, true, "lion"), x2 = war2.joinArena("B", null, true, "lion"); place(x1, 800, 800); place(x2, 800 + x1.radius, 800);
+        x1.botThinkAt = Integer.MAX_VALUE; x2.botThinkAt = Integer.MAX_VALUE; x1.inputMag = 0; x2.inputMag = 0; war2.tick(); // enter the fight state, bots frozen
+        place(x1, 800, 800); place(x2, 800 + x1.radius, 800); x1.health = 0.01; x2.health = 0.01; war2.tick();
+        check("simultaneous knockout still produces one winner", war2.arenaState.equals("over") && war2.players.values().stream().filter(pl -> !pl.dead).count() == 1);
+
         // ---- Stress: 200+ entities
         World big = new World(v, 7);
         for (int i = 0; i < 220; i++) big.join("S" + i, null, true);

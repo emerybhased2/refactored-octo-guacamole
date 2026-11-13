@@ -12,12 +12,14 @@ import org.java_websocket.server.WebSocketServer;
 public final class NetworkManager extends WebSocketServer {
     private static final int MAX_MSG = 2048;
 
-    private static final class Session { World world; Player player; String account; }
+    private static final class Session { World world; Player player; World.Spectator spec; String account; }
 
     private final VersionManager versions;
     private final AccountManager accounts;
     private final Map<String, World> worlds = new ConcurrentHashMap<>();
     private final Map<WebSocket, Session> sessions = new ConcurrentHashMap<>();
+    private final java.util.List<World> arenas = new java.util.ArrayList<>();
+    private World waitingArena;
     private final long seed;
 
     public NetworkManager(int port, VersionManager versions, AccountManager accounts, long seed) {
@@ -35,9 +37,26 @@ public final class NetworkManager extends WebSocketServer {
         });
     }
 
+    /** Arena config: one small land-only world, no food/terrain/bots (INFERRED rules). */
+    static VersionManager.Config arenaConfig(VersionManager.Config v) {
+        JsonObject o = v.raw.deepCopy();
+        com.google.gson.JsonArray biomes = new com.google.gson.JsonArray(); biomes.add("land"); o.add("biomes", biomes);
+        o.add("foods", new com.google.gson.JsonArray()); o.add("terrain", new com.google.gson.JsonArray());
+        JsonObject layout = new JsonObject(); com.google.gson.JsonArray r = new com.google.gson.JsonArray(); for (double d : new double[] { 0, 0, 1, 1 }) r.add(d); layout.add("land", r); o.add("layout", layout);
+        o.addProperty("bots", 0); o.addProperty("worldSize", 1600);
+        return VersionManager.resolve(o);
+    }
+    /** Pair a joining player with a waiting arena if there is one, otherwise open a new match. */
+    synchronized World arenaFor(VersionManager.Config v) {
+        arenas.removeIf(a -> { boolean done = a.arenaState.equals("over") || a.players.isEmpty() && a.tick > 10; if (done) a.stop(); return done; });
+        if (waitingArena != null && waitingArena.arenaState.equals("waiting") && !waitingArena.arenaBot && waitingArena.players.size() == 1) { World w = waitingArena; waitingArena = null; return w; }
+        World w = new World(arenaConfig(v), seed + arenas.size() + System.nanoTime(), false, true); w.arenaStartTick = 0; w.start(); arenas.add(w); waitingArena = w; return w;
+    }
+
     @Override public void onOpen(WebSocket c, ClientHandshake h) { sessions.put(c, new Session()); }
     @Override public void onClose(WebSocket c, int code, String reason, boolean remote) {
         Session s = sessions.remove(c);
+        if (s != null && s.spec != null) { World.Spectator sp = s.spec; s.world.submit(() -> s.world.removeSpectator(sp)); }
         if (s != null && s.player != null) { Player p = s.player; s.world.submit(() -> { if (!p.dead && s.world.players.containsKey(p.id)) { s.world.onDeath.accept(p); } s.world.leave(p); }); }
     }
     @Override public void onError(WebSocket c, Exception e) { System.err.println("ws error: " + e); }
@@ -54,6 +73,8 @@ public final class NetworkManager extends WebSocketServer {
             switch (t) {
                 case "ping" -> c.send("{\"t\":\"pong\",\"ts\":" + (m.has("ts") ? m.get("ts").getAsDouble() : 0) + "}");
                 case "join" -> join(c, s, m);
+                case "spectate-next" -> { World.Spectator sp = s.spec; if (sp != null) s.world.submit(() -> s.world.spectateNext(sp)); }
+                case "leave" -> { if (s.spec != null) { World.Spectator sp = s.spec; s.spec = null; s.world.submit(() -> s.world.removeSpectator(sp)); } if (s.player != null) { Player p = s.player; s.player = null; s.world.submit(() -> { if (!p.dead) s.world.leave(p); }); } }
                 case "input" -> {
                     Player p = s.player; if (p == null) return;
                     double a = num(m, "a"), mag = num(m, "m");
@@ -85,6 +106,7 @@ public final class NetworkManager extends WebSocketServer {
     }
 
     private void join(WebSocket c, Session s, JsonObject m) {
+        if (s.spec != null) return;
         if (s.player != null && !s.player.dead && s.world.players.containsKey(s.player.id)) return;
         VersionManager.Config v = versions.get(str(m, "v"));
         if (v == null) { c.send("{\"t\":\"error\",\"err\":\"unknown version\"}"); return; }
@@ -92,15 +114,20 @@ public final class NetworkManager extends WebSocketServer {
         name = name == null ? "" : name.replaceAll("[\\p{Cntrl}<>]", "").trim();
         if (name.length() > 16) name = name.substring(0, 16);
         if (name.isEmpty()) name = "Mope";
-        final String fn = name;
-        boolean sb = "sandbox".equals(str(m, "mode")) && v.modes.contains("sandbox");
-        World w = world(v.id, sb);
+        final String fn = name, req = str(m, "mode") == null ? "normal" : str(m, "mode");
+        final String mode = req.equals("sandbox") && v.modes.contains("sandbox") ? "sandbox"
+            : req.equals("spectate") && v.feature("spectate") ? "spectate"
+            : req.equals("arena") && v.feature("arena") ? "arena" : "normal";
+        final String animalReq = str(m, "animal");
+        World w = mode.equals("arena") ? arenaFor(v) : world(v.id, mode.equals("sandbox"));
         s.world = w;
         w.submit(() -> {
-            Player p = w.join(fn, c::send, false);
-            p.account = v.feature("accounts") ? s.account : null;
-            s.player = p;
-            JsonObject o = new JsonObject(); o.addProperty("t", "welcome"); o.addProperty("id", p.id); o.addProperty("mode", sb ? "sandbox" : "normal"); o.add("version", v.clientJson());
+            JsonObject o = new JsonObject(); o.addProperty("t", "welcome"); o.addProperty("mode", mode); o.add("version", mode.equals("arena") ? w.cfg.clientJson() : v.clientJson());
+            if (mode.equals("spectate")) { s.spec = w.addSpectator(c::send); o.addProperty("id", -1); }
+            else {
+                Player p = mode.equals("arena") ? w.joinArena(fn, c::send, false, animalReq == null ? "lion" : animalReq) : w.join(fn, c::send, false);
+                p.account = v.feature("accounts") ? s.account : null; s.player = p; o.addProperty("id", p.id);
+            }
             com.google.gson.JsonArray lk = new com.google.gson.JsonArray(); for (double[] l : w.lakes) lk.add(Data.GSON.toJsonTree(l)); o.add("lakes", lk);
             com.google.gson.JsonArray tr = new com.google.gson.JsonArray(); for (double[] t : w.terrain) tr.add(Data.GSON.toJsonTree(t)); o.add("terrain", tr);
             c.send(o.toString());

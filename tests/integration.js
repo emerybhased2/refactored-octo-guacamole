@@ -64,6 +64,23 @@ function client() {
       const c = client(); await c.ready; c.send({ t: 'join', name: 'Y2017', v: '2017-02-13' }); const w = await c.until('welcome');
       assert.strictEqual(w.version.animals.length, 44); assert.ok(!w.version.abilities.some((x) => x.id === 'venom_spit')); c.ws.close();
     });
+    await t('spectate (2019): welcome without a body, snapshots name the followed player, next cycles, leave stops them', async () => {
+      const c = client(); await c.ready; c.send({ t: 'join', name: 'Watcher', v: '2019-08-25', mode: 'spectate' }); const w = await c.until('welcome');
+      assert.strictEqual(w.mode, 'spectate'); assert.strictEqual(w.id, -1); const s1 = await c.until('snap'); assert.ok(s1.spec && s1.spec.length > 0); assert.ok(s1.p.length > 0 && s1.n >= 30);
+      const first = s1.spec; let changed = false; for (let i = 0; i < 4 && !changed; i++) { c.send({ t: 'spectate-next' }); await sleep(350); changed = c.last.snap.spec !== first; } assert.ok(changed, 'target did not change');
+      c.send({ t: 'input', a: 0, m: 1 }); await sleep(200); c.send({ t: 'leave' }); await sleep(300); const n = c.msgs.length; await sleep(600); assert.strictEqual(c.msgs.length, n, 'snapshots continued after leave'); c.ws.close();
+    });
+    await t('spectate is not offered in 2018 or 2017: falls back to a normal join', async () => {
+      for (const v of ['2018-04-21', '2017-02-13']) { const c = client(); await c.ready; c.send({ t: 'join', name: 'NoSpec', v, mode: 'spectate' }); const w = await c.until('welcome'); assert.strictEqual(w.mode, 'normal', v); assert.ok(w.id > 0); c.ws.close(); }
+    });
+    await t('1v1 arena (2019, inferred rules): small land-only world, waiting then a bot opponent after ~4s, fighters visible', async () => {
+      const c = client(); await c.ready; c.send({ t: 'join', name: 'Duelist', v: '2019-08-25', mode: 'arena', animal: 'lion' }); const w = await c.until('welcome');
+      assert.strictEqual(w.mode, 'arena'); assert.strictEqual(w.version.worldSize, 1600); assert.deepStrictEqual(w.version.biomes.map((b) => b.id), ['land']); assert.strictEqual(w.terrain.length, 0); assert.strictEqual(w.lakes.length, 0);
+      const s1 = await c.until('snap'); assert.strictEqual(s1.arena, 'waiting'); assert.strictEqual(s1.you.a, 'lion'); assert.strictEqual(s1.f.length, 0);
+      let fight = null; for (let i = 0; i < 80 && !fight; i++) { await sleep(100); if (c.last.snap.arena === 'fight') fight = c.last.snap; } assert.ok(fight, 'no bot opponent arrived'); assert.ok(fight.p.length >= 2, 'opponent not visible');
+      c.ws.close();
+    });
+    await t('arena is not offered in 2018: falls back to a normal join', async () => { const c = client(); await c.ready; c.send({ t: 'join', name: 'NoArena', v: '2018-04-21', mode: 'arena' }); const w = await c.until('welcome'); assert.strictEqual(w.mode, 'normal'); c.ws.close(); });
     await t('ping/pong', async () => { b.send({ t: 'ping', ts: 5 }); await b.until('pong'); });
     await t('malformed/oversized messages are ignored', async () => {
       a.ws.send('not json'); a.ws.send('x'.repeat(5000)); a.ws.send(JSON.stringify({ t: 'input', a: 'NaN', m: {} })); await sleep(300); assert.ok(a.ws.readyState === 1);

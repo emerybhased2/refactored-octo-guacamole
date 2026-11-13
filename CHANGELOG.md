@@ -1,5 +1,11 @@
 # Project changelog
 
+## 0.4.1 - Spectate and 1v1 Arena (2019)
+- **Spectate** (2019 menu button now works): a body-less spectator follows the XP leader, Space/click cycles targets, Esc leaves. Behaviour inferred; the button is the archived part.
+- **1v1 Arena** (evidence: 2019-06-18 notes; rules INFERRED): small land-only world per match, health-based contact combat, no healing, bot opponent after 4 s, simultaneous knockouts resolve to one winner, opponents drawn semi-transparent (archived note). Reachable from the dev bar only (the archived menu HTML has no Arena button).
+- Tests: server 102, client/data 44, integration 18.
+
+
 ## 0.4.0 - Version 3: 2019-08-25
 - New version from the 2019-08-25 homepage/CSS and 2019 skin captures (no 2019 client exists): 16 new animals (incl. King Dragon, Ice Monster, Komodo Dragon, birds, big cats), Desert and Volcano biomes, watermelon + inferred desert/volcano foods, 9 terrain object types with art, Spectate menu button.
 - **Tier model rebuilt (user-provided):** 16 tiers in 2017 and 2018; 18 in 2019 (apex 15, monsters 16, Black Dragon 17, King Dragon 18 at 100,000,000 XP). Tier/XP/biome are now per-version overrides; evolution links regenerated per version with validity windows; food XP scales with tier.

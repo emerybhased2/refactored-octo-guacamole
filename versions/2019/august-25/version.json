@@ -50,7 +50,8 @@
     "mute": true,
     "party": false,
     "spectate": true,
-    "arena": false
+    "arena": true,
+    "arenaNote": "1v1 Arena evidenced by the 2019-06-18 note; rules INFERRED; reachable only from the dev bar (no Arena button exists in the archived menu HTML)"
   },
   "tickRate": 30,
   "netRate": 20,

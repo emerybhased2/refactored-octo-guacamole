@@ -6,14 +6,14 @@
   };
   /** Main menu controller (DOM, themed by the version's config). */
   class MainMenu {
-    constructor({ onPlay }) {
+    constructor({ onPlay, onSpectate }) {
       const $ = (id) => document.getElementById(id);
       this.$ = $; this.onPlay = onPlay; this.cfg = null; this.mode = store.get('mope.mode', 'normal'); this.options = {}; this.muted = store.get('mope.muted', '0') === '1';
       $('nickInput').value = store.get('mope.nick', '');
       const go = () => { const n = $('nickInput').value.trim(); store.set('mope.nick', n); this.onPlay(n, this.mode); };
       $('startButton').addEventListener('click', go);
       $('nickInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') go(); });
-      $('btnSpectate').addEventListener('click', () => { const l = $('spawnXpLabel'); l.textContent = 'Spectating is not implemented yet'; setTimeout(() => (l.textContent = ''), 2500); }); // button is historical (2019); the mode is not built
+      $('btnSpectate').addEventListener('click', () => { const n = $('nickInput').value.trim(); if (onSpectate) onSpectate(n); }); // the button is historical (2019); how spectating behaves is INFERRED
       $('button_GMnormal').addEventListener('click', () => this.setMode('normal'));
       $('button_GMsandbox').addEventListener('click', () => this.setMode('sandbox'));
       $('settingsButton').addEventListener('click', () => { const o = $('optionsDiv'); o.style.display = o.style.display === 'block' ? 'none' : 'block'; });
