@@ -16,6 +16,54 @@
   "basis": "same-biome next tier (inferred)"
  },
  {
+  "from": "mouse",
+  "to": "hedgehog",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "mouse",
+  "to": "duckling",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "snail",
+  "to": "rabbit",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "snail",
+  "to": "mole",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "snail",
+  "to": "hedgehog",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "snail",
+  "to": "duckling",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
   "from": "rabbit",
   "to": "pig",
   "releaseDate": "2017-02-13",
@@ -32,6 +80,14 @@
   "basis": "same-biome next tier (inferred)"
  },
  {
+  "from": "rabbit",
+  "to": "duck",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
   "from": "mole",
   "to": "pig",
   "releaseDate": "2017-02-13",
@@ -43,6 +99,62 @@
   "from": "mole",
   "to": "fox",
   "releaseDate": "2017-02-13",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "mole",
+  "to": "duck",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "hedgehog",
+  "to": "pig",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "hedgehog",
+  "to": "fox",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "hedgehog",
+  "to": "duck",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "duckling",
+  "to": "pig",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "duckling",
+  "to": "fox",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "duckling",
+  "to": "duck",
+  "releaseDate": "2018-04-21",
   "removalDate": null,
   "confidence": "inferred",
   "basis": "same-biome next tier (inferred)"
@@ -72,6 +184,14 @@
   "basis": "same-biome next tier (inferred)"
  },
  {
+  "from": "pig",
+  "to": "cobra",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
   "from": "fox",
   "to": "deer",
   "releaseDate": "2017-02-13",
@@ -96,6 +216,46 @@
   "basis": "same-biome next tier (inferred)"
  },
  {
+  "from": "fox",
+  "to": "cobra",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "duck",
+  "to": "deer",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "duck",
+  "to": "zebra",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "duck",
+  "to": "donkey",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "duck",
+  "to": "cobra",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
   "from": "deer",
   "to": "lion",
   "releaseDate": "2017-02-13",
@@ -115,6 +275,14 @@
   "from": "deer",
   "to": "gorilla",
   "releaseDate": "2017-02-13",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "deer",
+  "to": "boaconstrictor",
+  "releaseDate": "2018-04-21",
   "removalDate": null,
   "confidence": "inferred",
   "basis": "same-biome next tier (inferred)"
@@ -144,6 +312,14 @@
   "basis": "same-biome next tier (inferred)"
  },
  {
+  "from": "zebra",
+  "to": "boaconstrictor",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
   "from": "donkey",
   "to": "lion",
   "releaseDate": "2017-02-13",
@@ -163,6 +339,46 @@
   "from": "donkey",
   "to": "gorilla",
   "releaseDate": "2017-02-13",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "donkey",
+  "to": "boaconstrictor",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "cobra",
+  "to": "lion",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "cobra",
+  "to": "cheetah",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "cobra",
+  "to": "gorilla",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "cobra",
+  "to": "boaconstrictor",
+  "releaseDate": "2018-04-21",
   "removalDate": null,
   "confidence": "inferred",
   "basis": "same-biome next tier (inferred)"
@@ -184,6 +400,22 @@
   "basis": "same-biome next tier (inferred)"
  },
  {
+  "from": "lion",
+  "to": "giantspider",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "lion",
+  "to": "eagle",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
   "from": "cheetah",
   "to": "bear",
   "releaseDate": "2017-02-13",
@@ -195,6 +427,22 @@
   "from": "cheetah",
   "to": "croc",
   "releaseDate": "2017-02-13",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "cheetah",
+  "to": "giantspider",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "cheetah",
+  "to": "eagle",
+  "releaseDate": "2018-04-21",
   "removalDate": null,
   "confidence": "inferred",
   "basis": "same-biome next tier (inferred)"
@@ -216,6 +464,62 @@
   "basis": "same-biome next tier (inferred)"
  },
  {
+  "from": "gorilla",
+  "to": "giantspider",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "gorilla",
+  "to": "eagle",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "boaconstrictor",
+  "to": "bear",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "boaconstrictor",
+  "to": "croc",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "boaconstrictor",
+  "to": "giantspider",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "boaconstrictor",
+  "to": "eagle",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "bear",
+  "to": "rhino",
+  "releaseDate": "2017-02-13",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
   "from": "bear",
   "to": "hippo",
   "releaseDate": "2017-02-13",
@@ -225,6 +529,30 @@
  },
  {
   "from": "bear",
+  "to": "sabertoothtiger",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "bear",
+  "to": "tiger",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "bear",
+  "to": "giraffe",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "croc",
   "to": "rhino",
   "releaseDate": "2017-02-13",
   "removalDate": null,
@@ -241,8 +569,128 @@
  },
  {
   "from": "croc",
+  "to": "sabertoothtiger",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "croc",
+  "to": "tiger",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "croc",
+  "to": "giraffe",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "giantspider",
   "to": "rhino",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "giantspider",
+  "to": "hippo",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "giantspider",
+  "to": "sabertoothtiger",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "giantspider",
+  "to": "tiger",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "giantspider",
+  "to": "giraffe",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "eagle",
+  "to": "rhino",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "eagle",
+  "to": "hippo",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "eagle",
+  "to": "sabertoothtiger",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "eagle",
+  "to": "tiger",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "eagle",
+  "to": "giraffe",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "rhino",
+  "to": "dragon",
   "releaseDate": "2017-02-13",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "rhino",
+  "to": "elephant",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "rhino",
+  "to": "trex",
+  "releaseDate": "2018-04-21",
   "removalDate": null,
   "confidence": "inferred",
   "basis": "same-biome next tier (inferred)"
@@ -256,9 +704,113 @@
   "basis": "same-biome next tier (inferred)"
  },
  {
-  "from": "rhino",
+  "from": "hippo",
+  "to": "elephant",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "hippo",
+  "to": "trex",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "sabertoothtiger",
   "to": "dragon",
-  "releaseDate": "2017-02-13",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "sabertoothtiger",
+  "to": "elephant",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "sabertoothtiger",
+  "to": "trex",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "tiger",
+  "to": "dragon",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "tiger",
+  "to": "elephant",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "tiger",
+  "to": "trex",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "giraffe",
+  "to": "dragon",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "giraffe",
+  "to": "elephant",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "giraffe",
+  "to": "trex",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "dragon",
+  "to": "blackdragon",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "elephant",
+  "to": "blackdragon",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "trex",
+  "to": "blackdragon",
+  "releaseDate": "2018-04-21",
   "removalDate": null,
   "confidence": "inferred",
   "basis": "same-biome next tier (inferred)"
@@ -313,7 +865,7 @@
  },
  {
   "from": "squid",
-  "to": "jellyfish",
+  "to": "stingray",
   "releaseDate": "2017-02-13",
   "removalDate": null,
   "confidence": "inferred",
@@ -329,7 +881,7 @@
  },
  {
   "from": "squid",
-  "to": "stingray",
+  "to": "jellyfish",
   "releaseDate": "2017-02-13",
   "removalDate": null,
   "confidence": "inferred",
@@ -337,7 +889,7 @@
  },
  {
   "from": "seahorse",
-  "to": "jellyfish",
+  "to": "stingray",
   "releaseDate": "2017-02-13",
   "removalDate": null,
   "confidence": "inferred",
@@ -353,14 +905,14 @@
  },
  {
   "from": "seahorse",
-  "to": "stingray",
+  "to": "jellyfish",
   "releaseDate": "2017-02-13",
   "removalDate": null,
   "confidence": "inferred",
   "basis": "same-biome next tier (inferred)"
  },
  {
-  "from": "jellyfish",
+  "from": "stingray",
   "to": "shark",
   "releaseDate": "2017-02-13",
   "removalDate": null,
@@ -368,7 +920,7 @@
   "basis": "same-biome next tier (inferred)"
  },
  {
-  "from": "jellyfish",
+  "from": "stingray",
   "to": "pufferfish",
   "releaseDate": "2017-02-13",
   "removalDate": null,
@@ -392,7 +944,7 @@
   "basis": "same-biome next tier (inferred)"
  },
  {
-  "from": "stingray",
+  "from": "jellyfish",
   "to": "shark",
   "releaseDate": "2017-02-13",
   "removalDate": null,
@@ -400,7 +952,7 @@
   "basis": "same-biome next tier (inferred)"
  },
  {
-  "from": "stingray",
+  "from": "jellyfish",
   "to": "pufferfish",
   "releaseDate": "2017-02-13",
   "removalDate": null,
@@ -448,9 +1000,25 @@
   "basis": "same-biome next tier (inferred)"
  },
  {
+  "from": "swordfish",
+  "to": "kingcrab",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
   "from": "octopus",
   "to": "killerwhale",
   "releaseDate": "2017-02-13",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "octopus",
+  "to": "kingcrab",
+  "releaseDate": "2018-04-21",
   "removalDate": null,
   "confidence": "inferred",
   "basis": "same-biome next tier (inferred)"
@@ -464,8 +1032,48 @@
   "basis": "same-biome next tier (inferred)"
  },
  {
+  "from": "killerwhale",
+  "to": "bluewhale",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "kingcrab",
+  "to": "kraken",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "kingcrab",
+  "to": "bluewhale",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
   "from": "chipmunk",
   "to": "arctichare",
+  "releaseDate": "2017-02-13",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "lemming",
+  "to": "arctichare",
+  "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "arctichare",
+  "to": "penguin",
   "releaseDate": "2017-02-13",
   "removalDate": null,
   "confidence": "inferred",
@@ -480,31 +1088,7 @@
   "basis": "same-biome next tier (inferred)"
  },
  {
-  "from": "arctichare",
-  "to": "penguin",
-  "releaseDate": "2017-02-13",
-  "removalDate": null,
-  "confidence": "inferred",
-  "basis": "same-biome next tier (inferred)"
- },
- {
-  "from": "arcticfox",
-  "to": "seal",
-  "releaseDate": "2017-02-13",
-  "removalDate": null,
-  "confidence": "inferred",
-  "basis": "same-biome next tier (inferred)"
- },
- {
-  "from": "arcticfox",
-  "to": "reindeer",
-  "releaseDate": "2017-02-13",
-  "removalDate": null,
-  "confidence": "inferred",
-  "basis": "same-biome next tier (inferred)"
- },
- {
-  "from": "arcticfox",
+  "from": "penguin",
   "to": "muskox",
   "releaseDate": "2017-02-13",
   "removalDate": null,
@@ -528,7 +1112,7 @@
   "basis": "same-biome next tier (inferred)"
  },
  {
-  "from": "penguin",
+  "from": "arcticfox",
   "to": "muskox",
   "releaseDate": "2017-02-13",
   "removalDate": null,
@@ -536,6 +1120,46 @@
   "basis": "same-biome next tier (inferred)"
  },
  {
+  "from": "arcticfox",
+  "to": "seal",
+  "releaseDate": "2017-02-13",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "arcticfox",
+  "to": "reindeer",
+  "releaseDate": "2017-02-13",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "muskox",
+  "to": "wolf",
+  "releaseDate": "2017-02-13",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "muskox",
+  "to": "snowleopard",
+  "releaseDate": "2017-02-13",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "muskox",
+  "to": "wolverine",
+  "releaseDate": "2017-02-13",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
   "from": "seal",
   "to": "wolf",
   "releaseDate": "2017-02-13",
@@ -584,24 +1208,8 @@
   "basis": "same-biome next tier (inferred)"
  },
  {
-  "from": "muskox",
-  "to": "wolf",
-  "releaseDate": "2017-02-13",
-  "removalDate": null,
-  "confidence": "inferred",
-  "basis": "same-biome next tier (inferred)"
- },
- {
-  "from": "muskox",
-  "to": "snowleopard",
-  "releaseDate": "2017-02-13",
-  "removalDate": null,
-  "confidence": "inferred",
-  "basis": "same-biome next tier (inferred)"
- },
- {
-  "from": "muskox",
-  "to": "wolverine",
+  "from": "wolf",
+  "to": "polarbear",
   "releaseDate": "2017-02-13",
   "removalDate": null,
   "confidence": "inferred",
@@ -616,7 +1224,7 @@
   "basis": "same-biome next tier (inferred)"
  },
  {
-  "from": "wolf",
+  "from": "snowleopard",
   "to": "polarbear",
   "releaseDate": "2017-02-13",
   "removalDate": null,
@@ -632,7 +1240,7 @@
   "basis": "same-biome next tier (inferred)"
  },
  {
-  "from": "snowleopard",
+  "from": "wolverine",
   "to": "polarbear",
   "releaseDate": "2017-02-13",
   "removalDate": null,
@@ -642,22 +1250,6 @@
  {
   "from": "wolverine",
   "to": "walrus",
-  "releaseDate": "2017-02-13",
-  "removalDate": null,
-  "confidence": "inferred",
-  "basis": "same-biome next tier (inferred)"
- },
- {
-  "from": "wolverine",
-  "to": "polarbear",
-  "releaseDate": "2017-02-13",
-  "removalDate": null,
-  "confidence": "inferred",
-  "basis": "same-biome next tier (inferred)"
- },
- {
-  "from": "walrus",
-  "to": "mammoth",
   "releaseDate": "2017-02-13",
   "removalDate": null,
   "confidence": "inferred",
@@ -665,6 +1257,14 @@
  },
  {
   "from": "polarbear",
+  "to": "mammoth",
+  "releaseDate": "2017-02-13",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "walrus",
   "to": "mammoth",
   "releaseDate": "2017-02-13",
   "removalDate": null,
@@ -685,7 +1285,7 @@
   "releaseDate": "2017-02-13",
   "removalDate": null,
   "confidence": "inferred",
-  "basis": "cross-biome from starter (inferred from 'become an arctic animal from ANYWHERE' note)"
+  "basis": "cross-biome from starter (inferred from the Feb 10 'become an arctic animal from ANYWHERE' note)"
  },
  {
   "from": "mouse",
@@ -693,7 +1293,7 @@
   "releaseDate": "2017-02-13",
   "removalDate": null,
   "confidence": "inferred",
-  "basis": "cross-biome from starter (inferred from 'become an arctic animal from ANYWHERE' note)"
+  "basis": "cross-biome from starter (inferred from the Feb 10 'become an arctic animal from ANYWHERE' note)"
  },
  {
   "from": "mouse",
@@ -701,6 +1301,6 @@
   "releaseDate": "2017-02-13",
   "removalDate": null,
   "confidence": "inferred",
-  "basis": "cross-biome from starter (inferred from 'become an arctic animal from ANYWHERE' note)"
+  "basis": "cross-biome from starter (inferred from the Feb 10 'become an arctic animal from ANYWHERE' note)"
  }
 ]

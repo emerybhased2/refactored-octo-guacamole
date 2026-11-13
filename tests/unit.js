@@ -16,7 +16,8 @@ async function t(name, fn) { try { await fn(); pass++; } catch (e) { fail++; con
 
 const vinfo = J('versions/2017/february-13/version.json');
 const animals = J('data/progression/animals.json').filter((a) => a.releaseDate <= vinfo.date && (!a.removalDate || vinfo.date < a.removalDate));
-const edges = J('data/progression/evolution.json'), tiers = J('data/progression/tiers.json');
+const allEdges = J('data/progression/evolution.json'), tiers = J('data/progression/tiers.json');
+const edges = allEdges.filter((e) => e.releaseDate <= vinfo.date && (!e.removalDate || vinfo.date < e.removalDate)); // the 2017-02-13 tree
 const ucfg = J(vinfo.upgradeMenu), mcfg = J(vinfo.menu), hudcfg = J(vinfo.hud);
 const arch = J('data/research/archive-2017-02-13-animals.json').animals;
 
@@ -44,7 +45,7 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
   await t('every animal has a recipe and a 256x256 RGBA PNG', () => {
     global.MopeArt = require('../tools/art/draw.js'); const specs = require('../tools/art/specs.js');
     for (const a of animals) { assert.ok(specs[a.id], 'no art recipe for ' + a.id); assert.strictEqual(a.spriteStatus, 'recreated'); const i = png(a.sprite); assert.deepStrictEqual([i.w, i.h, i.depth, i.type], [256, 256, 8, 6], a.id); assert.ok(i.size > 1500, a.id + ' looks empty'); }
-    assert.deepStrictEqual(Object.keys(specs).sort(), animals.map((a) => a.id).sort());
+    assert.deepStrictEqual(Object.keys(specs).sort(), J('data/progression/animals.json').map((a) => a.id).sort()); // one recipe per animal across all versions
   });
   await t('every food has a 128x128 RGBA PNG', () => { for (const f of J('data/food/foods.json')) { const i = png(f.sprite); assert.deepStrictEqual([i.w, i.h, i.type], [128, 128, 6], f.id); } });
   await t('sprite sizing constants agree between art engine and client', () => {
@@ -142,6 +143,51 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
   });
   await t('input mapping', () => { assert.strictEqual(pointerToInput(500, 400, 1000, 800).mag, 0); const r = pointerToInput(1000, 400, 1000, 800); assert.strictEqual(r.mag, 1); assert.ok(Math.abs(r.angle) < 1e-9); });
   await t('camera zoom out with tier + round trip', () => { const c = new Camera(); c.follow(0, 0, 8, 10); assert.ok(c.zoom < 0.6); const [sx, sy] = c.worldToScreen(30, 40, 800, 600); const [wx, wy] = c.screenToWorld(sx, sy, 800, 600); assert.ok(Math.abs(wx - 30) < 1e-9 && Math.abs(wy - 40) < 1e-9); });
+
+  // ---- version 2018-04-21
+  const v18 = J('versions/2018/april-21/version.json'), all = J('data/progression/animals.json'), m18 = J(v18.menu), u18 = J(v18.upgradeMenu), h18 = J(v18.hud), arch18 = J('data/research/archive-2018-04-21-animals.json').animals;
+  const act = (a, d) => a.releaseDate <= d && (!a.removalDate || d < a.removalDate);
+  await t('2018 roster is exactly the archived client: 61 animals, ids 1..61, 2017 unchanged', () => {
+    assert.strictEqual(arch18.length, 61); assert.deepStrictEqual(arch18.map((a) => a.internalId), Array.from({ length: 61 }, (_, i) => i + 1));
+    const r18 = all.filter((a) => act(a, v18.date)), r17 = all.filter((a) => act(a, vinfo.date));
+    assert.strictEqual(r18.length, 61); assert.strictEqual(r17.length, 44);
+    for (const r of arch18) { const a = r18.find((x) => x.internalId === r.internalId); assert.ok(a, r.skin); assert.strictEqual(a.id, r.skin.split('/').pop().toLowerCase()); }
+    for (const a of r17) assert.ok(a.internalId <= 44);
+  });
+  await t('no anachronisms: 2018-only animals/abilities are absent from 2017', () => {
+    const ab = J('data/abilities/abilities.json'), new17 = all.filter((a) => act(a, vinfo.date)).map((a) => a.id);
+    for (const id of ['tiger', 'giraffe', 'eagle', 'kingcrab', 'blackdragon', 'snail', 'duckling']) assert.ok(!new17.includes(id), id);
+    assert.ok(ab.filter((a) => act(a, vinfo.date)).every((a) => a.releaseDate <= vinfo.date)); assert.ok(ab.find((a) => a.id === 'venom_spit').releaseDate === '2018-04-21');
+    for (const a of all.filter((x) => x.releaseDate === '2018-04-21' && x.ability)) assert.ok(ab.find((x) => x.id === a.ability), a.id);
+  });
+  await t('2018 art exists for every animal and ability icon', () => {
+    global.MopeArt = require('../tools/art/draw.js'); const specs = require('../tools/art/specs.js');
+    for (const a of all) { assert.ok(specs[a.id], 'recipe ' + a.id); const i = png(a.sprite); assert.deepStrictEqual([i.w, i.h, i.type], [256, 256, 6], a.id); }
+    for (const a of J('data/abilities/abilities.json')) { const i = png(a.icon); assert.deepStrictEqual([i.w, i.h], [64, 64], a.id); }
+  });
+  await t('2018 main menu: archived wordmark 350x99, no modes, no How-to-play, 5 options, 3 update notes', () => {
+    const i = png(m18.logo.src); assert.deepStrictEqual([i.w, i.h], [350, 99]); assert.strictEqual(m18.logo.h, 99);
+    const e = MenuRenderer.elementsPresent(m18); assert.deepStrictEqual(e, { modes: false, sandbox: false, settings: true, mute: true, howToPlay: false, updates: true, options: true });
+    assert.ok(!m18.options.checkboxes.some((c) => c.id === 'christmasSkins')); assert.strictEqual(m18.options.checkboxes.length, 5);
+    assert.strictEqual(m18.panels.updates.sections.length, 3); assert.ok(m18.absentInThisVersion.includes('sandbox'));
+  });
+  await t('2018 menu theme: same page colour/Play/nickname; shifted column; light update text', () => {
+    const v = MenuRenderer.themeVars(m18), v17 = MenuRenderer.themeVars(mcfg);
+    for (const k of ['--page-bg', '--nick-border', '--play-bg', '--play-w', '--play-h']) assert.strictEqual(v[k], v17[k], k);
+    assert.strictEqual(v['--logo-h'], '99px'); assert.strictEqual(v['--onc-mt'], '-10px'); assert.strictEqual(v['--upd-text'], '#f8f8f8'); assert.strictEqual(v17['--upd-text'], '#000000');
+  });
+  await t('2018 HUD ability button uses the verified recharge-bar style; 2017 keeps the sweep', () => {
+    assert.strictEqual(h18.abilityButton.style, 'rechargeBar'); assert.strictEqual(h18.abilityButton.rechargeFill, '#F3C553'); assert.strictEqual(hudcfg.abilityButton.style, 'sweep');
+  });
+  await t('2018 upgrade buttons: name at the top; 2017 at the bottom; same biome colours', () => {
+    assert.strictEqual(u18.choices.namePosition, 'top'); assert.strictEqual(ucfg.choices.namePosition, 'bottom'); assert.deepStrictEqual(u18.choices.biomeColors, ucfg.choices.biomeColors);
+  });
+  await t('2018 tree: all 2017 edges kept, every animal reachable from a starter, tier 9 exists', () => {
+    const e17 = allEdges.filter((e) => e.releaseDate <= vinfo.date), e18 = allEdges.filter((e) => e.releaseDate <= v18.date), keys = new Set(e18.map((e) => e.from + '>' + e.to));
+    for (const e of e17) assert.ok(keys.has(e.from + '>' + e.to));
+    const reach = new Set(v18.starters); let ch = true; while (ch) { ch = false; for (const e of e18) if (reach.has(e.from) && !reach.has(e.to)) { reach.add(e.to); ch = true; } }
+    for (const a of all.filter((x) => act(x, v18.date))) assert.ok(reach.has(a.id), 'unreachable ' + a.id); assert.ok(tiers.some((x) => x.tier === 9 && x.releaseDate === '2018-04-21'));
+  });
 
   console.log(`unit: ${pass} passed, ${fail} failed`); process.exit(fail ? 1 : 0);
 })();

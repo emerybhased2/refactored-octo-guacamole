@@ -1,7 +1,6 @@
 # Mope.io Historical Evolution
 
-A playable, data-driven recreation of how Mope.io evolved. **Status: Milestone 2.** One version exists, **2017-02-13**, the earliest date with
-primary-source evidence (Arquivo.pt capture). The brief's April 7, 2017 start is not supported by the archive (the game had already shipped
+A playable, data-driven recreation of how Mope.io evolved. **Status: Milestone 3.** Two versions: **2017-02-13** (44 animals, the earliest archived capture) and **2018-04-21** (61 animals, Sandbox removed). Pick one with the dev version selector or `?v=<id>`. The brief's April 7, 2017 start is not supported by the archive (the game had already shipped
 44 animals by then), so it is not used. See [docs/RESEARCH.md](docs/RESEARCH.md) for exactly what is verified and what is inferred.
 
 ## What is verified vs inferred (short)

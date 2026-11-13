@@ -63,6 +63,8 @@ function validate() {
     for (const b of v.biomes) { const d = biomes.find((x) => x.id === b); if (!d) err(`${v.id}: unknown biome ${b}`); else if (!activeAt(d.releaseDate, d.removalDate, v.date)) err(`${v.id}: biome ${b} not yet released`); }
     if (!roster.length) err(`${v.id}: empty roster`);
     if (!roster.includes(v.startAnimal)) err(`${v.id}: startAnimal ${v.startAnimal} not in roster`);
+    for (const s of v.starters || []) if (!roster.includes(s)) err(`${v.id}: starter ${s} not in roster`);
+    if (!(v.starters || []).includes(v.startAnimal)) warn(`${v.id}: startAnimal is not listed in starters`);
     const mc = J(v.menu), mfiles = [mc.logo && mc.logo.src, ...Object.values(mc.modes || {}).map((m) => m && m.src), ...Object.values(mc.icons || {}).map((i) => i && i.src)].filter(Boolean);
     for (const f of mfiles) if (!fs.existsSync(path.join(ROOT, f))) err(`${v.id}: menu asset missing ${f}`);
     for (const m of v.modes || []) if (!['normal', 'sandbox'].includes(m)) err(`${v.id}: unknown mode ${m}`);

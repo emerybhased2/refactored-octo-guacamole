@@ -96,6 +96,11 @@
     whiskers(c, s, pal, o) { const y = H(s).y + H(s).r * 0.7; for (const sd of [-1, 1]) for (const k of [-1, 0, 1]) P.line(c, [[sd * 8, y], [sd * (o.len), y + k * 8 - 3]], 2.5, o.c || 'rgba(255,255,255,.8)'); },
     mask(c, s, pal, o) { const hy = H(s).y; P.ell(c, 0, hy + 4, H(s).r * 0.78, H(s).r * 0.62, o.c); },
     tuftHead(c, s, pal, o) { P.ell(c, 0, H(s).y - H(s).r * 0.6, o.w, o.h, o.c); },
+    spiral(c, s, pal, o) { c.strokeStyle = o.c; c.lineWidth = o.w || 6; c.lineCap = 'round'; c.beginPath(); for (let t = 0; t < 17; t += 0.25) { const r = 2 + t * (o.r || 4.2); const x = (o.x || 0) + Math.cos(t) * r, y = (o.y || -10) + Math.sin(t) * r; t ? c.lineTo(x, y) : c.moveTo(x, y); } c.stroke(); },
+    hood(c, s, pal, o) { const hy = H(s).y; c.fillStyle = o.c; c.beginPath(); c.moveTo(0, hy + 24); c.bezierCurveTo(-o.w, hy + 20, -o.w, hy - 40, 0, hy - 56); c.bezierCurveTo(o.w, hy - 40, o.w, hy + 20, 0, hy + 24); c.fill(); P.ell(c, 0, hy - 14, o.w * 0.5, 16, o.mark || shade(o.c, 0.25)); },
+    legs(c, s, pal, o) { for (const sd of [-1, 1]) for (let i = 0; i < 4; i++) { const a = -0.5 + i * 0.5, x0 = sd * s.body.rx * 0.55, y0 = s.body.ry * (0.35 - i * 0.3); P.line(c, [[x0, y0], [sd * (s.body.rx + o.len * 0.6), y0 + Math.sin(a) * 30 - 6], [sd * (s.body.rx + o.len), y0 + 26 + i * 10]], o.w || 8, o.c); } },
+    featherWings(c, s, pal, o) { for (const sd of [-1, 1]) for (let i = 0; i < 6; i++) { const x = sd * (s.body.rx * 0.5 + i * (o.len / 6)), y = -6 + i * 6 - 10; c.save(); c.translate(x, y); c.rotate(sd * (0.25 + i * 0.05)); P.ell(c, sd * 6, 0, 16 + (5 - i) * 2, 34 - i * 3, i % 2 ? o.c : shade(o.c, -0.1)); c.restore(); } },
+    ossicones(c, s, pal, o) { const hy = H(s).y; for (const sd of [-1, 1]) { P.line(c, [[sd * 12, hy - 20], [sd * 18, hy - 46]], 7, o.c); P.ell(c, sd * 18, hy - 48, 7, 7, o.tip || '#3a2a1a'); } },
     underbody(c, s, pal, o) { /* drawn before body */ },
   };
 

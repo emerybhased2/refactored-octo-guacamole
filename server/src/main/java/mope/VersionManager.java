@@ -14,7 +14,7 @@ import java.util.stream.*;
 public final class VersionManager {
     public static final class Config {
         public String id, label, confidence, menu, upgradeMenu, hud, startAnimal;
-        public List<String> modes;
+        public List<String> modes, starters;
         public LocalDate date;
         public JsonObject features, raw;
         public List<String> biomeIds, foodIds;
@@ -79,6 +79,7 @@ public final class VersionManager {
         c.menu = o.get("menu").getAsString(); c.upgradeMenu = o.get("upgradeMenu").getAsString(); c.hud = o.get("hud").getAsString();
         c.features = o.getAsJsonObject("features");
         c.startAnimal = o.get("startAnimal").getAsString(); c.modes = strings(o.getAsJsonArray("modes"));
+        c.starters = o.has("starters") ? strings(o.getAsJsonArray("starters")) : List.of(c.startAnimal);
         c.tickRate = o.get("tickRate").getAsInt(); c.netRate = o.get("netRate").getAsInt();
         c.worldSize = o.get("worldSize").getAsDouble(); c.bots = o.has("bots") ? o.get("bots").getAsInt() : 0;
         c.biomeIds = strings(o.getAsJsonArray("biomes")); c.foodIds = strings(o.getAsJsonArray("foods"));
@@ -107,8 +108,9 @@ public final class VersionManager {
             if (c.foodIds.contains(f.id) && Data.active(f.releaseDate, f.removalDate, c.date)) c.foods.add(f);
         for (Defs.BiomeDef b : Data.read("data/biomes/biomes.json", Defs.BiomeDef[].class))
             if (c.biomeIds.contains(b.id) && Data.active(b.releaseDate, b.removalDate, c.date)) c.biomes.add(b);
-        c.abilities.addAll(Arrays.asList(Data.read("data/abilities/abilities.json", Defs.AbilityDef[].class)));
+        for (Defs.AbilityDef d : Data.read("data/abilities/abilities.json", Defs.AbilityDef[].class)) if (Data.active(d.releaseDate, d.removalDate, c.date)) c.abilities.add(d); // only abilities that existed on this date
         c.animalOrder.addAll(c.animals.keySet());
+        c.starters = c.starters.stream().filter(c.animals::containsKey).collect(Collectors.toList()); // only starters that exist on this date
         if (!c.animals.isEmpty() && !c.animals.containsKey(c.startAnimal)) throw new IllegalStateException("startAnimal " + c.startAnimal + " not available in " + c.id);
         return c;
     }

@@ -8,6 +8,8 @@ public final class SelfTest {
     static void check(String name, boolean ok) { if (ok) passed++; else { failed++; System.out.println("FAIL: " + name); } }
     static void eq(String name, Object a, Object b) { boolean ok = Objects.equals(a, b); if (!ok) System.out.println("  expected " + b + " got " + a); check(name, ok); }
 
+    /** Same version without bots: scenario tests must not depend on 30 hunting bots wandering into the player. */
+    static VersionManager.Config quiet(VersionManager.Config c) { com.google.gson.JsonObject o = c.raw.deepCopy(); o.addProperty("bots", 0); return VersionManager.resolve(o); }
     static Player human(World w, String n, List<String> inbox) { return w.join(n, inbox == null ? null : inbox::add, false); }
     static void place(Player p, double x, double y) { p.x = x; p.y = y; p.protectedUntilTick = 0; }
     /** A land point that is not inside a lake. */
@@ -60,7 +62,7 @@ public final class SelfTest {
         Player kp = new Player(); kp.setAnimal(v.animals.get("kraken")); check("unimplemented ability does not activate", !ab.activate(kp, 99999, null));
 
         // ---- World: movement, food, evolution, predation
-        World w = new World(v, 42);
+        World w = new World(quiet(v), 42);
         double[] dry = dryLand(w);
         Player a1 = human(w, "A", null), a2 = human(w, "B", null);
         place(a1, 100, 3000); a1.inputAngle = 0; a1.inputMag = 1; place(a2, dry[0], dry[1]);
@@ -78,29 +80,29 @@ public final class SelfTest {
         check("lion eats rabbit", a2.dead && a1.kills == 1);
 
         // ---- Cross-biome evolution teleports (archived update note: arctic teleporting)
-        World w2 = new World(v, 5); Player t = human(w2, "T", null); place(t, 3000, 3000); t.xp = 500;
+        World w2 = new World(quiet(v), 5); Player t = human(w2, "T", null); place(t, 3000, 3000); t.xp = 500;
         check("mouse->arctichare ok", w2.evolve(t, "arctichare"));
         eq("teleported into arctic", w2.biomes.biomeAt(t.x, t.y).id, "arctic");
         check("arctic animal can stand there", w2.biomes.canEnter(t.animal, t.x, t.y));
 
         // ---- Thirst (verified death reason 4) and water refill
-        World w3 = new World(v, 11); List<String> msgs = new ArrayList<>(); Player th = human(w3, "Th", msgs);
+        World w3 = new World(quiet(v), 11); List<String> msgs = new ArrayList<>(); Player th = human(w3, "Th", msgs);
         double[] d3 = dryLand(w3); place(th, d3[0], d3[1]); th.inputMag = 0; th.water = 30;
         for (int i = 0; i < 30 * 5; i++) w3.tick();
         check("water drains on dry land", th.water < 28);
         th.water = 0; th.health = 5;
         for (int i = 0; i < 30 * 2; i++) w3.tick();
         check("dies of thirst with reason 4", th.dead && msgs.stream().anyMatch(m -> m.contains("\"t\":\"died\"") && m.contains("\"r\":4")));
-        World w4 = new World(v, 12); Player sw = human(w4, "Sw", null); sw.setAnimal(v.animals.get("shrimp")); place(sw, 3000, 5500); sw.water = 10;
+        World w4 = new World(quiet(v), 12); Player sw = human(w4, "Sw", null); sw.setAnimal(v.animals.get("shrimp")); place(sw, 3000, 5500); sw.water = 10;
         for (int i = 0; i < 30; i++) w4.tick();
         check("water refills in ocean", sw.water > 35);
         // run uses extra water
-        World w5 = new World(v, 13); Player ru = human(w5, "Ru", null); double[] d5 = dryLand(w5); place(ru, d5[0], d5[1]); ru.inputAngle = 0; ru.inputMag = 1; ru.boost = true;
+        World w5 = new World(quiet(v), 13); Player ru = human(w5, "Ru", null); double[] d5 = dryLand(w5); place(ru, d5[0], d5[1]); ru.inputAngle = 0; ru.inputMag = 1; ru.boost = true;
         for (int i = 0; i < 30 * 3; i++) { w5.tick(); if (w5.inWater(ru.x, ru.y)) ru.water = 100; place(ru, ru.x, ru.y); }
         check("running moves faster than walking and uses water", ru.x - d5[0] > 220 * 3 * 1.2 || ru.x > 5900);
 
         // ---- Chat
-        World w6 = new World(v, 14); List<String> c1 = new ArrayList<>(), c2 = new ArrayList<>(); Player ch1 = human(w6, "C1", c1), ch2 = human(w6, "C2", c2);
+        World w6 = new World(quiet(v), 14); List<String> c1 = new ArrayList<>(), c2 = new ArrayList<>(); Player ch1 = human(w6, "C1", c1), ch2 = human(w6, "C2", c2);
         place(ch1, 3000, 3000); place(ch2, 3100, 3000);
         w6.chat(ch1, "hello"); w6.chat(ch1, "spam");
         check("chat relayed to nearby player once (rate limit)", c2.stream().filter(m -> m.contains("\"t\":\"chat\"")).count() == 1 && c2.stream().anyMatch(m -> m.contains("hello")));
@@ -115,6 +117,26 @@ public final class SelfTest {
         check("normal evolution disabled in sandbox", !sb.evolve(s2, "rabbit"));
         place(s1, 3000, 3000); s2.setAnimal(v.animals.get("mouse")); place(s2, 3002, 3000); sb.tick();
         check("sandbox: higher tier eats lower", s2.dead);
+
+        // ---- Version 2018-04-21 (second historical version) and cross-version isolation
+        VersionManager.Config v18 = vm.get("2018-04-21");
+        check("2018-04-21 loaded", v18 != null);
+        eq("61 animals in 2018", v18.animals.size(), 61);
+        check("2017 has none of the 2018 animals", !v.animals.containsKey("tiger") && !v.animals.containsKey("blackdragon") && !v.animals.containsKey("snail"));
+        check("2018 has all 17 new animals", List.of("snail", "blackdragon", "sabertoothtiger", "elephant", "bluewhale", "cobra", "boaconstrictor", "giantspider", "trex", "tiger", "giraffe", "eagle", "hedgehog", "duck", "duckling", "lemming", "kingcrab").stream().allMatch(v18.animals::containsKey));
+        check("every 2017 evolution edge still exists in 2018", v.edges.stream().allMatch(e17 -> v18.edges.stream().anyMatch(e18 -> e18.from.equals(e17.from) && e18.to.equals(e17.to))));
+        check("2018 tree is larger", v18.edges.size() > v.edges.size());
+        Set<String> reach = new HashSet<>(v18.starters); boolean grew = true;
+        while (grew) { grew = false; for (Defs.Edge e : v18.edges) if (reach.contains(e.from) && reach.add(e.to)) grew = true; }
+        check("every 2018 animal is reachable from a starter", reach.containsAll(v18.animals.keySet()));
+        eq("2018 offers only normal mode", v18.modes, List.of("normal")); check("2018 has no sandbox feature", !v18.feature("sandbox") && v.feature("sandbox"));
+        check("abilities are date-gated per version", v.abilities.stream().noneMatch(a -> a.id.equals("venom_spit")) && v18.abilities.stream().anyMatch(a -> a.id.equals("venom_spit")));
+        Player cobra = new Player(); cobra.setAnimal(v18.animals.get("cobra")); eq("cobra has its verified ability", cobra.animal.ability, "venom_spit");
+        check("catalogued-but-unimplemented ability stays inert", !new AbilityEngine(v18.abilities, v18.date).activate(cobra, 99999, null));
+        World w18 = new World(v18, 3); Set<String> kinds = new HashSet<>(); for (Player p : w18.players.values()) kinds.add(p.animal.id);
+        check("2018 bots spawn as varied starters", kinds.size() >= 3 && v18.starters.containsAll(kinds));
+        for (int i = 0; i < 90; i++) w18.tick();
+        check("2018 world runs", w18.players.size() >= 30 && w18.lastTickMs >= 0);
 
         // ---- Stress: 200+ entities
         World big = new World(v, 7);

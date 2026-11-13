@@ -89,8 +89,8 @@
           const a = this.animals.find((x) => x.id === b.id), hov = this.mx >= b.x && this.mx <= b.x + b.w && this.my >= b.y && this.my <= b.y + b.h;
           ctx.save(); ctx.globalAlpha = C.fillAlpha; ctx.fillStyle = C.biomeColors[a.biome]; ctx.fillRect(b.x, b.y, b.w, b.h);
           if (hov) { ctx.globalAlpha = C.highlightAlpha; ctx.fillStyle = '#fff'; ctx.fillRect(b.x, b.y, b.w, b.h); }
-          ctx.globalAlpha = 1; const d = C.iconRadiusFactor * b.w / M.Sprites.BODY_FRAC; ctx.drawImage(M.Sprites.getIcon(a), b.x + b.w / 2 - d / 2, b.y + b.h * 0.46 - d / 2, d, d); // body diameter = iconRadiusFactor * button width
-          ctx.fillStyle = C.nameColor; ctx.font = C.nameFont; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.fillText(a.name, b.x + b.w / 2, b.y + b.h - 8);
+          ctx.globalAlpha = 1; const top = C.namePosition === 'top', d = C.iconRadiusFactor * b.w / M.Sprites.BODY_FRAC; ctx.drawImage(M.Sprites.getIcon(a), b.x + b.w / 2 - d / 2, b.y + b.h * (top ? 0.58 : 0.46) - d / 2, d, d); // body diameter = iconRadiusFactor * button width
+          ctx.fillStyle = C.nameColor; ctx.font = C.nameFont; ctx.textAlign = 'center'; ctx.textBaseline = top ? 'top' : 'alphabetic'; ctx.fillText(a.name, b.x + b.w / 2, top ? b.y + 7 : b.y + b.h - 8); // 2018: name at the top of the button (archived draw code)
           ctx.restore();
         }
         if (this.devTree) { const r = this.badgeRect(vw, vh); ctx.fillStyle = 'rgba(0,0,0,.5)'; ctx.fillRect(r.x, r.y, r.w, r.h); ctx.fillStyle = '#fff'; ctx.font = '13px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('[U] tree (dev)', r.x + r.w / 2, r.y + r.h / 2); }

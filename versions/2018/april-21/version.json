@@ -1,0 +1,52 @@
+{
+  "id": "2018-04-21",
+  "date": "2018-04-21",
+  "label": "April 21, 2018 - 61 animals, Sandbox removed",
+  "confidence": "mixed",
+  "notes": "Roster (61 animals), abilities, menu geometry, features and update notes are VERIFIED from the archived client/HTML/CSS (Arquivo.pt 20180421). Tier numbers, XP, evolution links, stats, world layout and balance remain INFERRED. See docs/RESEARCH.md.",
+  "menu": "data/menus/main-2018-04-21.json",
+  "upgradeMenu": "data/menus/upgrade-2018-04-21.json",
+  "hud": "data/menus/hud-2018-04-21.json",
+  "startAnimal": "mouse",
+  "starters": [
+    "mouse",
+    "shrimp",
+    "chipmunk",
+    "snail",
+    "lemming"
+  ],
+  "modes": [
+    "normal"
+  ],
+  "biomes": [
+    "land",
+    "ocean",
+    "arctic"
+  ],
+  "foods": [
+    "red_berry",
+    "blue_berry",
+    "orange_fruit",
+    "raspberry",
+    "pear",
+    "banana",
+    "coconut",
+    "lillypad"
+  ],
+  "features": {
+    "accounts": false,
+    "shop": false,
+    "chat": true,
+    "events": false,
+    "waterBar": true,
+    "serverSelect": true,
+    "settings": true,
+    "sandbox": false,
+    "mute": true,
+    "party": false
+  },
+  "tickRate": 30,
+  "netRate": 20,
+  "worldSize": 6000,
+  "bots": 30
+}

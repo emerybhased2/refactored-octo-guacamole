@@ -54,5 +54,12 @@
   "color": "#8a4ad0",
   "releaseDate": "2017-02-13",
   "confidence": "inferred"
+ },
+ {
+  "tier": 9,
+  "name": "Tier 9",
+  "color": "#2a2a3a",
+  "releaseDate": "2018-04-21",
+  "confidence": "inferred"
  }
 ]

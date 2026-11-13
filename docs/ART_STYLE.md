@@ -22,5 +22,7 @@ set `spriteStatus: "original"` in `animals.json`, drop the PNG in, and record th
   `NODE_PATH=$(npm root -g) node tools/art/export.js [--sheet /tmp/sheet.png] [id ...]`. PNGs are committed, so Playwright is only needed to regenerate.
 - Sizing contract: body radius = `BODY_FRAC` (0.5625) of half the frame; the client scales frames by `radius / BODY_FRAC` so the visible body matches the hitbox. Unit-tested.
 
+Engine decorations added for version 2: spiral shell (snail), cobra hood, spider legs, feathered wings (eagle), ossicones (giraffe).
+
 ## Known weak spots (next polish)
 Seahorse, kraken, crab claws, yeti arms and the arctic fox's tail read weakly; ocean animals are simple top-down fish rather than the more detailed originals; no skins/animations; each animal would benefit from a hand pass.

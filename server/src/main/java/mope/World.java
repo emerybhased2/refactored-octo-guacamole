@@ -61,7 +61,7 @@ public final class World {
     public Player join(String name, Player.Sender sender, boolean bot) {
         Player p = new Player();
         p.world = this; p.id = nextId++; p.name = name; p.sender = sender; p.bot = bot;
-        p.setAnimal(evolution.start()); p.xp = 0; p.health = p.maxHealth(); p.water = 100;
+        p.setAnimal(bot && !cfg.starters.isEmpty() ? cfg.animals.get(cfg.starters.get(rnd.nextInt(cfg.starters.size()))) : evolution.start()); p.xp = 0; p.health = p.maxHealth(); p.water = 100;
         teleportToBiome(p, p.animal.biome);
         p.protectedUntilTick = tick + 2L * cfg.tickRate;
         players.put(p.id, p);

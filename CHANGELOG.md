@@ -1,5 +1,14 @@
 # Project changelog
 
+## 0.3.0 - Version 2: 2018-04-21
+- New historical version built from the Arquivo.pt capture: 61 animals (17 new), 17 new abilities, tier 9, regenerated evolution links (the 2017 tree is asserted unchanged).
+- 2018 main menu from the archived HTML/CSS: wordmark logo (350x99), no Normal/Sandbox buttons, no Winter Skins, hidden How-to-play, three-note update panel in light text; server and version manager now date-gate abilities per version.
+- 2018 upgrade buttons (name at top) and HUD ability button (gold recharge bar), both from the archived draw code; 2017 keeps its own styles.
+- Bots spawn from each version's starter list; sandbox is only offered where the version has it.
+- Original art for the 17 new animals and 17 ability icons (tools/art).
+- Tests: server 66, client/data 37, integration 13.
+
+
 ## 0.2.0 - Milestone 2: rebuilt on archived evidence (2017-02-13)
 - Start date moved to **2017-02-13** (earliest Arquivo.pt capture); the fabricated April 7 baseline was removed.
 - 44-animal roster, internal ids, names, colours and abilities taken from the archived client; 3 biomes (land/ocean/arctic) with teleport on cross-biome evolution.

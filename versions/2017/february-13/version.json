@@ -8,12 +8,45 @@
   "upgradeMenu": "data/menus/upgrade-2017-02-13.json",
   "hud": "data/menus/hud-2017-02-13.json",
   "startAnimal": "mouse",
-  "modes": ["normal", "sandbox"],
-  "biomes": ["land", "ocean", "arctic"],
-  "foods": ["red_berry", "blue_berry", "orange_fruit", "raspberry", "pear", "banana", "coconut", "lillypad"],
-  "features": { "accounts": false, "shop": false, "chat": true, "events": false, "waterBar": true, "serverSelect": true, "settings": true, "sandbox": true, "mute": true, "party": false },
+  "modes": [
+    "normal",
+    "sandbox"
+  ],
+  "biomes": [
+    "land",
+    "ocean",
+    "arctic"
+  ],
+  "foods": [
+    "red_berry",
+    "blue_berry",
+    "orange_fruit",
+    "raspberry",
+    "pear",
+    "banana",
+    "coconut",
+    "lillypad"
+  ],
+  "features": {
+    "accounts": false,
+    "shop": false,
+    "chat": true,
+    "events": false,
+    "waterBar": true,
+    "serverSelect": true,
+    "settings": true,
+    "sandbox": true,
+    "mute": true,
+    "party": false
+  },
   "tickRate": 30,
   "netRate": 20,
   "worldSize": 6000,
-  "bots": 30
+  "bots": 30,
+  "starters": [
+    "mouse",
+    "shrimp",
+    "chipmunk"
+  ],
+  "startersNote": "Mouse, Shrimp and Chipmunk are the spawn animals named in the archived sandbox welcome text; humans spawn as startAnimal, bots use this list."
 }

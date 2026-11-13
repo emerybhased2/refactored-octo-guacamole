@@ -38,7 +38,7 @@
       this.paintMute();
     }
     setMode(m) {
-      this.mode = m; store.set('mope.mode', m); const $ = this.$, op = this.cfg ? this.cfg.modes.inactiveOpacity : 0.4;
+      this.mode = m; store.set('mope.mode', m); const $ = this.$;
       $('button_GMnormal').className = m === 'normal' ? 'button' : 'button buttonDisabled';
       $('button_GMsandbox').className = m === 'sandbox' ? 'button' : 'button buttonDisabled';
     }

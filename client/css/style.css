@@ -26,6 +26,7 @@ html, body { width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
 #button_mute { display: inline-block; position: absolute; right: 0; margin-top: -18px; }
 #startButton { font-size: large; position: relative; box-sizing: border-box; width: var(--play-w); height: var(--play-h); margin-top: var(--play-mt); margin-bottom: 5px; cursor: pointer; text-align: center; font-weight: bold; color: var(--play-color); border: 0; border-bottom: var(--play-bb); border-radius: var(--play-radius); background: var(--play-bg); text-shadow: 0 1px 2px rgba(0,0,0,.25); }
 #startButton:hover, #startButton:active { top: 1px; outline: none; background: var(--play-hover); box-shadow: none; }
+#onconnectDiv { margin-top: var(--onc-mt, 0px); }
 #spawnXpLabel { color: #FEC842; margin: auto; width: 100%; font-size: 25px; text-align: center; text-shadow: 1px 1px #000; white-space: nowrap; overflow: hidden; position: absolute; }
 #optionsDiv { background-color: var(--opt-bg); padding: 5px; border-radius: 8px; margin-top: 5px; font-size: 12px; position: absolute; top: var(--opt-top); display: none; z-index: 200; text-align: left; left: 50px; right: 50px; }
 #optionsDiv h3 { margin: 6px 0 2px; font-size: 15px; }
@@ -37,7 +38,9 @@ html, body { width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
 #howToPlayDiv { margin-left: 20px; margin-top: 20px; background-color: var(--how-bg); }
 #updatesDiv { margin-left: 17px; margin-top: 20px; background-color: var(--upd-bg); }
 #howToPlayDiv h2, #updatesDiv h2 { font-size: 12px; color: #095A00; margin: 0; }
-#howToPlayDiv ul, #updatesDiv ul { padding-left: 5px; margin: 8px; } #howToPlayDiv li, #updatesDiv li { font-size: 12px; color: #000; list-style: none; }
+#updatesDiv h2 { color: var(--upd-title, #095A00); text-shadow: var(--upd-title-shadow, none); margin-top: 6px; }
+#howToPlayDiv ul, #updatesDiv ul { padding-left: 5px; margin: 8px; } #howToPlayDiv li { font-size: 12px; color: #000; list-style: none; }
+#updatesDiv li { font-size: 12px; color: var(--upd-text, #000); text-shadow: var(--upd-shadow, none); list-style: none; }
 @media all and (max-width: 720px) { #howToPlayDiv { width: 100px; } #updatesDiv { display: none; } }
 @media all and (max-width: 650px) { #howToPlayDiv { display: none; } }
 @media (max-height: 756px) { #startMenu { margin-top: 20px; } }

@@ -47,6 +47,16 @@ function client() {
       await s.until('snap'); assert.deepStrictEqual(s.last.snap.you.ev, []); s.send({ t: 'sandbox', d: -1 }); await sleep(400);
       const top = w.version.animals.find((x) => x.id === s.last.snap.you.a); assert.strictEqual(top.tier, 8); assert.ok(s.last.snap.n < 5, 'sandbox has no bots'); s.ws.close();
     });
+    await t('version 2018-04-21: 61 animals, normal mode only (sandbox request ignored), 2018 abilities', async () => {
+      const c = client(); await c.ready; c.send({ t: 'join', name: 'Y2018', v: '2018-04-21', mode: 'sandbox' }); const w = await c.until('welcome');
+      assert.strictEqual(w.version.animals.length, 61); assert.deepStrictEqual(w.version.modes, ['normal']); assert.strictEqual(w.mode, 'normal');
+      assert.ok(w.version.abilities.some((x) => x.id === 'venom_spit')); assert.ok(w.version.animals.some((x) => x.id === 'tiger'));
+      await c.until('snap'); assert.ok(c.last.snap.n >= 25); c.ws.close();
+    });
+    await t('2017 build still serves 44 animals and no 2018 abilities', async () => {
+      const c = client(); await c.ready; c.send({ t: 'join', name: 'Y2017', v: '2017-02-13' }); const w = await c.until('welcome');
+      assert.strictEqual(w.version.animals.length, 44); assert.ok(!w.version.abilities.some((x) => x.id === 'venom_spit')); c.ws.close();
+    });
     await t('ping/pong', async () => { b.send({ t: 'ping', ts: 5 }); await b.until('pong'); });
     await t('malformed/oversized messages are ignored', async () => {
       a.ws.send('not json'); a.ws.send('x'.repeat(5000)); a.ws.send(JSON.stringify({ t: 'input', a: 'NaN', m: {} })); await sleep(300); assert.ok(a.ws.readyState === 1);

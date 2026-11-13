@@ -1,0 +1,170 @@
+{
+  "version": "2018-04-21",
+  "confidence": "verified (geometry/colours from archived index.html + main.css 20180421); update-panel text from the page",
+  "source": "Arquivo.pt captures 20180421014032 (index), 20180421014110 (main.css), 20180421014215 (logo). img/settings.png and x.png re-encoded but visually the same, so the 2017 files are reused; the captured sound_on.png was an HTML error page.",
+  "page": {
+    "background": "#3FBA54",
+    "font": "Arial"
+  },
+  "column": {
+    "w": 350,
+    "h": 700,
+    "onconnectMarginTop": -10
+  },
+  "logo": {
+    "src": "assets/menus/2018-04-21/logo.png",
+    "w": 350,
+    "h": 99,
+    "marginTop": -20
+  },
+  "nickname": {
+    "w": 250,
+    "placeholder": "Your name",
+    "maxLength": 15,
+    "border": "4px solid #1c9c25",
+    "font": "30px Arial",
+    "padding": 5,
+    "radius": 5,
+    "background": "#ffffff",
+    "color": "#000000"
+  },
+  "play": {
+    "label": "Play",
+    "w": 250,
+    "h": 40,
+    "marginTop": 10,
+    "background": "#0aa633",
+    "hover": "#16932A",
+    "borderBottom": "4px solid #116c17",
+    "color": "#ffffff",
+    "font": "bold large Arial",
+    "radius": 5
+  },
+  "icons": {
+    "settings": {
+      "src": "assets/menus/2017-02-13/settings.png",
+      "w": 30,
+      "h": 30
+    },
+    "mute": {
+      "src": "assets/menus/2017-02-13/sound_on.png",
+      "w": 30,
+      "h": 31
+    },
+    "close": {
+      "src": "assets/menus/2017-02-13/x.png",
+      "w": 35,
+      "h": 35
+    },
+    "muteOff": {
+      "src": "assets/menus/2017-02-13/sound_off.png",
+      "w": 30,
+      "h": 30,
+      "status": "recreated",
+      "note": "sound_off.png is referenced by the archived client but was not captured"
+    }
+  },
+  "options": {
+    "background": "rgba(11,164,52,0.95)",
+    "top": 175,
+    "radius": 8,
+    "padding": 5,
+    "fontSize": 12,
+    "select": {
+      "background": "#3fba54",
+      "border": "3px solid #1F9A1F",
+      "regionW": 190,
+      "serverW": 240
+    },
+    "checkboxes": [
+      {
+        "id": "noImages",
+        "label": "No Animal images",
+        "color": "#000",
+        "implemented": true
+      },
+      {
+        "id": "noNames",
+        "label": "No Names & Chat",
+        "color": "#000",
+        "implemented": true
+      },
+      {
+        "id": "lowGraphics",
+        "label": "Use Low graphics",
+        "color": "#000",
+        "implemented": true
+      },
+      {
+        "id": "noJoystick",
+        "label": "No Joystick (mobile)",
+        "color": "#194614",
+        "implemented": false
+      },
+      {
+        "id": "leftHanded",
+        "label": "LEFT-handed Joystick",
+        "color": "#194614",
+        "implemented": false
+      }
+    ]
+  },
+  "panels": {
+    "howToPlay": null,
+    "updates": {
+      "title": null,
+      "background": "rgba(9,153,47,0.28)",
+      "w": 200,
+      "marginLeft": 17,
+      "marginTop": 20,
+      "textColor": "#f8f8f8",
+      "textShadow": "1px 1px rgba(0,0,0,0.52)",
+      "titleColor": "#095A00",
+      "titleShadow": "1px 1px rgba(0,0,0,0.51)",
+      "sections": [
+        {
+          "title": "Update (Feb 16): CLASSIC MOPE BETA!",
+          "items": [
+            "We have BETA released an old version of mope.io (from over 1 year ago - Dec 2 2016)",
+            "TRY PLAYING OLD MOPE (link on the original page)"
+          ]
+        },
+        {
+          "title": "Update (Feb 13):",
+          "items": [
+            "Fixed issue of joystick/buttons getting stuck on mobile - balancing and cool new animals coming soon!"
+          ]
+        },
+        {
+          "title": "Update (Jan 26): Rebalancing things!",
+          "items": [
+            "We have tested and/or rebalanced many top animals, including kraken, dragon, giant crab, tiger, giraffe, eagle, etc.",
+            "All animals can now enter/swim in water spots!",
+            "NEW: server URL rework replaces party links! Copy the mope.io url in your browser to see/share your current game server",
+            "Anyone joining from a mope.io link will automatically play in the same server as you!"
+          ]
+        }
+      ]
+    }
+  },
+  "animation": null,
+  "absentInThisVersion": [
+    "login",
+    "register",
+    "shop",
+    "currency",
+    "music-in-game",
+    "events",
+    "sandbox",
+    "winter-skins",
+    "party-link"
+  ],
+  "notReproduced": [
+    "third-party ads (hidden in the page CSS anyway)",
+    "app-store promo banners",
+    "YouTube subscribe widget",
+    "Make Party (removed this version)",
+    "reddit/changelog links (external)"
+  ],
+  "modes": null
+}
