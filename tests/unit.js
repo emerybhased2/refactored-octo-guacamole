@@ -258,9 +258,9 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
     assert.deepStrictEqual(m4.panels.updates.sections.slice(0, 2).map((s) => s.title), ['DEC 29: Bug Fixes', 'DEC 23: #GoldenAge']); assert.ok(m4.panels.updates.sections.length >= 4);
     const m19 = J(v19.menu); assert.strictEqual(m19.account, undefined); assert.strictEqual(MenuRenderer.elementsPresent(m19).account, false);
   });
-  await t('shop catalog: 59 skins exist (verified) but only 4 items are named; prices flagged inferred; art + coin icon present', () => {
-    assert.strictEqual(shopData.verifiedTotalSkins, 59); assert.strictEqual(shopData.items.length, 4); assert.deepStrictEqual(shopData.items.map((i) => i.id).sort(), ['azure_blackdragon', 'golden_blackdragon', 'golden_kingdragon', 'snowman']);
-    for (const it of shopData.items) { assert.ok(Number.isInteger(it.price) && it.price > 0, it.id); assert.ok(/inferred/.test(it.confidence), it.id); assert.ok(all.some((a) => a.id === it.animal), it.id); if (it.type === 'skin') { const i = png(it.sprite); assert.deepStrictEqual([i.w, i.h, i.type], [256, 256, 6], it.id); assert.ok(it.family); } }
+  await t('shop catalog: 59 skins exist (verified) but only the named/inferred items exist; prices flagged inferred; art + coin icon present', () => {
+    assert.strictEqual(shopData.verifiedTotalSkins, 59); assert.strictEqual(shopData.items.length, 15); for (const id of ['azure_blackdragon', 'golden_blackdragon', 'golden_kingdragon', 'snowman', 'bigfoot', 'mouse_skin_1', 'mouse_skin_2', 'tigershark', 'hammerhead']) assert.ok(shopData.items.some((i) => i.id === id), id);
+    for (const it of shopData.items) { assert.ok(Number.isInteger(it.price) && it.price >= 0, it.id); assert.ok(/inferred|behaviour/.test(it.confidence), it.id); if (it.type === 'bundle' || it.type === 'feature') continue; assert.ok(all.some((a) => a.id === it.animal), it.id); if (it.type === 'skin') { const i = png(it.sprite); assert.deepStrictEqual([i.w, i.h, i.type], [256, 256, 6], it.id); assert.ok(it.family); } }
     const c = png(shopData.currency.icon); assert.deepStrictEqual([c.w, c.h], [64, 64]); assert.ok(/NOT implemented/.test(shopData.currency.earnNote)); assert.strictEqual(v4.economy.coinsPerXp, 0.01);
     assert.ok(shopData.items.find((i) => i.id === 'snowman').type === 'animal'); assert.ok(!J(v19.menu).panels.updates.sections.some((s) => /shop/i.test(JSON.stringify(s))));
   });
@@ -270,15 +270,15 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
     assert.strictEqual(S(it, { user: 'a', coins: 0, owned: ['golden_blackdragon'], equipped: {} }), 'equip'); assert.strictEqual(S(it, { user: 'a', coins: 0, owned: ['golden_blackdragon'], equipped: { blackdragon: 'golden_blackdragon' } }), 'equipped');
     assert.strictEqual(S(an, { user: 'a', coins: 9999, owned: ['snowman'], equipped: {} }), 'owned'); assert.ok(Shop.available(v4.features) && !Shop.available(v19.features));
   });
-  await t('disaster data: 15 definitions, verified numbers (Duststorm -10%, lava lakes 5-10 min), everything else flagged', () => {
-    const D = dis.disasters; assert.strictEqual(D.length, 15); assert.strictEqual(new Set(D.map((d) => d.id)).size, 15);
+  await t('disaster data: 16 definitions, verified numbers (Duststorm -10%, lava lakes 5-10 min), everything else flagged', () => {
+    const D = dis.disasters; assert.strictEqual(D.length, 16); assert.strictEqual(new Set(D.map((d) => d.id)).size, 16);
     assert.strictEqual(D.find((d) => d.id === 'duststorm').effects.speedMul, 0.9); assert.ok(/VERIFIED/.test(D.find((d) => d.id === 'duststorm').confidence));
     assert.deepStrictEqual(D.find((d) => d.id === 'lava_lake').durationRangeSec, [300, 600]); assert.strictEqual(D.find((d) => d.id === 'lava_lake').weight, 0); assert.strictEqual(D.find((d) => d.id === 'volcanic_eruption').spawns.id, 'lava_lake');
     for (const d of D) { assert.ok(/existence verified|VERIFIED/.test(d.confidence), d.id); assert.ok(['land', 'ocean', 'arctic', 'desert', 'volcano', 'any'].includes(d.biome), d.id); assert.ok(d.radius > 0 && d.durationSec > 0, d.id); }
     for (const id of ['tsunami', 'volcanic_eruption', 'devil_twister']) assert.ok(D.find((d) => d.id === id).weight <= 2, id + ' must be rare');
-    const kinds = new Set(D.map((d) => d.visual.kind)); for (const k of kinds) assert.ok(['cloud', 'heat', 'wave', 'eruption', 'lava', 'swirl'].includes(k), k);
+    const kinds = new Set(D.map((d) => d.visual.kind)); for (const k of kinds) assert.ok(['cloud', 'heat', 'wave', 'eruption', 'lava', 'swirl', 'poison'].includes(k), k);
     for (const id of ['land_tornado', 'dustdevil', 'waterspout', 'arctic_twister', 'fire_tornado', 'devil_twister']) assert.ok(D.find((d) => d.id === id).effects.boostEscapes, id);
-    assert.ok(D.every((d) => d.releaseDate === '2019-12-30')); assert.ok(!v19.features.disasters && v4.features.disasters);
+    assert.ok(D.every((d) => d.releaseDate === '2019-12-30' || d.id === 'poison_lake')); assert.ok(!v19.features.disasters && v4.features.disasters);
   });
   await t('Disasters renderer draws every visual kind without throwing (stub canvas)', () => {
     const calls = []; const mk = () => new Proxy({}, { get: (o, k) => (k === 'createRadialGradient' ? () => ({ addColorStop() {} }) : (typeof k === 'string' && !(k in o) ? (...a) => { calls.push(k); } : o[k])), set: (o, k, v) => { o[k] = v; return true; } });
@@ -290,6 +290,61 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
     const terr2 = J('data/terrain/terrain.json'); for (const id of ['volcano_cone', 'arctic_volcano']) { const x = terr2.find((y) => y.id === id); assert.strictEqual(x.releaseDate, '2019-12-30'); assert.ok(v4.terrain.includes(id)); assert.ok(!v19.terrain.includes(id)); }
     assert.ok(/VERIFIED/.test(terr2.find((y) => y.id === 'arctic_volcano').confidence)); assert.ok(/burning/.test(J(v4.hud).messages.burn)); assert.ok(J(v4.hud).messagesNote);
     assert.ok(all.find((a) => a.id === 'snowman').ability === 'camouflage'); const cam = J('data/abilities/abilities.json').find((a) => a.id === 'camouflage'); assert.strictEqual(cam.implemented, false); assert.strictEqual(cam.type, 'passive');
+  });
+
+  // ---- 2020-06-13
+  const v5 = J('versions/2020/june-13/version.json');
+  await t('2020-06-13: version, roster (82 animals), Warthog/Bigfoot, rarity, throw_spear', () => {
+    assert.strictEqual(v5.date, '2020-06-13'); const A0 = J('data/progression/animals.json'), A = A0.filter((a) => a.releaseDate <= '2020-06-13'); assert.strictEqual(A.length, 82);
+    const bf = A.find((a) => a.id === 'bigfoot'), wh = A.find((a) => a.id === 'warthog'); assert.ok(bf && wh); assert.strictEqual(bf.rarity, 0.001); assert.strictEqual(bf.releaseDate, '2020-06-13');
+    assert.ok(J('data/abilities/abilities.json').some((a) => a.id === 'throw_spear' && a.implemented === false));
+    for (const a of [bf, wh]) assert.ok(fs.existsSync(path.join(ROOT, a.sprite)), a.id);
+  });
+  await t('2020-06-13: variants rarities verified, art present', () => {
+    const V = J('data/variants.json'); const list = V.variants || V; const r = Object.fromEntries(list.map((x) => [x.id, x.rarity]));
+    assert.strictEqual(r.golden_eagle, 0.005); assert.strictEqual(r.black_rhino, 0.004); assert.ok(Math.abs(r.aqua_yeti - 0.00833) < 1e-5);
+    for (const x of list) assert.ok(fs.existsSync(path.join(ROOT, x.sprite)), x.id);
+  });
+  await t('2020-06-13: forest/climbing/poison lake data; real coin icon 106x111', () => {
+    assert.ok(v5.features.climbing && v5.features.forest && v5.features.sounds && v5.features.poisonLake); assert.deepStrictEqual(v5.forest.rect.length, 4);
+    const pl = J('data/disasters/disasters.json').disasters.find((d) => d.id === 'poison_lake'); assert.ok(pl.permanent && pl.hillRing); assert.strictEqual(pl.releaseDate, '2020-03-03');
+    const c = png('assets/shop/mopecoin_archived.png'); assert.deepStrictEqual([c.w, c.h], [106, 111]);
+    for (const f of ['tree_pine', 'tree_palm', 'tree_baobab']) assert.ok(fs.existsSync(path.join(ROOT, 'assets/terrain/' + f + '.png')), f);
+  });
+  await t('2020-06-13: menu config uses real geometry; settings holds spectate/mute/graphics', () => {
+    const m = J(v5.menu); assert.strictEqual(m.options.regionSelect, false); assert.strictEqual(m.spectate.placement, 'settings'); assert.strictEqual(m.account.style.width, 130); assert.strictEqual(m.shopWindow.width, 638); assert.ok(Object.keys(m.graphics).length >= 1);
+  });
+  await t('audio: Sound.classify picks eat/drink/kill from state deltas', () => {
+    global.Mope = global.Mope || {}; require('../client/audio.js'); const S = (global.Mope || {}).Sound || global.window && global.window.Mope.Sound; assert.ok(S && typeof S.classify === 'function');
+    assert.strictEqual(S.classify({ xp: 10, w: 1, a: 'mouse' }, { xp: 10, w: 1, a: 'mouse' }, 5), null);
+  });
+
+  // ---- 2021-06-12
+  const v6 = J('versions/2021/june-12/version.json');
+  await t('2021-06-12: version, 4 evidenced animals (inferred placement), art, edges, reachable', () => {
+    assert.strictEqual(v6.date, '2021-06-12'); const A = J('data/progression/animals.json'), by = Object.fromEntries(A.map((a) => [a.id, a]));
+    for (const id of ['queenflame', 'snowgirl', 'santa', 'tullymonster']) { assert.ok(by[id], id); assert.strictEqual(by[id].releaseDate, '2021-06-12'); assert.ok(/verified/.test(by[id].confidence.existence)); assert.ok(/inferred/.test(by[id].confidence.tier)); assert.ok(fs.existsSync(path.join(ROOT, by[id].sprite)), id); }
+    const E = J('data/progression/evolution.json').filter((e) => e.releaseDate === '2021-06-12'); for (const id of ['queenflame', 'snowgirl', 'santa', 'tullymonster']) assert.ok(E.some((e) => e.to === id), id + ' reachable');
+  });
+  await t('2021-06-12: menu config is the verified React UI (mint panel, 266x92 Play, STORE, settings texts, verbatim updates)', () => {
+    const m = J(v6.menu); assert.strictEqual(m.theme, '2021'); assert.deepStrictEqual([m.play.w, m.play.h, m.play.background], [266, 92, '#0faa29']); assert.strictEqual(m.menuPanel.border, '4px solid #8af5af'); assert.strictEqual(m.store.label, 'STORE');
+    assert.deepStrictEqual(m.graphics.levels, ['LOW', 'MEDIUM', 'HIGH']); assert.ok(m.options.checkboxes.some((c) => c.id === 'noXpPopups') && m.options.checkboxes.some((c) => c.id === 'snowfall'));
+    assert.deepStrictEqual(m.panels.updates.sections.map((s) => s.title), ['June 9, 2021: Hotfix 2.3', 'June 1, 2021: Hotfix 2.2', 'May 27: Hotfix 2.1', 'May 22: New Storefront update!']);
+    assert.deepStrictEqual(m.shopWindow.categories, ['Skins', 'Features', 'Deals', 'My Skins', 'My Features', 'My Deals']); assert.deepStrictEqual(m.shopWindow.filters, ['All', 'New', 'Sale', 'Normal', 'High-Price', 'Low-Price']);
+    const c = png('assets/shop/mopecoin_2021.png'); assert.deepStrictEqual([c.w, c.h], [106, 111]); assert.ok(!MenuRenderer.themeVars(m)['--col-w'].includes('350'));
+  });
+  await t('2021 storefront: listItems categories/filters, itemState for features/bundles', () => {
+    const items = J('data/shop/shop.json').items.filter((i) => i.releaseDate <= '2021-06-12'), L = Shop.listItems;
+    assert.ok(L(items, 'Skins', 'All', null).every((i) => i.type === 'skin')); assert.deepStrictEqual(L(items, 'Deals', 'All', null).map((i) => i.id), ['skinsBundle_gold_release1']);
+    assert.ok(L(items, 'Features', 'All', null).some((i) => i.id === 'classic_theme')); assert.ok(L(items, 'Skins', 'Sale', null).every((i) => i.listPrice > i.price));
+    assert.ok(L(items, 'Skins', 'New', null).every((i) => i.isNew)); assert.deepStrictEqual(L(items, 'My Skins', 'All', { owned: [] }), []); assert.ok(L(items, 'My Skins', 'All', { owned: ['gold_bluewhale'] }).length === 1);
+    const th = items.find((i) => i.id === 'classic_theme'); assert.strictEqual(Shop.itemState(th, { user: 'a', coins: 0, owned: [], equipped: {} }), 'buy'); assert.strictEqual(Shop.itemState(th, { user: 'a', coins: 0, owned: ['classic_theme'], equipped: { __theme: 'classic_theme' } }), 'equipped');
+    const b = items.find((i) => i.type === 'bundle'); assert.strictEqual(Shop.itemState(b, { user: 'a', coins: 0, owned: [b.id], equipped: {} }), 'owned'); for (const id of b.contains) assert.ok(items.some((i) => i.id === id && fs.existsSync(path.join(ROOT, i.sprite))), id);
+    assert.ok(v6.shopPriceOverrides.mouse_skin_1 === 0 && /FREE/i.test(J(v6.menu).panels.updates.sections[3].items.join(' ')));
+  });
+  await t('2021 extras: xpGain is pure and ignores animal changes; snowfall/XP/classic client hooks exist', () => {
+    const X = require('../client/extras.js'); assert.strictEqual(X.xpGain({ xp: 10, a: 'mouse' }, { xp: 25.9, a: 'mouse' }), 15); assert.strictEqual(X.xpGain({ xp: 10, a: 'mouse' }, { xp: 99, a: 'rabbit' }), 0); assert.strictEqual(X.xpGain(null, { xp: 5, a: 'x' }), 0);
+    const cs = fs.readFileSync(path.join(ROOT, 'client/client.js'), 'utf8'); assert.ok(/classic_theme/.test(cs) && /Extras\.Snow/.test(cs) && /Extras\.popup/.test(cs));
   });
 
   console.log(`unit: ${pass} passed, ${fail} failed`); process.exit(fail ? 1 : 0);

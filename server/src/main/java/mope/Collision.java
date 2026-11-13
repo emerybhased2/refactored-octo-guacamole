@@ -9,6 +9,7 @@ public final class Collision {
     public static boolean canEat(Player pred, Player prey) {
         if (pred == prey || pred.dead || prey.dead || prey.protectedUntilTick > pred.world.tick) return false;
         if (!pred.world.sandbox && pred.animal.tier <= prey.animal.tier) return false;
+        if (prey.climbing && !(pred.climbing || pred.world.cfg.fliers.contains(pred.animal.id))) return false; // up in a tree (inferred from the Bigfoot spear note)
         double r = pred.radius * 0.9;
         return dist2(pred, prey) <= r * r;
     }

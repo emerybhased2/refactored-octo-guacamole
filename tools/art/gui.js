@@ -44,6 +44,7 @@
     fly_with_prey(c) { for (const sd of [-1, 1]) P.poly(c, [[sd * 4, 6], [sd * 24, -14], [sd * 26, -2], [sd * 14, 14]], CREAM); P.ell(c, 0, 10, 7, 7, '#e8503a'); },
     stink(c) { c.strokeStyle = '#c8e07a'; c.lineWidth = 5; c.lineCap = 'round'; for (const x of [-14, 0, 14]) { c.beginPath(); c.moveTo(x, 22); c.bezierCurveTo(x - 12, 10, x + 12, 0, x, -10); c.bezierCurveTo(x - 8, -16, x + 6, -20, x, -24); c.stroke(); } },
     camouflage(c) { P.poly(c, [[-10, -22], [10, -22], [0, 22]], '#f08a1a'); for (const [x, y, r] of [[-18, -6, 4], [18, 0, 3.5], [-14, 14, 3], [14, 16, 4], [0, -26, 3]]) P.ell(c, x, y, r, r, CREAM); P.line(c, [[-6, -14], [6, -14]], 2.5, sh('#f08a1a', -0.3)); },
+    throw_spear(c) { P.line(c, [[-22, 22], [18, -18]], 4.5, '#caa070'); P.poly(c, [[24, -24], [10, -20], [20, -10]], CREAM); P.poly(c, [[-26, 26], [-18, 22], [-22, 18]], '#a8d078'); P.line(c, [[-4, -4], [-12, -12]], 2, CREAM); },
     back_kick(c) { P.poly(c, [[-22, 0], [-4, -16], [-4, -6], [20, -6], [20, 6], [-4, 6], [-4, 16]], CREAM); P.line(c, [[10, -18], [22, -18]], 3, CREAM); P.line(c, [[10, 18], [22, 18]], 3, CREAM); },
   };
   function abilityIcon(ctx, id, S) {

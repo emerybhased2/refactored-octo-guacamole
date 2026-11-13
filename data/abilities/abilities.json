@@ -723,5 +723,24 @@
   "icon": "assets/icons/abilities/camouflage.png",
   "iconStatus": "recreated",
   "note": "Passive: if not moving the Snowman camouflages (carrot turns orange = hidden); ends when it moves or is hurt (2019-12-23 note). Not simulated."
+ },
+ {
+  "id": "throw_spear",
+  "name": "Throw Spear",
+  "type": "projectile",
+  "cooldownMs": 0,
+  "durationMs": 0,
+  "speedMultiplier": 1,
+  "damage": 0,
+  "range": 0,
+  "biomes": null,
+  "implemented": false,
+  "releaseDate": "2020-06-13",
+  "verified": true,
+  "keyboard": "W",
+  "clientId": null,
+  "icon": "assets/icons/abilities/throw_spear.png",
+  "iconStatus": "recreated",
+  "note": "Bigfoot throws spears; when climbing trees its spears hit flying/tree animals only; holding the ability creates fires (2020-03-03 notes). Not simulated."
  }
 ]

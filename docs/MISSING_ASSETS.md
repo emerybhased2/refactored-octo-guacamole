@@ -18,6 +18,15 @@ Not available in the archive for 2017-02-13:
 - 16 new skins, 3 foods, 9 terrain objects and 2 biome tiles are original recreations (see `docs/ART_STYLE.md`); the archive has only a handful of 2019 skin files.
 - The captured 2019 `settings.png` was an HTML page (2017 icon reused).
 
+## 2021-06-12 additions
+- Captured and used: `shop/mopecoin.png` (as `assets/shop/mopecoin_2021.png`), UI CSS/bundle texts. Captured but NOT shipped (copyrighted art, study only): skins/mouse.png, aiboss gujjar/sultan.
+- Original recreations: Queen Flame, Snowgirl, Santa, Tully Monster, gold_bluewhale/blackwidow/cassowary skins. Unresolvable: halloween_doomedarius, skinsBundle_locked_release1, Sunset/Storm Cloud Lion skins (names only), shop tab images (coins/skins/deals.png), Lato fonts.
+- 2022-2023: nothing usable exists (Cloudflare challenge pages only).
+
+## 2020-06-13 additions
+- Captured and used: `shop/mopecoin.png` (as `assets/shop/mopecoin_archived.png`), `main.css`, `index.html`.
+- Not captured / recreated as original art: Warthog, Bigfoot, 7 skins (Mouse 1/2, Tiger Shark, Hammerhead, Golden Eagle, Black Rhino, Aqua Yeti), 3 tree types, `throw_spear` icon, all sounds (synthesized). No client.js: ids and HUD for this era are inferred.
+
 ## 2019-12-30 additions
 - No client.js and no 2019-12 CSS were captured: geometry for the login/shop elements, ids, abilities and numbers are inferred.
 - `shop/mopecoin.png` (referenced by the page) was not captured; original coin drawn. The 55 unnamed skins and the 'HD art' are not available.

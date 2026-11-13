@@ -1,5 +1,20 @@
 # Project changelog
 
+## 0.7.0 - Version 6: 2021-06-12 (React UI, Storefront)
+- Built from the real 2021 homepage bundle and CSS (2022-2023 captures are Cloudflare pages, so this is the last evidenced version): mint 2021 menu, STORE button, settings (SOUND, graphics LOW/MEDIUM/HIGH, No XP Popups, Snowfall), footer links, verbatim May-June 2021 update notes.
+- Storefront: Skins/Features/Deals + My ... categories, filters, purchase confirmation, FREE/NEW/SALE tags, Gold bundle (atomic bundle purchase on the server), Classic Theme feature, free skins; gold Blue Whale/Black Widow/Cassowary skins.
+- Animals: Queen Flame, Snowgirl, Santa, Tully Monster (existence verified, placement inferred). Total 86.
+- Tests: server 143, client/data 60, integration 26.
+
+## 0.6.1 - Style-tightening pass (all art)
+- Every animal and skin sprite now gets a uniform thin dark silhouette outline derived from its body colour; eyes are 12% larger; food rims are darker. Original drawings only (no reproduction of Mope.io art). All 82 animals, skins and foods re-exported.
+
+## 0.6.0 - Version 5: 2020-06-13 (Forest, Bigfoot, Sounds)
+- New version from the 2020-06-13 homepage/CSS (2020-03-14 skipped): Warthog, **Bigfoot** (tier 16, 1/1000 or shop), Forest (1/4 of land, pine/palm/baobab), **climbable trees** (S key, climbers/fliers only), tree transparency, **poison lakes** with hill rings, **rare skin variants** (Golden Eagle, Black Rhino, Aqua Yeti with archived rarities), synthesized **sounds** + mute, **graphics options**.
+- Menu rebuilt from real HTML/CSS: settings panel (graphics, mute, spectate, logout), +coins popup, real login geometry, 638px shop window with Skins/Animals tabs; real coin icon.
+- Shop: Bigfoot, Mouse skins, Tiger Shark, Hammerhead added (prices inferred). Login/account panel now hides during play.
+- Tests: server 143, client/data 56, integration 25.
+
 ## 0.5.0 - Version 4: 2019-12-30 (#GoldenAge)
 - New version from the 2019-12-30 homepage (no client/CSS exists): Snowman (1/2000 rarity or bought), Phoenix, Giant Scorpion, Arctic Volcano and volcano terrain, **accounts + coin shop** (server-validated; Golden/Azure Black Dragon and Golden King Dragon skins, Snowman unlock), **15 disasters** (tornados, storms, tsunami, eruptions with 5-10 min lava lakes).
 - Menu: login/account block from the archived element ids; Facebook/Google OAuth replaced by a clearly labelled local account form.

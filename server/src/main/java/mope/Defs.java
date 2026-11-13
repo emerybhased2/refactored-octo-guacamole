@@ -6,8 +6,10 @@ import java.util.List;
 public final class Defs {
     private Defs() {}
     public static class Edge { public String from, to, releaseDate, removalDate, confidence; }
-    public static class ShopItem { public String id, type, animal, family, name, sprite, spriteStatus, releaseDate, removalDate, confidence; public int price; }
+    public static class ShopItem { public String id, type, animal, family, name, sprite, spriteStatus, releaseDate, removalDate, confidence; public int price; public Integer listPrice; public Boolean isNew; public java.util.List<String> contains; }
+    public static class Variant { public String id, animal, name, sprite, spriteStatus, releaseDate, removalDate, confidence; public double rarity; }
     public static class DisasterDef {
+        public boolean permanent, hillRing;
         public String id, name, biome, releaseDate, removalDate, spawnedBy, confidence;
         public double radius, durationSec, weight; public double[] durationRangeSec;
         public com.google.gson.JsonObject visual, effects, spawns;
@@ -18,7 +20,7 @@ public final class Defs {
     public static class Tier { public int tier; public String name, color, releaseDate; public List<Cat> categories; }
     public static class TerrainDef {
         public String id, name, kind, sprite, spriteStatus, releaseDate, removalDate, confidence, effect;
-        public double radius, density;
+        public double radius, density, forestDensity;
         public List<String> biomes;
     }
     public static class FoodDef {

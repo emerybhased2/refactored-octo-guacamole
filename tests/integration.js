@@ -123,6 +123,16 @@ function client(port = PORT) {
       r = await msg({ t: 'buy', item: 'no_such_item' }); assert.strictEqual(r.t, 'shop-error');
       r = await msg({ t: 'unequip', animal: 'blackdragon' }); assert.deepStrictEqual(r.equipped, {}); assert.ok(r.owned.includes('golden_blackdragon')); c.ws.close();
     });
+    await t('2021 storefront: free skin, bundle grants contents atomically, classic theme equips as a feature', async () => {
+      const c = await login(PORT_DEV, '2021-06-12'); const msg = async (m) => { const n = c.msgs.length; c.send(Object.assign({ v: '2021-06-12' }, m)); const t0 = Date.now(); while (Date.now() - t0 < 4000) { const r = c.msgs.slice(n).find((x) => x.t === 'shop' || x.t === 'shop-error'); if (r) return r; await sleep(30); } throw new Error('no reply'); };
+      let r = await msg({ t: 'buy', item: 'mouse_skin_1' }); assert.deepStrictEqual([r.t, r.coins, r.owned.includes('mouse_skin_1')], ['shop', 0, true]); // free in 2021
+      r = await msg({ t: 'buy', item: 'skinsBundle_gold_release1' }); assert.strictEqual(r.t, 'shop-error'); // no coins
+      await msg({ t: 'dev-coins', n: 2500 }).catch(() => null);
+      r = await msg({ t: 'buy', item: 'skinsBundle_gold_release1' }); assert.deepStrictEqual([r.t, r.coins], ['shop', 500]); for (const id of ['gold_bluewhale', 'gold_blackwidow', 'gold_cassowary', 'skinsBundle_gold_release1']) assert.ok(r.owned.includes(id), id);
+      r = await msg({ t: 'buy', item: 'skinsBundle_gold_release1' }); assert.strictEqual(r.t, 'shop-error'); // already owned
+      r = await msg({ t: 'buy', item: 'classic_theme' }); assert.strictEqual(r.t, 'shop'); r = await msg({ t: 'equip', item: 'classic_theme' }); assert.strictEqual(r.equipped.__theme, 'classic_theme');
+      r = await msg({ t: 'unequip', animal: '__theme' }); assert.ok(!r.equipped.__theme); c.ws.close();
+    });
     await t('sessions: resume restores coins/inventory; logout invalidates the token', async () => {
       const c = await login(PORT_DEV); c.send({ t: 'dev-coins', v: '2019-12-30', n: 500 }); await c.until('shop'); c.ws.close();
       const c2 = client(PORT_DEV); await c2.ready; c2.send({ t: 'resume', v: '2019-12-30', token: c.token }); const r = await c2.until('auth'); assert.deepStrictEqual([r.ok, r.user, r.coins], [true, c.user, 500]);

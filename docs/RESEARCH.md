@@ -109,6 +109,27 @@ Prices, the coin earn rate (1 per 100 XP), every disaster number except Duststor
 ### Not implemented
 Real-money purchases, Facebook/Google OAuth, the apex-kill interface, camouflage (Snowman passive), Phoenix boost behaviour, snowball projectiles, terrain effects (hiding, mud), "Waves", HD art.
 
+## 2020-06-13 capture (version 5, "Forest, Bigfoot, Sounds")
+The 2020-03-14 capture was deliberately skipped (user request); its changes appear here through the dated update notes on the 2020-06-13 homepage.
+Evidence: real `index.html` (menu structure: `#mopeMenu`, server select only, Spectate/mute/logout/graphics inside settings, `#plusCoins`, `#rightSide` login), real `main.css` (login 130px, shop window 638x345, colours), real `shop/mopecoin.png` (106x111). No client.js exists for 2019+.
+### Verified (dated notes)
+Mar 3: climbable trees (S key), Forest (1/4 of land), trees transparent near players, Bigfoot (dragon tier, 1/1000 or shop), rivers shrink, poison lake with hills, sounds + mute in settings, 10+ skins. Mar 10: low-graphics option. Mar 12: mud diving. Apr 7: rarity increases (Golden Eagle 5/1000, Black Rhino 4/1000, Aqua Yeti 5/600), poison-lake damage halved, slow boosting fixed. Warthog appears in the Mar 12 note.
+### Inferred
+Prices; poison-lake damage 3/s; which animals climb/fly; forest placement; volcano/desert biome-number mapping; Warthog tier; sound design (synthesized WebAudio, no archived audio); local accounts replace Facebook/Google.
+### Not implemented
+Mud diving, rivers shrinking, Bigfoot spear/fire (`throw_spear` icon only), real-money packs, clothing editor, YouTube promo, camouflage, apex-kill UI.
+
+## 2021-06-12 capture (version 6, "New React UI / Storefront")
+Arquivo.pt's 2022-2023 captures of mope.io are all Cloudflare challenge pages (HTTP 403 "Please Wait..."), so 2021-06-12 is the **last version with archived evidence**.
+Evidence: `index.html` (React shell, `main_nerged.css?v=live.257`), `ui_build/ui_bundle.js` (316 KB minified React app: all menu/shop/settings texts, shop categories/filters, featured items, **verbatim update notes May 22 - June 9, 2021**), `ui_build/static/css/main.css` (real geometry/colours), `shop/mopecoin.png` (106x111). No `client.js` exists. Real 2021 skin PNGs (mouse, aiboss gujjar/sultan) were fetched to `archive/` (git-ignored) for study only and are not shipped or copied.
+### Verified
+Home: Play, name input, server select ("Select Server..."), STORE, login (Google/Facebook), logged-in profile + coins + LOGOUT, settings, footer UPDATES/SUPPORT/PRIVACY POLICY. Settings: SOUND, GRAPHICS LOW/MEDIUM/HIGH, options No Animal Images / No Names & Chat / No XP Popups / Snowfall / No Joystick / Left Handed, SPECTATE, Mope ID. Shop: home Coins/Skins/Deals; categories Skins, Features, Deals, My Skins, My Features, My Deals; filters All/New/Sale/Normal/High-Price/Low-Price; purchase confirmation ("Are you sure...", balance before/after, "Purchase successful!"); featured skins halloween_doomedarius, gold_bluewhale, gold_blackwidow, gold_cassowary; deals skinsBundle_locked_release1, skinsBundle_gold_release1. Colours: mint panel (#71eeb4 -> #cbffd3, border #8af5af), green #0faa29, blue #0a71b1, red #be4813, orange #f5a000, profile #47d658; Play 266x92, input 278 wide, panel 380x634.
+Notes name: Queen Flame (firestream, dark wings), Snowgirl, Santa, Tully Monster, Bigfoot/Snowman themes, Cloud Lions, fireball vs flying/hiding/diving, King Dragon tail-slap vs fire, Legacy Pack / Classic Theme, "over a dozen FREE skins", Halloween bundles disabled.
+### Inferred
+Tier/biome/XP of the four new animals (Queen Flame T16 volcano, Snowgirl T15 arctic, Santa T16 arctic, Tully Monster T8 ocean); prices and sale prices; Gold bundle contents; which skins are free; filter semantics (High/Low price threshold 1000); Classic Theme behaviour (own animal drawn with the project's 2017 art); graphics level -> render scale; shop placement of animal unlocks under Features.
+### Not implemented
+Real-money coin store (Xsolla), ads, countdown on Play, Mope ID popup, fireball mechanics, Queen Flame firestream, Cloud Lion skins, halloween_doomedarius / skinsBundle_locked_release1 (ids only), Lato fonts, Facebook/Google OAuth (local accounts instead).
+
 ## Next versions
 Captures exist for 2018-07-16, 2019-03-27/04-14 and later. The Dec 2, 2016 "Classic Mope" (mope.io/oldmope) may be capturable and would be an earlier baseline.
 

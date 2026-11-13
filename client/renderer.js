@@ -2,9 +2,9 @@
   const M = (g.Mope = g.Mope || {});
   /** World renderer (Canvas 2D). Draws only what the camera can see. opts: {lowGraphics, noImages, noNames} */
   class Renderer {
-    constructor(canvas) { this.canvas = canvas; this.ctx = canvas.getContext('2d'); this.vw = 0; this.vh = 0; this.dpr = 1; this.opts = {}; }
+    constructor(canvas) { this.canvas = canvas; this.ctx = canvas.getContext('2d'); this.vw = 0; this.vh = 0; this.dpr = 1; this.opts = {}; this.quality = 1; }
     resize() {
-      this.dpr = Math.min(2, g.devicePixelRatio || 1); this.vw = innerWidth; this.vh = innerHeight;
+      this.dpr = Math.min(2, g.devicePixelRatio || 1) * this.quality; this.vw = innerWidth; this.vh = innerHeight;
       this.canvas.width = this.vw * this.dpr; this.canvas.height = this.vh * this.dpr;
     }
     /** Terrain pattern anchored to world space (ox,oy = screen position of the world point the tile starts at). Tiles are cached per image. */
@@ -21,6 +21,7 @@
         ctx.fillStyle = tile ? this.pattern(tile, z, sx, sy) : b.color; ctx.fillRect(sx, sy, b.rect[2] * ws * z, b.rect[3] * ws * z);
       }
       const oceanTile = low ? null : M.Sprites.getTile(v.biomes.find((b) => b.id === 'ocean') || {});
+      if (v.forest && !low) { const [fx, fy] = cam.worldToScreen(v.forest[0] * ws, v.forest[1] * ws, vw, vh); ctx.fillStyle = 'rgba(16,70,28,0.16)'; ctx.fillRect(fx, fy, v.forest[2] * ws * z, v.forest[3] * ws * z); } // forest floor (1/4 of the land; placement inferred)
       for (const l of lakes) { const [sx, sy] = cam.worldToScreen(l[0], l[1], vw, vh); ctx.fillStyle = oceanTile ? this.pattern(oceanTile, z, sx - l[0] * z + 0, sy - l[1] * z) : '#2f9fd0'; ctx.beginPath(); ctx.arc(sx, sy, l[2] * z, 0, 7); ctx.fill(); ctx.strokeStyle = 'rgba(20,90,130,.55)'; ctx.lineWidth = Math.max(2, 4 * z); ctx.stroke(); }
       if (!low) {
         const [ox, oy] = cam.worldToScreen(0, 0, vw, vh), step = 100 * z; ctx.strokeStyle = 'rgba(0,0,0,0.06)'; ctx.lineWidth = 1; ctx.beginPath();
@@ -29,7 +30,9 @@
         ctx.stroke();
       }
       if (terrain && terrain.length && !low) { // static decoration (effects such as hide/mud/hills are not simulated)
-        for (const o of terrain) { const def = v.terrain[o[0]]; if (!def || !cam.visible(o[1], o[2], def.radius, vw, vh)) continue; const img = M.Sprites.getTerrain(def); if (!img) continue; const [sx, sy] = cam.worldToScreen(o[1], o[2], vw, vh), h = def.radius * z / M.Sprites.TERRAIN_FRAC; ctx.drawImage(img, sx - h, sy - h, 2 * h, 2 * h); }
+        for (const o of terrain) { const def = v.terrain[o[0]]; if (!def || !cam.visible(o[1], o[2], def.radius, vw, vh)) continue; const img = M.Sprites.getTerrain(def); if (!img) continue; const [sx, sy] = cam.worldToScreen(o[1], o[2], vw, vh), h = def.radius * z / M.Sprites.TERRAIN_FRAC;
+          const treeFade = v.features && v.features.treeTransparency && def.id.startsWith('tree') && myPred && Math.hypot(o[1] - myPred.x, o[2] - myPred.y) < def.radius + 18 * v.animals[myPred.ai].size + 40; // 2020-03-03: trees turn transparent when a player gets close
+          if (treeFade) ctx.globalAlpha = 0.35; ctx.drawImage(img, sx - h, sy - h, 2 * h, 2 * h); ctx.globalAlpha = 1; }
       }
       const edge = '#8dff8d';
       for (const f of foods) { // food: light-green outline = edible (archived how-to-play text)
@@ -50,9 +53,10 @@
       const [sx, sy] = cam.worldToScreen(p.x, p.y, this.vw, this.vh), pr = r * cam.zoom, low = this.opts.lowGraphics;
       ctx.save(); ctx.translate(sx, sy); ctx.rotate(p.angle);
       if (!low) { ctx.fillStyle = 'rgba(0,0,0,0.18)'; ctx.beginPath(); ctx.ellipse(4, 6, pr, pr * 0.9, 0, 0, 7); ctx.fill(); }
+      if (p.climb) { ctx.scale(0.88, 0.88); ctx.globalAlpha = 0.8; } // up in a tree
       if (v.__arena && !isMe) ctx.globalAlpha = 0.5; // archived 2019 note: inside the Arena opponents go semi-transparent so they can see through each other
       if (this.opts.noImages) { ctx.fillStyle = a.placeholderColor; ctx.beginPath(); ctx.arc(0, 0, pr, 0, 7); ctx.fill(); }
-      else { const h = pr / M.Sprites.BODY_FRAC, skin = p.skin && v.shop ? M.Sprites.getSkin(v.shop.items.find((i) => i.id === p.skin)) : null; ctx.drawImage(skin || M.Sprites.get(a), -h, -h, 2 * h, 2 * h); } // equipped skin if loaded, else the normal sprite // frame sized so the drawn body matches the hitbox
+      else { const h = pr / M.Sprites.BODY_FRAC, skinItem = p.skin ? ((v.shop ? v.shop.items : []).concat(v.variants || [])).find((i) => i.id === p.skin) : null, skin = skinItem ? M.Sprites.getSkin(skinItem) : null; ctx.drawImage(skin || (isMe && this.opts.classic && M.Sprites.getClassic(a)) || M.Sprites.get(a), -h, -h, 2 * h, 2 * h); } // equipped skin if loaded, else the normal sprite // frame sized so the drawn body matches the hitbox
       ctx.globalAlpha = 1; ctx.restore();
       if (!isMe && !v.__spectate) { // (spectators have no body, so no edible/dangerous outlines) outline: LIGHT-GREEN = you can eat it, RED = it can eat you (archived how-to-play text)
         const sand = v.__sandbox, col = sand || a.tier < myTier ? '#8dff8d' : a.tier > myTier ? '#ff4d4d' : null;

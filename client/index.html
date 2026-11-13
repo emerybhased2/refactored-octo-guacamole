@@ -8,13 +8,14 @@
 </head>
 <body>
 <!-- Structure mirrors the archived 2017-02-13 index.html (ids kept); content/geometry comes from the version's menu config. -->
+<div id="xpPopups"></div>
 <div id="gameAreaWrapper">
   <input id="chatinput" type="text" class="chat-input" placeholder="Chat here..." maxlength="35" autocomplete="off">
   <canvas tabindex="1" id="gCanvas"></canvas>
 </div>
 <div id="connecting"><p id="desc">Connecting...</p><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
 <div id="startMenuWrapper">
-  <div id="startMenu">
+  <div id="startMenu"><div id="mopeMenu">
     <img id="logo" alt="logo">
     <div id="onconnectDiv">
       <button id="button_GMnormal" class="button" type="button"><img alt="Normal"></button>
@@ -25,16 +26,21 @@
       <a><button id="startButton" type="button">Play</button></a>
       <button id="btnSpectate" type="button">Spectate</button>
       <p id="spawnXpLabel"></p>
+      <button id="storeButton" type="button" style="display:none"></button>
+      <div id="footerLinks" style="display:none"></div>
+      <p id="plusCoins" style="display:none"><img id="plusCoinsImg" alt="coins"> <span id="plusCoinsLabel"></span></p>
     </div>
     <div id="optionsDiv">
       <button id="closeBut" type="button" class="button"><img alt="Close"></button>
       <h3>Region/Server:</h3>
       <select id="regionSelect"></select>
       <select id="serverSelect"></select>
+      <div id="options_graphicsButs" style="display:none"><p id="graphics_title"></p><p id="graphics_fps">FPS: (...)</p><button id="graphicsBut_low" type="button" style="display:none"></button><button id="graphicsBut_mid" type="button"></button><button id="graphicsBut_hd" type="button"></button></div>
       <h3>Options:</h3>
       <div id="optionsList"></div>
+      <div id="settingsExtras"></div>
     </div>
-  </div>
+  </div></div>
   <div id="howToPlayDiv"></div>
   <div id="updatesDiv"></div>
 </div>
@@ -45,7 +51,7 @@
 <div id="authModal" class="modal" style="display:none"><div class="modalBox"><button class="modalClose" type="button" id="authClose">&times;</button><h3>Local account</h3><p id="authNote"></p>
   <input id="authUser" type="text" maxlength="16" placeholder="username (3-16 letters/numbers)" autocomplete="off"><input id="authPass" type="password" maxlength="64" placeholder="password (6+ characters)" autocomplete="off">
   <div><button id="authLogin" type="button">Log in</button><button id="authRegister" type="button">Register</button></div><p id="authErr"></p></div></div>
-<div id="shopModal" class="modal" style="display:none"><div class="modalBox wide"><button class="modalClose" type="button" id="shopClose">&times;</button><h3>Shop <span id="shopCoins"></span></h3><p id="shopNote"></p><div id="shopGrid"></div><p id="shopErr"></p></div></div>
+<div id="shopModal" class="modal" style="display:none"><div class="modalBox wide"><button class="modalClose" type="button" id="shopClose">&times;</button><h3>Shop <span id="shopCoins"></span></h3><p id="shopNote"></p><div id="shopTabs" class="shopTabs"></div><div id="shopCats" class="shopTabs"></div><div id="shopFilters" class="shopFilters"></div><div id="shopGrid"></div><p id="shopErr"></p><div id="shopConfirm" style="display:none"></div></div></div>
 <div id="devbar"><label>Historical version: <select id="versionSelect"></select></label><span id="versionLabel"></span><span id="arenaCtl" style="display:none"> | <label>Dev mode: <select id="modeSelect"><option value="normal">normal</option><option value="arena">1v1 arena (inferred)</option></select></label> <label>Arena animal: <select id="arenaAnimal"></select></label></span></div>
 <div id="status"></div>
 <div id="deathMsg"></div>
@@ -65,6 +71,8 @@
 <script src="ui/Settings.js"></script>
 <script src="ui/Shop.js"></script>
   <script src="ui/Disasters.js"></script>
+  <script src="audio.js"></script>
+<script src="extras.js"></script>
 <script src="renderer.js"></script>
 <script src="client.js"></script>
 </body>

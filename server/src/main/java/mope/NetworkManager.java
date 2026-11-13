@@ -95,6 +95,7 @@ public final class NetworkManager extends WebSocketServer {
                 case "sandbox" -> { Player p = s.player; double d = num(m, "d"); if (p != null && Double.isFinite(d)) s.world.submit(() -> s.world.sandboxStep(p, (int) d)); }
                 case "register", "login", "resume" -> auth(c, s, t, m);
                 case "shop-info", "buy", "equip", "unequip" -> shopMsg(c, s, t, m);
+                case "climb" -> { Player p = s.player; if (p != null) s.world.submit(() -> s.world.toggleClimb(p)); }
                 case "logout" -> { accounts.logout(str(m, "token")); s.account = null; }
                 case "dev-disaster" -> { if (DEV && s.world != null) { String id = str(m, "id"); s.world.submit(() -> s.world.triggerDisaster(id)); } }
                 case "dev-coins" -> { if (DEV && s.account != null) { double n = num(m, "n"); if (Double.isFinite(n) && n > 0 && n <= 1_000_000) { accounts.addCoins(s.account, (long) n); c.send(shopState(s.account).toString()); } } }
@@ -114,8 +115,8 @@ public final class NetworkManager extends WebSocketServer {
         String item = str(m, "item"); Defs.ShopItem it = null; if (item != null) for (Defs.ShopItem x : v.shop) if (x.id.equals(item)) it = x;
         switch (t) {
             case "shop-info" -> { }
-            case "buy" -> { if (it == null) { c.send("{\"t\":\"shop-error\",\"err\":\"unknown item\"}"); return; } if (!accounts.buy(s.account, it.id, it.price)) { c.send("{\"t\":\"shop-error\",\"err\":\"cannot buy (owned or not enough coins)\"}"); return; } }
-            case "equip" -> { if (it == null || !"skin".equals(it.type) || !accounts.setEquipped(s.account, it.animal, it.id)) { c.send("{\"t\":\"shop-error\",\"err\":\"cannot equip\"}"); return; } }
+            case "buy" -> { if (it == null) { c.send("{\"t\":\"shop-error\",\"err\":\"unknown item\"}"); return; } if (!("bundle".equals(it.type) ? accounts.buyBundle(s.account, it.id, it.price, it.contains == null ? java.util.List.of() : it.contains) : accounts.buy(s.account, it.id, it.price))) { c.send("{\"t\":\"shop-error\",\"err\":\"cannot buy (owned or not enough coins)\"}"); return; } }
+            case "equip" -> { if (it == null || !("skin".equals(it.type) || "feature".equals(it.type)) || !accounts.setEquipped(s.account, "feature".equals(it.type) ? "__theme" : it.animal, it.id)) { c.send("{\"t\":\"shop-error\",\"err\":\"cannot equip\"}"); return; } }
             case "unequip" -> { String an = str(m, "animal"); if (an == null || !accounts.setEquipped(s.account, an, null)) { c.send("{\"t\":\"shop-error\",\"err\":\"cannot unequip\"}"); return; } }
             default -> { return; }
         }

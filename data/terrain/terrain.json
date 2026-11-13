@@ -103,10 +103,11 @@
   "radius": 44,
   "density": 3.4,
   "releaseDate": "2019-08-25",
-  "confidence": "existence verified (2019-06-18 note: 'Objects going underneath Trees'); look/density inferred",
+  "confidence": "existence verified (2019-06-18 note: 'Objects going underneath Trees'); look/density inferred; from 2020-03-03 trees are climbable and cluster in a forest covering 1/4 of the land (verified)",
   "effect": "decor (NOT implemented as an obstacle)",
   "sprite": "assets/terrain/tree.png",
-  "spriteStatus": "recreated"
+  "spriteStatus": "recreated",
+  "forestDensity": 6
  },
  {
   "id": "cactus",
@@ -166,6 +167,54 @@
   "confidence": "existence VERIFIED (2019-12-23 note 'NEW: Arctic Volcano'); look/density inferred",
   "effect": "eruption source (disasters)",
   "sprite": "assets/terrain/arctic_volcano.png",
+  "spriteStatus": "recreated"
+ },
+ {
+  "id": "tree_pine",
+  "name": "Pine tree",
+  "kind": "obstacle",
+  "biomes": [
+   "land"
+  ],
+  "radius": 40,
+  "density": 0,
+  "forestDensity": 5,
+  "releaseDate": "2020-06-13",
+  "confidence": "'4+ types' of climbable trees verified; the types and look are INFERRED",
+  "effect": "climbable by certain animals (S); transparent when a player is close",
+  "sprite": "assets/terrain/tree_pine.png",
+  "spriteStatus": "recreated"
+ },
+ {
+  "id": "tree_palm",
+  "name": "Palm tree",
+  "kind": "obstacle",
+  "biomes": [
+   "land"
+  ],
+  "radius": 42,
+  "density": 0,
+  "forestDensity": 3,
+  "releaseDate": "2020-06-13",
+  "confidence": "as tree_pine",
+  "effect": "as tree_pine",
+  "sprite": "assets/terrain/tree_palm.png",
+  "spriteStatus": "recreated"
+ },
+ {
+  "id": "tree_baobab",
+  "name": "Baobab tree",
+  "kind": "obstacle",
+  "biomes": [
+   "land"
+  ],
+  "radius": 56,
+  "density": 0,
+  "forestDensity": 2,
+  "releaseDate": "2020-06-13",
+  "confidence": "as tree_pine",
+  "effect": "as tree_pine",
+  "sprite": "assets/terrain/tree_baobab.png",
   "spriteStatus": "recreated"
  }
 ]

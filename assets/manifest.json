@@ -158,6 +158,81 @@
       "menus": {
         "note": "No new menu images: the logo and icons of 2019-08-25 are reused; the 2019-12-30 page's own images (update-panel screenshots) were not stored."
       }
+    },
+    "2020-06-13": {
+      "animals": {
+        "status": "recreated",
+        "new": [
+          "warthog",
+          "bigfoot"
+        ],
+        "path": "assets/animals/2020-06-13/<id>.png"
+      },
+      "skins": {
+        "status": "recreated",
+        "new": [
+          "mouse_skin_1",
+          "mouse_skin_2",
+          "tigershark",
+          "hammerhead",
+          "golden_eagle",
+          "black_rhino",
+          "aqua_yeti"
+        ],
+        "provenance": "Original recolors/redraws; archived art not captured."
+      },
+      "shop": {
+        "status": "captured",
+        "coin": "assets/shop/mopecoin_archived.png",
+        "provenance": "Real shop/mopecoin.png (106x111) fetched from the 2020-06-13 capture."
+      },
+      "terrain": {
+        "status": "recreated",
+        "new": [
+          "tree_pine",
+          "tree_palm",
+          "tree_baobab"
+        ]
+      },
+      "icons": {
+        "status": "recreated",
+        "new": [
+          "throw_spear"
+        ]
+      },
+      "audio": {
+        "status": "synthesized",
+        "provenance": "WebAudio-generated; no archived audio."
+      }
+    },
+    "2021-06-12": {
+      "animals": {
+        "status": "recreated",
+        "new": [
+          "queenflame",
+          "snowgirl",
+          "santa",
+          "tullymonster"
+        ],
+        "path": "assets/animals/2021-06-12/<id>.png"
+      },
+      "skins": {
+        "status": "recreated",
+        "new": [
+          "gold_bluewhale",
+          "gold_blackwidow",
+          "gold_cassowary"
+        ]
+      },
+      "shop": {
+        "status": "captured",
+        "coin": "assets/shop/mopecoin_2021.png",
+        "provenance": "Real shop/mopecoin.png (106x111) from the 2021-03-10 capture."
+      },
+      "menu": {
+        "status": "recreated",
+        "provenance": "Layout/colours from the real 2021 UI CSS; texts verbatim from ui_bundle.js; no original image assets reused beyond the logo wordmark already in the repo."
+      }
     }
   }
 }
