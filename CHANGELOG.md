@@ -3,6 +3,7 @@
 ## 0.9.0 - Mobile support + Evolution Tray
 - **Mobile:** touch controls (floating left-thumb joystick, BOOST / ABILITY / CLIMB / CHAT buttons, tap-to-spectate), responsive menu/shop/settings, compact leaderboard on short screens, no pinch/scroll/pull-to-refresh, safe-area insets, devbar hidden while playing on touch devices.
 - **Evolution Tray (original UI, not an archived menu):** bottom sheet with every animal you can evolve into now (biome-coloured cards, tier chip, best-fit star, ability) plus the nearest upcoming ones with XP progress; collapses to a one-line "Next: X 7/150 XP" chip; on touch the first tap selects and shows details, a second tap on EVOLVE confirms. Default on touch devices and in the wiki-sourced version; a "New upgrade tray" option in settings enables it in any version (historical menus stay the default elsewhere).
+- Evolution Tray shows each animal's own artwork (bigger portraits, a large preview when selected); fixed a bug where the grey placeholder could be cached before the PNG loaded.
 - Dev: `dev-xp` message + "+XP" button (MOPE_DEV only).
 - Tests: client/data 66, integration 29.
 

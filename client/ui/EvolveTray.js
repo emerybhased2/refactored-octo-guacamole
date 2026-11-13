@@ -17,10 +17,16 @@
   }
 
   class EvolveTray {
-    constructor(doc, opts) { this.doc = doc; this.onEvolve = opts.onEvolve; this.touch = !!opts.touch; this.icon = opts.icon; this.v = null; this.key = ''; this.sel = null; this.iconCache = new Map(); this.last = 0; this.expanded = false; this.root = doc.getElementById('evoTray'); this.row = doc.getElementById('evoRow'); this.detail = doc.getElementById('evoDetail'); this.title = doc.getElementById('evoTitle'); }
+    constructor(doc, opts) { this.doc = doc; this.onEvolve = opts.onEvolve; this.touch = !!opts.touch; this.icon = opts.icon; this.ready = opts.ready; this.retries = 0; this.v = null; this.key = ''; this.sel = null; this.iconCache = new Map(); this.last = 0; this.expanded = false; this.root = doc.getElementById('evoTray'); this.row = doc.getElementById('evoRow'); this.detail = doc.getElementById('evoDetail'); this.title = doc.getElementById('evoTitle'); }
     setVersion(v) { this.v = v; this.key = ''; this.sel = null; }
     hide() { if (this.root) this.root.classList.add('hidden'); this.key = ''; this.sel = null; }
-    img(a) { let u = this.iconCache.get(a.id); if (!u) { const cv = this.icon(a); try { u = cv.toDataURL('image/png'); } catch (e) { u = ''; } if (u) this.iconCache.set(a.id, u); } return u; }
+    /** Data URL of the animal's own art. The grey placeholder is never cached: if the PNG has not loaded yet the tray rebuilds itself shortly after. */
+    img(a) {
+      let u = this.iconCache.get(a.id); if (u) return u;
+      const cv = this.icon(a), ok = !this.ready || this.ready(a); try { u = cv.toDataURL('image/png'); } catch (e) { u = ''; }
+      if (u && ok) this.iconCache.set(a.id, u); else this.pending = true;
+      return u;
+    }
     /** Called every frame (cheap): rebuilds the DOM only when the set of cards changes; progress bars refresh at ~4 Hz. */
     update(you, choices, now) {
       if (!this.root || !this.v) return;
@@ -34,7 +40,7 @@
       else if (now - this.last > 250) { this.last = now; for (const c of m.soon) { if (c === m.soon[0] && !m.available.length) { const hint = this.root.querySelector('.evoHint'); hint.textContent = fmtXp(you.xp || 0) + ' / ' + fmtXp(c.xpRequired) + ' XP - tap to ' + (this.expanded ? 'hide' : 'see more'); } const el = this.row.querySelector('[data-id="' + c.id + '"] .evoBar i'); if (el) el.style.width = Math.round(c.progress * 100) + '%'; const tx = this.row.querySelector('[data-id="' + c.id + '"] .evoXp'); if (tx) tx.textContent = fmtXp(you.xp || 0) + ' / ' + fmtXp(c.xpRequired) + ' XP'; } }
     }
     build(m) {
-      const d = this.doc; this.row.innerHTML = ''; this.detail.innerHTML = ''; this.detail.classList.remove('open');
+      const d = this.doc; this.pending = false; this.row.innerHTML = ''; this.detail.innerHTML = ''; this.detail.classList.remove('open');
       this.title.textContent = m.available.length ? 'EVOLVE!' : (m.soon[0] ? 'Next: ' + m.soon[0].name : 'NEXT EVOLUTION');
       if (!this.headBound) { this.headBound = true; this.root.querySelector('.evoHead').addEventListener('click', () => { if (this.root.classList.contains('ready')) return; this.expanded = !this.expanded; this.root.classList.toggle('compact', !this.expanded); }); }
       const mk = (c) => {
@@ -52,6 +58,7 @@
       if (m.available.length && m.soon.length) { const sep = d.createElement('div'); sep.className = 'evoSep'; sep.textContent = 'later'; this.row.appendChild(sep); }
       for (const c of m.soon) this.row.appendChild(mk(c));
       this.root.querySelector('.evoHint').textContent = m.available.length ? (this.touch ? 'tap to choose' : 'click to evolve') : '';
+      if (this.pending && this.retries < 12) { this.retries++; clearTimeout(this.rt); this.rt = setTimeout(() => { this.key = ''; }, 250); } else if (!this.pending) this.retries = 0; // art still loading: rebuild with the real sprites
       const first = this.row.querySelector('.avail'); if (first && first.scrollIntoView) first.scrollIntoView({ block: 'nearest', inline: 'center' });
     }
     /** Desktop: one click evolves. Touch: first tap selects (shows details), second tap on the button confirms - prevents mis-taps while steering. */
@@ -64,6 +71,7 @@
     go(c) { if (g.navigator && g.navigator.vibrate) { try { g.navigator.vibrate(25); } catch (e) {} } this.onEvolve(c.id); this.hide(); }
     showDetail(c, confirm) {
       const d = this.doc, el = this.detail; el.innerHTML = ''; el.classList.add('open');
+      const a0 = this.v.animals.find((x) => x.id === c.id); if (a0) { const big = d.createElement('img'); big.className = 'evoBig'; big.alt = ''; big.src = this.img(a0); el.appendChild(big); }
       const t = d.createElement('div'); t.innerHTML = '<b></b> <span></span>'; t.firstChild.textContent = c.name; t.lastChild.textContent = ' - tier ' + c.tier + ' - ' + c.biome; el.appendChild(t);
       const p = d.createElement('div'); p.className = 'evoAbility'; p.textContent = 'Ability: ' + c.ability + (c.available ? '' : ' - needs ' + fmtXp(c.xpRequired) + ' XP'); el.appendChild(p);
       if (confirm && c.available) { const b = d.createElement('button'); b.type = 'button'; b.className = 'evoGo'; b.textContent = 'EVOLVE INTO ' + c.name.toUpperCase(); b.addEventListener('click', () => this.go(c)); el.appendChild(b); }

@@ -14,7 +14,7 @@
   let frames = 0, fpsT = performance.now(), lastInputSent = 0, lastSent = '', lastFrame = performance.now(), dbg = { fps: 0, ping: 0, kbps: 0, mem: '-' }, lastBytes = 0;
   const upgrade = new M.UpgradeMenu((id) => net.send({ t: 'evolve', id }), DEV);
   const touchDevice = M.isTouchDevice();
-  const tray = new M.EvolveTray(document, { onEvolve: (id) => net.send({ t: 'evolve', id }), touch: touchDevice, icon: (a) => M.Sprites.getIcon(a) }); // ORIGINAL upgrade picker (default on touch devices and in the wiki-sourced version)
+  const tray = new M.EvolveTray(document, { onEvolve: (id) => net.send({ t: 'evolve', id }), touch: touchDevice, icon: (a) => M.Sprites.getIcon(a), ready: (a) => M.Sprites.isReady(a) }); // ORIGINAL upgrade picker (default on touch devices and in the wiki-sourced version)
   const menu = new M.MainMenu({ onPlay: (name, m) => startJoin(name, devMode() === 'arena' ? 'arena' : m), onSpectate: (name) => startJoin(name, 'spectate') });
   const devMode = () => (DEV && $('modeSelect') ? $('modeSelect').value : 'normal');
   const shopUI = new M.Shop.ShopUI((m) => net.send(Object.assign({ v: selectedVersion }, m)));
