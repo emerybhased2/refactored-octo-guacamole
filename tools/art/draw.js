@@ -66,7 +66,7 @@
     if (h.nostrils) for (const sd of [-1, 1]) P.ell(c, sd * 9, y + h.r * 0.62 + h.snout.len * 0.4, 3.5, 5, '#3a2a2a');
   }
   function eyes(c, s, pal) {
-    const e = s.eyes; if (!e) return; const r = e.r, tiny = e.tiny;
+    const e = s.eyes; if (!e) return; const r = e.tiny ? e.r : e.r * 1.12, tiny = e.tiny; // style pass: slightly bigger glossy eyes
     for (const sd of [-1, 1]) {
       const x = sd * e.gap, y = e.y;
       if (e.sleepy) { P.ell(c, x, y, r * 1.15, r * 1.15, e.ring || pal.rim); }
@@ -152,7 +152,14 @@
     underbody(c, s, pal, o) { /* drawn before body */ },
   };
 
+  /* style pass: thin dark silhouette outline (every Mope-style sprite reads as a flat shape with a darker edge) */
+  function outlined(ctx, S, outlineCol, draw) {
+    const t = document.createElement('canvas'); t.width = t.height = S; const tc = t.getContext('2d'); draw(tc);
+    const sil = document.createElement('canvas'); sil.width = sil.height = S; const sc = sil.getContext('2d'); sc.drawImage(t, 0, 0); sc.globalCompositeOperation = 'source-in'; sc.fillStyle = outlineCol; sc.fillRect(0, 0, S, S);
+    const w = Math.max(1.5, S / 256 * 3.2); ctx.save(); for (let i = 0; i < 24; i++) { const a = i / 24 * TAU; ctx.drawImage(sil, Math.cos(a) * w, Math.sin(a) * w); } ctx.restore(); ctx.drawImage(t, 0, 0);
+  }
   function drawAnimal(ctx, spec, S) {
+    if (typeof document !== 'undefined' && !spec.__inner) { const col = shade(spec.color, -0.5); ctx.clearRect(0, 0, S, S); spec.__inner = true; try { outlined(ctx, S, col, (tc) => drawAnimal(tc, spec, S)); } finally { spec.__inner = false; } return; }
     const pal = { body: spec.color, head: spec.headColor || shade(spec.color, 0.1), dark: spec.darkColor || shade(spec.color, -0.22), light: spec.lightColor || shade(spec.color, 0.3), rim: shade(spec.color, -0.14) };
     pal.rim = spec.rimColor || pal.rim; spec.pal = pal;
     ctx.save(); ctx.clearRect(0, 0, S, S); ctx.translate(S / 2, S / 2); ctx.scale(S / 256 * FIT, S / 256 * FIT);

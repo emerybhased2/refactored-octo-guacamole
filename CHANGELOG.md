@@ -1,5 +1,8 @@
 # Project changelog
 
+## 0.6.1 - Style-tightening pass (all art)
+- Every animal and skin sprite now gets a uniform thin dark silhouette outline derived from its body colour; eyes are 12% larger; food rims are darker. Original drawings only (no reproduction of Mope.io art). All 82 animals, skins and foods re-exported.
+
 ## 0.6.0 - Version 5: 2020-06-13 (Forest, Bigfoot, Sounds)
 - New version from the 2020-06-13 homepage/CSS (2020-03-14 skipped): Warthog, **Bigfoot** (tier 16, 1/1000 or shop), Forest (1/4 of land, pine/palm/baobab), **climbable trees** (S key, climbers/fliers only), tree transparency, **poison lakes** with hill rings, **rare skin variants** (Golden Eagle, Black Rhino, Aqua Yeti with archived rarities), synthesized **sounds** + mute, **graphics options**.
 - Menu rebuilt from real HTML/CSS: settings panel (graphics, mute, spectate, logout), +coins popup, real login geometry, 638px shop window with Skins/Animals tabs; real coin icon.
