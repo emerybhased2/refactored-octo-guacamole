@@ -14,13 +14,15 @@
   }
   M.HUD = {
     nextXp,
-    draw(ctx, vw, vh, v, you, animal, rows, dbg) {
-      const h = v.hud, cx = vw / 2;
-      const nxt = nextXp(v.animals, v.edges, you.a);
-      bar(ctx, h.xpBar, cx, vh - h.xpBar.marginBottom, nxt ? you.xp / nxt : 1, you.xp + (nxt ? ' / ' + nxt + ' XP' : ' XP (max)'));
+    draw(ctx, vw, vh, v, you, animal, rows, dbg, count) {
+      const h = v.hud, cx = vw / 2, nxt = nextXp(v.animals, v.edges, you.a);
+      bar(ctx, h.xpBar, cx, vh - h.xpBar.marginBottom, nxt ? you.xp / nxt : 1, you.xp + (nxt ? ' / ' + nxt + ' XP' : ' XP'));
       bar(ctx, h.healthBar, cx, vh - h.healthBar.marginBottom, you.hp / animal.health, null);
-      ctx.fillStyle = '#fff'; ctx.font = 'bold 16px Arial'; ctx.textAlign = 'center'; ctx.fillText(animal.name, cx, vh - h.healthBar.marginBottom - h.healthBar.h - 10);
+      if (v.features.waterBar && h.waterBar) bar(ctx, h.waterBar, cx, vh - h.waterBar.marginBottom, you.w / 100, null);
+      ctx.fillStyle = '#fff'; ctx.font = 'bold 16px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+      ctx.fillText(animal.name, cx, vh - (v.features.waterBar && h.waterBar ? h.waterBar.marginBottom + h.waterBar.h : h.healthBar.marginBottom + h.healthBar.h) - 10);
       M.Leaderboard.draw(ctx, vw, h.leaderboard, rows, you.id);
+      if (h.playerCount && count != null) { ctx.fillStyle = '#fff'; ctx.font = 'bold 14px Arial'; ctx.textAlign = 'right'; ctx.textBaseline = 'top'; ctx.fillText(count + h.playerCount.suffix, vw - h.playerCount.marginRight, h.leaderboard.marginTop + 40 + rows.length * 20 + h.playerCount.marginTop); }
       if (dbg) { ctx.fillStyle = 'rgba(0,0,0,0.5)'; ctx.fillRect(8, 8, 190, 62); ctx.fillStyle = '#9f9'; ctx.font = '13px monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
         ctx.fillText('FPS  ' + dbg.fps, 14, 12); ctx.fillText('Ping ' + dbg.ping + ' ms', 14, 28); ctx.fillText('Net  ' + dbg.kbps + ' KB/s  mem ' + dbg.mem, 14, 44); }
     },

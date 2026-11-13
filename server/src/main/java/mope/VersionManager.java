@@ -13,7 +13,8 @@ import java.util.stream.*;
  */
 public final class VersionManager {
     public static final class Config {
-        public String id, label, confidence, menu, upgradeMenu, hud;
+        public String id, label, confidence, menu, upgradeMenu, hud, startAnimal;
+        public List<String> modes;
         public LocalDate date;
         public JsonObject features, raw;
         public List<String> biomeIds, foodIds;
@@ -34,7 +35,8 @@ public final class VersionManager {
             JsonObject o = new JsonObject();
             o.addProperty("id", id); o.addProperty("label", label); o.addProperty("date", date.toString());
             o.addProperty("worldSize", worldSize); o.addProperty("tickRate", tickRate); o.addProperty("netRate", netRate);
-            o.add("features", features);
+            o.add("features", features); o.addProperty("startAnimal", startAnimal);
+            o.add("modes", Data.GSON.toJsonTree(modes));
             o.add("animals", Data.GSON.toJsonTree(animalOrder.stream().map(animals::get).collect(Collectors.toList())));
             o.add("edges", Data.GSON.toJsonTree(edges));
             o.add("tiers", Data.GSON.toJsonTree(tiers));
@@ -75,6 +77,7 @@ public final class VersionManager {
         c.confidence = o.has("confidence") ? o.get("confidence").getAsString() : "unknown";
         c.menu = o.get("menu").getAsString(); c.upgradeMenu = o.get("upgradeMenu").getAsString(); c.hud = o.get("hud").getAsString();
         c.features = o.getAsJsonObject("features");
+        c.startAnimal = o.get("startAnimal").getAsString(); c.modes = strings(o.getAsJsonArray("modes"));
         c.tickRate = o.get("tickRate").getAsInt(); c.netRate = o.get("netRate").getAsInt();
         c.worldSize = o.get("worldSize").getAsDouble(); c.bots = o.has("bots") ? o.get("bots").getAsInt() : 0;
         c.biomeIds = strings(o.getAsJsonArray("biomes")); c.foodIds = strings(o.getAsJsonArray("foods"));
@@ -105,6 +108,7 @@ public final class VersionManager {
             if (c.biomeIds.contains(b.id) && Data.active(b.releaseDate, b.removalDate, c.date)) c.biomes.add(b);
         c.abilities.addAll(Arrays.asList(Data.read("data/abilities/abilities.json", Defs.AbilityDef[].class)));
         c.animalOrder.addAll(c.animals.keySet());
+        if (!c.animals.isEmpty() && !c.animals.containsKey(c.startAnimal)) throw new IllegalStateException("startAnimal " + c.startAnimal + " not available in " + c.id);
         return c;
     }
 

@@ -14,6 +14,7 @@ function validate() {
     foods = J('data/food/foods.json'); biomes = J('data/biomes/biomes.json'); abilities = J('data/abilities/abilities.json'); J('data/progression/animal-classifications.json');
   } catch (e) { return { errors: ['JSON load failed: ' + e.message], warnings }; }
 
+  const placeholders = [];
   const ids = new Map(), tierSet = new Set(tiers.map((t) => t.tier)), biomeIds = new Set(biomes.map((b) => b.id)), abilityIds = new Set(abilities.map((a) => a.id));
   for (const t of tiers) if (tiers.filter((x) => x.tier === t.tier).length > 1) err('duplicate tier ' + t.tier);
   for (const a of animals) {
@@ -25,9 +26,11 @@ function validate() {
     if (a.ability && !abilityIds.has(a.ability)) err(`${a.id}: unknown ability ${a.ability}`);
     if (a.removalDate && a.removalDate <= a.releaseDate) err(`${a.id}: removalDate before releaseDate`);
     const sp = path.join(ROOT, a.sprite || '');
-    if (!fs.existsSync(sp)) (a.spriteStatus === 'original' ? err : warn)(`${a.id}: sprite missing (${a.sprite}) [${a.spriteStatus}]`);
+    if (!fs.existsSync(sp)) { if (a.spriteStatus === 'original') err(`${a.id}: sprite missing (${a.sprite}) [original]`); else placeholders.push(a.id); }
     if (a.spriteStatus === 'placeholder' && !a.placeholderColor) err(`${a.id}: placeholder without placeholderColor`);
   }
+  // internal ids must match the archive extraction (verified source)
+  try { const arch = J('data/research/archive-2017-02-13-animals.json').animals; for (const r of arch) { const key = r.skin.split('/').pop(), a = ids.get(key); if (!a) err(`archive animal ${key} missing from animals.json`); else if (a.internalId !== r.internalId) err(`${key}: internalId ${a.internalId} != archive ${r.internalId}`); } } catch (e) { warn('archive cross-check skipped: ' + e.message); }
   // xp must be non-decreasing along evolution edges; tier must strictly increase
   const seenEdge = new Set();
   for (const e of edges) {
@@ -57,10 +60,15 @@ function validate() {
     for (const f of v.foods) { const d = foods.find((x) => x.id === f); if (!d) err(`${v.id}: unknown food ${f}`); else if (!activeAt(d.releaseDate, d.removalDate, v.date)) err(`${v.id}: food ${f} not yet released`); }
     for (const b of v.biomes) { const d = biomes.find((x) => x.id === b); if (!d) err(`${v.id}: unknown biome ${b}`); else if (!activeAt(d.releaseDate, d.removalDate, v.date)) err(`${v.id}: biome ${b} not yet released`); }
     if (!roster.length) err(`${v.id}: empty roster`);
+    if (!roster.includes(v.startAnimal)) err(`${v.id}: startAnimal ${v.startAnimal} not in roster`);
+    const mc = J(v.menu), mfiles = [mc.logo && mc.logo.src, ...Object.values(mc.modes || {}).map((m) => m && m.src), ...Object.values(mc.icons || {}).map((i) => i && i.src)].filter(Boolean);
+    for (const f of mfiles) if (!fs.existsSync(path.join(ROOT, f))) err(`${v.id}: menu asset missing ${f}`);
+    for (const m of v.modes || []) if (!['normal', 'sandbox'].includes(m)) err(`${v.id}: unknown mode ${m}`);
     if (!roster.some((id) => ids.get(id).xpRequired === 0 && !edges.some((e) => e.to === id))) err(`${v.id}: no start animal`);
   }
   for (const f of foods) { for (const b of f.biomes) if (!biomeIds.has(b)) err(`food ${f.id}: unknown biome ${b}`); if (!(f.xp > 0)) err(`food ${f.id}: invalid xp`); }
   const cl = J('data/versions/changelog.json'); for (const c of cl) if (!vids.has(c.date) && !versions.some((v) => v.date === c.date)) warn(`changelog ${c.version}: no version dated ${c.date}`);
+  if (placeholders.length) warn(`${placeholders.length} animal sprites are placeholders (no archived art): ${placeholders.join(', ')}`);
   return { errors, warnings, animalCount: animals.length, versionCount: versions.length };
 }
 module.exports = { validate };

@@ -1,34 +1,51 @@
 (function (g) {
   const M = (g.Mope = g.Mope || {});
-  /** Main menu controller: paints the version-specific menu and wires nickname + Play. */
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : v; } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+  };
+  /** Main menu controller (DOM, themed by the version's config). */
   class MainMenu {
-    constructor({ canvas, root, nickEl, playEl, onPlay }) {
-      this.canvas = canvas; this.ctx = canvas.getContext('2d'); this.root = root; this.nickEl = nickEl; this.playEl = playEl;
-      this.cfg = null; this.anim = null; this.visible = false; this.last = 0; this.animals = [];
-      try { nickEl.value = localStorage.getItem('mope.nick') || ''; } catch (e) {}
-      const go = () => { const n = nickEl.value.trim(); try { localStorage.setItem('mope.nick', n); } catch (e) {} onPlay(n); };
-      playEl.addEventListener('click', go);
-      nickEl.addEventListener('keydown', (e) => { if (e.key === 'Enter') go(); });
+    constructor({ onPlay }) {
+      const $ = (id) => document.getElementById(id);
+      this.$ = $; this.onPlay = onPlay; this.cfg = null; this.mode = store.get('mope.mode', 'normal'); this.options = {}; this.muted = store.get('mope.muted', '0') === '1';
+      $('nickInput').value = store.get('mope.nick', '');
+      const go = () => { const n = $('nickInput').value.trim(); store.set('mope.nick', n); this.onPlay(n, this.mode); };
+      $('startButton').addEventListener('click', go);
+      $('nickInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') go(); });
+      $('button_GMnormal').addEventListener('click', () => this.setMode('normal'));
+      $('button_GMsandbox').addEventListener('click', () => this.setMode('sandbox'));
+      $('settingsButton').addEventListener('click', () => { const o = $('optionsDiv'); o.style.display = o.style.display === 'block' ? 'none' : 'block'; });
+      $('closeBut').addEventListener('click', () => ($('optionsDiv').style.display = 'none'));
+      $('button_mute').addEventListener('click', () => { this.muted = !this.muted; store.set('mope.muted', this.muted ? '1' : '0'); this.paintMute(); });
     }
-    /** animals: the animal definitions used by the menu's background animation (from versions' animals database). */
-    setConfig(cfg, animals) { this.cfg = cfg; this.animals = animals; this.anim = new M.MenuAnimations(cfg, animals); this.layout(); }
-    layout() {
-      if (!this.cfg) return;
-      const vw = (this.canvas.width = innerWidth), vh = (this.canvas.height = innerHeight);
-      this.rects = M.MenuRenderer.layoutElements(this.cfg, vw, vh);
-      M.MenuRenderer.applyDom(this.cfg, this.rects, this.nickEl, this.playEl);
+    setConfig(cfg) {
+      this.cfg = cfg; const $ = this.$, has = M.MenuRenderer.apply(cfg, document);
+      if (!has.sandbox && this.mode === 'sandbox') this.mode = 'normal';
+      this.setMode(this.mode);
+      // Region/server: this project has one local server; the control exists because the original menu has it.
+      const fill = (sel, text) => { sel.innerHTML = ''; sel.add(new Option(text)); };
+      fill($('regionSelect'), 'Local'); fill($('serverSelect'), 'Local server #1');
+      const list = $('optionsList'); list.innerHTML = '';
+      for (const c of cfg.options.checkboxes) {
+        const lab = document.createElement('label'), cb = document.createElement('input'), sp = document.createElement('span');
+        cb.type = 'checkbox'; cb.id = 'options_' + c.id; cb.disabled = !c.implemented; cb.checked = c.implemented && store.get('mope.opt.' + c.id, '0') === '1';
+        sp.style.color = c.color; sp.textContent = c.label + (c.implemented ? '' : ' (not implemented)'); if (!c.implemented) lab.className = 'na';
+        this.options[c.id] = cb.checked;
+        cb.addEventListener('change', () => { this.options[c.id] = cb.checked; store.set('mope.opt.' + c.id, cb.checked ? '1' : '0'); });
+        lab.appendChild(cb); lab.appendChild(sp); list.appendChild(lab);
+      }
+      this.paintMute();
     }
-    show() { this.visible = true; this.root.style.display = 'block'; this.canvas.style.display = 'block'; this.last = performance.now(); requestAnimationFrame((t) => this.frame(t)); }
-    hide() { this.visible = false; this.root.style.display = 'none'; this.canvas.style.display = 'none'; }
-    frame(t) {
-      if (!this.visible) return;
-      const dt = Math.min(0.1, (t - this.last) / 1000); this.last = t;
-      const vw = this.canvas.width, vh = this.canvas.height;
-      M.MenuRenderer.paintBackground(this.ctx, this.cfg, vw, vh);
-      this.anim.update(dt, vw, vh); this.anim.draw(this.ctx, vw, vh);
-      M.MenuRenderer.paintLogo(this.ctx, this.cfg, vw, vh);
-      requestAnimationFrame((tt) => this.frame(tt));
+    setMode(m) {
+      this.mode = m; store.set('mope.mode', m); const $ = this.$, op = this.cfg ? this.cfg.modes.inactiveOpacity : 0.4;
+      $('button_GMnormal').className = m === 'normal' ? 'button' : 'button buttonDisabled';
+      $('button_GMsandbox').className = m === 'sandbox' ? 'button' : 'button buttonDisabled';
     }
+    paintMute() { this.$('button_mute_img').style.opacity = this.muted ? 0.35 : 1; } // only sound_on.png was archived; muted state is shown by dimming
+    show() { this.$('startMenuWrapper').style.display = 'block'; this.$('gameAreaWrapper').style.opacity = 1; }
+    hide() { this.$('startMenuWrapper').style.display = 'none'; this.$('optionsDiv').style.display = 'none'; }
+    setSpawnLabel(t) { this.$('spawnXpLabel').textContent = t || ''; }
   }
   M.MainMenu = MainMenu;
 })(typeof window !== 'undefined' ? window : globalThis);

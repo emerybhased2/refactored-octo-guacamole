@@ -1,61 +1,47 @@
 {
-  "_note": "Maps assets to historical versions. status: original (archived, provenance recorded) | placeholder (generated at runtime by client/sprites.js, no file on disk).",
+  "_note": "status: original (archived; provenance recorded) | placeholder (generated at runtime). Keep variants per version.",
   "versions": {
-    "2017-04-07": {
-      "animals": {
-        "mouse": {
-          "path": "assets/animals/2017-04-07/mouse.png",
-          "status": "placeholder",
-          "provenance": null
-        },
-        "rabbit": {
-          "path": "assets/animals/2017-04-07/rabbit.png",
-          "status": "placeholder",
-          "provenance": null
-        },
-        "deer": {
-          "path": "assets/animals/2017-04-07/deer.png",
-          "status": "placeholder",
-          "provenance": null
-        },
-        "fox": {
-          "path": "assets/animals/2017-04-07/fox.png",
-          "status": "placeholder",
-          "provenance": null
-        },
-        "wolf": {
-          "path": "assets/animals/2017-04-07/wolf.png",
-          "status": "placeholder",
-          "provenance": null
-        },
-        "bear": {
-          "path": "assets/animals/2017-04-07/bear.png",
-          "status": "placeholder",
-          "provenance": null
-        }
-      },
-      "food": {
-        "berry": {
-          "status": "placeholder"
-        },
-        "carrot": {
-          "status": "placeholder"
-        }
-      },
-      "menus": {
-        "logo": {
-          "status": "placeholder",
-          "note": "Text logo drawn with canvas; original logo graphic not obtained."
-        }
-      }
-    },
     "2017-02-13": {
       "menus": {
         "logo": {
           "path": "assets/menus/2017-02-13/logo.png",
           "status": "original",
           "provenance": "Arquivo.pt capture 20170213101026 of http://mope.io/img/logo.png; page footer: 'You may use images/videos of mope.io commercially. All rights reserved.' (Stan Tatarnykov)"
+        },
+        "mode_norm": {
+          "path": "assets/menus/2017-02-13/mode_norm.png",
+          "status": "original",
+          "provenance": "Arquivo.pt capture 20170213101039 of http://mope.io/img/mode_norm.png; page footer: 'You may use images/videos of mope.io commercially. All rights reserved.' (Stan Tatarnykov)"
+        },
+        "mode_sandbox": {
+          "path": "assets/menus/2017-02-13/mode_sandbox.png",
+          "status": "original",
+          "provenance": "Arquivo.pt capture 20170213101050 of http://mope.io/img/mode_sandbox.png; page footer: 'You may use images/videos of mope.io commercially. All rights reserved.' (Stan Tatarnykov)"
+        },
+        "settings": {
+          "path": "assets/menus/2017-02-13/settings.png",
+          "status": "original",
+          "provenance": "Arquivo.pt capture 20170213101102 of http://mope.io/img/settings.png; page footer: 'You may use images/videos of mope.io commercially. All rights reserved.' (Stan Tatarnykov)"
+        },
+        "sound_on": {
+          "path": "assets/menus/2017-02-13/sound_on.png",
+          "status": "original",
+          "provenance": "Arquivo.pt capture 20170213101116 of http://mope.io/img/sound_on.png; page footer: 'You may use images/videos of mope.io commercially. All rights reserved.' (Stan Tatarnykov)"
+        },
+        "close": {
+          "path": "assets/menus/2017-02-13/x.png",
+          "status": "original",
+          "provenance": "Arquivo.pt capture 20170213101127 of http://mope.io/img/x.png; page footer: 'You may use images/videos of mope.io commercially. All rights reserved.' (Stan Tatarnykov)"
         }
+      },
+      "animals": {
+        "status": "placeholder",
+        "note": "No skins captured for this date; coloured by verified base colour from the archived client",
+        "count": 44
+      },
+      "food": {
+        "status": "placeholder",
+        "note": "banana/rasp/pear/coconut/lillypad images not captured"
       }
     }
   }

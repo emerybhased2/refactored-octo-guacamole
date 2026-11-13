@@ -7,7 +7,9 @@ public class Player extends Entity {
     public String name, account;
     public Animal animal;
     public double xp, health, angle, inputAngle, inputMag;
-    public boolean dead, bot;
+    public boolean dead, bot, boost;
+    public double water = 100;
+    public long lastChatTick = -1_000_000;
     public int kills;
     public long protectedUntilTick, abilityReadyAt, abilityActiveUntil;
     public Sender sender;

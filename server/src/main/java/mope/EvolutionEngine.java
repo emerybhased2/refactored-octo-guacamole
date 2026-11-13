@@ -7,15 +7,12 @@ public final class EvolutionEngine {
     private final Map<String, Animal> animals;
     private final List<Defs.Edge> edges;
 
-    public EvolutionEngine(Map<String, Animal> animals, List<Defs.Edge> edges) { this.animals = animals; this.edges = edges; }
+    private final String startId;
 
-    /** Spawn animal: available animal with no predecessor and xpRequired 0 (lowest tier first). */
-    public Animal start() {
-        Set<String> targets = new HashSet<>();
-        for (Defs.Edge e : edges) targets.add(e.to);
-        return animals.values().stream().filter(a -> !targets.contains(a.id) && a.xpRequired <= 0)
-            .min(Comparator.comparingInt((Animal a) -> a.tier).thenComparing(a -> a.id)).orElseThrow();
-    }
+    public EvolutionEngine(Map<String, Animal> animals, List<Defs.Edge> edges, String startId) { this.animals = animals; this.edges = edges; this.startId = startId; }
+
+    /** Spawn animal, defined per version (version.json "startAnimal"). */
+    public Animal start() { return animals.get(startId); }
     public List<Animal> options(Animal cur) {
         List<Animal> out = new ArrayList<>();
         for (Defs.Edge e : edges) if (e.from.equals(cur.id)) { Animal a = animals.get(e.to); if (a != null) out.add(a); }

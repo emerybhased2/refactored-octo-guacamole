@@ -27,7 +27,7 @@ final class Bot {
         if (flee) { gx = b.x + fleeX; gy = b.y + fleeY; }
         else if (bestPrey != null) { gx = bestPrey.x; gy = bestPrey.y; }
         else if (bestFood != null) { gx = bestFood.x; gy = bestFood.y; }
-        else if (Math.hypot(gx - b.x, gy - b.y) < 80 || b.botGoalX == 0) { gx = w.rnd.nextDouble() * w.size; gy = w.rnd.nextDouble() * w.size; }
+        else if (Math.hypot(gx - b.x, gy - b.y) < 80 || b.botGoalX == 0) { double[] pt = w.biomes.randomPoint(w.rnd, java.util.List.of(b.animal.biome)); gx = pt[0]; gy = pt[1]; }
         b.botGoalX = gx; b.botGoalY = gy;
         b.inputAngle = Math.atan2(gy - b.y, gx - b.x); b.inputMag = 1;
     }

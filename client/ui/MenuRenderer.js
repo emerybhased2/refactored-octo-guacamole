@@ -1,38 +1,43 @@
 (function (g) {
   const M = (g.Mope = g.Mope || {});
-  /** Pure geometry: element rectangles for a main-menu config in a viewport (anchored to viewport centre + offsetY). */
-  function layoutElements(cfg, vw, vh) {
-    const out = {};
-    for (const [name, el] of Object.entries(cfg.elements)) out[name] = { x: Math.round(vw / 2 - el.w / 2), y: Math.round(vh / 2 + el.offsetY - el.h / 2), w: el.w, h: el.h };
-    const l = cfg.logo; out.logo = { x: vw / 2, y: vh / 2 + l.offsetY };
-    return out;
-  }
-  function paintBackground(ctx, cfg, vw, vh) {
-    const bg = cfg.background;
-    if (bg.type === 'gradient') {
-      const gr = ctx.createLinearGradient(0, 0, 0, vh);
-      for (const [s, c] of bg.stops) gr.addColorStop(s, c);
-      ctx.fillStyle = gr;
-    } else ctx.fillStyle = bg.color || '#000';
-    ctx.fillRect(0, 0, vw, vh);
-  }
-  function paintLogo(ctx, cfg, vw, vh) {
-    const l = cfg.logo; ctx.save();
-    ctx.font = l.font; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
-    ctx.lineWidth = l.strokeWidth; ctx.strokeStyle = l.stroke; ctx.strokeText(l.text, vw / 2, vh / 2 + l.offsetY);
-    ctx.fillStyle = l.fill; ctx.fillText(l.text, vw / 2, vh / 2 + l.offsetY); ctx.restore();
-  }
-  /** Applies config styling/positions to DOM controls (nickname input, play button). */
-  function applyDom(cfg, rects, nickEl, playEl) {
-    const set = (el, c, r) => {
-      Object.assign(el.style, { left: r.x + 'px', top: r.y + 'px', width: r.w + 'px', height: r.h + 'px', font: c.font, borderRadius: c.radius + 'px', border: c.border, background: c.background });
-      if (c.color) el.style.color = c.color;
+  /** Pure: CSS custom properties derived from a main-menu config (so each historical version restyles the same DOM). */
+  function themeVars(cfg) {
+    const n = cfg.nickname, p = cfg.play, o = cfg.options, v = {
+      '--page-bg': cfg.page.background, '--col-w': cfg.column.w + 'px', '--col-h': cfg.column.h + 'px',
+      '--logo-w': cfg.logo.w + 'px', '--logo-h': cfg.logo.h + 'px', '--logo-mt': cfg.logo.marginTop + 'px',
+      '--nick-w': n.w + 'px', '--nick-border': n.border, '--nick-font': n.font, '--nick-pad': n.padding + 'px', '--nick-radius': n.radius + 'px', '--nick-bg': n.background, '--nick-color': n.color,
+      '--play-w': p.w + 'px', '--play-h': p.h + 'px', '--play-mt': p.marginTop + 'px', '--play-bg': p.background, '--play-hover': p.hover, '--play-bb': p.borderBottom, '--play-color': p.color, '--play-radius': p.radius + 'px',
+      '--opt-bg': o.background, '--opt-top': o.top + 'px', '--sel-bg': o.select.background, '--sel-border': o.select.border, '--inactive-op': String(cfg.modes.inactiveOpacity),
     };
-    set(nickEl, cfg.elements.nickname, rects.nickname); nickEl.placeholder = cfg.elements.nickname.placeholder; nickEl.maxLength = cfg.elements.nickname.maxLength;
-    set(playEl, cfg.elements.play, rects.play); playEl.textContent = cfg.elements.play.label;
-    playEl.onmouseenter = () => (playEl.style.background = cfg.elements.play.hover);
-    playEl.onmouseleave = () => (playEl.style.background = cfg.elements.play.background);
+    if (cfg.panels) { v['--how-bg'] = cfg.panels.howToPlay.background; v['--upd-bg'] = cfg.panels.updates.background; }
+    return v;
   }
-  M.MenuRenderer = { layoutElements, paintBackground, paintLogo, applyDom };
+  /** Pure: which optional menu elements this version's config actually contains (nothing from later eras leaks in). */
+  function elementsPresent(cfg) {
+    return { modes: !!cfg.modes, sandbox: !!(cfg.modes && cfg.modes.sandbox), settings: !!(cfg.icons && cfg.icons.settings), mute: !!(cfg.icons && cfg.icons.mute),
+      howToPlay: !!(cfg.panels && cfg.panels.howToPlay), updates: !!(cfg.panels && cfg.panels.updates), options: !!cfg.options };
+  }
+  function fillList(el, panel) {
+    el.innerHTML = ''; const h = document.createElement('h2'); h.textContent = panel.title; el.appendChild(h);
+    const ul = document.createElement('ul'); for (const t of panel.items) { const li = document.createElement('li'); li.textContent = '- ' + t; ul.appendChild(li); } el.appendChild(ul);
+  }
+  /** Applies a config to the static DOM skeleton. */
+  function apply(cfg, doc) {
+    const $ = (id) => doc.getElementById(id), vars = themeVars(cfg), has = elementsPresent(cfg);
+    for (const [k, val] of Object.entries(vars)) doc.documentElement.style.setProperty(k, val);
+    const L = $('logo'); L.src = cfg.logo.src;
+    const set = (id, c) => { const im = $(id).querySelector('img'); im.src = c.src; im.width = c.w; im.height = c.h; im.title = c.title || ''; };
+    set('button_GMnormal', cfg.modes.normal);
+    $('button_GMsandbox').style.display = has.sandbox ? '' : 'none'; if (has.sandbox) set('button_GMsandbox', cfg.modes.sandbox);
+    $('settingsButton').style.display = has.settings ? '' : 'none'; if (has.settings) set('settingsButton', cfg.icons.settings);
+    $('button_mute').style.display = has.mute ? '' : 'none'; if (has.mute) set('button_mute', cfg.icons.mute);
+    set('closeBut', Object.assign({ title: 'Close' }, cfg.icons.close));
+    const ni = $('nickInput'); ni.placeholder = cfg.nickname.placeholder; ni.maxLength = cfg.nickname.maxLength;
+    $('startButton').textContent = cfg.play.label;
+    $('howToPlayDiv').style.display = has.howToPlay ? '' : 'none'; if (has.howToPlay) fillList($('howToPlayDiv'), cfg.panels.howToPlay);
+    $('updatesDiv').style.display = has.updates ? '' : 'none'; if (has.updates) fillList($('updatesDiv'), cfg.panels.updates);
+    return has;
+  }
+  M.MenuRenderer = { themeVars, elementsPresent, apply };
   if (typeof module !== 'undefined') module.exports = M.MenuRenderer;
 })(typeof window !== 'undefined' ? window : globalThis);

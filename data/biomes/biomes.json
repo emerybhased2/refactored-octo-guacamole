@@ -1,3 +1,59 @@
 [
-  { "id": "land", "name": "Land", "rect": [0, 0, 1, 1], "color": "#6dae4b", "releaseDate": "2017-04-07", "hazards": [], "confidence": "medium" }
+ {
+  "id": "land",
+  "name": "Land",
+  "rect": [
+   0,
+   0.25,
+   1,
+   0.5
+  ],
+  "color": "#4fbf5a",
+  "lakes": {
+   "count": 6,
+   "radius": 230
+  },
+  "releaseDate": "2017-02-13",
+  "hazards": [],
+  "confidence": "verified existence; layout inferred",
+  "clientBiomeNum": 0,
+  "buttonColor": "#26A73A"
+ },
+ {
+  "id": "ocean",
+  "name": "Ocean",
+  "rect": [
+   0,
+   0.75,
+   1,
+   0.25
+  ],
+  "color": "#2f9fd0",
+  "lakes": null,
+  "releaseDate": "2017-02-13",
+  "hazards": [],
+  "confidence": "verified existence; layout inferred",
+  "clientBiomeNum": 1,
+  "buttonColor": "#1C91B8"
+ },
+ {
+  "id": "arctic",
+  "name": "Arctic",
+  "rect": [
+   0,
+   0,
+   1,
+   0.25
+  ],
+  "color": "#dfe9ee",
+  "lakes": {
+   "count": 3,
+   "radius": 200
+  },
+  "releaseDate": "2017-02-13",
+  "hazards": [],
+  "confidence": "verified existence; layout inferred",
+  "clientBiomeNum": 2,
+  "buttonColor": "#B2B2B2"
+ }
 ]

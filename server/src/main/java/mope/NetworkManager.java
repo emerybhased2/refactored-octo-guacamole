@@ -26,9 +26,9 @@ public final class NetworkManager extends WebSocketServer {
         setReuseAddr(true);
     }
 
-    public World world(String versionId) {
-        return worlds.computeIfAbsent(versionId, id -> {
-            World w = new World(versions.get(id), seed + id.hashCode());
+    public World world(String versionId, boolean sandbox) {
+        return worlds.computeIfAbsent(versionId + (sandbox ? "|sandbox" : ""), key -> {
+            World w = new World(versions.get(versionId), seed + key.hashCode(), sandbox);
             w.onDeath = p -> { if (p.account != null && !p.bot) accounts.recordGame(p.account, (long) p.xp, p.kills); };
             w.start();
             return w;
@@ -58,9 +58,12 @@ public final class NetworkManager extends WebSocketServer {
                     Player p = s.player; if (p == null) return;
                     double a = num(m, "a"), mag = num(m, "m");
                     if (Double.isFinite(a) && Double.isFinite(mag)) { p.inputAngle = a; p.inputMag = mag; }
+                    p.boost = m.has("b") && m.get("b").isJsonPrimitive() && m.get("b").getAsInt() == 1;
                 }
                 case "evolve" -> { Player p = s.player; String id = str(m, "id"); if (p != null && id != null) s.world.submit(() -> s.world.evolve(p, id)); }
                 case "ability" -> { Player p = s.player; if (p != null) s.world.submit(() -> s.world.abilities.activate(p, s.world.nowMs(), null)); }
+                case "chat" -> { Player p = s.player; String txt = str(m, "m"); if (p != null && txt != null) { String clean = txt.replaceAll("[\\p{Cntrl}<>]", "").trim(); if (clean.length() > 35) clean = clean.substring(0, 35); if (!clean.isEmpty()) { final String fc = clean; s.world.submit(() -> s.world.chat(p, fc)); } } }
+                case "sandbox" -> { Player p = s.player; double d = num(m, "d"); if (p != null && Double.isFinite(d)) s.world.submit(() -> s.world.sandboxStep(p, (int) d)); }
                 case "register", "login", "resume" -> auth(c, s, t, m);
                 default -> { }
             }
@@ -90,13 +93,15 @@ public final class NetworkManager extends WebSocketServer {
         if (name.length() > 16) name = name.substring(0, 16);
         if (name.isEmpty()) name = "Mope";
         final String fn = name;
-        World w = world(v.id);
+        boolean sb = "sandbox".equals(str(m, "mode")) && v.modes.contains("sandbox");
+        World w = world(v.id, sb);
         s.world = w;
         w.submit(() -> {
             Player p = w.join(fn, c::send, false);
             p.account = v.feature("accounts") ? s.account : null;
             s.player = p;
-            JsonObject o = new JsonObject(); o.addProperty("t", "welcome"); o.addProperty("id", p.id); o.add("version", v.clientJson());
+            JsonObject o = new JsonObject(); o.addProperty("t", "welcome"); o.addProperty("id", p.id); o.addProperty("mode", sb ? "sandbox" : "normal"); o.add("version", v.clientJson());
+            com.google.gson.JsonArray lk = new com.google.gson.JsonArray(); for (double[] l : w.lakes) lk.add(Data.GSON.toJsonTree(l)); o.add("lakes", lk);
             c.send(o.toString());
         });
     }

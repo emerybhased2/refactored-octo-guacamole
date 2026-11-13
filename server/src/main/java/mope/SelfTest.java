@@ -8,79 +8,124 @@ public final class SelfTest {
     static void check(String name, boolean ok) { if (ok) passed++; else { failed++; System.out.println("FAIL: " + name); } }
     static void eq(String name, Object a, Object b) { boolean ok = Objects.equals(a, b); if (!ok) System.out.println("  expected " + b + " got " + a); check(name, ok); }
 
+    static Player human(World w, String n, List<String> inbox) { return w.join(n, inbox == null ? null : inbox::add, false); }
+    static void place(Player p, double x, double y) { p.x = x; p.y = y; p.protectedUntilTick = 0; }
+    /** A land point that is not inside a lake. */
+    static double[] dryLand(World w) {
+        for (double y = 2000; y < 4000; y += 50) for (double x = 200; x < 5800; x += 50) if (!w.inWater(x, y) && w.biomes.biomeAt(x, y).id.equals("land")) return new double[] { x, y };
+        throw new IllegalStateException("no dry land");
+    }
+
     public static void main(String[] args) throws Exception {
         VersionManager vm = new VersionManager();
-        VersionManager.Config v = vm.get("2017-04-07");
-        check("version 2017-04-07 loaded", v != null);
+        VersionManager.Config v = vm.get("2017-02-13");
+        check("version 2017-02-13 loaded", v != null);
 
-        // Version / progression
-        eq("2017 roster", new ArrayList<>(v.animals.keySet()), List.of("mouse", "rabbit", "deer", "fox", "wolf", "bear"));
-        EvolutionEngine ev = new EvolutionEngine(v.animals, v.edges);
+        // ---- Version / progression data
+        eq("44 animals", v.animals.size(), 44);
+        eq("3 biomes", v.biomeIds, List.of("land", "ocean", "arctic"));
+        EvolutionEngine ev = new EvolutionEngine(v.animals, v.edges, v.startAnimal);
         eq("start animal", ev.start().id, "mouse");
-        Animal rabbit = v.animals.get("rabbit");
-        check("mouse->rabbit needs xp", !ev.canEvolve(v.animals.get("mouse"), "rabbit", 59) && ev.canEvolve(v.animals.get("mouse"), "rabbit", 60));
-        check("cannot skip tiers", !ev.canEvolve(v.animals.get("mouse"), "bear", 1e9));
-        eq("rabbit options", ev.options(rabbit).stream().map(a -> a.id).sorted().toList(), List.of("deer", "fox"));
-
-        // Historical gating: a date before release has no animals
+        Animal mouse = v.animals.get("mouse");
+        check("mouse->rabbit needs xp", !ev.canEvolve(mouse, "rabbit", 59) && ev.canEvolve(mouse, "rabbit", 60));
+        check("cannot skip tiers", !ev.canEvolve(mouse, "dragon", 1e9));
+        check("cross-biome option from mouse", ev.canEvolve(mouse, "trout", 100) && ev.canEvolve(mouse, "arctichare", 100));
+        eq("rabbit options", ev.options(v.animals.get("rabbit")).stream().map(a -> a.id).sorted().toList(), List.of("fox", "pig"));
+        eq("verified internal ids", v.animals.get("kraken").internalId, 24);
+        eq("verified ability text -> cheetah boost", v.animals.get("cheetah").ability, "extra_boost");
         JsonObjectHolder.testEarlyDate();
 
-        // QuadTree vs brute force
+        // ---- QuadTree vs brute force
         Random r = new Random(1); QuadTree qt = new QuadTree(0, 0, 1000, 1000); List<Entity> es = new ArrayList<>();
         for (int i = 0; i < 2000; i++) { Entity e = new Entity(); e.x = r.nextDouble() * 1000; e.y = r.nextDouble() * 1000; es.add(e); qt.insert(e); }
         List<Entity> got = new ArrayList<>(); qt.query(500, 500, 120, got);
         long brute = es.stream().filter(e -> Math.abs(e.x - 500) <= 120 && Math.abs(e.y - 500) <= 120).count();
         eq("quadtree matches brute force", (long) got.size(), brute);
 
-        // Biome restriction
-        Defs.BiomeDef ocean = new Defs.BiomeDef(); ocean.id = "ocean"; ocean.rect = new double[] { 0.5, 0, 0.5, 1 };
-        Defs.BiomeDef land = new Defs.BiomeDef(); land.id = "land"; land.rect = new double[] { 0, 0, 0.5, 1 };
-        BiomeEngine be = new BiomeEngine(List.of(land, ocean), 1000);
-        check("land animal blocked in ocean", be.canEnter(v.animals.get("mouse"), 100, 100) && !be.canEnter(v.animals.get("mouse"), 900, 100));
+        // ---- Biome restriction (real data: land animals cannot enter the ocean strip)
+        BiomeEngine be = new BiomeEngine(v.biomes, v.worldSize);
+        check("mouse ok on land", be.canEnter(mouse, 3000, 3000));
+        check("mouse blocked in ocean", !be.canEnter(mouse, 3000, 5500));
+        check("mouse blocked in arctic", !be.canEnter(mouse, 3000, 500));
+        check("shrimp ok in ocean", be.canEnter(v.animals.get("shrimp"), 3000, 5500));
 
-        // Ability cooldown
-        Defs.AbilityDef dash = new Defs.AbilityDef(); dash.id = "dash"; dash.cooldownMs = 4000; dash.durationMs = 600; dash.speedMultiplier = 2;
-        AbilityEngine ab = AbilityEngine.forTest(List.of(dash));
-        Player p = new Player(); Animal a = v.animals.get("mouse").copy(); a.ability = "dash"; p.setAnimal(a);
-        check("dash activates", ab.activate(p, 1000, null));
-        eq("dash speed x2", ab.speedMultiplier(p, 1200), 2.0);
-        eq("dash expires", ab.speedMultiplier(p, 1700), 1.0);
-        check("dash on cooldown", !ab.activate(p, 4000, null));
-        check("dash ready again", ab.activate(p, 5000, null));
-        p.setAnimal(v.animals.get("mouse")); check("no ability, no activate", !ab.activate(p, 99999, null));
+        // ---- Abilities: real implemented speed abilities (cheetah boost, 8s cooldown verified)
+        AbilityEngine ab = new AbilityEngine(v.abilities, v.date);
+        Player cp = new Player(); cp.setAnimal(v.animals.get("cheetah"));
+        check("cheetah boost activates", ab.activate(cp, 1000, null));
+        check("boost multiplies speed", ab.speedMultiplier(cp, 1200) > 1.5);
+        eq("boost expires", ab.speedMultiplier(cp, 5000), 1.0);
+        check("boost on cooldown until 8s", !ab.activate(cp, 8999, null) && ab.activate(cp, 9000, null));
+        Player lp = new Player(); lp.setAnimal(v.animals.get("shark")); check("no ability, no activate", !ab.activate(lp, 99999, null));
+        Player kp = new Player(); kp.setAnimal(v.animals.get("kraken")); check("unimplemented ability does not activate", !ab.activate(kp, 99999, null));
 
-        // World: movement, food, eating, server-side evolution
-        VersionManager.Config quiet = vm.get("2017-04-07");
-        World w = new World(quiet, 42);
-        Player a1 = w.join("A", null, false); Player a2 = w.join("B", null, false);
-        a1.x = 100; a1.y = 100; a1.inputAngle = 0; a1.inputMag = 1; a2.x = 3000; a2.y = 3000;
+        // ---- World: movement, food, evolution, predation
+        World w = new World(v, 42);
+        double[] dry = dryLand(w);
+        Player a1 = human(w, "A", null), a2 = human(w, "B", null);
+        place(a1, 100, 3000); a1.inputAngle = 0; a1.inputMag = 1; place(a2, dry[0], dry[1]);
         for (int i = 0; i < 30; i++) w.tick();
         check("player moved right ~220px/s", a1.x > 250 && a1.x < 360);
-        // food consumption
-        Food f = new Food(9, quiet.foods.get(0), 0, a2.x, a2.y); w.foods.foods.add(f);
+        Food f = new Food(9, v.foods.get(0), 0, a2.x, a2.y); w.foods.foods.add(f);
         double xp0 = a2.xp; w.tick();
-        check("food eaten gives xp", a2.xp >= xp0 + quiet.foods.get(0).xp && f.removed);
-        // evolution validated server side
+        check("food eaten gives xp", a2.xp >= xp0 + v.foods.get(0).xp && f.removed);
         a2.xp = 10; check("evolve rejected without xp", !w.evolve(a2, "rabbit"));
         a2.xp = 100; check("evolve accepted", w.evolve(a2, "rabbit") && a2.animal.id.equals("rabbit"));
-        check("evolve to non-child rejected", !w.evolve(a2, "bear"));
-        // predator/prey
-        a1.setAnimal(v.animals.get("wolf")); a1.protectedUntilTick = 0; a1.inputMag = 0; a1.x = 2000; a1.y = 2000;
-        a2.x = 2005; a2.y = 2000; a2.protectedUntilTick = 0; a2.xp = 0;
+        check("evolve to non-child rejected", !w.evolve(a2, "dragon"));
+        // predator/prey on land
+        a1.setAnimal(v.animals.get("lion")); a1.inputMag = 0; place(a1, 3000, 3000); place(a2, 3005, 3000); a2.xp = 0;
         w.tick();
-        check("wolf eats rabbit", a2.dead && a1.kills == 1);
+        check("lion eats rabbit", a2.dead && a1.kills == 1);
 
-        // Stress: 200+ entities
-        VersionManager.Config big = vm.get("2017-04-07");
-        World sw = new World(big, 7);
-        for (int i = 0; i < 220; i++) sw.join("S" + i, null, true);
+        // ---- Cross-biome evolution teleports (archived update note: arctic teleporting)
+        World w2 = new World(v, 5); Player t = human(w2, "T", null); place(t, 3000, 3000); t.xp = 500;
+        check("mouse->arctichare ok", w2.evolve(t, "arctichare"));
+        eq("teleported into arctic", w2.biomes.biomeAt(t.x, t.y).id, "arctic");
+        check("arctic animal can stand there", w2.biomes.canEnter(t.animal, t.x, t.y));
+
+        // ---- Thirst (verified death reason 4) and water refill
+        World w3 = new World(v, 11); List<String> msgs = new ArrayList<>(); Player th = human(w3, "Th", msgs);
+        double[] d3 = dryLand(w3); place(th, d3[0], d3[1]); th.inputMag = 0; th.water = 30;
+        for (int i = 0; i < 30 * 5; i++) w3.tick();
+        check("water drains on dry land", th.water < 28);
+        th.water = 0; th.health = 5;
+        for (int i = 0; i < 30 * 2; i++) w3.tick();
+        check("dies of thirst with reason 4", th.dead && msgs.stream().anyMatch(m -> m.contains("\"t\":\"died\"") && m.contains("\"r\":4")));
+        World w4 = new World(v, 12); Player sw = human(w4, "Sw", null); sw.setAnimal(v.animals.get("shrimp")); place(sw, 3000, 5500); sw.water = 10;
+        for (int i = 0; i < 30; i++) w4.tick();
+        check("water refills in ocean", sw.water > 35);
+        // run uses extra water
+        World w5 = new World(v, 13); Player ru = human(w5, "Ru", null); double[] d5 = dryLand(w5); place(ru, d5[0], d5[1]); ru.inputAngle = 0; ru.inputMag = 1; ru.boost = true;
+        for (int i = 0; i < 30 * 3; i++) { w5.tick(); if (w5.inWater(ru.x, ru.y)) ru.water = 100; place(ru, ru.x, ru.y); }
+        check("running moves faster than walking and uses water", ru.x - d5[0] > 220 * 3 * 1.2 || ru.x > 5900);
+
+        // ---- Chat
+        World w6 = new World(v, 14); List<String> c1 = new ArrayList<>(), c2 = new ArrayList<>(); Player ch1 = human(w6, "C1", c1), ch2 = human(w6, "C2", c2);
+        place(ch1, 3000, 3000); place(ch2, 3100, 3000);
+        w6.chat(ch1, "hello"); w6.chat(ch1, "spam");
+        check("chat relayed to nearby player once (rate limit)", c2.stream().filter(m -> m.contains("\"t\":\"chat\"")).count() == 1 && c2.stream().anyMatch(m -> m.contains("hello")));
+
+        // ---- Sandbox
+        World sb = new World(v, 15, true); check("sandbox has no bots", sb.players.isEmpty());
+        Player s1 = human(sb, "S1", null), s2 = human(sb, "S2", null); place(s1, 3000, 3000); place(s2, 3002, 3000);
+        eq("sandbox starts as mouse", s1.animal.id, "mouse");
+        check("sandbox step down wraps to top animal", sb.sandboxStep(s1, -1) && s1.animal.tier == 8);
+        check("sandbox step up wraps to mouse", sb.sandboxStep(s1, 1) && s1.animal.id.equals("mouse"));
+        sb.sandboxStep(s1, 1); // now a tier-2 animal: sandbox lets anyone eat anyone
+        check("normal evolution disabled in sandbox", !sb.evolve(s2, "rabbit"));
+        place(s1, 3000, 3000); s2.setAnimal(v.animals.get("mouse")); place(s2, 3002, 3000); sb.tick();
+        check("sandbox: higher tier eats lower", s2.dead);
+
+        // ---- Stress: 200+ entities
+        World big = new World(v, 7);
+        for (int i = 0; i < 220; i++) big.join("S" + i, null, true);
         long t0 = System.nanoTime();
-        for (int i = 0; i < 300; i++) sw.tick();
+        for (int i = 0; i < 300; i++) big.tick();
         double ms = (System.nanoTime() - t0) / 1e6 / 300;
-        System.out.printf("stress: %d players, %d food, %.2f ms/tick%n", sw.players.size(), sw.foods.foods.size(), ms);
+        System.out.printf("stress: %d players, %d food, %.2f ms/tick%n", big.players.size(), big.foods.foods.size(), ms);
         check("stress tick under 33ms", ms < 33);
 
-        // Accounts
+        // ---- Accounts
         try (AccountManager am = new AccountManager("jdbc:sqlite::memory:")) {
             check("register ok", am.register("alice", "hunter22"));
             check("duplicate rejected", !am.register("ALICE", "other-pass"));
@@ -100,10 +145,10 @@ public final class SelfTest {
     /** Resolving a version dated before any animal's release must yield no animals (no anachronisms). */
     static final class JsonObjectHolder {
         static void testEarlyDate() {
-            com.google.gson.JsonObject o = Data.GSON.toJsonTree(VersionManager.class.cast(new VersionManager()).get("2017-04-07").raw).getAsJsonObject();
-            o.addProperty("id", "t"); o.addProperty("date", "2017-04-06");
+            com.google.gson.JsonObject o = new VersionManager().get("2017-02-13").raw.deepCopy();
+            o.addProperty("id", "t"); o.addProperty("date", "2017-02-12");
             VersionManager.Config c = VersionManager.resolve(o);
-            check("no animals before launch date", c.animals.isEmpty() && c.edges.isEmpty() && c.foods.isEmpty());
+            check("no animals before earliest capture date", c.animals.isEmpty() && c.edges.isEmpty() && c.foods.isEmpty());
         }
     }
 }

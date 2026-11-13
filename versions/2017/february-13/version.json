@@ -1,0 +1,19 @@
+{
+  "id": "2017-02-13",
+  "date": "2017-02-13",
+  "label": "February 13, 2017 - earliest archived capture",
+  "confidence": "mixed",
+  "notes": "Roster, biomes, abilities, menu geometry and features are VERIFIED from the archived client (Arquivo.pt 20170213). Tier numbers, XP thresholds, evolution links, stats, world size and biome layout are INFERRED (server-side data, not archived). See docs/RESEARCH.md.",
+  "menu": "data/menus/main-2017-02-13.json",
+  "upgradeMenu": "data/menus/upgrade-2017-02-13.json",
+  "hud": "data/menus/hud-2017-02-13.json",
+  "startAnimal": "mouse",
+  "modes": ["normal", "sandbox"],
+  "biomes": ["land", "ocean", "arctic"],
+  "foods": ["red_berry", "blue_berry", "orange_fruit", "raspberry", "pear", "banana", "coconut", "lillypad"],
+  "features": { "accounts": false, "shop": false, "chat": true, "events": false, "waterBar": true, "serverSelect": true, "settings": true, "sandbox": true, "mute": true, "party": false },
+  "tickRate": 30,
+  "netRate": 20,
+  "worldSize": 6000,
+  "bots": 30
+}

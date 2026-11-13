@@ -1,7 +1,58 @@
 [
-  { "tier": 1, "name": "Tier 1", "color": "#9bd36b", "releaseDate": "2017-04-07" },
-  { "tier": 2, "name": "Tier 2", "color": "#6fc3d9", "releaseDate": "2017-04-07" },
-  { "tier": 3, "name": "Tier 3", "color": "#e8c24a", "releaseDate": "2017-04-07" },
-  { "tier": 4, "name": "Tier 4", "color": "#e8884a", "releaseDate": "2017-04-07" },
-  { "tier": 5, "name": "Tier 5", "color": "#d85a5a", "releaseDate": "2017-04-07" }
+ {
+  "tier": 1,
+  "name": "Tier 1",
+  "color": "#9bd36b",
+  "releaseDate": "2017-02-13",
+  "confidence": "inferred"
+ },
+ {
+  "tier": 2,
+  "name": "Tier 2",
+  "color": "#6fc3d9",
+  "releaseDate": "2017-02-13",
+  "confidence": "inferred"
+ },
+ {
+  "tier": 3,
+  "name": "Tier 3",
+  "color": "#8fd0a0",
+  "releaseDate": "2017-02-13",
+  "confidence": "inferred"
+ },
+ {
+  "tier": 4,
+  "name": "Tier 4",
+  "color": "#e8c24a",
+  "releaseDate": "2017-02-13",
+  "confidence": "inferred"
+ },
+ {
+  "tier": 5,
+  "name": "Tier 5",
+  "color": "#e8984a",
+  "releaseDate": "2017-02-13",
+  "confidence": "inferred"
+ },
+ {
+  "tier": 6,
+  "name": "Tier 6",
+  "color": "#e06a4a",
+  "releaseDate": "2017-02-13",
+  "confidence": "inferred"
+ },
+ {
+  "tier": 7,
+  "name": "Tier 7",
+  "color": "#c94a6a",
+  "releaseDate": "2017-02-13",
+  "confidence": "inferred"
+ },
+ {
+  "tier": 8,
+  "name": "Tier 8",
+  "color": "#8a4ad0",
+  "releaseDate": "2017-02-13",
+  "confidence": "inferred"
+ }
 ]

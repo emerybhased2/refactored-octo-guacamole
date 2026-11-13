@@ -15,7 +15,9 @@ public final class Defs {
     public static class BiomeDef {
         public String id, name, color, releaseDate, removalDate, confidence;
         public double[] rect;
+        public Lakes lakes;
     }
+    public static class Lakes { public int count; public double radius; }
     public static class AbilityDef {
         public String id, name, type, releaseDate, removalDate;
         public double cooldownMs, durationMs, speedMultiplier, damage, range;

@@ -7,7 +7,7 @@
   }
   class Input {
     constructor(el) {
-      this.px = 0; this.py = 0; this.enabled = false; this.keyHandlers = {};
+      this.px = window.innerWidth / 2; this.py = window.innerHeight / 2; this.enabled = false; this.keyHandlers = {};
       el.addEventListener('mousemove', (e) => { this.px = e.clientX; this.py = e.clientY; });
       el.addEventListener('touchstart', (e) => { const t = e.touches[0]; this.px = t.clientX; this.py = t.clientY; }, { passive: true });
       el.addEventListener('touchmove', (e) => { const t = e.touches[0]; this.px = t.clientX; this.py = t.clientY; }, { passive: true });

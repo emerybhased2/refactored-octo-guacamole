@@ -1,6 +1,53 @@
 {
-  "_note": "Expected roster per version, cross-checked by tools/validate. Availability itself is derived from release/removal dates.",
-  "versions": {
-    "2017-04-07": { "animals": ["mouse", "rabbit", "deer", "fox", "wolf", "bear"], "confidence": "low" }
+ "versions": {
+  "2017-02-13": {
+   "animals": [
+    "arcticfox",
+    "arctichare",
+    "bear",
+    "cheetah",
+    "chipmunk",
+    "crab",
+    "croc",
+    "deer",
+    "donkey",
+    "dragon",
+    "fox",
+    "gorilla",
+    "hippo",
+    "jellyfish",
+    "killerwhale",
+    "kraken",
+    "lion",
+    "mammoth",
+    "mole",
+    "mouse",
+    "muskox",
+    "octopus",
+    "penguin",
+    "pig",
+    "polarbear",
+    "pufferfish",
+    "rabbit",
+    "reindeer",
+    "rhino",
+    "seahorse",
+    "seal",
+    "shark",
+    "shrimp",
+    "snowleopard",
+    "squid",
+    "stingray",
+    "swordfish",
+    "trout",
+    "turtle",
+    "walrus",
+    "wolf",
+    "wolverine",
+    "yeti",
+    "zebra"
+   ],
+   "confidence": "roster verified; tiers/xp/tree inferred"
   }
+ }
 }

@@ -1,0 +1,36 @@
+{
+  "version": "2017-02-13", "confidence": "verified (geometry/colours from archived index.html + main.css; element order from the page)",
+  "source": "Arquivo.pt captures 20170213100949 (index), 20170213101002 (main.css), 20170213101026..101127 (img/*)",
+  "page": { "background": "#3FBA54", "font": "Arial" },
+  "column": { "w": 350, "h": 700 },
+  "logo": { "src": "assets/menus/2017-02-13/logo.png", "w": 350, "h": 178, "marginTop": -20 },
+  "modes": {
+    "normal": { "src": "assets/menus/2017-02-13/mode_norm.png", "w": 124, "h": 48, "title": "Normal" },
+    "sandbox": { "src": "assets/menus/2017-02-13/mode_sandbox.png", "w": 124, "h": 48, "title": "Sandbox" },
+    "inactiveOpacity": 0.4, "inactiveNote": "client toggles class buttonDisabled (opacity .4) on the non-selected mode button"
+  },
+  "nickname": { "w": 250, "placeholder": "Your name", "maxLength": 15, "border": "4px solid #1c9c25", "font": "30px Arial", "padding": 5, "radius": 5, "background": "#ffffff", "color": "#000000" },
+  "play": { "label": "Play", "w": 250, "h": 40, "marginTop": 10, "background": "#0aa633", "hover": "#16932A", "borderBottom": "4px solid #116c17", "color": "#ffffff", "font": "bold large Arial", "radius": 5 },
+  "icons": { "settings": { "src": "assets/menus/2017-02-13/settings.png", "w": 30, "h": 30 }, "mute": { "src": "assets/menus/2017-02-13/sound_on.png", "w": 30, "h": 31 }, "close": { "src": "assets/menus/2017-02-13/x.png", "w": 35, "h": 35 } },
+  "options": {
+    "background": "rgba(11,164,52,0.95)", "top": 175, "radius": 8, "padding": 5, "fontSize": 12,
+    "select": { "background": "#3fba54", "border": "3px solid #1F9A1F", "regionW": 190, "serverW": 240 },
+    "checkboxes": [
+      { "id": "christmasSkins", "label": "Use Winter Skins", "color": "#194614", "implemented": false },
+      { "id": "noImages", "label": "No Animal images", "color": "#000", "implemented": true },
+      { "id": "noNames", "label": "No Names & Chat", "color": "#000", "implemented": true },
+      { "id": "lowGraphics", "label": "Use Low graphics", "color": "#000", "implemented": true },
+      { "id": "noJoystick", "label": "No Joystick (mobile)", "color": "#194614", "implemented": false },
+      { "id": "leftHanded", "label": "LEFT-handed Joystick", "color": "#194614", "implemented": false }
+    ]
+  },
+  "panels": {
+    "howToPlay": { "title": "HOW TO PLAY", "background": "rgba(8,116,37,0.24)", "w": 200, "marginLeft": 20, "marginTop": 20,
+      "items": ["Click (to run) and 'W' (to swim/use ability)", "Press ENTER in-game to chat", "Eat players/food outlined LIGHT-GREEN!", "Avoid players outlined RED (They can eat you)!"] },
+    "updates": { "title": "Update(Feb 10):", "background": "rgba(9,153,47,0.28)", "w": 200, "marginLeft": 17, "marginTop": 20,
+      "items": ["Sandbox feedback implemented: Upgrade/Downgrade your animal with ease!", "Use the up/down arrow buttons to upgrade/downgrade your animal", "NEW: Arctic teleporting: become an arctic animal from ANYWHERE and be teleported to the arctic", "Land/Grass animals are teleported to land when upgrading from arctic", "Upgrade interface: animals sorted by biome, the suggested choice is bigger and always to the left", "NEW: press Enter to upgrade to the first choice", "NEW: press S to shoot/spit water (any animal)", "Music in-game has been removed"] }
+  },
+  "animation": null,
+  "absentInThisVersion": ["login", "register", "shop", "currency", "music-in-game", "events"],
+  "notReproduced": ["third-party ads", "app-store promo banners", "splix.io promo", "Make Party (not implemented)", "social share widget"]
+}

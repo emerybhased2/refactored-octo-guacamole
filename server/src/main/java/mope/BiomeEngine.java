@@ -30,6 +30,7 @@ public final class BiomeEngine {
         }
         return new double[] { size / 2, size / 2 };
     }
+    public Defs.BiomeDef def(String id) { for (Defs.BiomeDef b : biomes) if (b.id.equals(id)) return b; return null; }
     public double area(List<String> allowed) {
         double a = 0;
         for (Defs.BiomeDef b : biomes) if (allowed.contains(b.id)) a += b.rect[2] * size * b.rect[3] * size;
