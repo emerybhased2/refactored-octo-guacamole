@@ -1,38 +1,903 @@
 {
- "_note": "Historical changes per animal: [{from, health?, speed?, size?, damage?, tier?, xpRequired?, biome?}]. Latest 'from' <= version date wins.",
- "changes": {
-  "trex": [
-   {
-    "from": "2019-08-25",
-    "note": "2019 tier structure (user-provided): apex=15, monsters=16, black dragon=17, king dragon=18",
-    "tier": 15,
-    "xpRequired": 150000
-   }
-  ],
-  "kingcrab": [
-   {
-    "from": "2019-08-25",
-    "note": "2019 tier structure (user-provided): apex=15, monsters=16, black dragon=17, king dragon=18",
-    "tier": 15,
-    "xpRequired": 150000
-   }
-  ],
-  "mammoth": [
-   {
-    "from": "2019-08-25",
-    "note": "2019 tier structure (user-provided): apex=15, monsters=16, black dragon=17, king dragon=18",
-    "tier": 15,
-    "xpRequired": 150000
-   }
-  ],
-  "blackdragon": [
-   {
-    "from": "2019-08-25",
-    "note": "2019 tier structure (user-provided): apex=15, monsters=16, black dragon=17, king dragon=18",
-    "tier": 17,
-    "xpRequired": 10000000,
-    "biome": "volcano"
-   }
-  ]
- }
+  "_note": "Historical changes per animal: [{from, health?, speed?, size?, damage?, tier?, xpRequired?, biome?}]. Latest 'from' <= version date wins.",
+  "changes": {
+    "trex": [
+      {
+        "from": "2019-08-25",
+        "note": "2019 tier structure (user-provided): apex=15, monsters=16, black dragon=17, king dragon=18",
+        "tier": 15,
+        "xpRequired": 150000
+      },
+      {
+        "from": "2026-11-13",
+        "tier": 15,
+        "xpRequired": 1000000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "kingcrab": [
+      {
+        "from": "2019-08-25",
+        "note": "2019 tier structure (user-provided): apex=15, monsters=16, black dragon=17, king dragon=18",
+        "tier": 15,
+        "xpRequired": 150000
+      },
+      {
+        "from": "2026-11-13",
+        "tier": 15,
+        "xpRequired": 1000000,
+        "biome": "ocean",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "mammoth": [
+      {
+        "from": "2019-08-25",
+        "note": "2019 tier structure (user-provided): apex=15, monsters=16, black dragon=17, king dragon=18",
+        "tier": 15,
+        "xpRequired": 150000
+      },
+      {
+        "from": "2026-11-13",
+        "tier": 14,
+        "xpRequired": 650000,
+        "biome": "arctic",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "blackdragon": [
+      {
+        "from": "2019-08-25",
+        "note": "2019 tier structure (user-provided): apex=15, monsters=16, black dragon=17, king dragon=18",
+        "tier": 17,
+        "xpRequired": 10000000,
+        "biome": "volcano"
+      },
+      {
+        "from": "2026-11-13",
+        "tier": 17,
+        "xpRequired": 10000000,
+        "biome": "volcano",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "mouse": [
+      {
+        "from": "2026-11-13",
+        "tier": 1,
+        "xpRequired": 0,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "rabbit": [
+      {
+        "from": "2026-11-13",
+        "tier": 2,
+        "xpRequired": 150,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "pig": [
+      {
+        "from": "2026-11-13",
+        "tier": 4,
+        "xpRequired": 1000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "fox": [
+      {
+        "from": "2026-11-13",
+        "tier": 6,
+        "xpRequired": 5000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "deer": [
+      {
+        "from": "2026-11-13",
+        "tier": 5,
+        "xpRequired": 2000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "mole": [
+      {
+        "from": "2026-11-13",
+        "tier": 3,
+        "xpRequired": 400,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "zebra": [
+      {
+        "from": "2026-11-13",
+        "tier": 7,
+        "xpRequired": 12000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "lion": [
+      {
+        "from": "2026-11-13",
+        "tier": 10,
+        "xpRequired": 60000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "cheetah": [
+      {
+        "from": "2026-11-13",
+        "tier": 8,
+        "xpRequired": 25000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "bear": [
+      {
+        "from": "2026-11-13",
+        "tier": 10,
+        "xpRequired": 60000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "croc": [
+      {
+        "from": "2026-11-13",
+        "tier": 11,
+        "xpRequired": 90000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "rhino": [
+      {
+        "from": "2026-11-13",
+        "tier": 12,
+        "xpRequired": 145000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "hippo": [
+      {
+        "from": "2026-11-13",
+        "tier": 13,
+        "xpRequired": 350000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "dragon": [
+      {
+        "from": "2026-11-13",
+        "tier": 15,
+        "xpRequired": 1000000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "shrimp": [
+      {
+        "from": "2026-11-13",
+        "tier": 1,
+        "xpRequired": 0,
+        "biome": "ocean",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "trout": [
+      {
+        "from": "2026-11-13",
+        "tier": 2,
+        "xpRequired": 150,
+        "biome": "ocean",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "crab": [
+      {
+        "from": "2026-11-13",
+        "tier": 3,
+        "xpRequired": 400,
+        "biome": "ocean",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "squid": [
+      {
+        "from": "2026-11-13",
+        "tier": 5,
+        "xpRequired": 2000,
+        "biome": "ocean",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "shark": [
+      {
+        "from": "2026-11-13",
+        "tier": 12,
+        "xpRequired": 145000,
+        "biome": "ocean",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "stingray": [
+      {
+        "from": "2026-11-13",
+        "tier": 8,
+        "xpRequired": 25000,
+        "biome": "ocean",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "turtle": [
+      {
+        "from": "2026-11-13",
+        "tier": 7,
+        "xpRequired": 12000,
+        "biome": "ocean",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "seahorse": [
+      {
+        "from": "2026-11-13",
+        "tier": 4,
+        "xpRequired": 1000,
+        "biome": "ocean",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "jellyfish": [
+      {
+        "from": "2026-11-13",
+        "tier": 6,
+        "xpRequired": 5000,
+        "biome": "ocean",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "kraken": [
+      {
+        "from": "2026-11-13",
+        "tier": 15,
+        "xpRequired": 1000000,
+        "biome": "ocean",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "pufferfish": [
+      {
+        "from": "2026-11-13",
+        "tier": 9,
+        "xpRequired": 40000,
+        "biome": "ocean",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "killerwhale": [
+      {
+        "from": "2026-11-13",
+        "tier": 13,
+        "xpRequired": 350000,
+        "biome": "ocean",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "swordfish": [
+      {
+        "from": "2026-11-13",
+        "tier": 10,
+        "xpRequired": 60000,
+        "biome": "ocean",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "gorilla": [
+      {
+        "from": "2026-11-13",
+        "tier": 9,
+        "xpRequired": 40000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "octopus": [
+      {
+        "from": "2026-11-13",
+        "tier": 11,
+        "xpRequired": 90000,
+        "biome": "ocean",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "wolf": [
+      {
+        "from": "2026-11-13",
+        "tier": 8,
+        "xpRequired": 25000,
+        "biome": "arctic",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "arctichare": [
+      {
+        "from": "2026-11-13",
+        "tier": 2,
+        "xpRequired": 150,
+        "biome": "arctic",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "yeti": [
+      {
+        "from": "2026-11-13",
+        "tier": 15,
+        "xpRequired": 1000000,
+        "biome": "arctic",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "chipmunk": [
+      {
+        "from": "2026-11-13",
+        "tier": 1,
+        "xpRequired": 0,
+        "biome": "arctic",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "muskox": [
+      {
+        "from": "2026-11-13",
+        "tier": 7,
+        "xpRequired": 12000,
+        "biome": "arctic",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "penguin": [
+      {
+        "from": "2026-11-13",
+        "tier": 3,
+        "xpRequired": 400,
+        "biome": "arctic",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "polarbear": [
+      {
+        "from": "2026-11-13",
+        "tier": 12,
+        "xpRequired": 145000,
+        "biome": "arctic",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "seal": [
+      {
+        "from": "2026-11-13",
+        "tier": 4,
+        "xpRequired": 1000,
+        "biome": "arctic",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "snowleopard": [
+      {
+        "from": "2026-11-13",
+        "tier": 9,
+        "xpRequired": 40000,
+        "biome": "arctic",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "walrus": [
+      {
+        "from": "2026-11-13",
+        "tier": 10,
+        "xpRequired": 60000,
+        "biome": "arctic",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "reindeer": [
+      {
+        "from": "2026-11-13",
+        "tier": 5,
+        "xpRequired": 2000,
+        "biome": "arctic",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "arcticfox": [
+      {
+        "from": "2026-11-13",
+        "tier": 6,
+        "xpRequired": 5000,
+        "biome": "arctic",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "wolverine": [
+      {
+        "from": "2026-11-13",
+        "tier": 11,
+        "xpRequired": 90000,
+        "biome": "arctic",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "donkey": [
+      {
+        "from": "2026-11-13",
+        "tier": 7,
+        "xpRequired": 12000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "sabertoothtiger": [
+      {
+        "from": "2026-11-13",
+        "tier": 13,
+        "xpRequired": 350000,
+        "biome": "arctic",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "elephant": [
+      {
+        "from": "2026-11-13",
+        "tier": 14,
+        "xpRequired": 650000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "bluewhale": [
+      {
+        "from": "2026-11-13",
+        "tier": 14,
+        "xpRequired": 650000,
+        "biome": "ocean",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "cobra": [
+      {
+        "from": "2026-11-13",
+        "tier": 8,
+        "xpRequired": 25000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "boaconstrictor": [
+      {
+        "from": "2026-11-13",
+        "tier": 13,
+        "xpRequired": 350000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "giantspider": [
+      {
+        "from": "2026-11-13",
+        "tier": 14,
+        "xpRequired": 650000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "tiger": [
+      {
+        "from": "2026-11-13",
+        "tier": 10,
+        "xpRequired": 60000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "giraffe": [
+      {
+        "from": "2026-11-13",
+        "tier": 12,
+        "xpRequired": 145000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "eagle": [
+      {
+        "from": "2026-11-13",
+        "tier": 12,
+        "xpRequired": 145000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "hedgehog": [
+      {
+        "from": "2026-11-13",
+        "tier": 6,
+        "xpRequired": 5000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "lemming": [
+      {
+        "from": "2026-11-13",
+        "tier": 1,
+        "xpRequired": 0,
+        "biome": "arctic",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "chicken": [
+      {
+        "from": "2026-11-13",
+        "tier": 3,
+        "xpRequired": 400,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "woodpecker": [
+      {
+        "from": "2026-11-13",
+        "tier": 4,
+        "xpRequired": 1000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "toucan": [
+      {
+        "from": "2026-11-13",
+        "tier": 9,
+        "xpRequired": 40000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "flamingo": [
+      {
+        "from": "2026-11-13",
+        "tier": 5,
+        "xpRequired": 2000,
+        "biome": "ocean",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "macaw": [
+      {
+        "from": "2026-11-13",
+        "tier": 7,
+        "xpRequired": 12000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "pelican": [
+      {
+        "from": "2026-11-13",
+        "tier": 10,
+        "xpRequired": 60000,
+        "biome": "ocean",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "peacock": [
+      {
+        "from": "2026-11-13",
+        "tier": 6,
+        "xpRequired": 5000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "cassowary": [
+      {
+        "from": "2026-11-13",
+        "tier": 14,
+        "xpRequired": 650000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "komodo": [
+      {
+        "from": "2026-11-13",
+        "tier": 13,
+        "xpRequired": 350000,
+        "biome": "desert",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "blackwidow": [
+      {
+        "from": "2026-11-13",
+        "tier": 14,
+        "xpRequired": 650000,
+        "biome": "desert",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "icemonster": [
+      {
+        "from": "2026-11-13",
+        "tier": 16,
+        "xpRequired": 5000000,
+        "biome": "arctic",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "kingdragon": [
+      {
+        "from": "2026-11-13",
+        "tier": 17,
+        "xpRequired": 10000000,
+        "biome": "volcano",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "phoenix": [
+      {
+        "from": "2026-11-13",
+        "tier": 15,
+        "xpRequired": 1000000,
+        "biome": "volcano",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "scorpion": [
+      {
+        "from": "2026-11-13",
+        "tier": 16,
+        "xpRequired": 5000000,
+        "biome": "desert",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "warthog": [
+      {
+        "from": "2026-11-13",
+        "tier": 7,
+        "xpRequired": 12000,
+        "biome": "desert",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "santa": [
+      {
+        "from": "2026-11-13",
+        "tier": 15,
+        "xpRequired": 1000000,
+        "biome": "arctic",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "armadillo": [
+      {
+        "from": "2026-11-13",
+        "tier": 4,
+        "xpRequired": 1000,
+        "biome": "desert",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "bison": [
+      {
+        "from": "2026-11-13",
+        "tier": 12,
+        "xpRequired": 145000,
+        "biome": "desert",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "camel": [
+      {
+        "from": "2026-11-13",
+        "tier": 8,
+        "xpRequired": 25000,
+        "biome": "desert",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "desertchipmunk": [
+      {
+        "from": "2026-11-13",
+        "tier": 2,
+        "xpRequired": 150,
+        "biome": "desert",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "dinomonster": [
+      {
+        "from": "2026-11-13",
+        "tier": 16,
+        "xpRequired": 5000000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "falcon": [
+      {
+        "from": "2026-11-13",
+        "tier": 11,
+        "xpRequired": 90000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "fennecfox": [
+      {
+        "from": "2026-11-13",
+        "tier": 6,
+        "xpRequired": 5000,
+        "biome": "desert",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "gazelle": [
+      {
+        "from": "2026-11-13",
+        "tier": 5,
+        "xpRequired": 2000,
+        "biome": "desert",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "gobibear": [
+      {
+        "from": "2026-11-13",
+        "tier": 10,
+        "xpRequired": 60000,
+        "biome": "desert",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "honeybee": [
+      {
+        "from": "2026-11-13",
+        "tier": 6,
+        "xpRequired": 5000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "hyena": [
+      {
+        "from": "2026-11-13",
+        "tier": 10,
+        "xpRequired": 60000,
+        "biome": "desert",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "kangaroorat": [
+      {
+        "from": "2026-11-13",
+        "tier": 1,
+        "xpRequired": 0,
+        "biome": "desert",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "lavamonster": [
+      {
+        "from": "2026-11-13",
+        "tier": 16,
+        "xpRequired": 5000000,
+        "biome": "volcano",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "markhor": [
+      {
+        "from": "2026-11-13",
+        "tier": 11,
+        "xpRequired": 90000,
+        "biome": "arctic",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "meerkat": [
+      {
+        "from": "2026-11-13",
+        "tier": 3,
+        "xpRequired": 400,
+        "biome": "desert",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "ostrich": [
+      {
+        "from": "2026-11-13",
+        "tier": 13,
+        "xpRequired": 350000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "pigeon": [
+      {
+        "from": "2026-11-13",
+        "tier": 2,
+        "xpRequired": 150,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "pterodactyl": [
+      {
+        "from": "2026-11-13",
+        "tier": 15,
+        "xpRequired": 1000000,
+        "biome": "desert",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "rattlesnake": [
+      {
+        "from": "2026-11-13",
+        "tier": 9,
+        "xpRequired": 40000,
+        "biome": "desert",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "santaeagle": [
+      {
+        "from": "2026-11-13",
+        "tier": 10,
+        "xpRequired": 60000,
+        "biome": "land",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "seamonster": [
+      {
+        "from": "2026-11-13",
+        "tier": 16,
+        "xpRequired": 5000000,
+        "biome": "ocean",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "snowyowl": [
+      {
+        "from": "2026-11-13",
+        "tier": 8,
+        "xpRequired": 25000,
+        "biome": "arctic",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ],
+    "vulture": [
+      {
+        "from": "2026-11-13",
+        "tier": 11,
+        "xpRequired": 90000,
+        "biome": "desert",
+        "note": "Mope.io Wiki tier/biome; XP from the wiki per-tier upgrade thresholds"
+      }
+    ]
+  }
 }

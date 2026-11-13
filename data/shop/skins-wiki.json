@@ -1,6 +1,6 @@
 {
  "source": "Mope.io Wiki 'List of skins' (CC BY-SA 3.0): names, base animals, categories, dates only; art is original",
- "count": 381,
+ "count": 375,
  "items": [
   {
    "id": "sabertoothtiger_golden_sabertooth",
@@ -193,25 +193,6 @@
    "confidence": "name/animal/category/date VERIFIED (Mope.io Wiki 'List of skins'); look and price are original/inferred"
   },
   {
-   "id": "blackwidow_golden_blackwidow",
-   "type": "skin",
-   "animal": "blackwidow",
-   "name": "Golden Blackwidow",
-   "category": "Golden skins",
-   "wikiDates": [
-    "2019-12-23",
-    "2021-07-30",
-    "2026-06-20"
-   ],
-   "releaseDate": "2026-11-13",
-   "wikiReleaseDate": "2019-12-23",
-   "price": 800,
-   "family": "blackwidow_golden_blackwidow",
-   "sprite": "assets/skins/wiki/blackwidow_golden_blackwidow.png",
-   "spriteStatus": "recreated",
-   "confidence": "name/animal/category/date VERIFIED (Mope.io Wiki 'List of skins'); look and price are original/inferred"
-  },
-  {
    "id": "giantspider_golden_spider",
    "type": "skin",
    "animal": "giantspider",
@@ -227,44 +208,6 @@
    "price": 800,
    "family": "giantspider_golden_spider",
    "sprite": "assets/skins/wiki/giantspider_golden_spider.png",
-   "spriteStatus": "recreated",
-   "confidence": "name/animal/category/date VERIFIED (Mope.io Wiki 'List of skins'); look and price are original/inferred"
-  },
-  {
-   "id": "bluewhale_golden_blue_whale",
-   "type": "skin",
-   "animal": "bluewhale",
-   "name": "Golden Blue Whale",
-   "category": "Golden skins",
-   "wikiDates": [
-    "2019-12-23",
-    "2021-07-30",
-    "2026-06-20"
-   ],
-   "releaseDate": "2026-11-13",
-   "wikiReleaseDate": "2019-12-23",
-   "price": 800,
-   "family": "bluewhale_golden_blue_whale",
-   "sprite": "assets/skins/wiki/bluewhale_golden_blue_whale.png",
-   "spriteStatus": "recreated",
-   "confidence": "name/animal/category/date VERIFIED (Mope.io Wiki 'List of skins'); look and price are original/inferred"
-  },
-  {
-   "id": "cassowary_golden_cassowary",
-   "type": "skin",
-   "animal": "cassowary",
-   "name": "Golden Cassowary",
-   "category": "Golden skins",
-   "wikiDates": [
-    "2019-12-23",
-    "2021-07-30",
-    "2026-06-20"
-   ],
-   "releaseDate": "2026-11-13",
-   "wikiReleaseDate": "2019-12-23",
-   "price": 800,
-   "family": "cassowary_golden_cassowary",
-   "sprite": "assets/skins/wiki/cassowary_golden_cassowary.png",
    "spriteStatus": "recreated",
    "confidence": "name/animal/category/date VERIFIED (Mope.io Wiki 'List of skins'); look and price are original/inferred"
   },
@@ -474,44 +417,6 @@
    "price": 800,
    "family": "dinomonster_golden_lava_monster",
    "sprite": "assets/skins/wiki/dinomonster_golden_lava_monster.png",
-   "spriteStatus": "recreated",
-   "confidence": "name/animal/category/date VERIFIED (Mope.io Wiki 'List of skins'); look and price are original/inferred"
-  },
-  {
-   "id": "kingdragon_golden_king_dragon",
-   "type": "skin",
-   "animal": "kingdragon",
-   "name": "Golden King Dragon",
-   "category": "Golden skins",
-   "wikiDates": [
-    "2019-12-23",
-    "2021-07-30",
-    "2026-06-20"
-   ],
-   "releaseDate": "2026-11-13",
-   "wikiReleaseDate": "2019-12-23",
-   "price": 800,
-   "family": "kingdragon_golden_king_dragon",
-   "sprite": "assets/skins/wiki/kingdragon_golden_king_dragon.png",
-   "spriteStatus": "recreated",
-   "confidence": "name/animal/category/date VERIFIED (Mope.io Wiki 'List of skins'); look and price are original/inferred"
-  },
-  {
-   "id": "blackdragon_golden_black_dragon",
-   "type": "skin",
-   "animal": "blackdragon",
-   "name": "Golden Black Dragon",
-   "category": "Golden skins",
-   "wikiDates": [
-    "2019-12-23",
-    "2021-07-30",
-    "2026-06-20"
-   ],
-   "releaseDate": "2026-11-13",
-   "wikiReleaseDate": "2019-12-23",
-   "price": 800,
-   "family": "blackdragon_golden_black_dragon",
-   "sprite": "assets/skins/wiki/blackdragon_golden_black_dragon.png",
    "spriteStatus": "recreated",
    "confidence": "name/animal/category/date VERIFIED (Mope.io Wiki 'List of skins'); look and price are original/inferred"
   },
@@ -1006,25 +911,6 @@
    "price": 1200,
    "family": "shark_hammerhead_shark",
    "sprite": "assets/skins/wiki/shark_hammerhead_shark.png",
-   "spriteStatus": "recreated",
-   "confidence": "name/animal/category/date VERIFIED (Mope.io Wiki 'List of skins'); look and price are original/inferred"
-  },
-  {
-   "id": "shark_tiger_shark",
-   "type": "skin",
-   "animal": "shark",
-   "name": "Tiger Shark",
-   "category": "Locked skins",
-   "wikiDates": [
-    "2020-03-03",
-    "2025-03-29",
-    "2026-06-20"
-   ],
-   "releaseDate": "2026-11-13",
-   "wikiReleaseDate": "2020-03-03",
-   "price": 1200,
-   "family": "shark_tiger_shark",
-   "sprite": "assets/skins/wiki/shark_tiger_shark.png",
    "spriteStatus": "recreated",
    "confidence": "name/animal/category/date VERIFIED (Mope.io Wiki 'List of skins'); look and price are original/inferred"
   },

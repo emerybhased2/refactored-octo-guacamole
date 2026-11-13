@@ -1,6 +1,11 @@
 # Project changelog
 
-## Unreleased - wiki-sourced roster (stage 1)
+## 0.8.0 - Version 7: 2026-11-13 (wiki-sourced)
+- New playable version built from the Mope.io Wiki: 97-animal current roster, 17 tiers, wiki XP thresholds, all-to-all evolution by tier, removed animals (Snowman/Snowgirl/Bigfoot...) gone, 375 skins (Halloween 2020-25, Summer, Christmas, Gold-trim, Golden, Locked, Storefront, Cosmic...) with original generated art, version dropdown for all captures.
+- Corrections: Queen Flame / Tully Monster are skins (removed as animals from the 2021 version).
+- Tests: client/data 64, integration 28.
+
+## Wiki-sourced roster (stage 1)
 - `data/research/wiki-animals.json`: facts (tier, biome, XP, abilities, release dates, upgrade lists) for 147 animal pages of the Mope.io Wiki (CC BY-SA; no wiki images used) via `tools/wiki/`.
 - 64 animals missing from the project added with original art (`tools/art/specs2.js`, `assets/animals/2026-wiki/`), 34 of them flagged unreleased (release date 2099, never available). New biomes: Forest, Deep Ocean, Underground (tiles recreated).
 

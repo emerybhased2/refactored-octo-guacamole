@@ -58,6 +58,11 @@ function client(port = PORT) {
       assert.ok(w.version.abilities.some((x) => x.id === 'venom_spit')); assert.ok(w.version.animals.some((x) => x.id === 'tiger'));
       await c.until('snap'); assert.ok(c.last.snap.n >= 25); c.ws.close();
     });
+    await t('version 2026-11-13 (wiki): 97 animals, 17 tiers, wiki skins in the shop, normal join works', async () => {
+      const c = client(); await c.ready; c.send({ t: 'join', name: 'Y2026', v: '2026-11-13' }); const w = await c.until('welcome');
+      assert.strictEqual(w.version.animals.length, 97); assert.strictEqual(w.version.tiers.length, 17); assert.ok(w.version.shop.items.length > 380); assert.ok(w.version.shop.items.some((i) => i.id === 'bigfoot') === false);
+      assert.ok(w.version.animals.find((x) => x.id === 'kingdragon').tier === 17); assert.ok(w.version.edges.length > 400); c.ws.close();
+    });
     await t('version 2019-08-25: 77 animals, 5 biomes, 18 tiers, terrain + desert lakes in the welcome, spectate is a menu button only', async () => {
       const c = client(); await c.ready; c.send({ t: 'join', name: 'Y2019', v: '2019-08-25', mode: 'sandbox' }); const w = await c.until('welcome');
       assert.strictEqual(w.version.animals.length, 77); assert.deepStrictEqual(w.version.biomes.map((b) => b.id), ['land', 'ocean', 'arctic', 'desert', 'volcano']); assert.strictEqual(w.version.tiers.length, 18);

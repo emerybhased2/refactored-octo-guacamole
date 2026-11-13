@@ -60,7 +60,7 @@ function validate() {
     for (const e of vEdges) { const f = st[e.from], t = st[e.to]; if (t.tier <= f.tier) err(`${v.id}: edge ${e.from}>${e.to}: tier must increase (${f.tier} -> ${t.tier})`); if (t.xp < f.xp) err(`${v.id}: edge ${e.from}>${e.to}: xp requirement decreases`); }
     { const reach = new Set([...(v.starters || [v.startAnimal])].filter((x) => st[x])); let ch = true; while (ch) { ch = false; for (const e of vEdges) if (reach.has(e.from) && !reach.has(e.to)) { reach.add(e.to); ch = true; } } for (const id of roster) if (!reach.has(id)) err(`${v.id}: ${id} is unreachable from any starter`); }
     if (v.tierStructure && Math.max(...roster.map((id) => st[id].tier)) !== v.tierStructure.tiers) err(`${v.id}: highest tier is ${Math.max(...roster.map((id) => st[id].tier))} but tierStructure says ${v.tierStructure.tiers}`);
-    const tcheck = J('data/progression/tiers.json').filter((t) => activeAt(t.releaseDate, null, v.date)); if (tcheck.length !== (v.tierStructure ? v.tierStructure.tiers : tcheck.length)) err(`${v.id}: tiers.json has ${tcheck.length} tiers active, expected ${v.tierStructure.tiers}`);
+    const tcheck = J("data/progression/tiers.json").filter((t) => activeAt(t.releaseDate, t.removalDate, v.date)); if (tcheck.length !== (v.tierStructure ? v.tierStructure.tiers : tcheck.length)) err(`${v.id}: tiers.json has ${tcheck.length} tiers active, expected ${v.tierStructure.tiers}`);
     const listed = avail.versions[v.id];
     if (!listed) err(`${v.id}: missing in historical-availability.json`);
     else if (JSON.stringify([...roster].sort()) !== JSON.stringify([...listed.animals].sort())) err(`${v.id}: derived roster [${roster}] != listed [${listed.animals}]`);

@@ -351,8 +351,30 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
   await t('wiki roster: 64 added animals have wiki provenance, original art, valid biome; unreleased ones are never available', () => {
     const W = J('data/research/wiki-animals.json'), A = J('data/progression/animals.json'), added = A.filter((a) => a.wiki), bio = new Set(J('data/biomes/biomes.json').map((b) => b.id));
     assert.strictEqual(added.length, 64); assert.ok(Object.keys(W.animals).length >= 140); assert.ok(/CC BY-SA/.test(W.source));
-    for (const a of added) { assert.ok(W.animals[a.wiki], a.id); assert.ok(bio.has(a.biome), a.id); assert.strictEqual(a.spriteStatus, 'recreated'); assert.ok(a.sprite.includes('2026-wiki'), a.id); assert.ok(/verified/.test(a.confidence.existence)); assert.strictEqual(a.releaseDate, a.unreleased ? '2099-01-01' : '2026-11-13'); }
+    for (const a of added) { assert.ok(W.animals[a.wiki], a.id); assert.ok(bio.has(a.biome), a.id); assert.strictEqual(a.spriteStatus, 'recreated'); assert.ok(a.sprite.includes('2026-wiki'), a.id); assert.ok(/verified/.test(a.confidence.existence)); assert.strictEqual(a.releaseDate, a.unreleased || a.removedOnWiki ? '2099-01-01' : '2026-11-13'); }
     assert.ok(added.filter((a) => a.unreleased).length >= 30); assert.ok(added.every((a) => a.releaseDate > '2021-06-12')); // no earlier version gains an animal
+  });
+
+  // ---- 2026-11-13 (wiki-sourced version 7)
+  const v7 = J('versions/2026/november-13/version.json');
+  await t('v7 (wiki): 17 tiers, tier/XP table from the wiki, roster 97, removed/unreleased excluded, snowman/bigfoot gone', () => {
+    assert.strictEqual(v7.date, '2026-11-13'); assert.strictEqual(v7.tierStructure.tiers, 17); assert.ok(/WIKI/.test(v7.tierStructure.source));
+    const A = J('data/progression/animals.json'), act7 = A.filter((a) => a.releaseDate <= v7.date && (!a.removalDate || v7.date < a.removalDate)); assert.strictEqual(act7.length, 97);
+    const ids = new Set(act7.map((a) => a.id)); for (const gone of ['snowman', 'snowgirl', 'bigfoot', 'deathworm', 'raven', 'tarsier', 'flytrap', 'queenflame']) assert.ok(!ids.has(gone), gone);
+    for (const keep of ['mouse', 'kangaroorat', 'armadillo', 'camel', 'falcon', 'santa', 'blackdragon', 'kingdragon', 'honeybee']) assert.ok(ids.has(keep), keep);
+    const st = J('data/progression/animal-statistics.json').changes; const at = (id) => (st[id] || []).filter((c) => c.from <= v7.date).pop();
+    assert.deepStrictEqual([at('kingdragon').tier, at('kingdragon').xpRequired, at('blackdragon').tier], [17, 10000000, 17]); assert.deepStrictEqual([at('fox').tier, at('fox').xpRequired], [6, 5000]); assert.strictEqual(at('camel').biome, 'desert');
+    const T = J('data/progression/tiers.json').filter((x) => x.releaseDate <= v7.date && (!x.removalDate || v7.date < x.removalDate)); assert.strictEqual(T.length, 17);
+  });
+  await t('v7 (wiki): 375 wiki skins with original art, deduplicated against hand-made ones; every skin animal exists', () => {
+    const W = J('data/shop/skins-wiki.json'), A = new Set(J('data/progression/animals.json').map((a) => a.id)); assert.strictEqual(W.count, 375); assert.strictEqual(W.items.length, 375); assert.ok(/CC BY-SA/.test(W.source));
+    const seen = new Set(); for (const it of W.items) { assert.ok(!seen.has(it.id), 'dup ' + it.id); seen.add(it.id); assert.ok(A.has(it.animal), it.id); assert.strictEqual(it.type, 'skin'); assert.strictEqual(it.spriteStatus, 'recreated'); const i = png(it.sprite); assert.deepStrictEqual([i.w, i.h, i.type], [256, 256, 6], it.id); }
+    assert.ok(!W.items.some((i) => i.category.startsWith('Classic'))); assert.ok(W.items.some((i) => /Halloween/.test(i.category)) && W.items.some((i) => /Summer/.test(i.category)) && W.items.some((i) => /Christmas/.test(i.category)));
+    assert.ok(W.items.some((i) => i.wikiReleaseDate >= '2025-01-01') && W.items.some((i) => i.wikiReleaseDate.startsWith('2020')));
+  });
+  await t('v7 (wiki): menu reuses the verified 2021 UI and says so; evolution edges all-to-all by tier', () => {
+    const m = J(v7.menu); assert.strictEqual(m.theme, '2021'); assert.ok(/reused/.test(m.confidence)); assert.strictEqual(m.panels.updates.sections[0].title, 'About this build');
+    const E = J('data/progression/evolution.json').filter((e) => e.releaseDate === '2026-11-13'); assert.ok(E.length > 400); assert.ok(J('data/progression/evolution.json').filter((e) => e.releaseDate < '2026-11-13').every((e) => e.removalDate)); // old trees stay available to older versions only
   });
 
   console.log(`unit: ${pass} passed, ${fail} failed`); process.exit(fail ? 1 : 0);

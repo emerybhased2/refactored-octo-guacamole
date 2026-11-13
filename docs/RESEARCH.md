@@ -130,6 +130,15 @@ Tier/biome/XP of the two new animals (Snowgirl T15 arctic, Santa T16 arctic; wik
 ### Not implemented
 Real-money coin store (Xsolla), ads, countdown on Play, Mope ID popup, fireball mechanics, Queen Flame firestream, Cloud Lion skins, halloween_doomedarius / skinsBundle_locked_release1 (ids only), Lato fonts, Facebook/Google OAuth (local accounts instead).
 
+## 2026-11-13 (version 7, wiki-sourced)
+Arquivo has no usable 2022-2026 content (Cloudflare challenge pages), so this version is built from the **Mope.io Wiki** (https://mopeio.fandom.com, CC BY-SA 3.0) via its MediaWiki API (`tools/wiki/`): facts only (names, tiers, biomes, XP, abilities, release/removal dates, upgrade lists, skin names/categories/dates). **No wiki images were downloaded or reproduced.**
+### From the wiki
+147 animal infoboxes (`data/research/wiki-animals.json`): 17 tiers (Black Dragon and King Dragon both tier 17), per-tier XP thresholds (150, 400, 1K, 2K, 5K, 12K, 25K, 40K, 60K, 90K, 145K, 350K, 650K, 1M, 5M, 10M), 34 unreleased animals (Underground/Deep Ocean/etc., art only), the 2026-06-20 removal wave (Snowman, Snowgirl, Bigfoot, Chukar, Flying Lizard, Kakapo, Raven, Swinehoe, Tarsier, Turkey, White Giraffe), the "every animal of the tier below upgrades into every animal of the tier above" rule, and 'List of skins' (474 listed, 93 Classic skipped; 375 skins here after deduplicating hand-made ones: Golden, Gold-trim, Locked, Storefront, Halloween 2020-25, Summer 2021/22/25, Christmas 2022/25, May 2022, March 2025, Valentine, Cosmic, Party, Legends, Promo).
+### Corrections the wiki forced
+Queen Flame (King Dragon) and Tully Monster (Seahorse) are storefront **skins**, not animals; halloween_doomedarius is the Camel Halloween 2020 skin 'Doomedarius'. Several wiki-dated animals (e.g. Armadillo, Camel 2019-04-27) conflict with the capture-based rosters of earlier versions; earlier versions were left untouched.
+### Inferred / not done
+All art (original generator: recolours + costume/pattern accessories chosen from the skin NAME), skin prices, ability behaviour (most new abilities are not implemented), the 2026 UI (2021 menu reused and labelled), forest/deep-ocean/underground biomes in play (no released animals live there).
+
 ## Next versions
 Captures exist for 2018-07-16, 2019-03-27/04-14 and later. The Dec 2, 2016 "Classic Mope" (mope.io/oldmope) may be capturable and would be an earlier baseline.
 

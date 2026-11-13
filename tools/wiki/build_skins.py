@@ -8,9 +8,13 @@ def price(cat):
     for k,p in PRICE:
         if k in cat: return p
     return 800
-items=[];used=set()
+norm=lambda n: re.sub(r'[^a-z]','',n.lower())
+shop=json.load(open('data/shop/shop.json'))['items']
+existing_names={norm(i['name']) for i in shop}; GOLD_DONE={'blackdragon','kingdragon','bluewhale','blackwidow','cassowary'}  # hand-made earlier (Golden skins)
+items=[];used=set();dropped=[]
 for r in raw:
     if r['category'].startswith('Classic'): continue
+    if norm(r['skin']) in existing_names or (r['category'].startswith('Golden') and r['animal'] in GOLD_DONE): dropped.append(r['skin']); continue
     base=f"{r['animal']}_{slug(r['skin'])}"; i=base; n=2
     while i in used: i=f'{base}_{n}'; n+=1
     used.add(i)
@@ -20,4 +24,4 @@ for r in raw:
     items.append({"id":i,"type":"skin","animal":r['animal'],"name":r['skin'],"category":r['category'],"wikiDates":r['dates'],"releaseDate":"2026-11-13","wikiReleaseDate":rel,"price":price(r['category']),"family":i,
       "sprite":f"assets/skins/wiki/{i}.png","spriteStatus":"recreated","confidence":"name/animal/category/date VERIFIED (Mope.io Wiki 'List of skins'); look and price are original/inferred"})
 json.dump({"source":"Mope.io Wiki 'List of skins' (CC BY-SA 3.0): names, base animals, categories, dates only; art is original","count":len(items),"items":items},open('data/shop/skins-wiki.json','w'),indent=1)
-print(len(items),collections.Counter(i['category'] for i in items).most_common(4))
+print('dropped duplicates of hand-made skins:',dropped); print(len(items),collections.Counter(i['category'] for i in items).most_common(4))

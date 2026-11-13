@@ -1534,7 +1534,7 @@
     "placeholderColor": "#fcc02b",
     "description": "A super slow snail.",
     "releaseDate": "2018-04-21",
-    "removalDate": null,
+    "removalDate": "2026-11-13",
     "classification": [
       "starter"
     ],
@@ -1549,7 +1549,8 @@
       "xp": "inferred (tier 18 = 100M is user-provided)",
       "stats": "inferred"
     },
-    "releaseDateNote": "First seen in the 2018-04-21 capture; true release date is somewhere between 2017-02-13 and 2018-04-21."
+    "releaseDateNote": "First seen in the 2018-04-21 capture; true release date is somewhere between 2017-02-13 and 2018-04-21.",
+    "removalNote": "Not listed on the Mope.io Wiki Animals category; excluded from the wiki-sourced version"
   },
   {
     "id": "blackdragon",
@@ -1986,7 +1987,7 @@
     "placeholderColor": "#FF9000",
     "description": "",
     "releaseDate": "2018-04-21",
-    "removalDate": null,
+    "removalDate": "2026-11-13",
     "classification": [],
     "confidence": {
       "existence": "verified",
@@ -1999,7 +2000,8 @@
       "xp": "inferred (tier 18 = 100M is user-provided)",
       "stats": "inferred"
     },
-    "releaseDateNote": "First seen in the 2018-04-21 capture; true release date is somewhere between 2017-02-13 and 2018-04-21."
+    "releaseDateNote": "First seen in the 2018-04-21 capture; true release date is somewhere between 2017-02-13 and 2018-04-21.",
+    "removalNote": "Not listed on the Mope.io Wiki Animals category; excluded from the wiki-sourced version"
   },
   {
     "id": "duckling",
@@ -2020,7 +2022,7 @@
     "placeholderColor": "#FF9000",
     "description": "",
     "releaseDate": "2018-04-21",
-    "removalDate": null,
+    "removalDate": "2026-11-13",
     "classification": [],
     "confidence": {
       "existence": "verified",
@@ -2033,7 +2035,8 @@
       "xp": "inferred (tier 18 = 100M is user-provided)",
       "stats": "inferred"
     },
-    "releaseDateNote": "First seen in the 2018-04-21 capture; true release date is somewhere between 2017-02-13 and 2018-04-21."
+    "releaseDateNote": "First seen in the 2018-04-21 capture; true release date is somewhere between 2017-02-13 and 2018-04-21.",
+    "removalNote": "Not listed on the Mope.io Wiki Animals category; excluded from the wiki-sourced version"
   },
   {
     "id": "lemming",
@@ -2336,7 +2339,7 @@
     "placeholderColor": "#888888",
     "description": "",
     "releaseDate": "2019-08-25",
-    "removalDate": null,
+    "removalDate": "2026-11-13",
     "classification": [],
     "confidence": {
       "existence": "verified",
@@ -2350,7 +2353,8 @@
       "stats": "inferred"
     },
     "evidence": "homepage note 2019-06-18 (Flytrap bite damage)",
-    "releaseDateNote": "First evidenced by a capture on or before 2019-08-25; true release date unknown."
+    "releaseDateNote": "First evidenced by a capture on or before 2019-08-25; true release date unknown.",
+    "removalNote": "Not listed on the Mope.io Wiki Animals category; excluded from the wiki-sourced version"
   },
   {
     "id": "peacock",
@@ -2406,7 +2410,7 @@
     "placeholderColor": "#888888",
     "description": "",
     "releaseDate": "2019-08-25",
-    "removalDate": null,
+    "removalDate": "2026-11-13",
     "classification": [],
     "confidence": {
       "existence": "verified",
@@ -2420,7 +2424,8 @@
       "stats": "inferred"
     },
     "evidence": "skins/land/bigcat/leopard.png captured 2019-06-01",
-    "releaseDateNote": "First evidenced by a capture on or before 2019-08-25; true release date unknown."
+    "releaseDateNote": "First evidenced by a capture on or before 2019-08-25; true release date unknown.",
+    "removalNote": "Not listed on the Mope.io Wiki Animals category; excluded from the wiki-sourced version"
   },
   {
     "id": "cassowary",
@@ -2476,7 +2481,7 @@
     "placeholderColor": "#888888",
     "description": "",
     "releaseDate": "2019-08-25",
-    "removalDate": null,
+    "removalDate": "2026-11-13",
     "classification": [],
     "confidence": {
       "existence": "verified",
@@ -2490,7 +2495,8 @@
       "stats": "inferred"
     },
     "evidence": "skins/land/bigcat/jaguar.png captured 2019-06-01",
-    "releaseDateNote": "First evidenced by a capture on or before 2019-08-25; true release date unknown."
+    "releaseDateNote": "First evidenced by a capture on or before 2019-08-25; true release date unknown.",
+    "removalNote": "Not listed on the Mope.io Wiki Animals category; excluded from the wiki-sourced version"
   },
   {
     "id": "blackpanther",
@@ -2511,7 +2517,7 @@
     "placeholderColor": "#888888",
     "description": "",
     "releaseDate": "2019-08-25",
-    "removalDate": null,
+    "removalDate": "2026-11-13",
     "classification": [],
     "confidence": {
       "existence": "verified",
@@ -2525,7 +2531,8 @@
       "stats": "inferred"
     },
     "evidence": "skins/land/bigcat/blackpanther.png captured 2019-06-01",
-    "releaseDateNote": "First evidenced by a capture on or before 2019-08-25; true release date unknown."
+    "releaseDateNote": "First evidenced by a capture on or before 2019-08-25; true release date unknown.",
+    "removalNote": "Not listed on the Mope.io Wiki Animals category; excluded from the wiki-sourced version"
   },
   {
     "id": "komodo",
@@ -2688,7 +2695,7 @@
     "placeholderColor": "#888888",
     "description": "",
     "releaseDate": "2019-12-30",
-    "removalDate": null,
+    "removalDate": "2026-06-20",
     "classification": [
       "apex"
     ],
@@ -2706,7 +2713,8 @@
     "evidence": "homepage note 2019-12-23: 'A new Apex animal Snowman come with 1/2000 rarity and can be bought from shop as well'; skins/arctic/snowman/snowman.png captured 2019-12-30",
     "releaseDateNote": "First evidenced by the 2019-12-30 capture; true release date unknown (the notes date the update to Dec 23).",
     "rarity": 0.0005,
-    "rarityNote": "1/2000 (verified); also buyable in the shop"
+    "rarityNote": "1/2000 (verified); also buyable in the shop",
+    "removalNote": "Removed 2026-06-20 per the Mope.io Wiki"
   },
   {
     "id": "phoenix",
@@ -2836,7 +2844,7 @@
     "placeholderColor": "#888888",
     "description": "",
     "releaseDate": "2020-06-13",
-    "removalDate": null,
+    "removalDate": "2026-06-20",
     "classification": [
       "monster",
       "rare"
@@ -2855,7 +2863,8 @@
     "evidence": "homepage note 2020-03-03: 'a rare Bigfoot Animal discovered in mope! (dragon tier)... shop buyable, or 1/1000 rarity'",
     "releaseDateNote": "First evidenced by the 2020-06-13 capture; the notes date it to March 2020 (earlier March captures were deliberately skipped).",
     "rarity": 0.001,
-    "rarityNote": "1/1000 (verified); also buyable in the shop"
+    "rarityNote": "1/1000 (verified); also buyable in the shop",
+    "removalNote": "Removed 2026-06-20 per the Mope.io Wiki"
   },
   {
     "id": "snowgirl",
@@ -2876,7 +2885,7 @@
     "placeholderColor": "#888888",
     "description": "",
     "releaseDate": "2021-06-12",
-    "removalDate": null,
+    "removalDate": "2026-06-20",
     "classification": [
       "apex"
     ],
@@ -2894,7 +2903,8 @@
     "evidence": "ui bundle 2021-06-01 note: 'Bigfoot/Snowman/Snowgirl/Santa assets not showing in game when the owner player wearing a theme'",
     "rarity": 0.0005,
     "rarityNote": "1/2000 (verified); also buyable in the shop",
-    "releaseDateNote": "First evidenced by the 2021-06-12 homepage bundle's update notes (May-June 2021); the true release date is earlier and unknown."
+    "releaseDateNote": "First evidenced by the 2021-06-12 homepage bundle's update notes (May-June 2021); the true release date is earlier and unknown.",
+    "removalNote": "Removed 2026-06-20 per the Mope.io Wiki"
   },
   {
     "id": "santa",
@@ -3210,9 +3220,11 @@
     "spriteNote": "Original artwork in the Mope.io style generated by tools/art (not Mope.io's own art).",
     "placeholderColor": "#3a2a52",
     "description": "",
-    "releaseDate": "2026-11-13",
+    "releaseDate": "2099-01-01",
     "removalDate": null,
-    "classification": [],
+    "classification": [
+      "removed"
+    ],
     "unreleased": false,
     "wiki": "Bird Monster",
     "wikiReleased": [
@@ -3235,7 +3247,8 @@
       "stats": "inferred"
     },
     "evidence": "Mope.io Wiki 'Bird Monster': tier 16, Land",
-    "releaseDateNote": "Added to this project in the wiki-sourced version 2026-11-13; the animal's own release dates on the wiki are in wikiReleased."
+    "releaseDateNote": "Present on the Mope.io Wiki roster but removed before 2026-11-13 (see wikiReleased/wikiRemoved); not available in any version.",
+    "removedOnWiki": true
   },
   {
     "id": "bison",
@@ -3599,9 +3612,11 @@
     "spriteNote": "Original artwork in the Mope.io style generated by tools/art (not Mope.io's own art).",
     "placeholderColor": "#b49a78",
     "description": "",
-    "releaseDate": "2026-11-13",
+    "releaseDate": "2099-01-01",
     "removalDate": null,
-    "classification": [],
+    "classification": [
+      "removed"
+    ],
     "unreleased": false,
     "wiki": "Chukar",
     "wikiReleased": [
@@ -3624,7 +3639,8 @@
       "stats": "inferred"
     },
     "evidence": "Mope.io Wiki 'Chukar': tier 2, Forest",
-    "releaseDateNote": "Added to this project in the wiki-sourced version 2026-11-13; the animal's own release dates on the wiki are in wikiReleased."
+    "releaseDateNote": "Present on the Mope.io Wiki roster but removed before 2026-11-13 (see wikiReleased/wikiRemoved); not available in any version.",
+    "removedOnWiki": true
   },
   {
     "id": "deathworm",
@@ -3945,9 +3961,11 @@
     "spriteNote": "Original artwork in the Mope.io style generated by tools/art (not Mope.io's own art).",
     "placeholderColor": "#6a9a3a",
     "description": "",
-    "releaseDate": "2026-11-13",
+    "releaseDate": "2099-01-01",
     "removalDate": null,
-    "classification": [],
+    "classification": [
+      "removed"
+    ],
     "unreleased": false,
     "wiki": "Flying Lizard",
     "wikiReleased": [
@@ -3970,7 +3988,8 @@
       "stats": "inferred"
     },
     "evidence": "Mope.io Wiki 'Flying Lizard': tier 3, Forest",
-    "releaseDateNote": "Added to this project in the wiki-sourced version 2026-11-13; the animal's own release dates on the wiki are in wikiReleased."
+    "releaseDateNote": "Present on the Mope.io Wiki roster but removed before 2026-11-13 (see wikiReleased/wikiRemoved); not available in any version.",
+    "removedOnWiki": true
   },
   {
     "id": "forestmonster",
@@ -4466,9 +4485,11 @@
     "spriteNote": "Original artwork in the Mope.io style generated by tools/art (not Mope.io's own art).",
     "placeholderColor": "#86a83a",
     "description": "",
-    "releaseDate": "2026-11-13",
+    "releaseDate": "2099-01-01",
     "removalDate": null,
-    "classification": [],
+    "classification": [
+      "removed"
+    ],
     "unreleased": false,
     "wiki": "Kakapo",
     "wikiReleased": [
@@ -4491,7 +4512,8 @@
       "stats": "inferred"
     },
     "evidence": "Mope.io Wiki 'Kakapo': tier 4, Forest",
-    "releaseDateNote": "Added to this project in the wiki-sourced version 2026-11-13; the animal's own release dates on the wiki are in wikiReleased."
+    "releaseDateNote": "Present on the Mope.io Wiki roster but removed before 2026-11-13 (see wikiReleased/wikiRemoved); not available in any version.",
+    "removedOnWiki": true
   },
   {
     "id": "kangaroorat",
@@ -5070,9 +5092,11 @@
     "spriteNote": "Original artwork in the Mope.io style generated by tools/art (not Mope.io's own art).",
     "placeholderColor": "#1d1f2a",
     "description": "",
-    "releaseDate": "2026-11-13",
+    "releaseDate": "2099-01-01",
     "removalDate": null,
-    "classification": [],
+    "classification": [
+      "removed"
+    ],
     "unreleased": false,
     "wiki": "Raven",
     "wikiReleased": [
@@ -5095,7 +5119,8 @@
       "stats": "inferred"
     },
     "evidence": "Mope.io Wiki 'Raven': tier 8, Forest",
-    "releaseDateNote": "Added to this project in the wiki-sourced version 2026-11-13; the animal's own release dates on the wiki are in wikiReleased."
+    "releaseDateNote": "Present on the Mope.io Wiki roster but removed before 2026-11-13 (see wikiReleased/wikiRemoved); not available in any version.",
+    "removedOnWiki": true
   },
   {
     "id": "santaeagle",
@@ -5371,9 +5396,11 @@
     "spriteNote": "Original artwork in the Mope.io style generated by tools/art (not Mope.io's own art).",
     "placeholderColor": "#7a5a46",
     "description": "",
-    "releaseDate": "2026-11-13",
+    "releaseDate": "2099-01-01",
     "removalDate": null,
-    "classification": [],
+    "classification": [
+      "removed"
+    ],
     "unreleased": false,
     "wiki": "Swinehoe",
     "wikiReleased": [
@@ -5396,7 +5423,8 @@
       "stats": "inferred"
     },
     "evidence": "Mope.io Wiki 'Swinehoe': tier 5, Forest",
-    "releaseDateNote": "Added to this project in the wiki-sourced version 2026-11-13; the animal's own release dates on the wiki are in wikiReleased."
+    "releaseDateNote": "Present on the Mope.io Wiki roster but removed before 2026-11-13 (see wikiReleased/wikiRemoved); not available in any version.",
+    "removedOnWiki": true
   },
   {
     "id": "tarsier",
@@ -5416,9 +5444,11 @@
     "spriteNote": "Original artwork in the Mope.io style generated by tools/art (not Mope.io's own art).",
     "placeholderColor": "#9a8466",
     "description": "",
-    "releaseDate": "2026-11-13",
+    "releaseDate": "2099-01-01",
     "removalDate": null,
-    "classification": [],
+    "classification": [
+      "removed"
+    ],
     "unreleased": false,
     "wiki": "Tarsier",
     "wikiReleased": [
@@ -5441,7 +5471,8 @@
       "stats": "inferred"
     },
     "evidence": "Mope.io Wiki 'Tarsier': tier 1, Forest",
-    "releaseDateNote": "Added to this project in the wiki-sourced version 2026-11-13; the animal's own release dates on the wiki are in wikiReleased."
+    "releaseDateNote": "Present on the Mope.io Wiki roster but removed before 2026-11-13 (see wikiReleased/wikiRemoved); not available in any version.",
+    "removedOnWiki": true
   },
   {
     "id": "turkey",
@@ -5461,9 +5492,11 @@
     "spriteNote": "Original artwork in the Mope.io style generated by tools/art (not Mope.io's own art).",
     "placeholderColor": "#7a5030",
     "description": "",
-    "releaseDate": "2026-11-13",
+    "releaseDate": "2099-01-01",
     "removalDate": null,
-    "classification": [],
+    "classification": [
+      "removed"
+    ],
     "unreleased": false,
     "wiki": "Turkey",
     "wikiReleased": [
@@ -5486,7 +5519,8 @@
       "stats": "inferred"
     },
     "evidence": "Mope.io Wiki 'Turkey': tier 9, Forest",
-    "releaseDateNote": "Added to this project in the wiki-sourced version 2026-11-13; the animal's own release dates on the wiki are in wikiReleased."
+    "releaseDateNote": "Present on the Mope.io Wiki roster but removed before 2026-11-13 (see wikiReleased/wikiRemoved); not available in any version.",
+    "removedOnWiki": true
   },
   {
     "id": "viperfish",

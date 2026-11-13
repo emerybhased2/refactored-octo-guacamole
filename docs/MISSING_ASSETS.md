@@ -18,6 +18,10 @@ Not available in the archive for 2017-02-13:
 - 16 new skins, 3 foods, 9 terrain objects and 2 biome tiles are original recreations (see `docs/ART_STYLE.md`); the archive has only a handful of 2019 skin files.
 - The captured 2019 `settings.png` was an HTML page (2017 icon reused).
 
+## 2026-11-13 additions (wiki-sourced)
+- Nothing from 2022-2026 was archived. All 64 added animals, 375 skins and 3 biome tiles are original recreations (`tools/art/specs2.js`, `skins.js`); skin looks are generated from names/categories, not from the wiki's images.
+- Not implemented: most new abilities (stomp variants, dig/underground, sting, fly variants), Underground/Deep Ocean play, 2026 UI.
+
 ## 2021-06-12 additions
 - Captured and used: `shop/mopecoin.png` (as `assets/shop/mopecoin_2021.png`), UI CSS/bundle texts. Captured but NOT shipped (copyrighted art, study only): skins/mouse.png, aiboss gujjar/sultan.
 - Original recreations: Snowgirl, Santa, gold_bluewhale/blackwidow/cassowary skins. Resolved later via the wiki: halloween_doomedarius = Camel Halloween 2020 skin 'Doomedarius' (camel not in this roster), skinsBundle_locked_release1 = Locked skins pack. Unresolvable: Sunset/Storm Cloud Lion skins (names only), shop tab images (coins/skins/deals.png), Lato fonts.

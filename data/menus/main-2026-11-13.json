@@ -1,0 +1,367 @@
+{
+  "version": "2026-11-13",
+  "confidence": "No 2022-2026 UI was archived: this is the VERIFIED 2021-06-12 menu reused. Update notes below are an 'About' text, not archived notes.",
+  "source": "Arquivo.pt captures 20210612030212 (index.html), 20210612030257 (ui main.css), 20210612030300 (ui_bundle.js), 20210310091815 (shop/mopecoin.png), 20210310091802 (logo).",
+  "page": {
+    "background": "#3FBA54",
+    "font": "Arial"
+  },
+  "column": {
+    "w": 380,
+    "h": 634,
+    "top": 20,
+    "onconnectMarginTop": 0,
+    "onconnectMinHeight": 120
+  },
+  "logo": {
+    "src": "assets/menus/2018-04-21/logo.png",
+    "w": 350,
+    "h": 99,
+    "marginTop": 0,
+    "note": "2021 logo.png is 350x99 (captured); the 2018 wordmark file in this repo is reused (same dimensions)"
+  },
+  "nickname": {
+    "w": 278,
+    "placeholder": "Your name",
+    "maxLength": 15,
+    "border": "1px solid #8af5af",
+    "font": "20px Arial",
+    "padding": 8,
+    "radius": 8,
+    "background": "#ffffff",
+    "color": "#000000",
+    "marginTop": 6
+  },
+  "play": {
+    "label": "PLAY",
+    "w": 266,
+    "h": 92,
+    "marginTop": 10,
+    "background": "#0faa29",
+    "hover": "#0c8f21",
+    "borderBottom": "0 solid transparent",
+    "color": "#ffffff",
+    "font": "bold large Arial",
+    "radius": 8,
+    "fontSize": "46px"
+  },
+  "icons": {
+    "settings": {
+      "src": "assets/menus/2017-02-13/settings.png",
+      "w": 30,
+      "h": 30
+    },
+    "close": {
+      "src": "assets/menus/2017-02-13/x.png",
+      "w": 35,
+      "h": 35
+    },
+    "mute": {
+      "src": "assets/menus/2017-02-13/sound_on.png",
+      "w": 30,
+      "h": 31,
+      "title": "Mute/unmute sounds"
+    },
+    "muteOff": {
+      "src": "assets/menus/2017-02-13/sound_off.png",
+      "w": 30,
+      "h": 30,
+      "status": "recreated"
+    },
+    "mutePlacement": "settings"
+  },
+  "options": {
+    "background": "rgba(255,255,255,0.0)",
+    "top": 150,
+    "radius": 8,
+    "padding": 5,
+    "fontSize": 12,
+    "select": {
+      "background": "#ffffff",
+      "border": "1px solid #8af5af",
+      "regionW": 190,
+      "serverW": 278
+    },
+    "checkboxes": [
+      {
+        "id": "noImages",
+        "label": "No Animal Images",
+        "color": "#0b6a1c",
+        "implemented": true
+      },
+      {
+        "id": "noNames",
+        "label": "No Names & Chat",
+        "color": "#0b6a1c",
+        "implemented": true
+      },
+      {
+        "id": "noXpPopups",
+        "label": "No XP Popups",
+        "color": "#0b6a1c",
+        "implemented": true
+      },
+      {
+        "id": "snowfall",
+        "label": "Snowfall",
+        "color": "#0b6a1c",
+        "implemented": true
+      },
+      {
+        "id": "noJoystick",
+        "label": "No Joystick",
+        "color": "#6a8a70",
+        "implemented": false
+      },
+      {
+        "id": "leftHanded",
+        "label": "Left Handed",
+        "color": "#6a8a70",
+        "implemented": false
+      }
+    ],
+    "regionSelect": false,
+    "serverWidth": 250,
+    "serverColor": "#232020",
+    "regionNote": "2020 HTML has only #serverSelect (no region select)",
+    "width": 330,
+    "settingsTitle": "SETTINGS",
+    "soundLabel": "SOUND:",
+    "optionsLabel": "OPTIONS:",
+    "serverPlaceholder": "Select Server...",
+    "note": "labels VERIFIED from the bundle"
+  },
+  "panels": {
+    "howToPlay": null,
+    "updates": {
+      "title": null,
+      "background": "rgba(255,255,255,0.55)",
+      "w": 260,
+      "marginLeft": 17,
+      "marginTop": 20,
+      "textColor": "#0b4a16",
+      "textShadow": "none",
+      "titleColor": "#0faa29",
+      "titleShadow": "none",
+      "maxHeight": 560,
+      "scroll": true,
+      "sections": [
+        {
+          "title": "About this build",
+          "items": [
+            "Roster, tiers, XP and skin names come from the Mope.io Wiki (facts only).",
+            "All art is original; nothing from the game was copied.",
+            "Pick any version from the dropdown (bottom left) to play earlier eras.",
+            "Unreleased/removed animals (Deathworm, Bobbit Worm...) have art but are not playable."
+          ]
+        }
+      ],
+      "confidence": "VERBATIM text from the 2021-06-12 bundle (typos kept)"
+    }
+  },
+  "animation": null,
+  "absentInThisVersion": [
+    "sandbox",
+    "how-to-play",
+    "region-select",
+    "winter-skins",
+    "party-link",
+    "test-accounts"
+  ],
+  "notReproduced": [
+    "third-party ads",
+    "Xsolla real-money coin store",
+    "ZenDesk support/privacy pages",
+    "Facebook/Google OAuth (local account form substituted)",
+    "Lato fonts",
+    "mobile joystick",
+    "Fullscreen toggle",
+    "halloween_doomedarius skin and skinsBundle_locked_release1 (ids only)"
+  ],
+  "modes": null,
+  "spectate": {
+    "label": "SPECTATE",
+    "w": 200,
+    "background": "#0faa29",
+    "hover": "#0c8f21",
+    "borderBottom": "0 solid transparent",
+    "color": "#ffffff",
+    "placement": "settings",
+    "note": "verified label; in the 2021 settings panel"
+  },
+  "account": {
+    "loggedOutText": "LOGIN TO CONTINUE",
+    "providers": [
+      {
+        "id": "facebookLoginBtn",
+        "label": "LOGIN WITH FACEBOOK",
+        "available": false
+      },
+      {
+        "id": "googleLoginBtn",
+        "label": "LOGIN WITH GOOGLE",
+        "available": false
+      }
+    ],
+    "providerNote": "Facebook/Google OAuth cannot be provided in this project: the buttons are shown as in the archived page and open a LOCAL account form instead (non-historical substitute).",
+    "loggedIn": {
+      "coinsTitle": "add more coins",
+      "shopButton": "STORE",
+      "logout": "LOGOUT"
+    },
+    "position": "right column (#rightSide, hidden on narrow screens by the archived CSS)",
+    "coinIcon": "assets/shop/mopecoin_2021.png",
+    "coinIconStatus": "original (captured 2021-03-10, 106x111)",
+    "logoutPlacement": "home",
+    "style": {
+      "width": 229,
+      "background": "#47d658",
+      "radius": 10,
+      "padding": 8,
+      "marginTop": 10,
+      "avatar": {
+        "size": 40,
+        "background": "rgba(8,103,33,.55)",
+        "radius": 20
+      },
+      "name": {
+        "color": "#ffffff",
+        "bold": true
+      },
+      "coins": {
+        "background": "rgba(8,103,33,.55)",
+        "radius": 7,
+        "iconSize": 22
+      },
+      "button": {
+        "fontSize": "0.8em",
+        "background": "#0faa29",
+        "borderBottom": "0 solid transparent",
+        "hover": "#0c8f21"
+      },
+      "facebook": {
+        "background": "#0a71b1",
+        "borderBottom": "0 solid transparent",
+        "hover": "#095d92"
+      },
+      "google": {
+        "background": "#be4813",
+        "borderBottom": "0 solid transparent",
+        "hover": "#9d3a0f"
+      },
+      "note": "profile bar #47d658, border #8af5af, 229x55 (verified); blue/red/orange button colours #0a71b1/#be4813/#f5a000 (verified classes)"
+    },
+    "plusCoins": {
+      "label": "+",
+      "note": "#plusCoins shows coins earned after a run (verified element)"
+    }
+  },
+  "menuPanel": {
+    "background": "radial-gradient(closest-side at 50% 86%, #71eeb4 0, #cbffd3 100%)",
+    "radius": 19,
+    "padding": 14,
+    "maxWidth": 380,
+    "border": "4px solid #8af5af",
+    "note": "#inner: 380x634, border 4px #8af5af, radius 19, radial-gradient (verified)"
+  },
+  "graphics": {
+    "title": "GRAPHICS:",
+    "fpsLabel": "FPS: ",
+    "levels": [
+      "LOW",
+      "MEDIUM",
+      "HIGH"
+    ],
+    "lowLabel": "LOW",
+    "hdLabel": "HIGH",
+    "midLabel": "MEDIUM",
+    "note": "three levels verified (LOW/MEDIUM/HIGH); render-scale mapping inferred"
+  },
+  "shopWindow": {
+    "storefront": true,
+    "width": 700,
+    "height": 470,
+    "border": "4px solid #8af5af",
+    "background": "#0faa29",
+    "radius": 19,
+    "home": [
+      "Coins",
+      "Skins",
+      "Deals"
+    ],
+    "categories": [
+      "Skins",
+      "Features",
+      "Deals",
+      "My Skins",
+      "My Features",
+      "My Deals"
+    ],
+    "filters": [
+      "All",
+      "New",
+      "Sale",
+      "Normal",
+      "High-Price",
+      "Low-Price"
+    ],
+    "buttons": {
+      "background": "#0faa29",
+      "border": "1px solid #8af5af",
+      "radius": 8,
+      "font": "Lato-Bold (Arial bold used)"
+    },
+    "card": {
+      "width": 120,
+      "background": "#ffffff",
+      "border": "2px solid #8af5af",
+      "radius": 10,
+      "image": "#cbffd3",
+      "price": "#f5a000"
+    },
+    "texts": {
+      "title": "MOPE.IO COINS STORE",
+      "empty": "There are no items to display.",
+      "confirm": "Are you sure you want to purchase this item?",
+      "confirmBtn": "CONFIRM",
+      "cancelBtn": "CANCEL",
+      "before": "Balance before purchase:",
+      "after": "Balance after purchase:",
+      "success": "Purchase successful!",
+      "filter": "Filter:",
+      "login": "LOGIN TO CONTINUE",
+      "coinsNote": "Coin packs are bought with real money in the original (Xsolla); NOT implemented here"
+    },
+    "biomeTints": {
+      "land": "#09992f",
+      "ocean": "#007ec0",
+      "arctic": "grey",
+      "volcano": "#c64a00",
+      "desert": "#a59215"
+    },
+    "confidence": "categories/filters/texts VERBATIM from the bundle; colours from the real CSS (#0faa29, #8af5af); layout pixel sizes approximated"
+  },
+  "theme": "2021",
+  "store": {
+    "label": "STORE",
+    "background": "#f5a000",
+    "hover": "#d98c00",
+    "w": 266,
+    "h": 50,
+    "note": "STORE button verified (children text); orange #f5a000 is the verified 'orange' button colour, assignment inferred"
+  },
+  "footerLinks": [
+    {
+      "label": "UPDATES",
+      "action": "updates"
+    },
+    {
+      "label": "SUPPORT",
+      "action": "none"
+    },
+    {
+      "label": "PRIVACY POLICY",
+      "action": "none"
+    }
+  ]
+}
