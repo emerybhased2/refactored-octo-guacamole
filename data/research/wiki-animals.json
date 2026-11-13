@@ -1,0 +1,2948 @@
+{
+ "source": "Mope.io Wiki (https://mopeio.fandom.com), CC BY-SA 3.0, facts only; extracted 2026-11-13 via the MediaWiki API",
+ "note": "Non-animal AI 'food' pages (Snail, Duck, Duckling, Frog, Goose) use a different infobox and are not included here; variants (Lion/Lion Cub etc.) are listed as separate pages.",
+ "animals": {
+  "Aardvark": {
+   "page": "Aardvark",
+   "tier": "6",
+   "biome": "Underground",
+   "passive": "N/A",
+   "special": "Stomp",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "5K",
+   "maxXp": "12K",
+   "from": [
+    "Hamster",
+    "Deer",
+    "Squid",
+    "Flamingo",
+    "Reindeer",
+    "Gazelle"
+   ],
+   "fromXp": "5K",
+   "to": [
+    "Mongoose",
+    "Zebra",
+    "Turtle",
+    "Donkey",
+    "Muskox",
+    "Warthog"
+   ],
+   "toXp": "12K"
+  },
+  "Anglerfish": {
+   "page": "Anglerfish",
+   "tier": "12",
+   "biome": "Deep Ocean",
+   "passive": "N/A",
+   "special": "Camouflage and spawn bait",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "145K",
+   "maxXp": "350K"
+  },
+  "Ant": {
+   "page": "Ant",
+   "tier": "1",
+   "biome": "Underground",
+   "passive": "Climbing on Hills * Climbing on Rocks",
+   "special": "",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "0",
+   "maxXp": "150"
+  },
+  "Arctic Fox": {
+   "page": "Arctic Fox",
+   "tier": "6",
+   "biome": "Arctic",
+   "passive": "",
+   "special": "Pull From Hole",
+   "releasedRaw": "upd|December|26|2016",
+   "releasedDates": [
+    "2016-12-26"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Arctic Hare": {
+   "page": "Arctic Hare",
+   "tier": "2",
+   "biome": "Arctic",
+   "passive": "N/A",
+   "special": "Dig Hole",
+   "releasedRaw": "upd|December|26|2016",
+   "releasedDates": [
+    "2016-12-26"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Chipmunk",
+    "Mouse",
+    "Shrimp",
+    "Desert Rat",
+    "Tarsier"
+   ],
+   "fromXp": "150",
+   "to": [
+    "Penguin",
+    "Crab",
+    "Mole",
+    "Chicken",
+    "Meerkat",
+    "Flying Lizard"
+   ],
+   "toXp": "400"
+  },
+  "Armadillo": {
+   "page": "Armadillo",
+   "tier": "4",
+   "biome": "Desert",
+   "passive": "N/A",
+   "special": "Roll",
+   "releasedRaw": "upd|April|27|2019",
+   "releasedDates": [
+    "2019-04-27"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Mole",
+    "Chicken",
+    "Meerkat",
+    "Crab",
+    "Penguin"
+   ],
+   "fromXp": "1K"
+  },
+  "Assassin Bug": {
+   "page": "Assassin Bug",
+   "tier": "11",
+   "biome": "Underground",
+   "passive": "",
+   "special": "Stab with proboscis",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "90K",
+   "maxXp": "145K"
+  },
+  "Bat": {
+   "page": "Bat",
+   "tier": "8",
+   "biome": "Underground",
+   "passive": "Climb on hills and rocks",
+   "special": "\"Shockwave\"",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "25K",
+   "maxXp": "40K"
+  },
+  "Bear": {
+   "page": "Bear",
+   "tier": "10",
+   "biome": "Land",
+   "passive": "Climbing hills and trees *Bee Sting Immunity Honeybee.",
+   "special": "Claw Slash",
+   "releasedRaw": "upd|October|19|2016",
+   "releasedDates": [
+    "2016-10-19"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Bigfoot": {
+   "page": "Bigfoot",
+   "tier": "15",
+   "biome": "Forest",
+   "passive": "Climbing on hills and trees.",
+   "special": "Throw Spear(press W ) ---- Campfire (hold W )",
+   "releasedRaw": "upd|March|3|2020",
+   "releasedDates": [
+    "2020-03-03"
+   ],
+   "removedDates": [
+    "2026-06-20"
+   ],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Elephant",
+    "Giant Spider",
+    "Cassowary",
+    "Blue Whale",
+    "Mammoth",
+    "Blackwidow Spider"
+   ],
+   "fromXp": "1M"
+  },
+  "Bird Monster": {
+   "page": "Bird Monster",
+   "tier": "16",
+   "biome": "Land",
+   "passive": "Climb on Rocks * In Mud in mud * Consume Carcasses * Debuff Immunity",
+   "special": "Gale charge & Electro Tornado(uses S key) ---- Electro Swoop(uses W key)",
+   "releasedRaw": "Beta: September 4, 2023 Live: upd|September|21|2023",
+   "releasedDates": [
+    "2023-09-21"
+   ],
+   "removedDates": [
+    "2024-11-15"
+   ],
+   "unreleased": false,
+   "minXp": "5M",
+   "maxXp": "10M",
+   "from": [
+    "Phoenix",
+    "Dragon",
+    "T-Rex",
+    "Bigfoot",
+    "Kraken",
+    "King Crab",
+    "Yeti",
+    "Snowman",
+    "Snowgirl",
+    "Pterodactyl"
+   ],
+   "fromXp": "5M"
+  },
+  "Bison": {
+   "page": "Bison",
+   "tier": "12",
+   "biome": "Desert",
+   "passive": "None",
+   "special": "Gores",
+   "releasedRaw": "upd|April|27|2019",
+   "releasedDates": [
+    "2019-04-27"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Vulture",
+    "Crocodile",
+    "Falcon",
+    "Lion",
+    "Octopus",
+    "Polar Bear"
+   ],
+   "fromXp": "145K"
+  },
+  "Black Dragon": {
+   "page": "Black Dragon",
+   "tier": "17",
+   "biome": "Volcano",
+   "passive": "Fly over everything * Ink Immunity",
+   "special": "Fire",
+   "releasedRaw": "upd|April|9|2017",
+   "releasedDates": [
+    "2017-04-09"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "10M",
+   "maxXp": "N/A",
+   "from": [
+    "Lava Monster",
+    "Sea Monster",
+    "Ice Monster",
+    "Dino Monster",
+    "Giant Scorpion"
+   ],
+   "fromXp": "10M"
+  },
+  "Black Spitting Scorpion": {
+   "page": "Black Spitting Scorpion",
+   "tier": "13",
+   "biome": "Underground",
+   "passive": "Climbing Rocks and hills",
+   "special": "Spit ball of venom",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "350K",
+   "maxXp": "650K"
+  },
+  "Black Swallower": {
+   "page": "Black Swallower",
+   "tier": "6",
+   "biome": "Deep Ocean",
+   "passive": "N/A",
+   "special": "Swallow prey whole",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "5K",
+   "maxXp": "12K",
+   "from": [
+    "Warty Frogfish",
+    "Deer",
+    "Flamingo",
+    "Squid",
+    "Reindeer",
+    "Gazelle",
+    "Swinehoe"
+   ],
+   "fromXp": "5K",
+   "to": [
+    "Stargazer",
+    "Donkey",
+    "Zebra",
+    "Turtle",
+    "Muskox",
+    "Camel"
+   ],
+   "toXp": "12K"
+  },
+  "Blackwidow Spider": {
+   "page": "Blackwidow Spider",
+   "tier": "14",
+   "biome": "Desert",
+   "passive": "Climb on hills, rocks, trees and webs; * Move faster on quicksand; * Poisonous bite",
+   "special": "Spin Web",
+   "releasedRaw": "upd|April|27|2019",
+   "releasedDates": [
+    "2019-04-27"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Komodo Dragon",
+    "Hippo",
+    "Boa Constrictor",
+    "Ostrich",
+    "Sabertooth Tiger",
+    "Killer Whale"
+   ],
+   "fromXp": "650K"
+  },
+  "Blue Whale": {
+   "page": "Blue Whale",
+   "tier": "14",
+   "biome": "Ocean",
+   "passive": "Exhale Food",
+   "special": "Tail Slap",
+   "releasedRaw": "upd|April|18|2017",
+   "releasedDates": [
+    "2017-04-18"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Killer Whale",
+    "Hippo",
+    "Boa Constrictor",
+    "Sabertooth Tiger"
+   ],
+   "fromXp": "650K",
+   "to": [
+    "Kraken",
+    "King Crab",
+    "Dragon",
+    "T-REX",
+    "Bigfoot",
+    "Yeti",
+    "Snowman",
+    "Pterodactyl"
+   ],
+   "toXp": "1M"
+  },
+  "Boa Constrictor": {
+   "page": "Boa Constrictor",
+   "tier": "13",
+   "biome": "Land",
+   "passive": "Climb hills and trees * Poison Immunity to poison * Fast in mud and can dive in mud",
+   "special": "Suffocate Prey",
+   "releasedRaw": "upd|September|23|2017",
+   "releasedDates": [
+    "2017-09-23"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Bobbit Worm": {
+   "page": "Bobbit Worm",
+   "tier": "13",
+   "biome": "Deep Ocean",
+   "passive": "",
+   "special": "Disguise",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "350K",
+   "maxXp": "650K"
+  },
+  "Bullet Ant": {
+   "page": "Bullet Ant",
+   "tier": "N/A",
+   "biome": "Desert",
+   "passive": "Unknown",
+   "special": "Unknown",
+   "releasedRaw": "c. April 2019 (only in beta)",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "12k",
+   "maxXp": "25k"
+  },
+  "Camel": {
+   "page": "Camel",
+   "tier": "8",
+   "biome": "Desert",
+   "passive": "Move fast on quicksand and mud",
+   "special": "Spit",
+   "releasedRaw": "upd|April|27|2019",
+   "releasedDates": [
+    "2019-04-27"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Warthog",
+    "Donkey",
+    "Zebra",
+    "Turtle",
+    "Muskox"
+   ],
+   "fromXp": "25K"
+  },
+  "Carpet Shark": {
+   "page": "Carpet Shark",
+   "tier": "3",
+   "biome": "Deep Ocean",
+   "passive": "20% opacity and 50% more speed if still",
+   "special": "Extra Boost",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "400",
+   "maxXp": "1K"
+  },
+  "Cassowary": {
+   "page": "Cassowary",
+   "tier": "14",
+   "biome": "Land",
+   "passive": "Faster Movement in mud",
+   "special": "Charge And Kick",
+   "releasedRaw": "upd|December|23|2018",
+   "releasedDates": [
+    "2018-12-23"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Hippo",
+    "Boa Constrictor",
+    "Ostrich",
+    "Killer Whale",
+    "Sabertooth Tiger",
+    "Komodo Dragon"
+   ],
+   "fromXp": "650K"
+  },
+  "Centipede": {
+   "page": "Centipede",
+   "tier": "4",
+   "biome": "Underground",
+   "passive": "Poisonous bite",
+   "special": "\"Lethal Poison Bite\" (press W )",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "1K",
+   "maxXp": "2K",
+   "from": [
+    "from the Earthworm",
+    "Mole",
+    "Chicken",
+    "Crab",
+    "Penguin",
+    "Meerkat"
+   ],
+   "fromXp": "1K",
+   "to": [
+    "to the Hamster",
+    "Deer",
+    "Reindeer",
+    "Flamingo",
+    "Squid",
+    "Gazelle"
+   ],
+   "toXp": "2K"
+  },
+  "Cheetah": {
+   "page": "Cheetah",
+   "tier": "8",
+   "biome": "Land",
+   "passive": "Climbing on Trees * Reduced boost interval",
+   "special": "Extra Boost",
+   "releasedRaw": "upd|October|12|2016",
+   "releasedDates": [
+    "2016-10-12"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Zebra",
+    "Donkey",
+    "Macaw",
+    "Turtle",
+    "Muskox",
+    "Warthog"
+   ],
+   "fromXp": "25K"
+  },
+  "Chicken": {
+   "page": "Chicken",
+   "tier": "3",
+   "biome": "Land",
+   "passive": "Special ability activates when hurt by a predator * Climbing on hills and trees * In Water in water and mud * Diving in mud",
+   "special": "Run",
+   "releasedRaw": "upd|December|23|2018 upd|March|12|2020",
+   "releasedDates": [
+    "2018-12-23",
+    "2020-03-12"
+   ],
+   "removedDates": [
+    "2019-04-27"
+   ],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Rabbit",
+    "Trout",
+    "Arctic Hare",
+    "Desert Chipmunk",
+    "Chukar"
+   ],
+   "fromXp": "400"
+  },
+  "Chimaera": {
+   "page": "Chimaera",
+   "tier": "4",
+   "biome": "Deep Ocean",
+   "passive": "See animals in hiding holes and whirlpools",
+   "special": "",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "1K",
+   "maxXp": "2K",
+   "from": [
+    "from the Carpet Shark",
+    "Mole",
+    "Chicken",
+    "Crab",
+    "Penguin",
+    "Meerkat"
+   ],
+   "fromXp": "1K",
+   "to": [
+    "Warty Frogfish",
+    "Deer",
+    "Reindeer",
+    "Flamingo",
+    "Squid",
+    "Gazelle"
+   ],
+   "toXp": "2K"
+  },
+  "Chipmunk": {
+   "page": "Chipmunk",
+   "tier": "1",
+   "biome": "Arctic",
+   "passive": "",
+   "special": "",
+   "releasedRaw": "upd|January|1|2017",
+   "releasedDates": [
+    "2017-01-01"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Chukar": {
+   "page": "Chukar",
+   "tier": "2",
+   "biome": "Forest",
+   "passive": "Climb on hills",
+   "special": "Fly",
+   "releasedRaw": "upd|December|20|2022",
+   "releasedDates": [
+    "2022-12-20"
+   ],
+   "removedDates": [
+    "2026-06-20"
+   ],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Cobra": {
+   "page": "Cobra",
+   "tier": "8",
+   "biome": "Land",
+   "passive": "Poisonous bite, and is immune to Poison *Moves fast in Mud *Climbs trees",
+   "special": "Venom Spit",
+   "releasedRaw": "upd|September|23|2017",
+   "releasedDates": [
+    "2017-09-23"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Crab": {
+   "page": "Crab",
+   "tier": "3",
+   "biome": "Ocean",
+   "passive": "Climbing on hills and rocks",
+   "special": "Hide in Shell",
+   "releasedRaw": "upd|November|22|2016",
+   "releasedDates": [
+    "2016-11-22"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "400",
+   "maxXp": "1K",
+   "from": [
+    "Trout",
+    "Rabbit",
+    "Pigeon",
+    "Arctic Hare",
+    "Desert Chipmunk",
+    "Chukar"
+   ],
+   "fromXp": "400",
+   "to": [
+    "Seahorse",
+    "Pig",
+    "Woodpecker",
+    "Seal",
+    "Armadillo",
+    "Kakapo"
+   ],
+   "toXp": "1K"
+  },
+  "Crocodile": {
+   "page": "Crocodile",
+   "tier": "11",
+   "biome": "Land",
+   "passive": "Fast in water in water * Fast in mud in mud and able to mud-dive * River current River current immunity * Invisible while still in water spots",
+   "special": "Bite Drag",
+   "releasedRaw": "upd|October|4|2016",
+   "releasedDates": [
+    "2016-10-04"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Deathworm": {
+   "page": "Deathworm",
+   "tier": "16",
+   "biome": "Underground",
+   "passive": "",
+   "special": "Dig to Underground",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "5M",
+   "maxXp": "10M"
+  },
+  "Deer": {
+   "page": "Deer",
+   "tier": "5",
+   "biome": "Land",
+   "passive": "",
+   "special": "Dig Food",
+   "releasedRaw": "upd|October|19|2016",
+   "releasedDates": [
+    "2016-10-19"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Desert Chipmunk": {
+   "page": "Desert Chipmunk",
+   "tier": "2",
+   "biome": "Desert",
+   "passive": "Climb on trees",
+   "special": "Spits Food",
+   "releasedRaw": "BetaUpd|April|12|2019 (Beta) upd|April|27|2019 (live)",
+   "releasedDates": [
+    "2019-04-27"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Mouse",
+    "Desert Rat",
+    "Shrimp",
+    "Chipmunk",
+    "Tarsier"
+   ],
+   "fromXp": "150"
+  },
+  "Dino Monster": {
+   "page": "Dino Monster",
+   "tier": "16",
+   "biome": "Land",
+   "passive": "Eat carcasses * Climbing on hills * Immunity to Desert burning * Fast in mud * River current immunity",
+   "special": "Knock in Air",
+   "releasedRaw": "upd|December|3|2018",
+   "releasedDates": [
+    "2018-12-03"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Dragon",
+    "T-Rex",
+    "Kraken",
+    "King Crab",
+    "Yeti",
+    "Pterodactyl"
+   ],
+   "fromXp": "5M",
+   "to": [
+    "Black Dragon (999/1000 chance)",
+    "King Dragon (1/1000 chance)"
+   ],
+   "toXp": "10M"
+  },
+  "Dolphin": {
+   "page": "Dolphin",
+   "tier": "",
+   "biome": "Ocean",
+   "passive": "Unknown",
+   "special": "Unknown",
+   "releasedRaw": "N/A (unreleased)",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "Unknown",
+   "maxXp": "Unknown"
+  },
+  "Donkey": {
+   "page": "Donkey",
+   "tier": "7",
+   "biome": "Land",
+   "passive": "Faster Movement in mud and can dive in mud.",
+   "special": "Kick",
+   "releasedRaw": "upd|January|20|2017",
+   "releasedDates": [
+    "2017-01-20"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Dragon": {
+   "page": "Dragon",
+   "tier": "15",
+   "biome": "Land",
+   "passive": "Fly over everything *Immunity to ink *Immunity to lava",
+   "special": "Fire",
+   "releasedRaw": "upd|October|4|2016",
+   "releasedDates": [
+    "2016-10-04"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "to": [
+    "Dino Monster",
+    "Land Monster",
+    "Giant Scorpion",
+    "Sea Monster",
+    "Ice Monster"
+   ],
+   "toXp": "5M"
+  },
+  "Eagle": {
+   "page": "Eagle",
+   "tier": "12",
+   "biome": "Land",
+   "passive": "Climb on trees and hills",
+   "special": "Fly With Prey",
+   "releasedRaw": "upd|November|15|2017",
+   "releasedDates": [
+    "2017-11-15"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Earthworm": {
+   "page": "Earthworm",
+   "tier": "3",
+   "biome": "Underground",
+   "passive": "",
+   "special": "Dig",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "400",
+   "maxXp": "1K"
+  },
+  "Elephant": {
+   "page": "Elephant",
+   "tier": "14",
+   "biome": "Land",
+   "passive": "Faster Movement in mud and water. * Immune to debuff in the Desert. * Spit water faster",
+   "special": "Trunk Hit",
+   "releasedRaw": "upd|April|18|2017",
+   "releasedDates": [
+    "2017-04-18"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Hippo",
+    "Killer Whale",
+    "Sabertooth Tiger",
+    "Komodo Dragon",
+    "Boa Constrictor"
+   ],
+   "fromXp": "650K"
+  },
+  "Falcon": {
+   "page": "Falcon",
+   "tier": "11",
+   "biome": "Land",
+   "passive": "Climbs hills and trees",
+   "special": "Sky Dive",
+   "releasedRaw": "upd|May|13|2018",
+   "releasedDates": [
+    "2018-05-13"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Fangtooth": {
+   "page": "Fangtooth",
+   "tier": "8",
+   "biome": "Deep Ocean",
+   "passive": "See disguised animals",
+   "special": "Bite, inflicts bleed",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Fennec Fox": {
+   "page": "Fennec Fox",
+   "tier": "6",
+   "biome": "Desert",
+   "passive": "See animals inside Hiding Holes This ability used to be an exclusive feature of the Fennec Fox, but is now a trait that all animals have as of upd|August|11|2020. Unlike the common feature, however, this ability does no wear off after 15 seconds. * Climbing on trees",
+   "special": "Whine",
+   "releasedRaw": "upd|April|27|2019",
+   "releasedDates": [
+    "2019-04-27"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Flamingo": {
+   "page": "Flamingo",
+   "tier": "5",
+   "biome": "Ocean",
+   "passive": "Climbing on hills * Surviving longer on dry land",
+   "special": "Dig Food(used in water) ---- Fly (used on top of a hill)",
+   "releasedRaw": "upd|December|23|2018",
+   "releasedDates": [
+    "2018-12-23"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "to": [
+    "Jellyfish",
+    "Hedgehog",
+    "Peacock",
+    "Fox",
+    "Arctic Fox",
+    "Fennec Fox"
+   ],
+   "toXp": "5K"
+  },
+  "Flying Lizard": {
+   "page": "Flying Lizard",
+   "tier": "3",
+   "biome": "Forest",
+   "passive": "Climbing on Hills * Climbing on Rocks * Climbing on Trees * Immunity in the Desert.",
+   "special": "\"Glide\"",
+   "releasedRaw": "upd|December|20|2022",
+   "releasedDates": [
+    "2022-12-20"
+   ],
+   "removedDates": [
+    "2026-06-20"
+   ],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Chukar",
+    "Rabbit",
+    "Arctic Hare",
+    "Trout",
+    "Desert Chipmunk"
+   ],
+   "fromXp": "400"
+  },
+  "Forest Monster": {
+   "page": "Forest Monster",
+   "tier": "16",
+   "biome": "Forest",
+   "passive": "''Unknown''",
+   "special": "''Unknown''",
+   "releasedRaw": "''Unreleased''",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Fox": {
+   "page": "Fox",
+   "tier": "6",
+   "biome": "Land",
+   "passive": "Climbing on trees",
+   "special": "Pull From Hole",
+   "releasedRaw": "upd|October|2|2016",
+   "releasedDates": [
+    "2016-10-02"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Deer",
+    "Squid",
+    "Flamingo",
+    "Reindeer",
+    "Gazelle"
+   ],
+   "fromXp": "5K"
+  },
+  "Frilled Shark": {
+   "page": "Frilled Shark",
+   "tier": "16",
+   "biome": "Deep Ocean",
+   "passive": "N/A",
+   "special": "Grab prey and dive",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "1M",
+   "maxXp": "5M"
+  },
+  "Gazelle": {
+   "page": "Gazelle",
+   "tier": "5",
+   "biome": "Desert",
+   "passive": "N/A",
+   "special": "Jump High",
+   "releasedRaw": "upd|April|27|2019",
+   "releasedDates": [
+    "2019-04-27"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Pig",
+    "Woodpecker",
+    "Seahorse",
+    "Seal",
+    "Armadillo",
+    "Kakapo"
+   ],
+   "fromXp": "2K",
+   "to": [
+    "Fox",
+    "Peacock",
+    "Hedgehog",
+    "Jellyfish",
+    "Arctic Fox",
+    "Fennec Fox"
+   ],
+   "toXp": "5K"
+  },
+  "Giant Hornet": {
+   "page": "Giant Hornet",
+   "tier": "15",
+   "biome": "Underground",
+   "passive": "Fly over everything (hills, rocks, and trees mentioned)",
+   "special": "\"Sting\" (press W ) ---- Fly (hold W )",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "1M",
+   "maxXp": "5M"
+  },
+  "Giant Isopod": {
+   "page": "Giant Isopod",
+   "tier": "11",
+   "biome": "Deep Ocean",
+   "passive": "",
+   "special": "Roll",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "90K",
+   "maxXp": "145K"
+  },
+  "Giant Scorpion": {
+   "page": "Giant Scorpion",
+   "tier": "16",
+   "biome": "Desert",
+   "passive": "Climbing on hills and rocks * Immunity to lava and poison. * Any animal it bites or is bitten by will shiver. * Can walk on the webs of Giant Spider * Can eat carcasses. * Faster Movement on quicksand and mud.",
+   "special": "Grab and Sting",
+   "releasedRaw": "upd|April|27|2019",
+   "releasedDates": [
+    "2019-04-27"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Pterodactyl",
+    "Dragon",
+    "T-Rex",
+    "Kraken",
+    "King Crab",
+    "Yeti",
+    "Snowman",
+    "Snowgirl",
+    "Bigfoot",
+    "Phoenix"
+   ],
+   "fromXp": "5M"
+  },
+  "Giant Spider": {
+   "page": "Giant Spider",
+   "tier": "14",
+   "biome": "Land",
+   "passive": "Climbs hills and trees * Immune to poison * Poisonous bite",
+   "special": "Spin Web",
+   "releasedRaw": "upd|September|23|2017",
+   "releasedDates": [
+    "2017-09-23"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Giant Squid": {
+   "page": "Giant Squid",
+   "tier": "15",
+   "biome": "Deep Ocean",
+   "passive": "",
+   "special": "Latch on to prey",
+   "releasedRaw": "''Unreleased''",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Giraffe": {
+   "page": "Giraffe",
+   "tier": "12",
+   "biome": "Land",
+   "passive": "",
+   "special": "Stomp",
+   "releasedRaw": "upd|November|2|2017",
+   "releasedDates": [
+    "2017-11-02"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Crocodile",
+    "Tiger",
+    "Falcon",
+    "Octopus",
+    "Wolverine",
+    "Markhor",
+    "Vulture"
+   ],
+   "fromXp": "145K",
+   "to": [
+    "Hippo",
+    "Ostrich",
+    "Boa Constrictor",
+    "Killer Whale",
+    "Sabertooth Tiger",
+    "Komodo Dragon"
+   ],
+   "toXp": "350K"
+  },
+  "Giraffe/White Giraffe": {
+   "page": "Giraffe/White Giraffe",
+   "tier": "13",
+   "biome": "Forest",
+   "passive": "",
+   "special": "Stomp",
+   "releasedRaw": "upd|November|26|2020",
+   "releasedDates": [
+    "2020-11-26"
+   ],
+   "removedDates": [
+    "2026-06-20"
+   ],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Gobi Bear": {
+   "page": "Gobi Bear",
+   "tier": "10",
+   "biome": "Desert",
+   "passive": "Climb on hills and rocks",
+   "special": "Bear Attack",
+   "releasedRaw": "BetaUpd|April|14|2019 (Beta) upd|April|27|2019 (live)",
+   "releasedDates": [
+    "2019-04-27"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Rattlesnake",
+    "Cheetah",
+    "Toucan",
+    "Gorilla",
+    "Pufferfish",
+    "Snow Leopard"
+   ],
+   "fromXp": "60K"
+  },
+  "Goblin Shark": {
+   "page": "Goblin Shark",
+   "tier": "10",
+   "biome": "Deep Ocean",
+   "passive": "Unknown",
+   "special": "Jaw Bite",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "60K",
+   "maxXp": "90K"
+  },
+  "Gorilla": {
+   "page": "Gorilla",
+   "tier": "9",
+   "biome": "Land",
+   "passive": "Can climb hills and trees",
+   "special": "Throw Fruit",
+   "releasedRaw": "upd|December|12|2016",
+   "releasedDates": [
+    "2016-12-12"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Hamster": {
+   "page": "Hamster",
+   "tier": "5",
+   "biome": "Underground",
+   "passive": "",
+   "special": "Roll",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "2K",
+   "maxXp": "5K"
+  },
+  "Hedgehog": {
+   "page": "Hedgehog",
+   "tier": "6",
+   "biome": "Land",
+   "passive": "",
+   "special": "Spikes",
+   "releasedRaw": "upd|December|25|2017",
+   "releasedDates": [
+    "2017-12-25"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Deer",
+    "Squid",
+    "Flamingo",
+    "Gazelle",
+    "Reindeer"
+   ],
+   "fromXp": "5K",
+   "to": [
+    "Zebra",
+    "Donkey",
+    "Muskox",
+    "Warthog",
+    "Turtle"
+   ],
+   "toXp": "12K"
+  },
+  "Hippo": {
+   "page": "Hippo",
+   "tier": "13",
+   "biome": "Land",
+   "passive": "Fast in water and mud ** Can dive in mud",
+   "special": "Groan",
+   "releasedRaw": "upd|October|16|2016",
+   "releasedDates": [
+    "2016-10-16"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Rhino",
+    "Eagle",
+    "Shark",
+    "Markhor",
+    "Wolverine",
+    "Bison"
+   ],
+   "fromXp": "350K",
+   "to": [
+    "Elephant",
+    "Cassowary",
+    "Giant Spider",
+    "Blue Whale",
+    "Mammoth",
+    "Blackwidow Spider"
+   ],
+   "toXp": "650K"
+  },
+  "Honeybee": {
+   "page": "Honeybee",
+   "tier": "6",
+   "biome": "Land",
+   "passive": "Fly over everything",
+   "special": "Sting",
+   "releasedRaw": "upd|June|6|2018 upd|July|5|2026",
+   "releasedDates": [
+    "2018-06-06",
+    "2026-07-05"
+   ],
+   "removedDates": [
+    "2026-06-21"
+   ],
+   "unreleased": false,
+   "minXp": "N/A",
+   "maxXp": "N/A"
+  },
+  "Hyena": {
+   "page": "Hyena",
+   "tier": "10",
+   "biome": "Desert",
+   "passive": "Can eat carcasses",
+   "special": "Laugh",
+   "releasedRaw": "upd|April|27|2019",
+   "releasedDates": [
+    "2019-04-27"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Ice Monster": {
+   "page": "Ice Monster",
+   "tier": "16",
+   "biome": "Arctic",
+   "passive": "Immune to debuff in Land * Climbing on rocks * Frostbite * Grip on ice * Fast in mud (moderately) * Fast in water (80% speed) * River current immunity",
+   "special": "Freeze Prey",
+   "releasedRaw": "upd|December|3|2018",
+   "releasedDates": [
+    "2018-12-03"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Yeti",
+    "Dragon",
+    "T-Rex",
+    "Kraken",
+    "King Crab",
+    "Pterodactyl",
+    "Phoenix"
+   ],
+   "fromXp": "5M",
+   "to": [
+    "Black Dragon (999/1000 chance)",
+    "King Dragon (1/1000 chance)"
+   ],
+   "toXp": "10M"
+  },
+  "Jellyfish": {
+   "page": "Jellyfish",
+   "tier": "6",
+   "biome": "Ocean",
+   "passive": "Tentacle Sting",
+   "special": "None",
+   "releasedRaw": "upd|November|28|2016",
+   "releasedDates": [
+    "2016-11-28"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Deer",
+    "Squid",
+    "Flamingo",
+    "Reindeer",
+    "Gazelle",
+    "Swinehoe"
+   ],
+   "fromXp": "5K"
+  },
+  "Kakapo": {
+   "page": "Kakapo",
+   "tier": "4",
+   "biome": "Forest",
+   "passive": "Climbing on hills and trees",
+   "special": "Hop",
+   "releasedRaw": "upd|October|2|2020",
+   "releasedDates": [
+    "2020-10-02"
+   ],
+   "removedDates": [
+    "2026-06-20"
+   ],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Mole",
+    "Chicken",
+    "Crab",
+    "Penguin",
+    "Meerkat"
+   ],
+   "fromXp": "1K",
+   "to": [
+    "Deer",
+    "Squid",
+    "Flamingo",
+    "Reindeer",
+    "Gazelle"
+   ],
+   "toXp": "2K"
+  },
+  "Kangaroo Rat": {
+   "page": "Kangaroo Rat",
+   "tier": "1",
+   "biome": "Desert",
+   "passive": "Sprint when hurt",
+   "special": "N/A",
+   "releasedRaw": "upd|April|27|2019",
+   "releasedDates": [
+    "2019-04-27"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Killer Whale": {
+   "page": "Killer Whale",
+   "tier": "13",
+   "biome": "Ocean",
+   "passive": "Exhale Food",
+   "special": "Cause Wave",
+   "releasedRaw": "upd|December|7|2016",
+   "releasedDates": [
+    "2016-12-07"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "King Crab": {
+   "page": "King Crab",
+   "tier": "15",
+   "biome": "Ocean",
+   "passive": "Climb on hills and rocks * Survive on dry land",
+   "special": "Arm Smash",
+   "releasedRaw": "upd|December|25|2017",
+   "releasedDates": [
+    "2017-12-25"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Blue Whale",
+    "Elephant",
+    "Giant Spider",
+    "Cassowary",
+    "Mammoth",
+    "Blackwidow Spider"
+   ],
+   "fromXp": "1M"
+  },
+  "King Dragon": {
+   "page": "King Dragon",
+   "tier": "17",
+   "biome": "Volcano",
+   "passive": "Fly over everything * Ink Immunity * Drinks Lava rather than water.",
+   "special": "Tail Slap(uses S key) ---- Fire (uses W key)",
+   "releasedRaw": "BetaUpd|May|2|2019 (Beta) upd|May|24|2019 (live)",
+   "releasedDates": [
+    "2019-05-24"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "Expand|",
+   "maxXp": "N/A"
+  },
+  "King Mantis": {
+   "page": "King Mantis",
+   "tier": "14",
+   "biome": "Underground",
+   "passive": "10% chance to afflict grabbed animals with \"sticking spikes\"",
+   "special": "Grab animals",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "650K",
+   "maxXp": "1M"
+  },
+  "Komodo Dragon": {
+   "page": "Komodo Dragon",
+   "tier": "13",
+   "biome": "Desert",
+   "passive": "Drops little sweat droplets, by hovering over them. Sweat puddles are made over time * Climbing Trees * Faster Movement on mud and in quicksand. * Can dive in mud. * Consume Carcasses carcasses and bones.",
+   "special": "Poison Bite",
+   "releasedRaw": "upd|April|27|2019",
+   "releasedDates": [
+    "2019-04-27"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Bison",
+    "Eagle",
+    "Rhino",
+    "Shark",
+    "Wolverine",
+    "Markhor"
+   ],
+   "fromXp": "350K"
+  },
+  "Kraken": {
+   "page": "Kraken",
+   "tier": "15",
+   "biome": "Ocean",
+   "passive": "Ink Immunity",
+   "special": "Whirlpool",
+   "releasedRaw": "upd|December|5|2016",
+   "releasedDates": [
+    "2016-12-05"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Elephant",
+    "Cassowary",
+    "Giant Spider",
+    "Blue Whale",
+    "Mammoth",
+    "Blackwidow Spider"
+   ],
+   "fromXp": "1M",
+   "to": [
+    "Sea Monster",
+    "Ice Monster",
+    "Land Monster",
+    "Dino Monster",
+    "Giant Scorpion"
+   ],
+   "toXp": "5M"
+  },
+  "Ladybug": {
+   "page": "Ladybug",
+   "tier": "2",
+   "biome": "Underground",
+   "passive": "Crawl under rocks and hills",
+   "special": "Fly",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "150",
+   "maxXp": "400"
+  },
+  "Lava Monster": {
+   "page": "Lava Monster",
+   "tier": "16",
+   "biome": "Volcano",
+   "passive": "Fly over everything * Can dive in lava. * Immunity to debuff in the Desert * Consume Carcasses carcasses",
+   "special": "Sinkhole",
+   "releasedRaw": "June 11, 2018 (Beta) upd|December|3|2018 (live)",
+   "releasedDates": [
+    "2018-12-03"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Kraken",
+    "King Crab",
+    "Dragon",
+    "Phoenix",
+    "T-Rex",
+    "Bigfoot",
+    "Yeti",
+    "Snowman",
+    "Pterodactyl"
+   ],
+   "fromXp": "5M"
+  },
+  "Lemming": {
+   "page": "Lemming",
+   "tier": "1",
+   "biome": "Arctic",
+   "passive": "Boosts for 1 second when hurt",
+   "special": "N/A",
+   "releasedRaw": "upd|December|25|2017 upd|December|23|2019",
+   "releasedDates": [
+    "2017-12-25",
+    "2019-12-23"
+   ],
+   "removedDates": [
+    "2018-01-26"
+   ],
+   "unreleased": false,
+   "minXp": "It",
+   "maxXp": "It"
+  },
+  "Lemming (tier 1)": {
+   "page": "Lemming (tier 1)",
+   "tier": "1",
+   "biome": "Arctic",
+   "passive": "",
+   "special": "",
+   "releasedRaw": "upd|December|26|2016",
+   "releasedDates": [
+    "2016-12-26"
+   ],
+   "removedDates": [
+    "2017-01-01"
+   ],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Lion": {
+   "page": "Lion",
+   "tier": "10",
+   "biome": "Land",
+   "passive": "Immunity to Debuff in the Desert.",
+   "special": "Roar",
+   "releasedRaw": "upd|October|4|2016",
+   "releasedDates": [
+    "2016-10-04"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Lion/Lion Cub": {
+   "page": "Lion/Lion Cub",
+   "tier": "10",
+   "biome": "Land",
+   "passive": "Climbing on trees * Faster Movement * Fast in mud * Immunity to Debuff in the Desert.",
+   "special": "Roar",
+   "releasedRaw": "May 17, 2019 (Beta) upd|May|24|2019 (live)",
+   "releasedDates": [
+    "2019-05-24"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Lion/Lioness": {
+   "page": "Lion/Lioness",
+   "tier": "10",
+   "biome": "Land",
+   "passive": "Climbing on trees * Invisibility * Immunity to Debuff in the Desert.",
+   "special": "Roar",
+   "releasedRaw": "May 9, 2019 (Beta) upd|May|24|2019 (live)",
+   "releasedDates": [
+    "2019-05-24"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Macaw": {
+   "page": "Macaw",
+   "tier": "7",
+   "biome": "Land",
+   "passive": "Climbing on trees hills and trees.",
+   "special": "Disguise(from a hill) ---- Fly(from ground)",
+   "releasedRaw": "upd|December|23|2018",
+   "releasedDates": [
+    "2018-12-23"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Fox",
+    "Hedgehog",
+    "Peacock",
+    "Jellyfish",
+    "Arctic Fox",
+    "Fennec Fox"
+   ],
+   "fromXp": "12K"
+  },
+  "Mammoth": {
+   "page": "Mammoth",
+   "tier": "14",
+   "biome": "Arctic",
+   "passive": "Grip on Ice * Faster movement in water * Immune to Land debuff (except near Volcano).",
+   "special": "Roll Snow",
+   "releasedRaw": "upd|January|20|2017",
+   "releasedDates": [
+    "2017-01-20"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "650K",
+   "maxXp": "1M"
+  },
+  "Markhor": {
+   "page": "Markhor",
+   "tier": "11",
+   "biome": "Arctic",
+   "passive": "Climb hills and rocks",
+   "special": "Headbutt ---- Jump High (from a hill or rock)",
+   "releasedRaw": "BetaUpd|August|14|2019 (Beta) upd|March|3|2020 (live)",
+   "releasedDates": [
+    "2020-03-03"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Meerkat": {
+   "page": "Meerkat",
+   "tier": "3",
+   "biome": "Desert",
+   "passive": "Faster Movement on quicksand and mud.",
+   "special": "Dig",
+   "releasedRaw": "upd|April|27|2019",
+   "releasedDates": [
+    "2019-04-27"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Desert Chipmunk",
+    "Rabbit",
+    "Arctic Hare",
+    "Trout"
+   ],
+   "fromXp": "400"
+  },
+  "Mole": {
+   "page": "Mole",
+   "tier": "3",
+   "biome": "Land",
+   "passive": "",
+   "special": "Dig",
+   "releasedRaw": "upd|October|26|2016",
+   "releasedDates": [
+    "2016-10-26"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "400",
+   "maxXp": "1K",
+   "from": [
+    "Rabbit",
+    "Pigeon",
+    "Trout",
+    "Arctic Hare",
+    "Desert Chipmunk",
+    "Chukar"
+   ],
+   "fromXp": "400"
+  },
+  "Mongoose": {
+   "page": "Mongoose",
+   "tier": "7",
+   "biome": "Underground",
+   "passive": "Poison Bite/Immunity * Fast in water * Fast in mud",
+   "special": "Bite",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "12K",
+   "maxXp": "25K"
+  },
+  "Monkfish": {
+   "page": "Monkfish",
+   "tier": "1",
+   "biome": "Deep Ocean",
+   "passive": "",
+   "special": "",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "0",
+   "maxXp": "150"
+  },
+  "Mouse": {
+   "page": "Mouse",
+   "tier": "1",
+   "biome": "Land",
+   "passive": "Climbing on trees",
+   "special": "",
+   "releasedRaw": "upd|October|2|2016",
+   "releasedDates": [
+    "2016-10-02"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Mud Dauber": {
+   "page": "Mud Dauber",
+   "tier": "9",
+   "biome": "Underground",
+   "passive": "Potentially Climbing on Rocks, hills, or Climbing on Trees * Poison bite",
+   "special": "\"Sting\" ---- Fly (unknown method)",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "40K",
+   "maxXp": "60K"
+  },
+  "Muskox": {
+   "page": "Muskox",
+   "tier": "7",
+   "biome": "Arctic",
+   "passive": "Grip on Ice on ice",
+   "special": "Charge",
+   "releasedRaw": "upd|December|26|2016",
+   "releasedDates": [
+    "2016-12-26"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Octopus": {
+   "page": "Octopus",
+   "tier": "11",
+   "biome": "Ocean",
+   "passive": "Ink Immunity to ink",
+   "special": "Disguise ---- Squirt Ink (occurs only when hit by predator or prey while Disguising)",
+   "releasedRaw": "upd|December|15|2016",
+   "releasedDates": [
+    "2016-12-15"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Bear",
+    "Swordfish",
+    "Lion",
+    "Walrus",
+    "Gobi Bear",
+    "Hyena"
+   ],
+   "fromXp": "90K"
+  },
+  "Ostrich": {
+   "page": "Ostrich",
+   "tier": "13",
+   "biome": "Land",
+   "passive": "Faster Movement * Reduced boost interval * Can enter the Desert biome without experiencing debuff.",
+   "special": "Lay eggs and Command Babies.",
+   "releasedRaw": "upd|May|13|2018",
+   "releasedDates": [
+    "2018-05-13"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Peacock": {
+   "page": "Peacock",
+   "tier": "6",
+   "biome": "Land",
+   "passive": "Climbs hills",
+   "special": "Hypnotize ---- Fly (used on top of hills)",
+   "releasedRaw": "upd|December|23|2018",
+   "releasedDates": [
+    "2018-12-23"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Deer",
+    "Reindeer",
+    "Squid",
+    "Flamingo",
+    "Gazelle"
+   ],
+   "fromXp": "5K",
+   "to": [
+    "Donkey",
+    "Zebra",
+    "Muskox",
+    "Turtle",
+    "Warthog"
+   ],
+   "toXp": "12K"
+  },
+  "Pelican": {
+   "page": "Pelican",
+   "tier": "10",
+   "biome": "Ocean",
+   "passive": "Can climb on Hills",
+   "special": "Fly With Water",
+   "releasedRaw": "upd|May|13|2018",
+   "releasedDates": [
+    "2018-05-13"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Pufferfish",
+    "Cheetah",
+    "Gorilla",
+    "Toucan",
+    "Snow Leopard",
+    "Rattlesnake"
+   ],
+   "fromXp": "60K"
+  },
+  "Penguin": {
+   "page": "Penguin",
+   "tier": "3",
+   "biome": "Arctic",
+   "passive": "Faster movement in water",
+   "special": "Slide On Ice",
+   "releasedRaw": "upd|December|26|2016",
+   "releasedDates": [
+    "2016-12-26"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Arctic Hare",
+    "Rabbit",
+    "Trout",
+    "Desert Chipmunk"
+   ],
+   "fromXp": "400"
+  },
+  "Phoenix": {
+   "page": "Phoenix",
+   "tier": "15",
+   "biome": "Volcano",
+   "passive": "Fly over everything (slower over water and faster over lava) * Fiery Bite * Dive in lava * Desert burning immunity",
+   "special": "Fire Tornado",
+   "releasedRaw": "upd|June|6|2018",
+   "releasedDates": [
+    "2018-06-06"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Elephant",
+    "Giant Spider",
+    "Cassowary",
+    "Blue Whale",
+    "Mammoth",
+    "Blackwidow Spider"
+   ],
+   "fromXp": "1M"
+  },
+  "Pig": {
+   "page": "Pig",
+   "tier": "4",
+   "biome": "Land",
+   "passive": "Fast in mud mud * Fast in water water * Diving in mud",
+   "special": "Stink Cloud",
+   "releasedRaw": "upd|October|4|2016",
+   "releasedDates": [
+    "2016-10-04"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Pigeon": {
+   "page": "Pigeon",
+   "tier": "2",
+   "biome": "Land",
+   "passive": "Climbing on Trees and Climbing on Hills",
+   "special": "Fly",
+   "releasedRaw": "upd|June|19|2018",
+   "releasedDates": [
+    "2018-06-19"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Polar Bear": {
+   "page": "Polar Bear",
+   "tier": "12",
+   "biome": "Arctic",
+   "passive": "Can climb on hills and trees * Fast in water * Immune to bee stings",
+   "special": "Claw Slash",
+   "releasedRaw": "upd|December|26|2016",
+   "releasedDates": [
+    "2016-12-26"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Wolverine",
+    "Markhor",
+    "Crocodile",
+    "Tiger",
+    "Falcon",
+    "Octopus",
+    "Vulture"
+   ],
+   "fromXp": "145K",
+   "to": [
+    "Sabertooth Tiger",
+    "Hippo",
+    "Boa Constrictor",
+    "Ostrich",
+    "Killer Whale",
+    "Komodo Dragon"
+   ],
+   "toXp": "350K"
+  },
+  "Pterodactyl": {
+   "page": "Pterodactyl",
+   "tier": "15",
+   "biome": "Desert",
+   "passive": "Climbing on hills, rocks, and trees *Survives on Energy instead of water *Faster Movement on quicksand but not oasis quicksand * Shorter burning time",
+   "special": "Fly with Prey",
+   "releasedRaw": "upd|April|27|2019",
+   "releasedDates": [
+    "2019-04-27"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Blackwidow Spider",
+    "Elephant",
+    "Cassowary",
+    "Blue Whale",
+    "Mammoth"
+   ],
+   "fromXp": "1M"
+  },
+  "Pufferfish": {
+   "page": "Pufferfish",
+   "tier": "9",
+   "biome": "Ocean",
+   "passive": "",
+   "special": "Inflate",
+   "releasedRaw": "upd|December|7|2016",
+   "releasedDates": [
+    "2016-12-07"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Rabbit": {
+   "page": "Rabbit",
+   "tier": "2",
+   "biome": "Land",
+   "passive": "In Mud in mud.",
+   "special": "Dig Hole",
+   "releasedRaw": "upd|October|4|2016",
+   "releasedDates": [
+    "2016-10-04"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Rattlesnake": {
+   "page": "Rattlesnake",
+   "tier": "9",
+   "biome": "Desert",
+   "passive": "Poison Bite/Immunity * Poison Bite/Immunity to poison. * Faster Movement in quicksand. * Climbing on trees.",
+   "special": "Rattle",
+   "releasedRaw": "upd|April|27|2019",
+   "releasedDates": [
+    "2019-04-27"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Raven": {
+   "page": "Raven",
+   "tier": "8",
+   "biome": "Forest",
+   "passive": "Climbing on trees and hills",
+   "special": "Loud Caw(on low ground) ---- Fly(from hill or tree)",
+   "releasedRaw": "upd|October|2|2020",
+   "releasedDates": [
+    "2020-10-02"
+   ],
+   "removedDates": [
+    "2026-06-20"
+   ],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Reindeer": {
+   "page": "Reindeer",
+   "tier": "5",
+   "biome": "Arctic",
+   "passive": "Grip on ice",
+   "special": "Dig Food",
+   "releasedRaw": "upd|December|26|2016",
+   "releasedDates": [
+    "2016-12-26"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Rhino": {
+   "page": "Rhino",
+   "tier": "12",
+   "biome": "Land",
+   "passive": "Faster movement in mud and water",
+   "special": "Charge",
+   "releasedRaw": "upd|November|7|2016",
+   "releasedDates": [
+    "2016-11-07"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Sabertooth Tiger": {
+   "page": "Sabertooth Tiger",
+   "tier": "13",
+   "biome": "Arctic",
+   "passive": "Climbing on Hills. *Faster Movement in water and mud *Grip on Ice. *Immune to debuff in Land and the Ocean (except when near the Volcano).",
+   "special": "Claw Slash",
+   "releasedRaw": "upd|April|18|2017",
+   "releasedDates": [
+    "2017-04-18"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Wolverine",
+    "Markhor",
+    "Rhino",
+    "Eagle",
+    "Shark",
+    "Bison"
+   ],
+   "fromXp": "350K"
+  },
+  "Santa": {
+   "page": "Santa",
+   "tier": "15",
+   "biome": "Arctic",
+   "passive": "Climbing on Hills",
+   "special": "Fly cite web |author=King Of Agario |username=MoMoGamerOfficial |url=https://www.youtube.com/watch?v=RepXmY0zjnc |title=MOPE.IO // SANTA JOINS MOPE // LOADS OF PRESENTS & COINS |site=YouTube |date=January 17, 2021 |access-date=August 17, 2022",
+   "releasedRaw": "December 31, 2020",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "1M",
+   "maxXp": "5M"
+  },
+  "Santa Eagle": {
+   "page": "Santa Eagle",
+   "tier": "10",
+   "biome": "Land",
+   "passive": "Fly over Hills",
+   "special": "Fly",
+   "releasedRaw": "December 21, 2017 (first appearance)",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Sea Monster": {
+   "page": "Sea Monster",
+   "tier": "16",
+   "biome": "Ocean",
+   "passive": "Breathes air instead of drinking water * Fast in Mud to Mud * River Current Immunity * Consume Carcasses",
+   "special": "Whirlpool",
+   "releasedRaw": "upd|December|3|2018",
+   "releasedDates": [
+    "2018-12-03"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Seahorse": {
+   "page": "Seahorse",
+   "tier": "4",
+   "biome": "Ocean",
+   "passive": "",
+   "special": "Extra Boost",
+   "releasedRaw": "upd|November|28|2016",
+   "releasedDates": [
+    "2016-11-28"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Crab",
+    "Mole",
+    "Chicken",
+    "Meerkat",
+    "Penguin"
+   ],
+   "fromXp": "1K"
+  },
+  "Seal": {
+   "page": "Seal",
+   "tier": "4",
+   "biome": "Arctic",
+   "passive": "Faster Movement in water *Climbing on rocks and hills",
+   "special": "Slide On Ice",
+   "releasedRaw": "upd|December|26|2016",
+   "releasedDates": [
+    "2016-12-26"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Penguin",
+    "Chicken",
+    "Mole",
+    "Crab",
+    "Meerkat"
+   ],
+   "fromXp": "1K"
+  },
+  "Shark": {
+   "page": "Shark",
+   "tier": "12",
+   "biome": "Ocean",
+   "passive": "",
+   "special": "Jaw Bite",
+   "releasedRaw": "upd|November|22|2016",
+   "releasedDates": [
+    "2016-11-22"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Crocodile",
+    "Falcon",
+    "Tiger",
+    "Octopus",
+    "Vulture",
+    "Wolverine",
+    "Markhor"
+   ],
+   "fromXp": "145K",
+   "to": [
+    "Hippo",
+    "Boa Constrictor",
+    "Ostrich",
+    "Killer Whale",
+    "Sabertooth Tiger",
+    "Komodo Dragon"
+   ],
+   "toXp": "350K"
+  },
+  "Shrimp": {
+   "page": "Shrimp",
+   "tier": "1",
+   "biome": "Ocean",
+   "passive": "Sprint when hurt",
+   "special": "",
+   "releasedRaw": "upd|November|22|2016",
+   "releasedDates": [
+    "2016-11-22"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Snow Leopard": {
+   "page": "Snow Leopard",
+   "tier": "9",
+   "biome": "Arctic",
+   "passive": "Climbing on trees",
+   "special": "Extra Boost",
+   "releasedRaw": "upd|December|26|2016",
+   "releasedDates": [
+    "2016-12-26"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Wolf",
+    "Snowy Owl",
+    "Cobra",
+    "Cheetah",
+    "Stingray",
+    "Camel"
+   ],
+   "fromXp": "40K"
+  },
+  "Snowgirl": {
+   "page": "Snowgirl",
+   "tier": "15",
+   "biome": "Arctic",
+   "passive": "Climbing on hills. * In Water in water. * Ink Immunity. * Debuff Immunity in the Land biome. * Invisibility.",
+   "special": "Snow Roar",
+   "releasedRaw": "upd|December|31|2020",
+   "releasedDates": [
+    "2020-12-31"
+   ],
+   "removedDates": [
+    "2026-06-20"
+   ],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Snowman": {
+   "page": "Snowman",
+   "tier": "15",
+   "biome": "Arctic",
+   "passive": "Climbing on hills * In Water in water * Ink Immunity. * Debuff Immunity in the Land biome * Invisibility.",
+   "special": "Snow Roar",
+   "releasedRaw": "upd|December|23|2019",
+   "releasedDates": [
+    "2019-12-23"
+   ],
+   "removedDates": [
+    "2026-06-20"
+   ],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Elephant",
+    "Cassowary",
+    "Giant Spider",
+    "Blue Whale",
+    "Mammoth",
+    "Blackwidow Spider"
+   ],
+   "fromXp": "1M"
+  },
+  "Snowy Owl": {
+   "page": "Snowy Owl",
+   "tier": "8",
+   "biome": "Arctic",
+   "passive": "Climb on hills and trees",
+   "special": "Target Prey",
+   "releasedRaw": "upd|May|13|2018",
+   "releasedDates": [
+    "2018-05-13"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Spider Crab": {
+   "page": "Spider Crab",
+   "tier": "14",
+   "biome": "Deep Ocean",
+   "passive": "N/A",
+   "special": "Arm Slam",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "650K",
+   "maxXp": "1M"
+  },
+  "Spiny Red Crab": {
+   "page": "Spiny Red Crab",
+   "tier": "2",
+   "biome": "Deep Ocean",
+   "passive": "",
+   "special": "Burrow and hurt predators on touch",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "150",
+   "maxXp": "400"
+  },
+  "Squid": {
+   "page": "Squid",
+   "tier": "5",
+   "biome": "Ocean",
+   "passive": "Ink Immunity",
+   "special": "Squirt Ink",
+   "releasedRaw": "upd|November|22|2016",
+   "releasedDates": [
+    "2016-11-22"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Stargazer": {
+   "page": "Stargazer",
+   "tier": "7",
+   "biome": "Deep Ocean",
+   "passive": "",
+   "special": "Disguise and poison on touch or discharge",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "12K",
+   "maxXp": "25K"
+  },
+  "Stingray": {
+   "page": "Stingray",
+   "tier": "8",
+   "biome": "Ocean",
+   "passive": "",
+   "special": "Electric Shock",
+   "releasedRaw": "upd|November|28|2016",
+   "releasedDates": [
+    "2016-11-28"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Zebra",
+    "Donkey",
+    "Macaw",
+    "Turtle",
+    "Muskox",
+    "Warthog"
+   ],
+   "fromXp": "25K"
+  },
+  "Swinehoe": {
+   "page": "Swinehoe",
+   "tier": "5",
+   "biome": "Forest",
+   "passive": "Climbing on Hills",
+   "special": "Charge ---- Fly",
+   "releasedRaw": "upd|December|20|2022",
+   "releasedDates": [
+    "2022-12-20"
+   ],
+   "removedDates": [
+    "2026-06-20"
+   ],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Pig",
+    "Woodpecker",
+    "Seahorse",
+    "Armadillo",
+    "Seal"
+   ],
+   "fromXp": "2K",
+   "to": [
+    "Fox",
+    "Arctic Fox",
+    "Jellyfish",
+    "Hedgehog",
+    "Peacock",
+    "Fennec Fox"
+   ],
+   "toXp": "5K"
+  },
+  "Swordfish": {
+   "page": "Swordfish",
+   "tier": "10",
+   "biome": "Ocean",
+   "passive": "",
+   "special": "Charge",
+   "releasedRaw": "upd|December|7|2016",
+   "releasedDates": [
+    "2016-12-07"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Pufferfish",
+    "Cheetah",
+    "Gorilla",
+    "Toucan",
+    "Snow Leopard",
+    "Rattlesnake",
+    "Turkey"
+   ],
+   "fromXp": "60K"
+  },
+  "T-Rex": {
+   "page": "T-Rex",
+   "tier": "15",
+   "biome": "Land",
+   "passive": "Fast in mud Can eat carcasses Immune to ink.",
+   "special": "Jaw Bite",
+   "releasedRaw": "upd|November|2|2017",
+   "releasedDates": [
+    "2017-11-02"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Elephant",
+    "Blue Whale",
+    "Giant Spider",
+    "Cassowary",
+    "Mammoth",
+    "Blackwidow Spider"
+   ],
+   "fromXp": "1M"
+  },
+  "Tarsier": {
+   "page": "Tarsier",
+   "tier": "1",
+   "biome": "Forest",
+   "passive": "Climbing on Trees * Sprint when hurt",
+   "special": "",
+   "releasedRaw": "upd|December|20|2022",
+   "releasedDates": [
+    "2022-12-20"
+   ],
+   "removedDates": [
+    "2026-06-20"
+   ],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Tiger": {
+   "page": "Tiger",
+   "tier": "10",
+   "biome": "Land",
+   "passive": "Climb on hills, trees * Move fast in water. * Immunity in the Arctic",
+   "special": "Ambush Attack(press W ) ---- Grow a bush (hold W )",
+   "releasedRaw": "upd|November|2|2017",
+   "releasedDates": [
+    "2017-11-02"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Toucan": {
+   "page": "Toucan",
+   "tier": "9",
+   "biome": "Land",
+   "passive": "Climb hills and trees",
+   "special": "Fly, then throw either nothing/Banana/Coconut/Berry/Plankton/Raspberry/Cloudberry/Pear/Arctic Nut/Melon/Pepper/Orange/Cactus pear",
+   "releasedRaw": "Beta: BetaUpd|June|8|2018 Live: upd|June|19|2018",
+   "releasedDates": [
+    "2018-06-19"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Trout": {
+   "page": "Trout",
+   "tier": "2",
+   "biome": "Ocean",
+   "passive": "",
+   "special": "Extra Boost",
+   "releasedRaw": "upd|November|22|2016",
+   "releasedDates": [
+    "2016-11-22"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Mouse",
+    "Shrimp",
+    "Chipmunk",
+    "Desert Rat",
+    "Tarsier"
+   ],
+   "fromXp": "150"
+  },
+  "Turkey": {
+   "page": "Turkey",
+   "tier": "9",
+   "biome": "Forest",
+   "passive": "Climb on hills and trees.",
+   "special": "Shoot out egg that stuns animals on hills *Fly from trees *Charge and kick",
+   "releasedRaw": "upd|November|26|2020",
+   "releasedDates": [
+    "2020-11-26"
+   ],
+   "removedDates": [
+    "2026-06-20"
+   ],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Cobra",
+    "Giraffe",
+    "Stingray",
+    "Camel",
+    "Walrus",
+    "Snowy Owl",
+    "Raven"
+   ],
+   "fromXp": "40K",
+   "to": [
+    "Bear",
+    "Tiger",
+    "Swordfish",
+    "Pelican",
+    "Gobi Bear",
+    "Hyena",
+    "Wolf"
+   ],
+   "toXp": "60K"
+  },
+  "Turtle": {
+   "page": "Turtle",
+   "tier": "7",
+   "biome": "Ocean",
+   "passive": "Surviving on dry land * Climbing on rocks",
+   "special": "Hide in Shell",
+   "releasedRaw": "upd|November|28|2016",
+   "releasedDates": [
+    "2016-11-28"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Viperfish": {
+   "page": "Viperfish",
+   "tier": "9",
+   "biome": "Deep Ocean",
+   "passive": "",
+   "special": "Shockwave preventing rotation of prey",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "40K",
+   "maxXp": "60K"
+  },
+  "Vulture": {
+   "page": "Vulture",
+   "tier": "11",
+   "biome": "Desert",
+   "passive": "Can climb on hills and rocks * Can eat carcasses",
+   "special": "Fly Bones",
+   "releasedRaw": "upd|April|27|2019",
+   "releasedDates": [
+    "2019-04-27"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Bear",
+    "Lion",
+    "Swordfish",
+    "Pelican",
+    "Walrus",
+    "Gobi Bear",
+    "Hyena"
+   ],
+   "fromXp": "90K"
+  },
+  "Walrus": {
+   "page": "Walrus",
+   "tier": "10",
+   "biome": "Arctic",
+   "passive": "Climbing on hills and rocks * Faster Movement in water.",
+   "special": "Slide On Ice",
+   "releasedRaw": "upd|December|26|2016",
+   "releasedDates": [
+    "2016-12-26"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Gorilla",
+    "Toucan",
+    "Pufferfish",
+    "Snow Leopard",
+    "Rattlesnake"
+   ],
+   "fromXp": "60K"
+  },
+  "Wandering Spider": {
+   "page": "Wandering Spider",
+   "tier": "10",
+   "biome": "Underground",
+   "passive": "Unknown",
+   "special": "Unknown",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "60K",
+   "maxXp": "90K"
+  },
+  "Warthog": {
+   "page": "Warthog",
+   "tier": "7",
+   "biome": "Desert",
+   "passive": "Dive and move fast in mud",
+   "special": "Charge (press W ) ----Dig Food (hold W )",
+   "releasedRaw": "BetaUpd|April|14|2019 (Beta) upd|April|27|2019 (live)",
+   "releasedDates": [
+    "2019-04-27"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Fennec Fox",
+    "Fox",
+    "Hedgehog",
+    "Peacock",
+    "Jellyfish",
+    "Arctic Fox"
+   ],
+   "fromXp": "12K"
+  },
+  "Warty Frogfish": {
+   "page": "Warty Frogfish",
+   "tier": "5",
+   "biome": "Deep Ocean",
+   "passive": "",
+   "special": "Possible camouflage ability",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "2K",
+   "maxXp": "5K"
+  },
+  "Wolf": {
+   "page": "Wolf",
+   "tier": "8",
+   "biome": "Arctic",
+   "passive": "Grip on ice",
+   "special": "Howl",
+   "releasedRaw": "upd|December|26|2016",
+   "releasedDates": [
+    "2016-12-26"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Zebra",
+    "Donkey",
+    "Macaw",
+    "Turtle",
+    "Muskox",
+    "Warthog"
+   ],
+   "fromXp": "25K",
+   "to": [
+    "Gorilla",
+    "Toucan",
+    "Pufferfish",
+    "Snow Leopard",
+    "Rattlesnake"
+   ],
+   "toXp": "40K"
+  },
+  "Wolverine": {
+   "page": "Wolverine",
+   "tier": "11",
+   "biome": "Arctic",
+   "passive": "Grip on ice *Immune to debuff in Land and the Ocean (except when near to the Volcano) *Climbs trees *Moves fast on mud, and moves 20% faster in water",
+   "special": "Growl",
+   "releasedRaw": "upd|December|28|2016",
+   "releasedDates": [
+    "2016-12-28"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Walrus",
+    "Bear",
+    "Lion",
+    "Swordfish",
+    "Pelican",
+    "Walrus",
+    "Gobi Bear",
+    "Hyena"
+   ],
+   "fromXp": "90K"
+  },
+  "Woodpecker": {
+   "page": "Woodpecker",
+   "tier": "4",
+   "biome": "Land",
+   "passive": "Climb on hills and trees.",
+   "special": "Fly----Peck",
+   "releasedRaw": "upd|December|23|2018",
+   "releasedDates": [
+    "2018-12-23"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Mole",
+    "Chicken",
+    "Crab",
+    "Penguin",
+    "Meerkat"
+   ],
+   "fromXp": "1K",
+   "to": [
+    "Deer",
+    "Squid",
+    "Flamingo",
+    "Reindeer",
+    "Gazelle"
+   ],
+   "toXp": "2K"
+  },
+  "Yellow Jacket": {
+   "page": "Yellow Jacket",
+   "tier": "12",
+   "biome": "Underground",
+   "passive": "Climbing on Rocks and hills",
+   "special": "Fly",
+   "releasedRaw": "Unreleased",
+   "releasedDates": [],
+   "removedDates": [],
+   "unreleased": true,
+   "minXp": "145K",
+   "maxXp": "350K"
+  },
+  "Yeti": {
+   "page": "Yeti",
+   "tier": "15",
+   "biome": "Arctic",
+   "passive": "Immune to other Yeti's freeze (but not immune to Aqua Yeti's ice statues). *Faster Movement in water *Grip on Ice *Climbing on hills",
+   "special": "Disguise(hold W ) ---- Snow Roar(release/press W )",
+   "releasedRaw": "upd|December|26|2016",
+   "releasedDates": [
+    "2016-12-26"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": ""
+  },
+  "Zebra": {
+   "page": "Zebra",
+   "tier": "7",
+   "biome": "Land",
+   "passive": "",
+   "special": "Kick",
+   "releasedRaw": "upd|October|26|2016",
+   "releasedDates": [
+    "2016-10-26"
+   ],
+   "removedDates": [],
+   "unreleased": false,
+   "minXp": "",
+   "maxXp": "",
+   "from": [
+    "Fox",
+    "Hedgehog",
+    "Peacock",
+    "Jellyfish",
+    "Arctic Fox",
+    "Fennec Fox"
+   ],
+   "fromXp": "12K"
+  }
+ }
+}

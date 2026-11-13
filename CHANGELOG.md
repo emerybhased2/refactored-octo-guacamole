@@ -1,5 +1,9 @@
 # Project changelog
 
+## Unreleased - wiki-sourced roster (stage 1)
+- `data/research/wiki-animals.json`: facts (tier, biome, XP, abilities, release dates, upgrade lists) for 147 animal pages of the Mope.io Wiki (CC BY-SA; no wiki images used) via `tools/wiki/`.
+- 64 animals missing from the project added with original art (`tools/art/specs2.js`, `assets/animals/2026-wiki/`), 34 of them flagged unreleased (release date 2099, never available). New biomes: Forest, Deep Ocean, Underground (tiles recreated).
+
 ## 0.7.0 - Version 6: 2021-06-12 (React UI, Storefront)
 - Built from the real 2021 homepage bundle and CSS (2022-2023 captures are Cloudflare pages, so this is the last evidenced version): mint 2021 menu, STORE button, settings (SOUND, graphics LOW/MEDIUM/HIGH, No XP Popups, Snowfall), footer links, verbatim May-June 2021 update notes.
 - Storefront: Skins/Features/Deals + My ... categories, filters, purchase confirmation, FREE/NEW/SALE tags, Gold bundle (atomic bundle purchase on the server), Classic Theme feature, free skins; gold Blue Whale/Black Widow/Cassowary skins.

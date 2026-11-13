@@ -14,6 +14,7 @@ for (let i = 0; i < args.length; i++) { if (args[i] === '--version') version = a
   await page.addScriptTag({ content: 'window.MopeAnimalColors = ' + JSON.stringify(Object.fromEntries(animals.map((x) => [x.id, x.placeholderColor]))) + ';' }); // base colours for skins that recolor an animal whose colour lives in animals.json
   await page.addScriptTag({ content: fs.readFileSync(path.join(__dirname, 'draw.js'), 'utf8') });
   await page.addScriptTag({ content: fs.readFileSync(path.join(__dirname, 'specs.js'), 'utf8') });
+  await page.addScriptTag({ content: fs.readFileSync(path.join(__dirname, 'specs2.js'), 'utf8') }); // wiki-sourced animals
   await page.addScriptTag({ content: fs.readFileSync(path.join(__dirname, 'food.js'), 'utf8') });
   await page.addScriptTag({ content: fs.readFileSync(path.join(__dirname, 'gui.js'), 'utf8') });
   await page.addScriptTag({ content: fs.readFileSync(path.join(__dirname, 'terrain.js'), 'utf8') });

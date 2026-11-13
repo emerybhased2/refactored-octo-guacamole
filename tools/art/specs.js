@@ -116,6 +116,6 @@
   const tiger = recolor(S.shark, (c) => c, 'shark'); tiger.pattern = { kind: 'stripes', c: '#3a4660', gap: 20, w: 7, curve: 10 };
   const hammer = recolor(S.shark, (c) => c, 'shark'); hammer.head = { r: 26, y: 70, snout: null, nose: null }; hammer.eyes = { r: 9, gap: 60, y: 76 }; hammer.over = [['hammer', { w: 74, h: 17, c: '#7a8aa0' }]];
   g.MopeSkinSpecs = { mouse_skin_1: recolor(S.mouse, pale, 'mouse'), mouse_skin_2: recolor(S.mouse, choco, 'mouse'), tigershark: tiger, hammerhead: hammer, golden_eagle: recolor(S.eagle, golden, 'eagle'), black_rhino: recolor(S.rhino, dark, 'rhino'), aqua_yeti: recolor(S.yeti, aqua, 'yeti'), gold_bluewhale: recolor(S.bluewhale, golden, 'bluewhale'), gold_blackwidow: recolor(S.blackwidow, golden, 'blackwidow'), gold_cassowary: recolor(S.cassowary, golden, 'cassowary'), golden_blackdragon: recolor(S.blackdragon, golden), azure_blackdragon: recolor(S.blackdragon, azure), golden_kingdragon: recolor(S.kingdragon, golden) };
-  g.MopeSpecs = S;
+  g.MopeSpecs = S; g.MopeSpecHelpers = { A, fish, recolor, lum };
   if (typeof module !== 'undefined') module.exports = S;
 })(typeof window !== 'undefined' ? window : globalThis);
