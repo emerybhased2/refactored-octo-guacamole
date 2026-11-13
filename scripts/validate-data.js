@@ -15,6 +15,8 @@ function validate() {
   } catch (e) { return { errors: ['JSON load failed: ' + e.message], warnings }; }
 
   const placeholders = [];
+  for (const a of abilities) if (a.iconStatus === 'recreated' && !fs.existsSync(path.join(ROOT, a.icon || ''))) err(`ability ${a.id}: icon missing (${a.icon})`);
+  for (const b of biomes) if (b.tileStatus === 'recreated' && !fs.existsSync(path.join(ROOT, b.tile || ''))) err(`biome ${b.id}: tile missing (${b.tile})`);
   const ids = new Map(), tierSet = new Set(tiers.map((t) => t.tier)), biomeIds = new Set(biomes.map((b) => b.id)), abilityIds = new Set(abilities.map((a) => a.id));
   for (const t of tiers) if (tiers.filter((x) => x.tier === t.tier).length > 1) err('duplicate tier ' + t.tier);
   for (const a of animals) {
@@ -26,7 +28,7 @@ function validate() {
     if (a.ability && !abilityIds.has(a.ability)) err(`${a.id}: unknown ability ${a.ability}`);
     if (a.removalDate && a.removalDate <= a.releaseDate) err(`${a.id}: removalDate before releaseDate`);
     const sp = path.join(ROOT, a.sprite || '');
-    if (!fs.existsSync(sp)) { if (a.spriteStatus === 'original') err(`${a.id}: sprite missing (${a.sprite}) [original]`); else placeholders.push(a.id); }
+    if (!fs.existsSync(sp)) { if (a.spriteStatus === 'original' || a.spriteStatus === 'recreated') err(`${a.id}: sprite missing (${a.sprite}) [${a.spriteStatus}]`); else placeholders.push(a.id); }
     if (a.spriteStatus === 'placeholder' && !a.placeholderColor) err(`${a.id}: placeholder without placeholderColor`);
   }
   // internal ids must match the archive extraction (verified source)
@@ -66,7 +68,7 @@ function validate() {
     for (const m of v.modes || []) if (!['normal', 'sandbox'].includes(m)) err(`${v.id}: unknown mode ${m}`);
     if (!roster.some((id) => ids.get(id).xpRequired === 0 && !edges.some((e) => e.to === id))) err(`${v.id}: no start animal`);
   }
-  for (const f of foods) { for (const b of f.biomes) if (!biomeIds.has(b)) err(`food ${f.id}: unknown biome ${b}`); if (!(f.xp > 0)) err(`food ${f.id}: invalid xp`); }
+  for (const f of foods) { if ((f.spriteStatus === 'recreated' || f.spriteStatus === 'original') && !fs.existsSync(path.join(ROOT, f.sprite))) err(`food ${f.id}: sprite missing (${f.sprite})`); for (const b of f.biomes) if (!biomeIds.has(b)) err(`food ${f.id}: unknown biome ${b}`); if (!(f.xp > 0)) err(`food ${f.id}: invalid xp`); }
   const cl = J('data/versions/changelog.json'); for (const c of cl) if (!vids.has(c.date) && !versions.some((v) => v.date === c.date)) warn(`changelog ${c.version}: no version dated ${c.date}`);
   if (placeholders.length) warn(`${placeholders.length} animal sprites are placeholders (no archived art): ${placeholders.join(', ')}`);
   return { errors, warnings, animalCount: animals.length, versionCount: versions.length };

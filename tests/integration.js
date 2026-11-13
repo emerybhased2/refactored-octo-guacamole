@@ -24,7 +24,7 @@ function client() {
       a.send({ t: 'join', name: 'Alice', v: '2017-02-13' }); b.send({ t: 'join', name: '<b>Bob</b>', v: '2017-02-13' });
       const wa = await a.until('welcome'), wb = await b.until('welcome');
       assert.notStrictEqual(wa.id, wb.id); assert.strictEqual(wa.version.animals.length, 44); assert.strictEqual(wa.version.startAnimal, 'mouse'); assert.strictEqual(wa.mode, 'normal'); assert.ok(wa.lakes.length > 0);
-      assert.ok(wa.version.upgradeMenu.choices && wa.version.hud.xpBar && wa.version.features.chat);
+      assert.ok(wa.version.abilities.some((x) => x.id === 'extra_boost' && x.icon)); assert.ok(wa.version.upgradeMenu.choices && wa.version.hud.xpBar && wa.version.features.chat);
     });
     await t('snapshots stream to both clients in sync', async () => {
       const sa = await a.until('snap'), sb = await b.until('snap'); await sleep(600);

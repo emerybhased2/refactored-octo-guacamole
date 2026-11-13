@@ -42,7 +42,7 @@
       $('button_GMnormal').className = m === 'normal' ? 'button' : 'button buttonDisabled';
       $('button_GMsandbox').className = m === 'sandbox' ? 'button' : 'button buttonDisabled';
     }
-    paintMute() { this.$('button_mute_img').style.opacity = this.muted ? 0.35 : 1; } // only sound_on.png was archived; muted state is shown by dimming
+    paintMute() { const i = this.cfg && this.cfg.icons, im = this.$('button_mute_img'); if (i && i.muteOff) im.src = this.muted ? i.muteOff.src : i.mute.src; } // sound_on.png is archived; sound_off.png is our recreation
     show() { this.$('startMenuWrapper').style.display = 'block'; this.$('gameAreaWrapper').style.opacity = 1; }
     hide() { this.$('startMenuWrapper').style.display = 'none'; this.$('optionsDiv').style.display = 'none'; }
     setSpawnLabel(t) { this.$('spawnXpLabel').textContent = t || ''; }

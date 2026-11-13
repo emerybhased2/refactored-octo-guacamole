@@ -13,7 +13,9 @@
   "releaseDate": "2017-02-13",
   "verified": true,
   "keyboard": "W",
-  "clientId": 1
+  "clientId": 1,
+  "icon": "assets/icons/abilities/hide_hole_dig.png",
+  "iconStatus": "recreated"
  },
  {
   "id": "shell",
@@ -29,7 +31,9 @@
   "releaseDate": "2017-02-13",
   "verified": true,
   "keyboard": "W",
-  "clientId": 2
+  "clientId": 2,
+  "icon": "assets/icons/abilities/shell.png",
+  "iconStatus": "recreated"
  },
  {
   "id": "shock",
@@ -45,7 +49,9 @@
   "releaseDate": "2017-02-13",
   "verified": true,
   "keyboard": "W",
-  "clientId": 3
+  "clientId": 3,
+  "icon": "assets/icons/abilities/shock.png",
+  "iconStatus": "recreated"
  },
  {
   "id": "ink",
@@ -61,7 +67,9 @@
   "releaseDate": "2017-02-13",
   "verified": true,
   "keyboard": "W",
-  "clientId": 4
+  "clientId": 4,
+  "icon": "assets/icons/abilities/ink.png",
+  "iconStatus": "recreated"
  },
  {
   "id": "disguise",
@@ -77,7 +85,9 @@
   "releaseDate": "2017-02-13",
   "verified": true,
   "keyboard": "W",
-  "clientId": 7
+  "clientId": 7,
+  "icon": "assets/icons/abilities/disguise.png",
+  "iconStatus": "recreated"
  },
  {
   "id": "slide_on_ice",
@@ -93,7 +103,9 @@
   "releaseDate": "2017-02-13",
   "verified": true,
   "keyboard": "W",
-  "clientId": 8
+  "clientId": 8,
+  "icon": "assets/icons/abilities/slide_on_ice.png",
+  "iconStatus": "recreated"
  },
  {
   "id": "charge",
@@ -110,7 +122,9 @@
   "verified": true,
   "keyboard": "W",
   "clientId": 9,
-  "note": "cooldown/duration/multiplier INFERRED"
+  "note": "cooldown/duration/multiplier INFERRED",
+  "icon": "assets/icons/abilities/charge.png",
+  "iconStatus": "recreated"
  },
  {
   "id": "inflate",
@@ -126,7 +140,9 @@
   "releaseDate": "2017-02-13",
   "verified": true,
   "keyboard": "W",
-  "clientId": 10
+  "clientId": 10,
+  "icon": "assets/icons/abilities/inflate.png",
+  "iconStatus": "recreated"
  },
  {
   "id": "howl",
@@ -142,7 +158,9 @@
   "releaseDate": "2017-02-13",
   "verified": true,
   "keyboard": "W",
-  "clientId": 12
+  "clientId": 12,
+  "icon": "assets/icons/abilities/howl.png",
+  "iconStatus": "recreated"
  },
  {
   "id": "throw_snow",
@@ -158,7 +176,9 @@
   "releaseDate": "2017-02-13",
   "verified": true,
   "keyboard": "W",
-  "clientId": 13
+  "clientId": 13,
+  "icon": "assets/icons/abilities/throw_snow.png",
+  "iconStatus": "recreated"
  },
  {
   "id": "claw_slash",
@@ -174,7 +194,9 @@
   "releaseDate": "2017-02-13",
   "verified": true,
   "keyboard": "W",
-  "clientId": 14
+  "clientId": 14,
+  "icon": "assets/icons/abilities/claw_slash.png",
+  "iconStatus": "recreated"
  },
  {
   "id": "extra_boost",
@@ -191,7 +213,9 @@
   "verified": true,
   "keyboard": "W",
   "clientId": 15,
-  "note": "8 s cooldown verified (client text 'Every 8 seconds'); duration/multiplier INFERRED"
+  "note": "8 s cooldown verified (client text 'Every 8 seconds'); duration/multiplier INFERRED",
+  "icon": "assets/icons/abilities/extra_boost.png",
+  "iconStatus": "recreated"
  },
  {
   "id": "drop_snow",
@@ -207,7 +231,9 @@
   "releaseDate": "2017-02-13",
   "verified": true,
   "keyboard": "W",
-  "clientId": 16
+  "clientId": 16,
+  "icon": "assets/icons/abilities/drop_snow.png",
+  "iconStatus": "recreated"
  },
  {
   "id": "roll_snow",
@@ -223,7 +249,9 @@
   "releaseDate": "2017-02-13",
   "verified": true,
   "keyboard": "W",
-  "clientId": 17
+  "clientId": 17,
+  "icon": "assets/icons/abilities/roll_snow.png",
+  "iconStatus": "recreated"
  },
  {
   "id": "loud_noise",
@@ -239,7 +267,9 @@
   "releaseDate": "2017-02-13",
   "verified": true,
   "keyboard": "W",
-  "clientId": 18
+  "clientId": 18,
+  "icon": "assets/icons/abilities/loud_noise.png",
+  "iconStatus": "recreated"
  },
  {
   "id": "fire",
@@ -255,7 +285,9 @@
   "releaseDate": "2017-02-13",
   "verified": true,
   "keyboard": "W",
-  "clientId": 19
+  "clientId": 19,
+  "icon": "assets/icons/abilities/fire.png",
+  "iconStatus": "recreated"
  },
  {
   "id": "bite_drag",
@@ -271,7 +303,9 @@
   "releaseDate": "2017-02-13",
   "verified": true,
   "keyboard": "W",
-  "clientId": 21
+  "clientId": 21,
+  "icon": "assets/icons/abilities/bite_drag.png",
+  "iconStatus": "recreated"
  },
  {
   "id": "dive",
@@ -287,7 +321,9 @@
   "releaseDate": "2017-02-13",
   "verified": true,
   "keyboard": "W",
-  "clientId": 100
+  "clientId": 100,
+  "icon": "assets/icons/abilities/dive.png",
+  "iconStatus": "recreated"
  },
  {
   "id": "whirlpool",
@@ -303,7 +339,9 @@
   "releaseDate": "2017-02-13",
   "verified": true,
   "keyboard": "W",
-  "clientId": null
+  "clientId": null,
+  "icon": "assets/icons/abilities/whirlpool.png",
+  "iconStatus": "recreated"
  },
  {
   "id": "freeze",
@@ -319,7 +357,9 @@
   "releaseDate": "2017-02-13",
   "verified": true,
   "keyboard": "W",
-  "clientId": null
+  "clientId": null,
+  "icon": "assets/icons/abilities/freeze.png",
+  "iconStatus": "recreated"
  },
  {
   "id": "growl",
@@ -335,7 +375,9 @@
   "releaseDate": "2017-02-13",
   "verified": true,
   "keyboard": "W",
-  "clientId": null
+  "clientId": null,
+  "icon": "assets/icons/abilities/growl.png",
+  "iconStatus": "recreated"
  },
  {
   "id": "back_kick",
@@ -351,6 +393,8 @@
   "releaseDate": "2017-02-13",
   "verified": true,
   "keyboard": "W",
-  "clientId": null
+  "clientId": null,
+  "icon": "assets/icons/abilities/back_kick.png",
+  "iconStatus": "recreated"
  }
 ]

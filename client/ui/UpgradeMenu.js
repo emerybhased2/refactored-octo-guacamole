@@ -89,7 +89,7 @@
           const a = this.animals.find((x) => x.id === b.id), hov = this.mx >= b.x && this.mx <= b.x + b.w && this.my >= b.y && this.my <= b.y + b.h;
           ctx.save(); ctx.globalAlpha = C.fillAlpha; ctx.fillStyle = C.biomeColors[a.biome]; ctx.fillRect(b.x, b.y, b.w, b.h);
           if (hov) { ctx.globalAlpha = C.highlightAlpha; ctx.fillStyle = '#fff'; ctx.fillRect(b.x, b.y, b.w, b.h); }
-          ctx.globalAlpha = 1; const d = C.iconRadiusFactor * b.w; ctx.drawImage(M.Sprites.get(a), b.x + b.w / 2 - d / 2, b.y + b.h * 0.12, d, d);
+          ctx.globalAlpha = 1; const d = C.iconRadiusFactor * b.w / M.Sprites.BODY_FRAC; ctx.drawImage(M.Sprites.getIcon(a), b.x + b.w / 2 - d / 2, b.y + b.h * 0.46 - d / 2, d, d); // body diameter = iconRadiusFactor * button width
           ctx.fillStyle = C.nameColor; ctx.font = C.nameFont; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.fillText(a.name, b.x + b.w / 2, b.y + b.h - 8);
           ctx.restore();
         }
@@ -111,7 +111,7 @@
         ctx.fillStyle = hover && hover.id === k.id && st === 'available' ? S.hoverFill : S.fill; ctx.strokeStyle = S.border; ctx.lineWidth = st === 'current' || st === 'available' ? 3 : 2;
         roundRect(ctx, k.x, k.y, k.w, k.h, T.card.radius); ctx.fill(); ctx.stroke();
         const tc = (this.tiers.find((t) => t.tier === a.tier) || {}).color || '#fff'; ctx.fillStyle = tc; ctx.fillRect(k.x + 8, k.y + 6, k.w - 16, 4);
-        ctx.globalAlpha = st === 'future' || st === 'needsXp' ? 0.45 : 1; const s = 50 * T.card.iconScale; ctx.drawImage(M.Sprites.get(a), k.x + k.w / 2 - s / 2, k.y + 14, s, s); ctx.globalAlpha = 1;
+        ctx.globalAlpha = st === 'future' || st === 'needsXp' ? 0.45 : 1; const s = 70 * T.card.iconScale; ctx.drawImage(M.Sprites.getIcon(a), k.x + k.w / 2 - s / 2, k.y + 44 - s / 2, s, s); ctx.globalAlpha = 1;
         ctx.fillStyle = '#fff'; ctx.font = T.card.nameFont; ctx.textAlign = 'center'; ctx.fillText(a.name, k.x + k.w / 2, k.y + 82);
         ctx.font = T.card.xpFont; ctx.fillStyle = st === 'needsXp' ? '#ffd36b' : '#cfd8cf'; ctx.fillText(st === 'current' ? 'You' : st === 'past' ? 'Evolved' : a.xpRequired + ' XP', k.x + k.w / 2, k.y + 102);
         ctx.fillStyle = C.biomeColors[a.biome]; ctx.fillRect(k.x + 8, k.y + k.h - 8, k.w - 16, 3);

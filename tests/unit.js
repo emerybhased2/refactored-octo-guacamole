@@ -39,6 +39,37 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
   await t('every inferred value is flagged (tier/xp/stats confidence = inferred)', () => { for (const a of animals) { assert.strictEqual(a.confidence.tier, 'inferred'); assert.strictEqual(a.confidence.xp, 'inferred'); assert.strictEqual(a.confidence.stats, 'inferred'); } });
   await t('verified ability: cheetah extra_boost has the archived 8 s cooldown', () => { const ab = J('data/abilities/abilities.json').find((x) => x.id === 'extra_boost'); assert.strictEqual(ab.cooldownMs, 8000); });
 
+  // ---- art pipeline (original art in the Mope.io style, tools/art)
+  const png = (f) => { const b = fs.readFileSync(path.join(ROOT, f)); assert.strictEqual(b.toString('latin1', 1, 4), 'PNG'); return { w: b.readUInt32BE(16), h: b.readUInt32BE(20), depth: b[24], type: b[25], size: b.length }; };
+  await t('every animal has a recipe and a 256x256 RGBA PNG', () => {
+    global.MopeArt = require('../tools/art/draw.js'); const specs = require('../tools/art/specs.js');
+    for (const a of animals) { assert.ok(specs[a.id], 'no art recipe for ' + a.id); assert.strictEqual(a.spriteStatus, 'recreated'); const i = png(a.sprite); assert.deepStrictEqual([i.w, i.h, i.depth, i.type], [256, 256, 8, 6], a.id); assert.ok(i.size > 1500, a.id + ' looks empty'); }
+    assert.deepStrictEqual(Object.keys(specs).sort(), animals.map((a) => a.id).sort());
+  });
+  await t('every food has a 128x128 RGBA PNG', () => { for (const f of J('data/food/foods.json')) { const i = png(f.sprite); assert.deepStrictEqual([i.w, i.h, i.type], [128, 128, 6], f.id); } });
+  await t('sprite sizing constants agree between art engine and client', () => {
+    const Sprites = require('../client/sprites.js'), art = require('../tools/art/draw.js'), food = require('../tools/art/food.js');
+    assert.strictEqual(Sprites.BODY_FRAC, art.BODY_FRAC); assert.strictEqual(Sprites.FOOD_FRAC, food.FOOD_FRAC);
+  });
+  await t('art provenance is recorded and never claims to be archived art', () => {
+    const m = J('assets/manifest.json').versions['2017-02-13'].animals; assert.strictEqual(m.status, 'recreated'); assert.ok(/not.*Mope\.io's own art|original artwork/i.test(m.provenance));
+  });
+
+  await t('GUI art exists: ability icons, muted icon, terrain tiles', () => {
+    for (const a of J('data/abilities/abilities.json')) { const i = png(a.icon); assert.deepStrictEqual([i.w, i.h, i.type], [64, 64, 6], a.id); }
+    for (const b of J('data/biomes/biomes.json')) { const i = png(b.tile); assert.deepStrictEqual([i.w, i.h], [256, 256], b.id); }
+    const s = png(mcfg.icons.muteOff.src); assert.deepStrictEqual([s.w, s.h], [60, 60]);
+    const gui = require('../tools/art/gui.js'); for (const a of J('data/abilities/abilities.json')) assert.ok(gui.abilityIds.includes(a.id), 'no glyph for ' + a.id);
+  });
+  await t('HUD ability button state (cooldown from server)', () => {
+    const ab = J('data/abilities/abilities.json'), cheetah = animals.find((a) => a.id === 'cheetah');
+    assert.strictEqual(HUD.abilityState(animals.find((a) => a.id === 'mouse'), ab, 0), null);
+    const ready = HUD.abilityState(cheetah, ab, 0); assert.ok(ready.ready && ready.implemented && ready.name === 'Extra Boost');
+    const cd = HUD.abilityState(cheetah, ab, 6000); assert.ok(!cd.ready && cd.remainingSec === 6 && Math.abs(cd.frac - 0.75) < 1e-9);
+    assert.strictEqual(HUD.abilityState(animals.find((a) => a.id === 'kraken'), ab, 0).implemented, false);
+  });
+  await t('muted icon is wired in the menu config', () => assert.ok(mcfg.icons.muteOff && mcfg.icons.mute));
+
   // ---- upgrade menu: archived choice UI
   const A = (id) => animals.find((a) => a.id === id);
   await t('choices sorted by biome; suggested = first in own biome', () => {

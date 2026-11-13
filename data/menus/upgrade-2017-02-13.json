@@ -3,7 +3,7 @@
   "source": "Button class from archived client.js: square 100x100 buttons, biome fill at 75% alpha, white highlight at 20%, animal drawn at 0.6*w/2 radius, name in 12px white (x1.5). Choice order/size from page update note (suggested = first = bigger, leftmost; sorted by biome; Enter picks first). Gap, suggested scale and screen position are INFERRED.",
   "choices": {
     "button": { "w": 100, "h": 100 }, "suggestedScale": 1.25, "gap": 10, "marginBottom": 110,
-    "fillAlpha": 0.75, "highlightAlpha": 0.2, "iconRadiusFactor": 0.6, "nameFont": "bold 15px Arial", "nameColor": "#ffffff",
+    "fillAlpha": 0.75, "highlightAlpha": 0.2, "iconRadiusFactor": 0.52, "nameFont": "bold 15px Arial", "nameColor": "#ffffff",
     "biomeColors": { "land": "#26A73A", "ocean": "#1C91B8", "arctic": "#B2B2B2" },
     "enterTakesFirst": true
   },

@@ -7,15 +7,21 @@
       this.dpr = Math.min(2, g.devicePixelRatio || 1); this.vw = innerWidth; this.vh = innerHeight;
       this.canvas.width = this.vw * this.dpr; this.canvas.height = this.vh * this.dpr;
     }
+    /** Terrain pattern anchored to world space (ox,oy = screen position of the world point the tile starts at). Tiles are cached per image. */
+    pattern(img, zoom, ox, oy) {
+      const key = img.src; this._pat = this._pat || new Map(); let p = this._pat.get(key); if (!p) { p = this.ctx.createPattern(img, 'repeat'); this._pat.set(key, p); }
+      const k = zoom * M.Sprites.TILE_WORLD / img.naturalWidth; if (p.setTransform) p.setTransform(new DOMMatrix([k, 0, 0, k, ox, oy])); return p;
+    }
     begin() { this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); }
     drawWorld(cam, v, lakes, players, foods, meId, myPred, chats, now) {
       const ctx = this.ctx, vw = this.vw, vh = this.vh, z = cam.zoom, ws = v.worldSize, low = this.opts.lowGraphics;
       ctx.fillStyle = '#1b3a1f'; ctx.fillRect(0, 0, vw, vh);
       for (const b of v.biomes) { // biome rectangles (layout inferred)
-        const [sx, sy] = cam.worldToScreen(b.rect[0] * ws, b.rect[1] * ws, vw, vh);
-        ctx.fillStyle = b.color; ctx.fillRect(sx, sy, b.rect[2] * ws * z, b.rect[3] * ws * z);
+        const [sx, sy] = cam.worldToScreen(b.rect[0] * ws, b.rect[1] * ws, vw, vh), tile = low ? null : M.Sprites.getTile(b);
+        ctx.fillStyle = tile ? this.pattern(tile, z, sx, sy) : b.color; ctx.fillRect(sx, sy, b.rect[2] * ws * z, b.rect[3] * ws * z);
       }
-      for (const l of lakes) { const [sx, sy] = cam.worldToScreen(l[0], l[1], vw, vh); ctx.fillStyle = '#2f9fd0'; ctx.beginPath(); ctx.arc(sx, sy, l[2] * z, 0, 7); ctx.fill(); }
+      const oceanTile = low ? null : M.Sprites.getTile(v.biomes.find((b) => b.id === 'ocean') || {});
+      for (const l of lakes) { const [sx, sy] = cam.worldToScreen(l[0], l[1], vw, vh); ctx.fillStyle = oceanTile ? this.pattern(oceanTile, z, sx - l[0] * z + 0, sy - l[1] * z) : '#2f9fd0'; ctx.beginPath(); ctx.arc(sx, sy, l[2] * z, 0, 7); ctx.fill(); ctx.strokeStyle = 'rgba(20,90,130,.55)'; ctx.lineWidth = Math.max(2, 4 * z); ctx.stroke(); }
       if (!low) {
         const [ox, oy] = cam.worldToScreen(0, 0, vw, vh), step = 100 * z; ctx.strokeStyle = 'rgba(0,0,0,0.06)'; ctx.lineWidth = 1; ctx.beginPath();
         for (let x = ((ox % step) + step) % step; x < vw; x += step) { ctx.moveTo(x, 0); ctx.lineTo(x, vh); }
@@ -26,7 +32,9 @@
       for (const f of foods) { // food: light-green outline = edible (archived how-to-play text)
         const def = v.foods[f[3]]; if (!def || !cam.visible(f[1], f[2], def.radius, vw, vh)) continue;
         const [sx, sy] = cam.worldToScreen(f[1], f[2], vw, vh);
-        ctx.fillStyle = def.color; ctx.beginPath(); ctx.arc(sx, sy, def.radius * z, 0, 7); ctx.fill(); ctx.strokeStyle = edge; ctx.lineWidth = Math.max(1.5, 2.5 * z); ctx.stroke();
+        const img = M.Sprites.getFood(def), fr = def.radius * z;
+        if (img) { const h = fr / M.Sprites.FOOD_FRAC; ctx.drawImage(img, sx - h, sy - h, 2 * h, 2 * h); ctx.strokeStyle = edge; ctx.lineWidth = Math.max(1.5, 2.2 * z); ctx.beginPath(); ctx.arc(sx, sy, fr * 1.06, 0, 7); ctx.stroke(); }
+        else { ctx.fillStyle = def.color; ctx.beginPath(); ctx.arc(sx, sy, fr, 0, 7); ctx.fill(); ctx.strokeStyle = edge; ctx.lineWidth = Math.max(1.5, 2.5 * z); ctx.stroke(); }
       }
       const list = players.filter((p) => p.id !== meId); if (myPred) list.push(myPred);
       list.sort((a, b) => v.animals[a.ai].size - v.animals[b.ai].size);
@@ -40,7 +48,7 @@
       ctx.save(); ctx.translate(sx, sy); ctx.rotate(p.angle);
       if (!low) { ctx.fillStyle = 'rgba(0,0,0,0.18)'; ctx.beginPath(); ctx.ellipse(4, 6, pr, pr * 0.9, 0, 0, 7); ctx.fill(); }
       if (this.opts.noImages) { ctx.fillStyle = a.placeholderColor; ctx.beginPath(); ctx.arc(0, 0, pr, 0, 7); ctx.fill(); }
-      else ctx.drawImage(M.Sprites.get(a), -pr * 1.1, -pr * 1.1, pr * 2.2, pr * 2.2);
+      else { const h = pr / M.Sprites.BODY_FRAC; ctx.drawImage(M.Sprites.get(a), -h, -h, 2 * h, 2 * h); } // frame sized so the drawn body matches the hitbox
       ctx.restore();
       if (!isMe) { // outline: LIGHT-GREEN = you can eat it, RED = it can eat you (archived how-to-play text)
         const sand = v.__sandbox, col = sand || a.tier < myTier ? '#8dff8d' : a.tier > myTier ? '#ff4d4d' : null;

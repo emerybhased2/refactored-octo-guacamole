@@ -40,6 +40,7 @@ public final class VersionManager {
             o.add("animals", Data.GSON.toJsonTree(animalOrder.stream().map(animals::get).collect(Collectors.toList())));
             o.add("edges", Data.GSON.toJsonTree(edges));
             o.add("tiers", Data.GSON.toJsonTree(tiers));
+            o.add("abilities", Data.GSON.toJsonTree(abilities));
             o.add("foods", Data.GSON.toJsonTree(foods));
             o.add("biomes", Data.GSON.toJsonTree(biomes));
             o.add("upgradeMenu", Data.read(upgradeMenu));
