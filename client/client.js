@@ -2,7 +2,8 @@
 (function () {
   const M = window.Mope, $ = (id) => document.getElementById(id);
   const params = new URLSearchParams(location.search), DEV = params.get('dev') === '1';
-  const serverUrl = params.get('server') || ((location.protocol === 'https:' ? 'wss://' : 'ws://') + location.hostname + ':8081');
+  // local dev: game server on :8081; hosted (single public port): the web server proxies /ws to the game server
+  const serverUrl = params.get('server') || (location.port === '8080' || location.port === '' && /^(localhost|127\.)/.test(location.hostname) ? 'ws://' + location.hostname + ':8081' : (location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host + '/ws');
 
   const renderer = new M.Renderer($('gCanvas')); renderer.resize();
   const camera = new M.Camera(), input = new M.Input($('gCanvas')), interp = new M.Interpolator(100), net = new M.Net(serverUrl);
@@ -43,8 +44,11 @@
     lastJoin = { t: 'join', name, v: selectedVersion, mode: m }; if (m === 'arena' && $('arenaAnimal')) lastJoin.animal = $('arenaAnimal').value; wantJoin = true; connecting(true); setStatus('');
     if (net.open) net.send(lastJoin); else if (!net.wantOpen) net.connect();
   }
-  net.on('open', () => { if (wantJoin && lastJoin) net.send(lastJoin); let t = null; try { t = localStorage.getItem(tokenKey()); } catch (e) {} const vi = M.MenuVersionManager.current; if (t && !acct.user && vi && vi.features && vi.features.accounts) net.send({ t: 'resume', token: t, v: selectedVersion }); });
+  net.on('open', () => { if (DEV) net.send({ t: 'dev-info' }); if (wantJoin && lastJoin) net.send(lastJoin); let t = null; try { t = localStorage.getItem(tokenKey()); } catch (e) {} const vi = M.MenuVersionManager.current; if (t && !acct.user && vi && vi.features && vi.features.accounts) net.send({ t: 'resume', token: t, v: selectedVersion }); });
   net.on('auth', (m) => { if (m.ok) { Object.assign(acct, { user: m.user, coins: m.coins || 0, owned: m.owned || [], equipped: m.equipped || {} }); try { localStorage.setItem(tokenKey(), m.token); } catch (e) {} document.getElementById('authModal').style.display = 'none'; document.getElementById('authPass').value = ''; refreshAccountUI(); } else authErr(m.err || 'failed'); });
+  // dev tools (only when ?dev=1 AND the server runs with MOPE_DEV=1; ordinary servers ignore these messages)
+  net.on('dev', (m) => { const on = !!m.on && DEV; $('devTools').style.display = on ? 'inline' : 'none'; if (on && !$('devDisaster').options.length) for (const id of ['rainstorm', 'duststorm', 'heatwave', 'snowstorm', 'tsunami', 'volcanic_eruption', 'land_tornado', 'fire_tornado']) $('devDisaster').add(new Option(id)); });
+  if (DEV) { $('devCoins').addEventListener('click', () => { if (!acct.user) { $('devMsg').textContent = 'log in first'; return; } $('devMsg').textContent = ''; net.send({ t: 'dev-coins', v: selectedVersion, n: 1000 }); }); $('devDisasterGo').addEventListener('click', () => net.send({ t: 'dev-disaster', id: $('devDisaster').value })); }
   net.on('shop', (m) => { Object.assign(acct, { coins: m.coins, owned: m.owned, equipped: m.equipped }); shopUI.purchased(); refreshAccountUI(); });
   net.on('shop-error', (m) => { shopUI.error(m.err); authErr(m.err); });
   net.on('coins', (m) => { acct.coins = m.coins; lastEarned = m.earned || 0; refreshAccountUI(); if (lastEarned > 0) { document.getElementById('plusCoinsLabel').textContent = '+' + lastEarned; document.getElementById('plusCoins').style.display = 'block'; } });

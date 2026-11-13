@@ -36,3 +36,9 @@ Water: stay near lakes or in the ocean; at 0 water you take damage and can die o
 Evolution tree/XP/stats from a real source; animal and food art (not in archive); party links; S water-spit; Winter skins; joystick options;
 most abilities (only Charge and Extra Boost move you; the rest are catalogued but inert); mud/hills/bushes/hide-holes; sounds; real HUD geometry;
 every later version; shop/events/accounts UI (accounts exist server-side, gated off); admin panel; Safari/mobile verification; visual-regression tests; binary protocol; PostgreSQL adapter.
+
+
+## Deploying (single public port)
+`Dockerfile` builds the Java server and runs it with the Node web server; the web server listens on `$PORT` (default 8080), serves the client and proxies WebSockets on `/ws` to the game server, so one public port is enough (e.g. Sevalla/any Docker host: build from this repo's Dockerfile, container port 8080). Account data lives in `/app/database` (mount a persistent disk there to keep accounts across redeploys). **Never set `MOPE_DEV` in production** (it enables the dev-only coin/disaster cheats).
+
+**Render:** `render.yaml` is a Blueprint for the same Dockerfile (New + > Blueprint, pick this repo). Render sets `$PORT` itself; free plans have no disk, so accounts reset on redeploy.
