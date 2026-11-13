@@ -40,6 +40,14 @@
   "basis": "same-biome next tier (inferred)"
  },
  {
+  "from": "bigfoot",
+  "to": "blackdragon",
+  "releaseDate": "2020-06-13",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "satellite biome entry from the previous land tier (inferred)"
+ },
+ {
   "from": "blackdragon",
   "to": "kingdragon",
   "releaseDate": "2019-08-25",
@@ -345,6 +353,14 @@
  },
  {
   "from": "duck",
+  "to": "warthog",
+  "releaseDate": "2020-06-13",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "duck",
   "to": "woodpecker",
   "releaseDate": "2019-08-25",
   "removalDate": null,
@@ -395,6 +411,14 @@
   "from": "eagle",
   "to": "tiger",
   "releaseDate": "2018-04-21",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "elephant",
+  "to": "bigfoot",
+  "releaseDate": "2020-06-13",
   "removalDate": null,
   "confidence": "inferred",
   "basis": "same-biome next tier (inferred)"
@@ -969,6 +993,14 @@
  },
  {
   "from": "pig",
+  "to": "warthog",
+  "releaseDate": "2020-06-13",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "pig",
   "to": "woodpecker",
   "releaseDate": "2019-08-25",
   "removalDate": null,
@@ -1070,6 +1102,14 @@
   "removalDate": null,
   "confidence": "inferred",
   "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "scorpion",
+  "to": "bigfoot",
+  "releaseDate": "2020-06-13",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "satellite biome exit to the next land tier (inferred)"
  },
  {
   "from": "scorpion",
@@ -1233,6 +1273,14 @@
  },
  {
   "from": "trex",
+  "to": "bigfoot",
+  "releaseDate": "2020-06-13",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "trex",
   "to": "dragon",
   "releaseDate": "2019-08-25",
   "removalDate": null,
@@ -1283,6 +1331,30 @@
   "from": "walrus",
   "to": "polarbear",
   "releaseDate": "2017-02-13",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "warthog",
+  "to": "donkey",
+  "releaseDate": "2020-06-13",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "warthog",
+  "to": "toucan",
+  "releaseDate": "2020-06-13",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "warthog",
+  "to": "zebra",
+  "releaseDate": "2020-06-13",
   "removalDate": null,
   "confidence": "inferred",
   "basis": "same-biome next tier (inferred)"

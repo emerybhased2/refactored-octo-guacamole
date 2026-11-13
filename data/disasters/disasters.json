@@ -287,6 +287,25 @@
    },
    "confidence": "existence verified; 'very rare... more suck power and a devil face' VERIFIED qualitatively; strength inferred",
    "releaseDate": "2019-12-30"
+  },
+  {
+   "id": "poison_lake",
+   "name": "Poison lake",
+   "biome": "land",
+   "radius": 210,
+   "durationSec": 1,
+   "weight": 0,
+   "permanent": true,
+   "visual": {
+    "kind": "poison",
+    "color": "#7a3fb8"
+   },
+   "effects": {
+    "dps": 3
+   },
+   "confidence": "existence VERIFIED (2020-03-03: 'A new poison lake (surrounded by hills) appears in the land biome'); damage 3/s INFERRED (2020-04-07: 'poison lake's damage decreased by 2x')",
+   "releaseDate": "2020-03-03",
+   "hillRing": true
   }
  ]
 }

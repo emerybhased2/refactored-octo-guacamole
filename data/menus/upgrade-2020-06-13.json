@@ -1,0 +1,87 @@
+{
+  "version": "2020-06-13",
+  "confidence": "mixed",
+  "source": "Same button class as 2018 (verified there). The 2019 client is NOT archived: desert/volcano button colours, gap and positions are INFERRED.",
+  "choices": {
+    "button": {
+      "w": 100,
+      "h": 100
+    },
+    "suggestedScale": 1.25,
+    "gap": 10,
+    "marginBottom": 110,
+    "fillAlpha": 0.75,
+    "highlightAlpha": 0.2,
+    "iconRadiusFactor": 0.52,
+    "nameFont": "bold 17px Arial",
+    "nameColor": "#ffffff",
+    "biomeColors": {
+      "land": "#26A73A",
+      "ocean": "#1C91B8",
+      "arctic": "#B2B2B2",
+      "desert": "#C9A24A",
+      "volcano": "#8C3A2B"
+    },
+    "enterTakesFirst": true,
+    "namePosition": "top",
+    "biomeColorsNote": "land/ocean/arctic verified (2017/2018 client); desert/volcano inferred (2020 shop tints biome_3 #c64a00 / biome_4 #a59215 are shop-card colours, not button colours)"
+  },
+  "tree": {
+    "devOnly": true,
+    "note": "Full progression overview is a project tool, not a historical feature; opened with 'U' only when ?dev=1.",
+    "toggleKey": "u",
+    "panel": {
+      "margin": 40,
+      "background": "rgba(20,30,20,0.85)",
+      "border": "#ffffff",
+      "padding": 20,
+      "title": "Progression (dev view)"
+    },
+    "card": {
+      "w": 110,
+      "h": 124,
+      "gap": 18,
+      "radius": 10,
+      "iconScale": 1.0,
+      "nameFont": "bold 14px Arial",
+      "xpFont": "12px Arial"
+    },
+    "states": {
+      "current": {
+        "border": "#ffffff",
+        "fill": "rgba(255,255,255,0.20)"
+      },
+      "available": {
+        "border": "#7dff7d",
+        "fill": "rgba(125,255,125,0.22)",
+        "hoverFill": "rgba(125,255,125,0.42)"
+      },
+      "needsXp": {
+        "border": "#ffd36b",
+        "fill": "rgba(255,211,107,0.12)"
+      },
+      "future": {
+        "border": "#777777",
+        "fill": "rgba(0,0,0,0.25)"
+      },
+      "past": {
+        "border": "#4f8f4f",
+        "fill": "rgba(0,0,0,0.15)"
+      }
+    },
+    "badge": {
+      "w": 120,
+      "h": 36,
+      "marginBottom": 70,
+      "label": "Tree"
+    }
+  },
+  "sandbox": {
+    "keys": {
+      "up": "ArrowUp",
+      "down": "ArrowDown"
+    },
+    "wraps": true,
+    "note": "'press down as a mouse to go right to kraken/dragon/yeti' (page update note) implies wrap-around"
+  }
+}

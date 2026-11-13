@@ -27,6 +27,23 @@ final class Disasters {
     private double cfgNum(String k, double d) { JsonObject o = w.cfg.disasterCfg; return o != null && o.has(k) ? o.get(k).getAsDouble() : d; }
     private void schedule() { double mean = cfgNum("meanIntervalSec", 180), min = cfgNum("minIntervalSec", 60); nextSpawnTick = w.tick + (long) ((min + w.rnd.nextDouble() * 2 * Math.max(0, mean - min)) * w.cfg.tickRate); }
 
+    /** Permanent hazards (flagged `permanent` in the data): placed once at world creation. The poison lake also gets a ring of hills around it (archived: 'surrounded by hills'). */
+    void addPermanentHazards() {
+        for (Defs.DisasterDef d : w.cfg.disasters) if (d.permanent) {
+            double[] pt = null;
+            for (int tries = 0; tries < 40 && pt == null; tries++) {
+                double[] c = w.biomes.randomPoint(w.rnd, List.of(d.biome)); boolean clear = true;
+                for (double[] l : w.lakes) if (Math.hypot(c[0] - l[0], c[1] - l[1]) < l[2] + d.radius + 80) clear = false;
+                Defs.BiomeDef bd = w.biomes.def(d.biome);
+                if (bd != null && (c[0] < bd.rect[0] * w.size + d.radius + 140 || c[0] > (bd.rect[0] + bd.rect[2]) * w.size - d.radius - 140 || c[1] < bd.rect[1] * w.size + d.radius + 140 || c[1] > (bd.rect[1] + bd.rect[3]) * w.size - d.radius - 140)) clear = false;
+                if (clear) pt = c;
+            }
+            if (pt == null) continue;
+            active.add(new Active(nextId++, d, pt[0], pt[1], d.radius, Long.MAX_VALUE));
+            if (d.hillRing) { int hi = -1; for (int i = 0; i < w.cfg.terrain.size(); i++) if (w.cfg.terrain.get(i).id.equals("hill")) hi = i;
+                if (hi >= 0) for (int k = 0; k < 10; k++) { double a = k * Math.PI * 2 / 10, rr = d.radius + w.cfg.terrain.get(hi).radius * 0.55; w.terrain.add(new double[] { hi, pt[0] + Math.cos(a) * rr, pt[1] + Math.sin(a) * rr }); } }
+        }
+    }
     Defs.DisasterDef def(String id) { for (Defs.DisasterDef d : w.cfg.disasters) if (d.id.equals(id)) return d; return null; }
 
     /** Spawn one disaster now (random location for its biome, or at a volcano for eruptions). Returns null if the id is unknown here. */
@@ -63,7 +80,7 @@ final class Disasters {
     }
 
     void tick(double dt, List<Player> dying) {
-        active.removeIf(a -> w.tick >= a.endTick);
+        active.removeIf(a -> a.endTick != Long.MAX_VALUE && w.tick >= a.endTick);
         if (w.tick >= nextSpawnTick) { if (enabled()) { Defs.DisasterDef d = pickRandom(); if (d != null) trigger(d.id); } schedule(); }
         for (Player p : w.players.values()) {
             p.disasterSpeed = 1;
@@ -92,7 +109,7 @@ final class Disasters {
         StringBuilder s = null;
         for (Active a : active) if (Math.hypot(a.x - x, a.y - y) < a.r + 1100) {
             if (s == null) s = new StringBuilder(",\"dz\":["); else s.append(',');
-            s.append('[').append(a.id).append(",\"").append(a.def.id).append("\",").append((int) a.x).append(',').append((int) a.y).append(',').append((int) a.r).append(',').append((a.endTick - nowTick) * 1000 / tickRate).append(']');
+            s.append('[').append(a.id).append(",\"").append(a.def.id).append("\",").append((int) a.x).append(',').append((int) a.y).append(',').append((int) a.r).append(',').append(a.endTick == Long.MAX_VALUE ? 0 : (a.endTick - nowTick) * 1000 / tickRate).append(']');
         }
         return s == null ? "" : s.append(']').toString();
     }

@@ -158,6 +158,52 @@
       "menus": {
         "note": "No new menu images: the logo and icons of 2019-08-25 are reused; the 2019-12-30 page's own images (update-panel screenshots) were not stored."
       }
+    },
+    "2020-06-13": {
+      "animals": {
+        "status": "recreated",
+        "new": [
+          "warthog",
+          "bigfoot"
+        ],
+        "path": "assets/animals/2020-06-13/<id>.png"
+      },
+      "skins": {
+        "status": "recreated",
+        "new": [
+          "mouse_skin_1",
+          "mouse_skin_2",
+          "tigershark",
+          "hammerhead",
+          "golden_eagle",
+          "black_rhino",
+          "aqua_yeti"
+        ],
+        "provenance": "Original recolors/redraws; archived art not captured."
+      },
+      "shop": {
+        "status": "captured",
+        "coin": "assets/shop/mopecoin_archived.png",
+        "provenance": "Real shop/mopecoin.png (106x111) fetched from the 2020-06-13 capture."
+      },
+      "terrain": {
+        "status": "recreated",
+        "new": [
+          "tree_pine",
+          "tree_palm",
+          "tree_baobab"
+        ]
+      },
+      "icons": {
+        "status": "recreated",
+        "new": [
+          "throw_spear"
+        ]
+      },
+      "audio": {
+        "status": "synthesized",
+        "provenance": "WebAudio-generated; no archived audio."
+      }
     }
   }
 }

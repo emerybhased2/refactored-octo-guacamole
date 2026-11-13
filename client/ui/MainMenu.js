@@ -44,8 +44,8 @@
       $('button_GMsandbox').className = m === 'sandbox' ? 'button' : 'button buttonDisabled';
     }
     paintMute() { const i = this.cfg && this.cfg.icons, im = this.$('button_mute_img'); if (i && i.muteOff) im.src = this.muted ? i.muteOff.src : i.mute.src; } // sound_on.png is archived; sound_off.png is our recreation
-    show() { this.$('startMenuWrapper').style.display = 'block'; this.$('gameAreaWrapper').style.opacity = 1; }
-    hide() { this.$('startMenuWrapper').style.display = 'none'; this.$('optionsDiv').style.display = 'none'; }
+    show() { this.$('startMenuWrapper').style.display = 'block'; if (this.cfg && this.cfg.account) this.$('loginDiv').style.display = ''; this.$('gameAreaWrapper').style.opacity = 1; }
+    hide() { this.$('startMenuWrapper').style.display = 'none'; this.$('loginDiv').style.display = 'none'; this.$('optionsDiv').style.display = 'none'; }
     setSpawnLabel(t) { this.$('spawnXpLabel').textContent = t || ''; }
   }
   M.MainMenu = MainMenu;

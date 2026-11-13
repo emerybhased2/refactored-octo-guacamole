@@ -1,0 +1,338 @@
+{
+  "version": "2020-06-13",
+  "confidence": "VERIFIED: elements, ids, texts and geometry from the archived 2020-06-13 homepage HTML + its REAL main.css (no client.js exists). Option checkboxes are built dynamically by the unarchived client and remain inferred.",
+  "source": "Arquivo.pt captures 20200613164902 (index.html), 20200613164916 (main.css), 20200613165054 (shop/mopecoin.png). Logo identical to the 2018 wordmark; settings/x/sound icons reused from 2017.",
+  "page": {
+    "background": "#3FBA54",
+    "font": "Arial"
+  },
+  "column": {
+    "w": 350,
+    "h": 700,
+    "top": 30,
+    "onconnectMarginTop": -10,
+    "onconnectMinHeight": 162
+  },
+  "logo": {
+    "src": "assets/menus/2018-04-21/logo.png",
+    "w": 350,
+    "h": 99,
+    "marginTop": -20
+  },
+  "nickname": {
+    "w": 250,
+    "placeholder": "Your name",
+    "maxLength": 15,
+    "border": "4px solid #1c9c25",
+    "font": "30px Arial",
+    "padding": 5,
+    "radius": 5,
+    "background": "#ffffff",
+    "color": "#000000",
+    "marginTop": 5
+  },
+  "play": {
+    "label": "Play",
+    "w": 250,
+    "h": 50,
+    "marginTop": 10,
+    "background": "#0aa633",
+    "hover": "#067d26",
+    "borderBottom": "4px solid #116c17",
+    "color": "#ffffff",
+    "font": "bold large Arial",
+    "radius": 5,
+    "fontSize": "2em"
+  },
+  "icons": {
+    "settings": {
+      "src": "assets/menus/2017-02-13/settings.png",
+      "w": 30,
+      "h": 30
+    },
+    "close": {
+      "src": "assets/menus/2017-02-13/x.png",
+      "w": 35,
+      "h": 35
+    },
+    "mute": {
+      "src": "assets/menus/2017-02-13/sound_on.png",
+      "w": 30,
+      "h": 31,
+      "title": "Mute/unmute sounds"
+    },
+    "muteOff": {
+      "src": "assets/menus/2017-02-13/sound_off.png",
+      "w": 30,
+      "h": 30,
+      "status": "recreated"
+    },
+    "mutePlacement": "settings"
+  },
+  "options": {
+    "background": "rgba(11,164,52,0.95)",
+    "top": 175,
+    "radius": 8,
+    "padding": 5,
+    "fontSize": 12,
+    "select": {
+      "background": "#3fba54",
+      "border": "3px solid #1F9A1F",
+      "regionW": 190,
+      "serverW": 240
+    },
+    "checkboxes": [
+      {
+        "id": "noImages",
+        "label": "No Animal images",
+        "color": "#000",
+        "implemented": true
+      },
+      {
+        "id": "noNames",
+        "label": "No Names & Chat",
+        "color": "#000",
+        "implemented": true
+      },
+      {
+        "id": "lowGraphics",
+        "label": "Use Low graphics",
+        "color": "#000",
+        "implemented": true
+      },
+      {
+        "id": "noJoystick",
+        "label": "No Joystick (mobile)",
+        "color": "#194614",
+        "implemented": false
+      },
+      {
+        "id": "leftHanded",
+        "label": "LEFT-handed Joystick",
+        "color": "#194614",
+        "implemented": false
+      }
+    ],
+    "regionSelect": false,
+    "serverWidth": 250,
+    "serverColor": "#232020",
+    "regionNote": "2020 HTML has only #serverSelect (no region select)",
+    "width": 270
+  },
+  "panels": {
+    "howToPlay": null,
+    "updates": {
+      "title": null,
+      "background": "rgba(9,153,47,.52)",
+      "w": 200,
+      "marginLeft": 17,
+      "marginTop": 20,
+      "textColor": "#f8f8f8",
+      "textShadow": "1px 1px rgba(0,0,0,0.52)",
+      "titleColor": "#061304",
+      "titleShadow": "1px 1px #064e1982",
+      "maxHeight": 400,
+      "scroll": true,
+      "sections": [
+        {
+          "title": "June 4: New official Youtube channel",
+          "items": [
+            "We've made a new official youtube channel where we will post official updates/announcements and sneak peeks.",
+            "We've got a fix for the ghost bug coming soon, and we're working on fixing random server disconnections."
+          ]
+        },
+        {
+          "title": "April 17: Mope Proxy sites",
+          "items": [
+            "If mope.io is blocked for you, try the proxy sites listed on the original page."
+          ]
+        },
+        {
+          "title": "April 7: Bug fixes",
+          "items": [
+            "Fixed slow boosting (properly now)",
+            "rare animals rarity increase (eg Golden Eagle 5/1000, Black Rhino 4/1000, Aqua Yeti 5/600)",
+            "poison lake's damage decreased by 2x"
+          ]
+        },
+        {
+          "title": "March 12: Buffs, nerfs, bug fixes, and mud diving!",
+          "items": [
+            "Certain animals (hippo/komodo/pig/warthog/croc/rhino/boa/chicken) can dive in mud now!"
+          ]
+        },
+        {
+          "title": "March 10: We're working on lag fixes",
+          "items": [
+            "In the settings (click the gear button), you can choose lower graphics to make your gameplay smoother (though it may look blurrier)"
+          ]
+        },
+        {
+          "title": "March 3: New Trees, skins, Bigfoot!",
+          "items": [
+            "NEW: Climbable trees (4+ types) + Forest biome! PRESS S TO CLIMB UP/DOWN trees - only certain animals can climb them and 1/4 of the land has loads of them!",
+            "Trees turn transparent when a player gets close to them",
+            "NEW: a rare Bigfoot animal (dragon tier) throws spears; shop buyable, or 1/1000 rarity",
+            "Rivers now shrink (dry up) over time (and re-fill)",
+            "A new poison lake (surrounded by hills) appears in the land biome!",
+            "NEW: sounds when eating food, drinking water drops, eating animals and dying (a mute button has been added to the settings)",
+            "10+ NEW skins in the shop!"
+          ]
+        },
+        {
+          "title": "DEC 23: #GoldenAge",
+          "items": [
+            "Accounts + shop with 59 skins; log in with Facebook and Google; earn coins",
+            "NEW Disasters; NEW: Snowman (1/2000); NEW: Arctic Volcano"
+          ]
+        }
+      ]
+    }
+  },
+  "animation": null,
+  "absentInThisVersion": [
+    "sandbox",
+    "winter-skins",
+    "party-link",
+    "how-to-play",
+    "xsolla-payments",
+    "test-accounts",
+    "region-select"
+  ],
+  "notReproduced": [
+    "third-party ads",
+    "app-store promo banners",
+    "YouTube subscribe widget",
+    "1v1 Arena / game-mode buttons (CSS exists, not in the page HTML)",
+    "reddit/changelog/privacy links",
+    "Xsolla real-money store",
+    "test-account/Add Coins/Reset purchases debug buttons (TESTING block)",
+    "Facebook/Google OAuth",
+    "YouTube channel promo block (#ytDiv)",
+    "coin-pack store and clothing/props editor tabs (real-money / not captured)",
+    "image promos in the update panel"
+  ],
+  "modes": null,
+  "spectate": {
+    "label": "Spectate",
+    "w": 200,
+    "background": "#0aa633",
+    "hover": "#16932a",
+    "borderBottom": "4px solid #116c17",
+    "color": "#ffffff",
+    "note": "button verified; in the 2020 HTML it sits inside the settings panel after the options; spectating itself is project-implemented (behaviour inferred)",
+    "placement": "settings"
+  },
+  "account": {
+    "loggedOutText": "Log in to earn coins and unlock new skins!",
+    "providers": [
+      {
+        "id": "facebookLoginBtn",
+        "label": "Login with Facebook",
+        "available": false
+      },
+      {
+        "id": "googleLoginBtn",
+        "label": "Login with Google",
+        "available": false
+      }
+    ],
+    "providerNote": "Facebook/Google OAuth cannot be provided in this project: the buttons are shown as in the archived page and open a LOCAL account form instead (non-historical substitute).",
+    "loggedIn": {
+      "coinsTitle": "add more coins",
+      "shopButton": "Shop",
+      "logout": "Logout of account"
+    },
+    "position": "right column (#rightSide, hidden on narrow screens by the archived CSS)",
+    "coinIcon": "assets/shop/mopecoin_archived.png",
+    "coinIconStatus": "original (captured 2020-06-13)",
+    "logoutPlacement": "settings",
+    "style": {
+      "width": 130,
+      "background": "rgba(9,153,47,.51)",
+      "radius": 7,
+      "padding": 6,
+      "marginTop": 5,
+      "avatar": {
+        "size": 40,
+        "background": "rgba(8,103,33,.55)",
+        "radius": 7
+      },
+      "name": {
+        "color": "#0f5413",
+        "bold": true
+      },
+      "coins": {
+        "background": "rgba(8,103,33,.55)",
+        "radius": 7,
+        "iconSize": 23
+      },
+      "button": {
+        "fontSize": "0.7em",
+        "background": "#09992f",
+        "borderBottom": "4px solid #116c17",
+        "hover": "#0c882d"
+      },
+      "facebook": {
+        "background": "#4261ad",
+        "borderBottom": "5px solid #253763",
+        "hover": "#375090"
+      },
+      "google": {
+        "background": "#af3227",
+        "borderBottom": "5px solid #651711",
+        "hover": "#8a271e"
+      }
+    },
+    "plusCoins": {
+      "label": "+",
+      "note": "#plusCoins shows coins earned after a run (verified element)"
+    }
+  },
+  "menuPanel": {
+    "background": "rgba(9,153,47,.49)",
+    "radius": 8,
+    "padding": 3,
+    "maxWidth": 350,
+    "note": "#mopeMenu (CSS .49 in 2020; .36 in 2019)"
+  },
+  "graphics": {
+    "title": "Graphics (Use Medium/Low if the game lags for you)",
+    "fpsLabel": "FPS: ",
+    "lowLabel": "Low Graphics",
+    "hdLabel": "Normal Graphics(HD)",
+    "note": "labels verified; 'Low' = lower render resolution (blurrier, per the 2020-03-10 note)"
+  },
+  "shopWindow": {
+    "width": 638,
+    "height": 345,
+    "border": "4px solid #1c9c25",
+    "background": "#1b9121",
+    "card": {
+      "width": 100,
+      "background": "#1da826",
+      "border": "2px solid #1c9c25",
+      "radius": 8,
+      "image": "#3fba54",
+      "imageHeight": 130,
+      "price": "#a0f136",
+      "priceHeight": 36,
+      "hoverBorder": "#e9e501",
+      "glow": "0 0 10px #fffc48",
+      "buyButton": "#2ad636"
+    },
+    "tabs": [
+      "Skins",
+      "Animals"
+    ],
+    "confidence": "colours/sizes VERIFIED from the 2020 CSS (tabs/coin packs/clothing editor not reproduced)",
+    "biomeTints": {
+      "land": "#09992f",
+      "ocean": "#007ec0",
+      "arctic": "grey",
+      "volcano": "#c64a00",
+      "desert": "#a59215"
+    },
+    "tintNote": "volcano/desert mapping inferred"
+  }
+}

@@ -54,6 +54,7 @@ public final class World {
         }
         for (int ti = 0; ti < cfg.terrain.size(); ti++) { // terrain objects: density per 1M px^2 of each allowed biome, placed inside the biome rect
             Defs.TerrainDef td = cfg.terrain.get(ti);
+            if (td.density <= 0 && td.forestDensity <= 0) continue;
             for (Defs.BiomeDef b : cfg.biomes) if (td.biomes.contains(b.id)) {
                 double x0 = b.rect[0] * size, y0 = b.rect[1] * size, bw = b.rect[2] * size, bh = b.rect[3] * size;
                 int n = (int) Math.round(td.density * bw * bh / 1_000_000.0);
@@ -66,10 +67,16 @@ public final class World {
                 }
             }
         }
+        if (cfg.forest != null) for (int ti = 0; ti < cfg.terrain.size(); ti++) { // forest: dense trees over 1/4 of the land (verified claim; placement inferred)
+            Defs.TerrainDef td = cfg.terrain.get(ti); if (td.forestDensity <= 0) continue;
+            double fx = cfg.forest[0] * size, fy = cfg.forest[1] * size, fw = cfg.forest[2] * size, fh = cfg.forest[3] * size; int n = (int) Math.round(td.forestDensity * fw * fh / 1_000_000.0);
+            for (int k = 0; k < n; k++) for (int tries = 0; tries < 8; tries++) { double tx = fx + td.radius + rnd.nextDouble() * Math.max(1, fw - 2 * td.radius), ty = fy + td.radius + rnd.nextDouble() * Math.max(1, fh - 2 * td.radius); boolean wet = false; for (double[] l : lakes) if (Math.hypot(tx - l[0], ty - l[1]) < l[2] + td.radius) { wet = true; break; } if (!wet) { terrain.add(new double[] { ti, tx, ty }); break; } }
+        }
         sandboxOrder.addAll(cfg.animals.values());
         List<String> bo = cfg.biomeIds;
         sandboxOrder.sort(Comparator.comparingInt((Animal a) -> a.tier).thenComparingInt(a -> bo.indexOf(a.biome)).thenComparingInt(a -> a.internalId));
         disasters = new Disasters(this);
+        if (!arena && !sandbox) disasters.addPermanentHazards(); // e.g. the poison lake ringed by hills (2020)
         if (!sandbox && !arena) for (int i = 0; i < cfg.bots; i++) join("Bot" + (i + 1), null, true);
     }
 
@@ -93,6 +100,7 @@ public final class World {
         p.setAnimal(bot && !cfg.starters.isEmpty() ? cfg.animals.get(cfg.starters.get(rnd.nextInt(cfg.starters.size()))) : evolution.start()); p.xp = 0; p.health = p.maxHealth(); p.water = 100;
         teleportToBiome(p, p.animal.biome);
         p.protectedUntilTick = tick + 2L * cfg.tickRate;
+        rollVariant(p);
         players.put(p.id, p);
         return p;
     }
@@ -136,7 +144,7 @@ public final class World {
     /** Server-side evolution. The client only ever requests; XP and edges are validated here. */
     public boolean evolve(Player p, String targetId) {
         if (p.dead || sandbox || !evolution.canEvolve(p.animal, targetId, p.xp, p::canHaveRare)) return false;
-        String prev = p.animal.id; setAnimalAndMove(p, cfg.animals.get(targetId)); carrySkin(p, prev);
+        String prev = p.animal.id; setAnimalAndMove(p, cfg.animals.get(targetId)); carrySkin(p, prev); rollVariant(p); p.climbing = false;
         return true;
     }
     /** A skin family (e.g. golden) carries over to the next animal if the player owns a matching skin for it (archived note: 'Golden KD upgrade if evolving from BD'). */
@@ -145,6 +153,16 @@ public final class World {
         Defs.ShopItem prevSkin = null; for (Defs.ShopItem it : cfg.shop) if (it.id.equals(prevItem)) prevSkin = it;
         if (prevSkin == null || prevSkin.family == null) return;
         for (Defs.ShopItem it : cfg.shop) if ("skin".equals(it.type) && prevSkin.family.equals(it.family) && p.animal.id.equals(it.animal) && p.owned.contains(it.id)) { p.skins.put(p.animal.id, it.id); return; }
+    }
+    /** Rare cosmetic variants (e.g. Golden Eagle 5/1000): rolled each time a player becomes that animal. */
+    public void rollVariant(Player p) {
+        p.variants.remove(p.animal.id);
+        for (Defs.Variant v : cfg.variants) if (v.animal.equals(p.animal.id) && rnd.nextDouble() < v.rarity) { p.variants.put(p.animal.id, v.id); return; }
+    }
+    /** S key: climb up/down a tree. Only climbers may, and only where the version has climbing. */
+    public boolean toggleClimb(Player p) {
+        if (!cfg.feature("climbing") || p.dead || !cfg.climbers.contains(p.animal.id)) return false;
+        p.climbing = !p.climbing; return true;
     }
     /** Dev/test hook: start a disaster now. */
     public boolean triggerDisaster(String id) { return disasters.trigger(id) != null; }
@@ -285,7 +303,7 @@ public final class World {
             if (!first) s.append(','); first = false;
             s.append('[').append(o.id).append(',').append(r1(o.x)).append(',').append(r1(o.y)).append(',')
              .append(cfg.animalOrder.indexOf(o.animal.id)).append(',').append(r2(o.angle)).append(',').append((int) (100 * o.health / o.maxHealth())).append(',')
-             .append(Data.GSON.toJson(o.name)); if (o.skinId() != null) s.append(',').append(Data.GSON.toJson(o.skinId())); s.append(']');
+             .append(Data.GSON.toJson(o.name)); if (o.skinId() != null || o.climbing) { s.append(',').append(o.skinId() == null ? "null" : Data.GSON.toJson(o.skinId())); if (o.climbing) s.append(",1"); } s.append(']');
         }
         s.append("],\"f\":[");
         first = true;

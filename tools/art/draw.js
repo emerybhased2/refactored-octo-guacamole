@@ -148,6 +148,7 @@
     crystals(c, s, pal, o) { const b = s.body; for (let i = 0; i < o.n; i++) { const a = o.from + (o.to - o.from) * i / (o.n - 1), x = Math.cos(a) * b.rx * 0.92, y = Math.sin(a) * b.ry * 0.92, L = o.len * (0.7 + 0.5 * ((i * 7) % 5) / 4); c.save(); c.translate(x, y); c.rotate(a + Math.PI / 2); P.poly(c, [[-o.w, 0], [0, -L], [o.w, 0], [o.w * 0.4, o.w * 0.9], [-o.w * 0.4, o.w * 0.9]], shade(o.c, -0.2)); P.poly(c, [[-o.w * 0.5, -2], [0, -L * 0.85], [o.w * 0.15, -2]], shade(o.c, 0.3)); c.restore(); } },
     crown(c, s, pal, o) { const hy = H(s).y - H(s).r * 0.55; P.poly(c, [[-26, hy], [-26, hy - 20], [-14, hy - 8], [-7, hy - 28], [0, hy - 10], [7, hy - 28], [14, hy - 8], [26, hy - 20], [26, hy]], shade(o.c, -0.25)); P.poly(c, [[-23, hy - 2], [-23, hy - 16], [-13, hy - 6], [-7, hy - 24], [0, hy - 8], [7, hy - 24], [13, hy - 6], [23, hy - 16], [23, hy - 2]], o.c); for (const x of [-14, 0, 14]) P.ell(c, x, hy - 5, 3.6, 3.6, o.gem || '#d8362f'); },
     comb(c, s, pal, o) { const hy = H(s).y - H(s).r * 0.62; for (let i = -1; i <= 1; i++) P.ell(c, i * 8, hy - Math.abs(i) * -3, 7, 9, o.c); P.ell(c, 0, H(s).y + H(s).r * 0.7, 5, 9, o.c); },
+    hammer(c, s, pal, o) { const y = H(s).y + 6; P.ell(c, 0, y, o.w + 3, o.h + 3, shade(o.c, -0.25)); P.ell(c, 0, y, o.w, o.h, o.c); P.ell(c, -o.w * 0.35, y - o.h * 0.3, o.w * 0.25, o.h * 0.3, 'rgba(255,255,255,.18)'); },
     underbody(c, s, pal, o) { /* drawn before body */ },
   };
 

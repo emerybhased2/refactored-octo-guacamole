@@ -201,5 +201,12 @@
     },
     "position": "right column (inferred)",
     "coinIcon": "assets/shop/mopecoin.png"
+  },
+  "menuPanel": {
+    "background": "rgba(9,153,47,.36)",
+    "radius": 8,
+    "padding": 3,
+    "maxWidth": 350,
+    "note": "#mopeMenu exists in the archived 2019 HTML/CSS (rgba .36); added after a later capture showed the structure clearly"
   }
 }

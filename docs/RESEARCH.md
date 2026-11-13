@@ -109,6 +109,16 @@ Prices, the coin earn rate (1 per 100 XP), every disaster number except Duststor
 ### Not implemented
 Real-money purchases, Facebook/Google OAuth, the apex-kill interface, camouflage (Snowman passive), Phoenix boost behaviour, snowball projectiles, terrain effects (hiding, mud), "Waves", HD art.
 
+## 2020-06-13 capture (version 5, "Forest, Bigfoot, Sounds")
+The 2020-03-14 capture was deliberately skipped (user request); its changes appear here through the dated update notes on the 2020-06-13 homepage.
+Evidence: real `index.html` (menu structure: `#mopeMenu`, server select only, Spectate/mute/logout/graphics inside settings, `#plusCoins`, `#rightSide` login), real `main.css` (login 130px, shop window 638x345, colours), real `shop/mopecoin.png` (106x111). No client.js exists for 2019+.
+### Verified (dated notes)
+Mar 3: climbable trees (S key), Forest (1/4 of land), trees transparent near players, Bigfoot (dragon tier, 1/1000 or shop), rivers shrink, poison lake with hills, sounds + mute in settings, 10+ skins. Mar 10: low-graphics option. Mar 12: mud diving. Apr 7: rarity increases (Golden Eagle 5/1000, Black Rhino 4/1000, Aqua Yeti 5/600), poison-lake damage halved, slow boosting fixed. Warthog appears in the Mar 12 note.
+### Inferred
+Prices; poison-lake damage 3/s; which animals climb/fly; forest placement; volcano/desert biome-number mapping; Warthog tier; sound design (synthesized WebAudio, no archived audio); local accounts replace Facebook/Google.
+### Not implemented
+Mud diving, rivers shrinking, Bigfoot spear/fire (`throw_spear` icon only), real-money packs, clothing editor, YouTube promo, camouflage, apex-kill UI.
+
 ## Next versions
 Captures exist for 2018-07-16, 2019-03-27/04-14 and later. The Dec 2, 2016 "Classic Mope" (mope.io/oldmope) may be capturable and would be an earlier baseline.
 

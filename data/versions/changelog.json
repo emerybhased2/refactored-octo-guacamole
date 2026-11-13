@@ -202,5 +202,53 @@
     "name": "Captures 2019-09-14, 09-21, 10-06, 12-13 changed only note text (e.g. 'Aug 16: Fixed bugs', 'accounts/shop coming soon')"
    }
   ]
+ },
+ {
+  "version": "0.5",
+  "date": "2020-06-13",
+  "confidence": "existence verified (2020-06-13 homepage + main.css); numbers inferred",
+  "changes": [
+   {
+    "type": "animals_added",
+    "names": [
+     "Warthog",
+     "Bigfoot (1/1000 rarity or shop; dragon tier)"
+    ]
+   },
+   {
+    "type": "rare_variants",
+    "names": [
+     "Golden Eagle 5/1000",
+     "Black Rhino 4/1000",
+     "Aqua Yeti 5/600"
+    ],
+    "note": "rarities increased 2020-04-07 (verified numbers)"
+   },
+   {
+    "type": "terrain",
+    "names": [
+     "Climbable trees (4+ types, S to climb, transparent when a player is close)",
+     "Forest (1/4 of the land)",
+     "Poison lake surrounded by hills (damage halved 2020-04-07)"
+    ],
+    "note": "rivers shrink/refill and mud diving also announced; not implemented"
+   },
+   {
+    "type": "audio",
+    "name": "Sounds when eating, drinking, eating animals and dying; mute button in settings (2020-03-03)"
+   },
+   {
+    "type": "shop",
+    "name": "10+ new skins (mouse variants, Tiger Shark, Hammerhead evidenced); Bigfoot buyable"
+   },
+   {
+    "type": "menu",
+    "name": "Real CSS captured: login block 130px, Facebook/Google button colours, shop window 638px, graphics HD/Mid buttons + fps option"
+   },
+   {
+    "type": "capture_note",
+    "name": "The 2020-03-14 capture was intentionally skipped; this version's notes cover Feb-Jun 2020"
+   }
+  ]
  }
 ]

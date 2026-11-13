@@ -1,0 +1,177 @@
+{
+  "id": "2020-06-13",
+  "date": "2020-06-13",
+  "label": "June 13, 2020 - Forest, Bigfoot, Sounds",
+  "confidence": "mixed",
+  "notes": "Evidenced by the archived 2020-06-13 homepage (update notes, element ids) and its REAL main.css (menu/login/shop geometry). NO client.js exists, so ids, abilities, tiers, XP and gameplay numbers are inferred except where marked VERIFIED. The 2020-03-14 capture was skipped on purpose.",
+  "menu": "data/menus/main-2020-06-13.json",
+  "upgradeMenu": "data/menus/upgrade-2020-06-13.json",
+  "hud": "data/menus/hud-2020-06-13.json",
+  "startAnimal": "mouse",
+  "starters": [
+    "mouse",
+    "shrimp",
+    "chipmunk",
+    "snail",
+    "lemming"
+  ],
+  "modes": [
+    "normal"
+  ],
+  "biomes": [
+    "land",
+    "ocean",
+    "arctic",
+    "desert",
+    "volcano"
+  ],
+  "foods": [
+    "red_berry",
+    "blue_berry",
+    "orange_fruit",
+    "raspberry",
+    "pear",
+    "banana",
+    "coconut",
+    "lillypad",
+    "watermelon",
+    "cactus_fruit",
+    "ember_fruit"
+  ],
+  "features": {
+    "accounts": true,
+    "shop": true,
+    "chat": true,
+    "events": false,
+    "waterBar": true,
+    "serverSelect": true,
+    "settings": true,
+    "sandbox": false,
+    "mute": true,
+    "party": false,
+    "spectate": true,
+    "arena": true,
+    "arenaNote": "1v1 Arena evidenced by the 2019-06-18 note; rules INFERRED; reachable only from the dev bar (no Arena button exists in the archived menu HTML)",
+    "disasters": true,
+    "sounds": true,
+    "climbing": true,
+    "forest": true,
+    "rareVariants": true,
+    "treeTransparency": true,
+    "graphicsOptions": true,
+    "poisonLake": true
+  },
+  "tickRate": 30,
+  "netRate": 20,
+  "worldSize": 6000,
+  "bots": 36,
+  "terrain": [
+    "bush",
+    "hill",
+    "mud",
+    "hole",
+    "rock",
+    "ice_patch",
+    "tree",
+    "cactus",
+    "lava_pool",
+    "volcano_cone",
+    "arctic_volcano",
+    "tree_pine",
+    "tree_palm",
+    "tree_baobab"
+  ],
+  "layout": {
+    "arctic": [
+      0,
+      0,
+      1,
+      0.22
+    ],
+    "land": [
+      0,
+      0.22,
+      0.64,
+      0.56
+    ],
+    "desert": [
+      0.64,
+      0.22,
+      0.36,
+      0.28
+    ],
+    "volcano": [
+      0.64,
+      0.5,
+      0.36,
+      0.28
+    ],
+    "ocean": [
+      0,
+      0.78,
+      1,
+      0.22
+    ]
+  },
+  "layoutConfidence": "inferred",
+  "tierStructure": {
+    "source": "USER-PROVIDED",
+    "tiers": 18,
+    "apex": 15,
+    "monsters": 16,
+    "blackDragon": 17,
+    "kingDragon": 18,
+    "kingDragonXp": 100000000
+  },
+  "economy": {
+    "coinsPerXp": 0.01,
+    "note": "coins earned per XP at death; INFERRED"
+  },
+  "disasters": {
+    "enabled": true,
+    "meanIntervalSec": 180,
+    "minIntervalSec": 60
+  },
+  "forest": {
+    "rect": [
+      0.32,
+      0.5,
+      0.32,
+      0.28
+    ],
+    "note": "'1/4 of the land has loads of them' (verified); location/shape inferred: 0.32*0.28 vs land 0.64*0.56 = exactly 1/4 of the land area"
+  },
+  "climbing": {
+    "climbers": [
+      "gorilla",
+      "leopard",
+      "jaguar",
+      "blackpanther",
+      "tiger",
+      "cheetah",
+      "macaw",
+      "toucan",
+      "woodpecker",
+      "bigfoot",
+      "snowleopard",
+      "chipmunk",
+      "lemming"
+    ],
+    "fliers": [
+      "eagle",
+      "macaw",
+      "toucan",
+      "woodpecker",
+      "flamingo",
+      "pelican",
+      "peacock",
+      "phoenix",
+      "dragon",
+      "blackdragon",
+      "kingdragon",
+      "duck",
+      "duckling"
+    ],
+    "note": "'only certain animals can climb them' is verified; WHICH animals is INFERRED. Animals in trees can only be eaten by climbers/fliers (inferred from the Bigfoot spear note)."
+  }
+}

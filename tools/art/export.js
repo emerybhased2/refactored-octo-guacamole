@@ -11,6 +11,7 @@ for (let i = 0; i < args.length; i++) { if (args[i] === '--version') version = a
   const animals = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/progression/animals.json'), 'utf8'));
   const b = await chromium.launch(), page = await b.newPage();
   await page.setContent('<canvas id="c" width="256" height="256"></canvas>');
+  await page.addScriptTag({ content: 'window.MopeAnimalColors = ' + JSON.stringify(Object.fromEntries(animals.map((x) => [x.id, x.placeholderColor]))) + ';' }); // base colours for skins that recolor an animal whose colour lives in animals.json
   await page.addScriptTag({ content: fs.readFileSync(path.join(__dirname, 'draw.js'), 'utf8') });
   await page.addScriptTag({ content: fs.readFileSync(path.join(__dirname, 'specs.js'), 'utf8') });
   await page.addScriptTag({ content: fs.readFileSync(path.join(__dirname, 'food.js'), 'utf8') });
@@ -54,7 +55,7 @@ for (let i = 0; i < args.length; i++) { if (args[i] === '--version') version = a
     console.log(`exported ${T.length} terrain sprites`);
     if (sheet) { const p4 = await b.newPage(); await p4.setContent('<body style="margin:0;background:#4fbf5a"><canvas id=s width=1152 height=128></canvas></body>'); await p4.evaluate(async (tr) => { const c = document.getElementById('s').getContext('2d'); let i = 0; for (const u of Object.values(tr)) { const im = new Image(); im.src = u; await im.decode(); c.drawImage(im, i++ * 128, 0); } }, tr); const png = await p4.evaluate(() => document.getElementById('s').toDataURL('image/png')); fs.writeFileSync(sheet.replace('.png', '_terrain.png'), Buffer.from(png.split(',')[1], 'base64')); } }
   // shop skins (256x256, facing +x like animals)
-  { const items = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shop/shop.json'), 'utf8')).items.filter((i) => i.type === 'skin' && (!only.length || only.includes(i.id)));
+  { const items = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shop/shop.json'), 'utf8')).items.filter((i) => i.type === 'skin').concat(JSON.parse(fs.readFileSync(path.join(ROOT, 'data/variants.json'), 'utf8')).variants).filter((i) => !only.length || only.includes(i.id));
     const base = Object.fromEntries(animals.map((a) => [a.id, a]));
     const sk = await page.evaluate((items) => { const r = {}, src = document.createElement('canvas'); src.width = src.height = 256; for (const it of items) { const spec = window.MopeSkinSpecs[it.id]; window.MopeArt.drawAnimal(src.getContext('2d'), spec, 256); const dst = document.createElement('canvas'); dst.width = dst.height = 256; const d = dst.getContext('2d'); d.translate(128, 128); d.rotate(-Math.PI / 2); d.drawImage(src, -128, -128); r[it.id] = dst.toDataURL('image/png'); } return r; }, items);
     for (const it of items) { const dest = path.join(ROOT, it.sprite); fs.mkdirSync(path.dirname(dest), { recursive: true }); fs.writeFileSync(dest, Buffer.from(sk[it.id].split(',')[1], 'base64')); }

@@ -1,0 +1,35 @@
+{
+ "_note": "Rare cosmetic variants an animal may spawn as when a player evolves into it. Rarities are VERIFIED (2020-04-07 note: 'rare animals rarity increase'); looks are inferred.",
+ "variants": [
+  {
+   "id": "golden_eagle",
+   "animal": "eagle",
+   "name": "Golden Eagle",
+   "rarity": 0.005,
+   "sprite": "assets/skins/golden_eagle.png",
+   "spriteStatus": "recreated",
+   "releaseDate": "2020-06-13",
+   "confidence": "rarity 5/1000 VERIFIED; existence since 2019-06 (notes); look inferred"
+  },
+  {
+   "id": "black_rhino",
+   "animal": "rhino",
+   "name": "Black Rhino",
+   "rarity": 0.004,
+   "sprite": "assets/skins/black_rhino.png",
+   "spriteStatus": "recreated",
+   "releaseDate": "2020-06-13",
+   "confidence": "rarity 4/1000 VERIFIED; look inferred"
+  },
+  {
+   "id": "aqua_yeti",
+   "animal": "yeti",
+   "name": "Aqua Yeti",
+   "rarity": 0.00833333,
+   "sprite": "assets/skins/aqua_yeti.png",
+   "spriteStatus": "recreated",
+   "releaseDate": "2020-06-13",
+   "confidence": "rarity 5/600 VERIFIED; look inferred"
+  }
+ ]
+}

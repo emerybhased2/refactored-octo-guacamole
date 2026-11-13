@@ -95,6 +95,7 @@ public final class NetworkManager extends WebSocketServer {
                 case "sandbox" -> { Player p = s.player; double d = num(m, "d"); if (p != null && Double.isFinite(d)) s.world.submit(() -> s.world.sandboxStep(p, (int) d)); }
                 case "register", "login", "resume" -> auth(c, s, t, m);
                 case "shop-info", "buy", "equip", "unequip" -> shopMsg(c, s, t, m);
+                case "climb" -> { Player p = s.player; if (p != null) s.world.submit(() -> s.world.toggleClimb(p)); }
                 case "logout" -> { accounts.logout(str(m, "token")); s.account = null; }
                 case "dev-disaster" -> { if (DEV && s.world != null) { String id = str(m, "id"); s.world.submit(() -> s.world.triggerDisaster(id)); } }
                 case "dev-coins" -> { if (DEV && s.account != null) { double n = num(m, "n"); if (Double.isFinite(n) && n > 0 && n <= 1_000_000) { accounts.addCoins(s.account, (long) n); c.send(shopState(s.account).toString()); } } }

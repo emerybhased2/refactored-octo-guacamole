@@ -4,7 +4,9 @@
   "name": "Mope coin",
   "icon": "assets/shop/mopecoin.png",
   "iconStatus": "recreated",
-  "earnNote": "Coins are earned while playing (2019-12-23 note: only with the adblocker disabled; here: per XP, INFERRED rate) and bought with real money (NOT implemented)"
+  "earnNote": "Coins are earned while playing (2019-12-23 note: only with the adblocker disabled; here: per XP, INFERRED rate) and bought with real money (NOT implemented)",
+  "archivedIcon": "assets/shop/mopecoin_archived.png",
+  "archivedIconNote": "Real icon captured 2020-06-13 (106x111); the recreated one is kept for 2019-12-30 where it was not yet captured."
  },
  "verifiedTotalSkins": 59,
  "catalogNote": "The page says 59 brand new skins exist; only the items below are named in the archived notes. Prices are INFERRED. Skins are cosmetic only.",
@@ -54,6 +56,63 @@
    "spriteStatus": "recreated",
    "releaseDate": "2019-12-30",
    "confidence": "existence verified (2019-12-29 notes: 'Golden KD upgrade if evolving from BD'); price/look inferred"
+  },
+  {
+   "id": "bigfoot",
+   "type": "animal",
+   "animal": "bigfoot",
+   "name": "Bigfoot",
+   "price": 6000,
+   "releaseDate": "2020-06-13",
+   "confidence": "existence verified ('Bigfoot is shop buyable'); price inferred"
+  },
+  {
+   "id": "mouse_skin_1",
+   "type": "skin",
+   "animal": "mouse",
+   "name": "Mouse skin 1",
+   "price": 500,
+   "releaseDate": "2020-06-13",
+   "confidence": "skin file skins/land/mouse/1/mouse.png captured 2020-06-13; name/price/look inferred",
+   "family": "mouse1",
+   "sprite": "assets/skins/mouse_skin_1.png",
+   "spriteStatus": "recreated"
+  },
+  {
+   "id": "mouse_skin_2",
+   "type": "skin",
+   "animal": "mouse",
+   "name": "Mouse skin 2",
+   "price": 500,
+   "releaseDate": "2020-06-13",
+   "confidence": "skin file skins/land/mouse/2/mouse.png captured 2020-06-13; name/price/look inferred",
+   "family": "mouse2",
+   "sprite": "assets/skins/mouse_skin_2.png",
+   "spriteStatus": "recreated"
+  },
+  {
+   "id": "tigershark",
+   "type": "skin",
+   "animal": "shark",
+   "name": "Tiger Shark",
+   "price": 700,
+   "releaseDate": "2020-06-13",
+   "confidence": "skins/ocean/shark/1/tigershark.png captured 2020-06-13 (name verified from the file); price/look inferred",
+   "family": "shark1",
+   "sprite": "assets/skins/tigershark.png",
+   "spriteStatus": "recreated"
+  },
+  {
+   "id": "hammerhead",
+   "type": "skin",
+   "animal": "shark",
+   "name": "Hammerhead",
+   "price": 700,
+   "releaseDate": "2020-06-13",
+   "confidence": "skins/ocean/shark/2/hammerhead.png captured 2020-06-13 (name verified from the file); price/look inferred",
+   "family": "shark2",
+   "sprite": "assets/skins/hammerhead.png",
+   "spriteStatus": "recreated"
   }
  ]
 }
