@@ -47,10 +47,14 @@
     throw_spear(c) { P.line(c, [[-22, 22], [18, -18]], 4.5, '#caa070'); P.poly(c, [[24, -24], [10, -20], [20, -10]], CREAM); P.poly(c, [[-26, 26], [-18, 22], [-22, 18]], '#a8d078'); P.line(c, [[-4, -4], [-12, -12]], 2, CREAM); },
     back_kick(c) { P.poly(c, [[-22, 0], [-4, -16], [-4, -6], [20, -6], [20, 6], [-4, 6], [-4, 16]], CREAM); P.line(c, [[10, -18], [22, -18]], 3, CREAM); P.line(c, [[10, 18], [22, 18]], 3, CREAM); },
   };
-  function abilityIcon(ctx, id, S) {
+  /* new abilities (not in the original 41 glyphs) get a badge colour by effect kind so they are told apart at a glance */
+  const TINT = { speed: ['#1c6b30', '#2fa04a'], area: ['#8a4a12', '#d9801f'], zone: ['#5a2a7a', '#8e4fc0'], shield: ['#1c4a8a', '#3f86d0'], hide: ['#5a4020', '#9a7a48'], invis: ['#3a3a4a', '#7a7a92'], fly: ['#1c6a8a', '#4fb4dc'], grab: ['#7a1c1c', '#c83a3a'], proj: ['#8a7a12', '#d8c42a'], summon: ['#8a1c5a', '#d83a9a'], food: ['#4a7a12', '#8ad02a'], water: ['#1c5a8a', '#3fa4e0'], passive: ['#44484f', '#7a828c'] };
+  GL.passive = (c) => { P.poly(c, [[0, -24], [6, -8], [24, -8], [10, 3], [15, 22], [0, 11], [-15, 22], [-10, 3], [-24, -8], [-6, -8]], CREAM); };
+  function abilityIcon(ctx, id, S, meta) {
+    const isNew = !!meta && !Object.prototype.hasOwnProperty.call(GL, id) || (meta && meta.kind === 'passive'), tint = isNew && meta && TINT[meta.kind] || ['#1c6b30', '#2fa04a'], gl = meta && meta.kind === 'passive' ? 'passive' : (meta && meta.glyph && GL[meta.glyph] ? meta.glyph : id);
     ctx.save(); ctx.clearRect(0, 0, S, S); ctx.translate(S / 2, S / 2); ctx.scale(S / 64, S / 64);
-    P.ell(ctx, 0, 0, 31, 31, '#1c6b30'); P.ell(ctx, 0, 0, 28, 28, '#2fa04a'); ctx.strokeStyle = 'rgba(255,255,255,.22)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(0, 0, 23, 3.6, 5.2); ctx.stroke();
-    ctx.save(); ctx.scale(0.88, 0.88); (GL[id] || GL.charge)(ctx); ctx.restore(); ctx.restore();
+    P.ell(ctx, 0, 0, 31, 31, tint[0]); P.ell(ctx, 0, 0, 28, 28, tint[1]); ctx.strokeStyle = 'rgba(255,255,255,.22)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(0, 0, 23, 3.6, 5.2); ctx.stroke();
+    ctx.save(); ctx.scale(0.88, 0.88); (GL[gl] || GL.charge)(ctx); ctx.restore(); ctx.restore();
   }
 
   /* ---- menu icon in the style of the green rounded-square buttons: muted speaker (the archived client lists sound_off.png but it was never captured) ---- */

@@ -67,6 +67,8 @@
     toggleTree() { if (this.devTree) { this.treeOpen = !this.treeOpen; this.scroll = 0; } }
     mouse(mx, my) { this.mx = mx; this.my = my; }
     wheel(dy) { if (this.treeOpen) this.scroll = Math.max(0, this.scroll + dy); }
+    /** Id of the evolution choice button under (mx,my), or null (right-click opens the skin picker on it). */
+    hitChoice(mx, my, vw, vh, you) { if (!this.v || this.hideChoices || this.treeOpen) return null; const b = choiceAt(choiceLayout(this.choices(you), this.cfg, vw, vh), mx, my); return b ? b.id : null; }
     /** Returns true if the click was consumed. */
     click(mx, my, vw, vh, you) {
       if (!this.v) return false;

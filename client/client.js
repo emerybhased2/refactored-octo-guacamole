@@ -9,12 +9,14 @@
   const camera = new M.Camera(), input = new M.Input($('gCanvas')), interp = new M.Interpolator(100), net = new M.Net(serverUrl);
   let lastEarned = 0, mySkin = null, myClimb = false, prevYou = null;
   const acct = { user: null, coins: 0, owned: [], equipped: {} }; let zones = [];
-  let gm = 'normal', modeData = null, redState = null, modesCatalog = [], myFlags = 0, camMoved = false, spectating = false, specName = '', arenaState = '', arenaMsg = '', mode = 'menu', V = null, you = null, lakes = [], terrain = [], foods = [], lb = [], count = 0, pred = null, selectedVersion = null, lastJoin = null, wantJoin = false, boost = false;
+  let gm = 'normal', modeData = null, abData = null, redState = null, modesCatalog = [], myFlags = 0, camMoved = false, spectating = false, specName = '', arenaState = '', arenaMsg = '', mode = 'menu', V = null, you = null, lakes = [], terrain = [], foods = [], lb = [], count = 0, pred = null, selectedVersion = null, lastJoin = null, wantJoin = false, boost = false;
   const chats = new Map();
   let frames = 0, fpsT = performance.now(), lastInputSent = 0, lastSent = '', lastFrame = performance.now(), dbg = { fps: 0, ping: 0, kbps: 0, mem: '-' }, lastBytes = 0;
   const upgrade = new M.UpgradeMenu((id) => net.send({ t: 'evolve', id }), DEV);
   const touchDevice = M.isTouchDevice();
-  const tray = new M.EvolveTray(document, { onEvolve: (id) => net.send({ t: 'evolve', id }), touch: touchDevice, icon: (a) => M.Sprites.getIcon(a), ready: (a) => M.Sprites.isReady(a) }); // ORIGINAL upgrade picker (default on touch devices and in the wiki-sourced version)
+  const skinPop = new M.SkinPopover.SkinPopover(document, (m) => net.send(Object.assign({ v: selectedVersion }, m)));
+  const equippedSkinSrc = (a) => { const id = acct.equipped && acct.equipped[a.id], it = id && V && V.shop && V.shop.items.find((i) => i.id === id); return it && it.sprite ? it.sprite : null; };
+  const tray = new M.EvolveTray(document, { onEvolve: (id) => net.send({ t: 'evolve', id }), touch: touchDevice, icon: (a) => M.Sprites.getIcon(a), ready: (a) => M.Sprites.isReady(a), onSkins: (id, x, y) => skinPop.show(id, x, y), skinFor: equippedSkinSrc, sig: () => JSON.stringify(acct.equipped || {}) }); // ORIGINAL upgrade picker (default on touch devices and in the wiki-sourced version)
   const menu = new M.MainMenu({ onPlay: (name, m) => startJoin(name, devMode() === 'arena' ? 'arena' : m), onSpectate: (name) => startJoin(name, 'spectate') });
   const devMode = () => (DEV && $('modeSelect') ? $('modeSelect').value : 'normal');
   const shopUI = new M.Shop.ShopUI((m) => net.send(Object.assign({ v: selectedVersion }, m)));
@@ -25,7 +27,7 @@
   function refreshAccountUI() {
     const li = !!acct.user; document.getElementById('notLoggedInDiv').style.display = li ? 'none' : ''; document.getElementById('onloggedInDiv').style.display = li ? '' : 'none';
     if (li) { document.getElementById('loggedInNameTxt').textContent = acct.user; document.getElementById('loggedInUserImg').textContent = acct.user[0].toUpperCase(); document.getElementById('loginCoins').textContent = acct.coins; }
-    shopUI.setAccount(li ? acct : null); wardrobe.setAccount(acct);
+    shopUI.setAccount(li ? acct : null); wardrobe.setAccount(acct); skinPop.setAccount(acct);
   }
   function tokenKey() { return 'mope.token'; }
   const authErr = (t) => (document.getElementById('authErr').textContent = t || '');
@@ -78,12 +80,12 @@
   net.on('welcome', (m) => {
     if (m.gm !== 'spectate') gm = m.gm || 'normal'; modeData = null; redState = null; V = m.version; V.__sandbox = m.mode === 'sandbox'; V.__arena = m.mode === 'arena'; camMoved = false; spectating = m.mode === 'spectate'; V.__spectate = spectating; zones = []; prevYou = null; myClimb = false; document.getElementById('plusCoins').style.display = 'none'; specName = ''; arenaState = ''; arenaMsg = ''; lakes = m.lakes || []; terrain = m.terrain || []; mode = 'play'; chats.clear();
     you = { id: m.id, x: 0, y: 0, xp: 0, hp: 100, w: 100, a: V.startAnimal, ev: [], cd: 0 }; if (spectating) pred = null;
-    upgrade.setVersion(V); tray.setVersion(V); touch.enable(touchDevice, { climb: !!(V.features && V.features.climbing), chat: !!(V.features && V.features.chat) }); menu.hide(); connecting(false); setStatus(''); $('deathMsg').style.display = 'none'; interp.snaps.length = 0; pred = null;
+    upgrade.setVersion(V); tray.setVersion(V); skinPop.setVersion(V); touch.enable(touchDevice, { climb: !!(V.features && V.features.climbing), chat: !!(V.features && V.features.chat) }); menu.hide(); connecting(false); setStatus(''); $('deathMsg').style.display = 'none'; interp.snaps.length = 0; pred = null;
   });
   net.on('snap', (m) => {
     if (mode !== 'play') return;
     you = Object.assign({}, m.you); count = m.n;
-    interp.push(performance.now(), m.p.map((p) => ({ id: p[0], x: p[1], y: p[2], ai: p[3], angle: p[4], hp: p[5], name: p[6], skin: p[7] || null, climb: p[8] === 1, flags: p[9] | 0 }))); zones = m.dz || []; const meT = m.p.find((q) => q[0] === you.id); mySkin = meT ? meT[7] : null; myFlags = meT ? meT[9] | 0 : 0; modeData = m.md || null; redState = m.red || null; if (modeData && modeData.m === 'royale' && you.x != null && modeData.z) { const dx = you.x - modeData.z[0], dy = you.y - modeData.z[1]; modeData.out = dx * dx + dy * dy > modeData.z[2] * modeData.z[2] ? 1 : 0; } myClimb = !!(meT && meT[8] === 1);
+    interp.push(performance.now(), m.p.map((p) => ({ id: p[0], x: p[1], y: p[2], ai: p[3], angle: p[4], hp: p[5], name: p[6], skin: p[7] || null, climb: p[8] === 1, flags: p[9] | 0 }))); zones = m.dz || []; const meT = m.p.find((q) => q[0] === you.id); mySkin = meT ? meT[7] : null; myFlags = meT ? meT[9] | 0 : 0; modeData = m.md || null; abData = m.ab || null; redState = m.red || null; if (modeData && modeData.m === 'royale' && you.x != null && modeData.z) { const dx = you.x - modeData.z[0], dy = you.y - modeData.z[1]; modeData.out = dx * dx + dy * dy > modeData.z[2] * modeData.z[2] ? 1 : 0; } myClimb = !!(meT && meT[8] === 1);
     if (V.features && V.features.sounds && prevYou && !spectating) { const maxFood = Math.max(...V.foods.map((f) => f.xp)) * Math.pow(1.35, Math.max(0, (V.animals.find((a) => a.id === you.a) || { tier: 1 }).tier - 1)); const snd = M.Sound.classify(prevYou, you, maxFood); if (snd) { M.Sound.muted = menu.muted; M.Sound.play(snd); } } if (V.features && V.features.noXpPopups && !menu.options.noXpPopups && !spectating) { const gn = M.Extras.xpGain(prevYou, you); if (gn >= 5) M.Extras.popup(document, gn); } prevYou = { xp: you.xp, w: you.w, a: you.a }; foods = m.f; lb = m.lb;
     const ai = V.animals.findIndex((a) => a.id === you.a);
     if (m.arena) arenaState = m.arena;
@@ -114,26 +116,29 @@
   function closeChat(send) { const t = chatEl.value.trim(); chatEl.style.visibility = 'hidden'; chatEl.blur(); if (send && t) net.send({ t: 'chat', m: t }); $('gCanvas').focus(); }
   chatEl.addEventListener('keydown', (e) => { if (e.key === 'Enter') { closeChat(true); e.preventDefault(); } else if (e.key === 'Escape') closeChat(false); e.stopPropagation(); });
   input.on('enter', () => { if (mode !== 'play') return; if (upgrade.takeFirst(you)) return; if (feature('chat') && !menu.options.noNames) openChat(); });
-  input.on('w', () => { if (mode === 'play' && !spectating) net.send({ t: 'ability' }); });
+  // abilities: W / right click (slot 0) and S (slot 1, e.g. King Dragon's tail slap); press abilities fire on key down, hold abilities run until the key is released
+  const abilityKey = (slot, down) => { if (mode === 'play' && !spectating) net.send({ t: 'ability', slot, d: down ? 1 : 0 }); };
+  input.on('w', (e) => { if (!e.repeat) abilityKey(0, true); }); input.onUp('w', () => abilityKey(0, false));
   input.on(' ', (e) => { if (mode === 'play' && spectating) { net.send({ t: 'spectate-next' }); e.preventDefault(); } });
   input.on('escape', () => { if (mode === 'play' && spectating) { net.send({ t: 'leave' }); spectating = false; mode = 'menu'; wantJoin = false; menu.show(); } });
   input.on('arrowup', (e) => { if (mode === 'play' && V.__sandbox) { net.send({ t: 'sandbox', d: 1 }); e.preventDefault(); } });
   input.on('arrowdown', (e) => { if (mode === 'play' && V.__sandbox) { net.send({ t: 'sandbox', d: -1 }); e.preventDefault(); } });
   input.on('u', () => { if (mode === 'play') upgrade.toggleTree(); });
-  input.on('s', () => { if (mode === 'play' && !spectating && feature('climbing')) net.send({ t: 'climb' }); }); // 2020-03-03: 'PRESS S TO CLIMB UP/DOWN trees'
+  input.on('s', (e) => { if (e.repeat) return; if (mode === 'play' && !spectating && you && you.a2) { abilityKey(1, true); return; } if (mode === 'play' && !spectating && feature('climbing')) net.send({ t: 'climb' }); }); input.onUp('s', () => { if (you && you.a2) abilityKey(1, false); }); // 2020-03-03: 'PRESS S TO CLIMB UP/DOWN trees'
   const touch = new M.TouchControls(document, input, {
     boost: (on) => { if (mode === 'play' && !spectating) boost = on; },
-    ability: () => { if (mode !== 'play') return; if (spectating) { net.send({ t: 'leave' }); spectating = false; mode = 'menu'; wantJoin = false; menu.show(); return; } net.send({ t: 'ability' }); },
+    ability: (down) => { if (mode !== 'play') return; if (spectating) { if (down) { net.send({ t: 'leave' }); spectating = false; mode = 'menu'; wantJoin = false; menu.show(); } return; } net.send({ t: 'ability', slot: 0, d: down ? 1 : 0 }); },
+    ability2: (down) => abilityKey(1, down), hasSecond: () => !!(you && you.a2),
     climb: () => { if (mode === 'play' && !spectating && feature('climbing')) net.send({ t: 'climb' }); },
     chat: () => { if (mode === 'play' && feature('chat') && !menu.options.noNames) openChat(); },
     spectating: () => mode === 'play' && spectating, next: () => net.send({ t: 'spectate-next' }),
   });
-  renderer.underAnimals = (ctx, cam, vw, vh, now) => M.ModeHud.drawWorld(ctx, cam, vw, vh, modeData, now);
+  renderer.underAnimals = (ctx, cam, vw, vh, now) => { M.AbilityFx.draw(ctx, cam, vw, vh, abData, now); M.ModeHud.drawWorld(ctx, cam, vw, vh, modeData, now); };
   $('gCanvas').addEventListener('mousemove', (e) => upgrade.mouse(e.clientX, e.clientY));
-  $('gCanvas').addEventListener('mousedown', (e) => { if (e.button !== 0 || mode !== 'play') return; if (spectating) { net.send({ t: 'spectate-next' }); return; } if (!upgrade.click(e.clientX, e.clientY, renderer.vw, renderer.vh, you)) boost = true; });
-  addEventListener('mouseup', () => (boost = false));
+  $('gCanvas').addEventListener('mousedown', (e) => { if (e.button === 2 && mode === 'play' && !spectating) { if (!(upgrade.hitChoice && upgrade.hitChoice(e.clientX, e.clientY, renderer.vw, renderer.vh, you))) abilityKey(0, true); return; } if (e.button !== 0 || mode !== 'play') return; if (spectating) { net.send({ t: 'spectate-next' }); return; } if (!upgrade.click(e.clientX, e.clientY, renderer.vw, renderer.vh, you)) boost = true; });
+  addEventListener('mouseup', (e) => { boost = false; if (e.button === 2) abilityKey(0, false); });
   $('gCanvas').addEventListener('wheel', (e) => upgrade.wheel(e.deltaY), { passive: true });
-  $('gCanvas').addEventListener('contextmenu', (e) => e.preventDefault());
+  $('gCanvas').addEventListener('contextmenu', (e) => { e.preventDefault(); const id = upgrade.hitChoice && upgrade.hitChoice(e.clientX, e.clientY, renderer.vw, renderer.vh, you); if (id) skinPop.show(id, e.clientX, e.clientY); }); // right-click an archived-style choice button: your skins for it
 
   function frame(t) {
     requestAnimationFrame(frame);
@@ -161,6 +166,12 @@
     const ctx = renderer.ctx;
     M.HUD.draw(ctx, renderer.vw, renderer.vh, V, you, V.animals[pred.ai], lb, DEV ? dbg : null, count);
     M.ModeHud.drawHud(ctx, renderer.vw, renderer.vh, gm, modeData, redState, t);
+    if (you.a2 && V.hud && V.hud.abilityButton) { // second ability (S key), e.g. the King Dragon's tail slap
+      const A = V.hud.abilityButton, s = A.size * 0.8, x = renderer.vw - A.marginRight - A.size * 2 - 14, y = renderer.vh - A.marginBottom - s, d2 = (V.abilities || []).find((q) => q.id === you.a2), icon = d2 && M.Sprites.getAbilityIcon(d2);
+      ctx.save(); ctx.globalAlpha = 0.85; ctx.fillStyle = 'rgba(0,0,0,.45)'; ctx.fillRect(x, y, s, s); if (icon) { ctx.globalAlpha = you.cd2 > 0 ? 0.5 : 1; ctx.drawImage(icon, x + s * 0.1, y + s * 0.1, s * 0.8, s * 0.8); }
+      if (d2 && you.cd2 > 0) { ctx.globalAlpha = 0.65; ctx.fillStyle = '#000'; ctx.fillRect(x, y, s, s * Math.min(1, you.cd2 / Math.max(1, d2.cooldownMs))); }
+      ctx.globalAlpha = 1; ctx.fillStyle = '#fff'; ctx.font = 'bold 12px Arial'; ctx.textAlign = 'center'; ctx.fillText('S', x + s - 8, y + s - 5); ctx.restore(); }
+    if (touchDevice) $('tuAbility2').style.display = you.a2 ? '' : 'none';
     upgrade.hideChoices = !!menu.options.evoTray;
     if (mode === 'play') upgrade.draw(ctx, renderer.vw, renderer.vh, you, t);
     if (mode === 'play' && !spectating && menu.options.evoTray && !upgrade.treeOpen) tray.update(you, upgrade.choices(you), t); else tray.hide();

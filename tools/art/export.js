@@ -73,10 +73,10 @@ for (let i = 0; i < args.length; i++) { if (args[i] === '--version') version = a
     } }
   // GUI: ability icons (64x64), muted-sound icon, terrain tiles (256x256)
   if (!only.length) {
-    const abil = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/abilities/abilities.json'), 'utf8')).map((a) => a.id);
+    const abil = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/abilities/abilities.json'), 'utf8')).map((a) => ({ id: a.id, glyph: a.glyph || null, kind: a.type === 'passive' ? 'passive' : ((a.effects && a.effects[0] && a.effects[0].k) || null), label: a.type === 'passive' ? a.name : null }));
     const biomes = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/biomes/biomes.json'), 'utf8'));
     const gu = await page.evaluate(({ abil, biomes }) => { const r = { abilities: {}, tiles: {} }, cv = document.createElement('canvas');
-      cv.width = cv.height = 64; for (const id of abil) { window.MopeGui.abilityIcon(cv.getContext('2d'), id, 64); r.abilities[id] = cv.toDataURL(); }
+      cv.width = cv.height = 64; for (const a of abil) { window.MopeGui.abilityIcon(cv.getContext('2d'), a.id, 64, a); r.abilities[a.id] = cv.toDataURL(); }
       cv.width = cv.height = 60; window.MopeGui.soundOff(cv.getContext('2d'), 60); r.soundOff = cv.toDataURL();
       cv.width = cv.height = 256; for (const b of biomes) { window.MopeGui.tile(cv.getContext('2d'), b.id, b.color, 256); r.tiles[b.id] = cv.toDataURL(); } return r; }, { abil, biomes });
     const w = (f, url) => { fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, Buffer.from(url.split(',')[1], 'base64')); };

@@ -54,12 +54,15 @@
       const [sx, sy] = cam.worldToScreen(p.x, p.y, this.vw, this.vh), pr = r * cam.zoom, low = this.opts.lowGraphics;
       ctx.save(); ctx.translate(sx, sy); ctx.rotate(p.angle);
       if (!low) { ctx.fillStyle = 'rgba(0,0,0,0.18)'; ctx.beginPath(); ctx.ellipse(4, 6, pr, pr * 0.9, 0, 0, 7); ctx.fill(); }
+      const fgl = p.flags ? M.ModeHud.flagsOf(p.flags) : null;
       if (p.climb) { ctx.scale(0.88, 0.88); ctx.globalAlpha = 0.8; } // up in a tree
+      if (fgl && fgl.fly) ctx.scale(1.12, 1.12); // airborne
+      if (fgl && (fgl.hidden || fgl.invis)) ctx.globalAlpha = 0.4; // you can see yourself while hidden; others cannot
       if (v.__arena && !isMe) ctx.globalAlpha = 0.5; // archived 2019 note: inside the Arena opponents go semi-transparent so they can see through each other
       if (this.opts.noImages) { ctx.fillStyle = a.placeholderColor; ctx.beginPath(); ctx.arc(0, 0, pr, 0, 7); ctx.fill(); }
       else { const h = pr / M.Sprites.BODY_FRAC, skinItem = p.skin ? ((v.shop ? v.shop.items : []).concat(v.variants || [])).find((i) => i.id === p.skin) : null, skin = skinItem ? M.Sprites.getSkin(skinItem) : null; ctx.drawImage(skin || (isMe && this.opts.classic && M.Sprites.getClassic(a)) || M.Sprites.get(a), -h, -h, 2 * h, 2 * h); } // equipped skin if loaded, else the normal sprite // frame sized so the drawn body matches the hitbox
       ctx.globalAlpha = 1; ctx.restore();
-      if (p.flags) { const f = M.ModeHud.flagsOf(p.flags); // team outline / zombie tint / infected glow (mode overlays)
+      if (p.flags) { const f = M.ModeHud.flagsOf(p.flags); ctx.save(); ctx.translate(sx, sy); M.AbilityFx.drawFlags(ctx, f, pr, now); ctx.restore(); // team outline / zombie tint / infected glow (mode overlays)
         if (f.team) { ctx.strokeStyle = M.ModeHud.TEAM_COL[f.team]; ctx.lineWidth = Math.max(3, 4 * cam.zoom); ctx.beginPath(); ctx.arc(sx, sy, pr * 1.04, 0, 7); ctx.stroke(); }
         if (f.zombie) { ctx.save(); ctx.globalAlpha = 0.45; ctx.fillStyle = '#5ac83a'; ctx.beginPath(); ctx.arc(sx, sy, pr * 0.95, 0, 7); ctx.fill(); ctx.restore(); }
         else if (f.infected) { ctx.save(); ctx.globalAlpha = 0.22 + 0.12 * Math.sin(now / 200); ctx.fillStyle = '#c83a3a'; ctx.beginPath(); ctx.arc(sx, sy, pr * 0.95, 0, 7); ctx.fill(); ctx.restore(); } }

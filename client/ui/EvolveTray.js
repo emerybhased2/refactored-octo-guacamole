@@ -17,7 +17,7 @@
   }
 
   class EvolveTray {
-    constructor(doc, opts) { this.doc = doc; this.onEvolve = opts.onEvolve; this.touch = !!opts.touch; this.icon = opts.icon; this.ready = opts.ready; this.retries = 0; this.v = null; this.key = ''; this.sel = null; this.iconCache = new Map(); this.last = 0; this.expanded = false; this.root = doc.getElementById('evoTray'); this.row = doc.getElementById('evoRow'); this.detail = doc.getElementById('evoDetail'); this.title = doc.getElementById('evoTitle'); }
+    constructor(doc, opts) { this.doc = doc; this.onEvolve = opts.onEvolve; this.touch = !!opts.touch; this.onSkins = opts.onSkins || null; this.skinFor = opts.skinFor || null; this.sig = opts.sig || (() => ''); this.icon = opts.icon; this.ready = opts.ready; this.retries = 0; this.v = null; this.key = ''; this.sel = null; this.iconCache = new Map(); this.last = 0; this.expanded = false; this.root = doc.getElementById('evoTray'); this.row = doc.getElementById('evoRow'); this.detail = doc.getElementById('evoDetail'); this.title = doc.getElementById('evoTitle'); }
     setVersion(v) { this.v = v; this.key = ''; this.sel = null; }
     hide() { if (this.root) this.root.classList.add('hidden'); this.key = ''; this.sel = null; }
     /** Data URL of the animal's own art. The grey placeholder is never cached: if the PNG has not loaded yet the tray rebuilds itself shortly after. */
@@ -35,7 +35,7 @@
       this.root.classList.remove('hidden'); this.root.classList.toggle('ready', m.available.length > 0);
       if (m.available.length) this.expanded = true; // something to pick: always open
       this.root.classList.toggle('compact', !m.available.length && !this.expanded);
-      const key = m.current.id + '|' + m.available.map((c) => c.id).join(',') + '|' + m.soon.map((c) => c.id).join(',');
+      const key = m.current.id + '|' + m.available.map((c) => c.id).join(',') + '|' + m.soon.map((c) => c.id).join(',') + '|' + this.sig();
       if (key !== this.key) { this.key = key; this.sel = null; if (!m.available.length) this.expanded = false; this.build(m); this.root.classList.toggle('compact', !m.available.length && !this.expanded); }
       else if (now - this.last > 250) { this.last = now; for (const c of m.soon) { if (c === m.soon[0] && !m.available.length) { const hint = this.root.querySelector('.evoHint'); hint.textContent = fmtXp(you.xp || 0) + ' / ' + fmtXp(c.xpRequired) + ' XP - tap to ' + (this.expanded ? 'hide' : 'see more'); } const el = this.row.querySelector('[data-id="' + c.id + '"] .evoBar i'); if (el) el.style.width = Math.round(c.progress * 100) + '%'; const tx = this.row.querySelector('[data-id="' + c.id + '"] .evoXp'); if (tx) tx.textContent = fmtXp(you.xp || 0) + ' / ' + fmtXp(c.xpRequired) + ' XP'; } }
     }
@@ -45,12 +45,16 @@
       if (!this.headBound) { this.headBound = true; this.root.querySelector('.evoHead').addEventListener('click', () => { if (this.root.classList.contains('ready')) return; this.expanded = !this.expanded; this.root.classList.toggle('compact', !this.expanded); }); }
       const mk = (c) => {
         const b = d.createElement('button'); b.type = 'button'; b.dataset.id = c.id; b.className = 'evoCard ' + (c.available ? 'avail' : 'soon') + (c.suggested ? ' suggested' : ''); b.style.setProperty('--biome', BIOME_COLORS[c.biome] || '#3fae4c');
-        const a = this.v.animals.find((x) => x.id === c.id), im = d.createElement('img'); im.alt = ''; im.src = this.img(a); b.appendChild(im);
+        const a = this.v.animals.find((x) => x.id === c.id), im = d.createElement('img'); im.alt = ''; im.src = (this.skinFor && this.skinFor(a)) || this.img(a); b.appendChild(im); // your equipped skin, if any
         const nm = d.createElement('b'); nm.textContent = c.name; b.appendChild(nm);
         const chip = d.createElement('span'); chip.className = 'evoChip'; chip.textContent = 'T' + c.tier; b.appendChild(chip);
         if (c.suggested) { const st = d.createElement('span'); st.className = 'evoStar'; st.textContent = '★'; st.title = 'Best fit for your biome'; b.appendChild(st); }
         if (!c.available) { const bar = d.createElement('div'); bar.className = 'evoBar'; bar.appendChild(d.createElement('i')); bar.firstChild.style.width = Math.round(c.progress * 100) + '%'; b.appendChild(bar); const x = d.createElement('small'); x.className = 'evoXp'; x.textContent = fmtXp(c.xpRequired) + ' XP'; b.appendChild(x); }
-        b.addEventListener('click', () => this.pick(c));
+        b.addEventListener('click', () => { if (this.suppress) { this.suppress = false; return; } this.pick(c); });
+        b.addEventListener('contextmenu', (e) => { e.preventDefault(); if (this.onSkins) this.onSkins(c.id, e.clientX, e.clientY); }); // right-click: your skins for this animal
+        let lp = null; const cancel = () => { if (lp) { clearTimeout(lp); lp = null; } };
+        b.addEventListener('touchstart', (e) => { cancel(); const t0 = e.touches[0]; lp = setTimeout(() => { lp = null; this.suppress = true; if (this.onSkins) this.onSkins(c.id, t0.clientX, t0.clientY); }, 450); }, { passive: true }); // long-press on touch
+        b.addEventListener('touchmove', cancel, { passive: true }); b.addEventListener('touchend', cancel); b.addEventListener('touchcancel', cancel);
         b.addEventListener('mouseenter', () => { if (!this.touch) this.showDetail(c, false); });
         return b;
       };

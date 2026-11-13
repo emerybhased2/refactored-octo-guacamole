@@ -18,6 +18,10 @@ public class Player extends Entity {
     public boolean climbing;
     // game-mode state (Modes.java)
     public int team; public double infection, immunity = 100, healthMul = 1, bonusCoins; public boolean zombie; public long slowUntilTick, maskUntilTick, sanitizedUntilTick, nextSneezeTick; public boolean boss;
+    // ability state (Abilities.java); all values are tick numbers (0 = inactive)
+    public long stunUntilTick, shieldUntilTick, hiddenUntilTick, flyUntilTick, invisUntilTick, buffUntilTick, abSlowUntilTick, dotUntilTick, carryUntilTick, growUntilTick, homingUntilTick, nextExhaleTick, abilityReadyAt2, holdSince, burstAtEndTick;
+    public double buffMul = 1, abSlowMul = 1, shieldSpeed = 1, hideSpeed = 1, flySpeed = 1, dotDps, growMul = 1, reflect;
+    public int carriedBy, ownerId, dotBy; public long expireTick; public String holdAbility = ""; public boolean landBurst;
     public final java.util.Map<String, String> variants = new java.util.HashMap<>();  // animal id -> rare variant rolled when evolving into it
     /** An equipped shop skin wins; otherwise a rare variant that was rolled for this animal. */
     public String skinId() { String s = skins.get(animal.id); return s != null ? s : variants.get(animal.id); }

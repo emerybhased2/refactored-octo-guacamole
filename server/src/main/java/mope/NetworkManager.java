@@ -104,7 +104,7 @@ public final class NetworkManager extends WebSocketServer {
                     p.boost = m.has("b") && m.get("b").isJsonPrimitive() && m.get("b").getAsInt() == 1;
                 }
                 case "evolve" -> { Player p = s.player; String id = str(m, "id"); if (p != null && id != null) s.world.submit(() -> s.world.evolve(p, id)); }
-                case "ability" -> { Player p = s.player; if (p != null) s.world.submit(() -> s.world.useAbility(p)); }
+                case "ability" -> { Player p = s.player; if (p != null) { final int slot = m.has("slot") && m.get("slot").isJsonPrimitive() && m.get("slot").getAsInt() == 1 ? 1 : 0; final boolean down = !(m.has("d") && m.get("d").isJsonPrimitive() && m.get("d").getAsInt() == 0); s.world.submit(() -> s.world.useAbility(p, slot, down)); } }
                 case "chat" -> { Player p = s.player; String txt = str(m, "m"); if (p != null && txt != null) { String clean = txt.replaceAll("[\\p{Cntrl}<>]", "").trim(); if (clean.length() > 35) clean = clean.substring(0, 35); if (!clean.isEmpty()) { final String fc = clean; s.world.submit(() -> s.world.chat(p, fc)); } } }
                 case "sandbox" -> { Player p = s.player; double d = num(m, "d"); if (p != null && Double.isFinite(d)) s.world.submit(() -> s.world.sandboxStep(p, (int) d)); }
                 case "register", "login", "resume" -> auth(c, s, t, m);

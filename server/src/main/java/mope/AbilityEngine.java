@@ -15,6 +15,8 @@ public final class AbilityEngine {
         for (Defs.AbilityDef d : all) e.defs.put(d.id, d);
         return e;
     }
+    /** Resolved definition (implemented + active on the version date) or null. */
+    public Defs.AbilityDef def(String id) { return id == null ? null : defs.get(id); }
     public boolean activate(Player p, long nowMs, String biomeId) {
         if (p.animal.ability == null) return false;
         Defs.AbilityDef d = defs.get(p.animal.ability);

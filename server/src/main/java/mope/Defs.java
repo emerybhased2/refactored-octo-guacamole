@@ -38,6 +38,9 @@ public final class Defs {
         public String id, name, type, releaseDate, removalDate, icon, iconStatus;
         public double cooldownMs, durationMs, speedMultiplier, damage, range;
         public List<String> biomes;
-        public boolean implemented, verified;
+        public boolean implemented, verified, simulated;
+        public String activation, needs, keyboard, glyph, type2;
+        public com.google.gson.JsonArray effects;
+        public List<String> usedBy;
     }
 }

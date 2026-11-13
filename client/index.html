@@ -10,8 +10,9 @@
 <body>
 <!-- Structure mirrors the archived 2017-02-13 index.html (ids kept); content/geometry comes from the version's menu config. -->
 <div id="xpPopups"></div>
+<div id="skinPop" style="display:none"></div>
 <div id="evoTray" class="hidden"><div class="evoHead"><span id="evoTitle">EVOLVE!</span><span class="evoHint">tap an animal</span></div><div id="evoRow"></div><div id="evoDetail"></div></div>
-<div id="touchUi" style="display:none"><div id="tuBase"><div id="tuKnob"></div></div><div id="tuBtns"><button id="tuBoost" type="button">BOOST</button><button id="tuAbility" type="button">ABILITY</button><button id="tuClimb" type="button" style="display:none">CLIMB</button><button id="tuChat" type="button" style="display:none">CHAT</button></div></div>
+<div id="touchUi" style="display:none"><div id="tuBase"><div id="tuKnob"></div></div><div id="tuBtns"><button id="tuBoost" type="button">BOOST</button><button id="tuAbility" type="button">ABILITY</button><button id="tuAbility2" type="button" style="display:none">ABILITY 2</button><button id="tuClimb" type="button" style="display:none">CLIMB</button><button id="tuChat" type="button" style="display:none">CHAT</button></div></div>
 <div id="gameAreaWrapper">
   <input id="chatinput" type="text" class="chat-input" placeholder="Chat here..." maxlength="35" autocomplete="off">
   <canvas tabindex="1" id="gCanvas"></canvas>
@@ -81,6 +82,8 @@
 <script src="ui/Shop.js"></script>
 <script src="ui/Wardrobe.js"></script>
 <script src="ui/ModeHud.js"></script>
+<script src="ui/AbilityFx.js"></script>
+<script src="ui/SkinPopover.js"></script>
   <script src="ui/Disasters.js"></script>
   <script src="audio.js"></script>
 <script src="touch.js"></script>

@@ -12,6 +12,10 @@ public final class World {
     /** Game mode of this world (normal, classic, zombie, royale, team, wild, pandemic) and its state; redemption = 1v1 vs AI bosses. */
     public final String mode; public final Modes.State ms;
     public boolean redemption, redPro; public int redLevel = 1;
+    public final Abilities.State fxState = new Abilities.State();
+    private final List<Object[]> lateDeaths = new ArrayList<>();
+    /** Deaths caused outside a tick loop that has a `dying` list (ability damage): collected at the end of the tick. */
+    public void dieLater(Player o, String by) { lateDeaths.add(new Object[] { o, by }); }
     public final double size;
     public final Random rnd;
     public final EvolutionEngine evolution;
@@ -169,17 +173,11 @@ public final class World {
     }
     /** S key: climb up/down a tree. Only climbers may, and only where the version has climbing. */
     public boolean toggleClimb(Player p) {
-        if (!cfg.feature("climbing") || p.dead || !cfg.climbers.contains(p.animal.id)) return false;
+        if (!cfg.feature("climbing") || p.dead || !(cfg.climbers.contains(p.animal.id) || Abilities.has(p, "climb_trees"))) return false;
         p.climbing = !p.climbing; return true;
     }
-    /** Ability key: activates the ability, then lets the game mode adjust cooldown/duration (Wild Mope, team perks). */
-    public boolean useAbility(Player p) {
-        long now = nowMs(); if (!abilities.activate(p, now, null)) return false;
-        double cm = Modes.cooldownMul(this, p), dm = Modes.durationMul(this);
-        if (cm != 1) p.abilityReadyAt = now + (long) ((p.abilityReadyAt - now) * cm);
-        if (dm != 1) p.abilityActiveUntil = now + (long) ((p.abilityActiveUntil - now) * dm);
-        return true;
-    }
+    /** Ability key (slot 0 = W / right click, 1 = S) down or up. Cooldown/duration scaling by game mode happens inside Abilities.use. */
+    public boolean useAbility(Player p, int slot, boolean down) { return Abilities.use(this, p, slot, down); }
     /** Dev/test hook: start a disaster now. */
     public boolean triggerDisaster(String id) { return disasters.trigger(id) != null; }
     /** Sandbox only: step through every animal (wraps around). */
@@ -217,15 +215,15 @@ public final class World {
             boolean running = p.boost && p.water > 5 && mag > 0.05;
             if (mag > 0.05) {
                 p.angle = p.inputAngle;
-                double sp = 220 * p.animal.speed * mag * abilities.speedMultiplier(p, (long) now) * (running ? 1.5 : 1) * p.disasterSpeed * Modes.speedMul(this, p);
+                double sp = 220 * p.animal.speed * mag * abilities.speedMultiplier(p, (long) now) * (running ? 1.5 : 1) * p.disasterSpeed * Modes.speedMul(this, p) * Abilities.speedFactor(this, p);
                 double nx = p.x + Math.cos(p.angle) * sp * dt, ny = p.y + Math.sin(p.angle) * sp * dt;
                 nx = Math.max(p.radius, Math.min(size - p.radius, nx)); ny = Math.max(p.radius, Math.min(size - p.radius, ny));
-                if (biomes.canEnter(p.animal, nx, ny)) { p.x = nx; p.y = ny; }
+                if (Abilities.flying(this, p) || biomes.canEnter(p.animal, nx, ny)) { p.x = nx; p.y = ny; }
             }
             if (arena) { p.water = 100; /* no healing in the arena (archived note: Black Dragon not healing in the 1v1 arena) */ }
             else if (!p.bot && !sandbox) { // thirst (bots and sandbox are exempt)
                 if (inWater(p.x, p.y)) p.water = Math.min(100, p.water + 30 * dt);
-                else p.water = Math.max(0, p.water - (0.5 + (running ? 5 : 0)) * dt);
+                else p.water = Math.max(0, p.water - ((Abilities.has(p, "dry_land") ? 0.3 : 0.5) + (running ? (Abilities.has(p, "reduced_boost") ? 3 : 5) : 0)) * dt);
                 if (p.water <= 0) { p.health -= 6 * dt; if (p.health <= 0) { die(p, "thirst", THIRST, dying); continue; } }
                 else p.health = Math.min(p.maxHealth(), p.health + 2 * dt);
             } else { p.water = 100; p.health = Math.min(p.maxHealth(), p.health + 2 * dt); }
@@ -241,6 +239,7 @@ public final class World {
             tmp.clear();
             tree.query(p.x, p.y, p.radius + 40, tmp);
             for (Entity e : tmp) {
+                if (p.hiddenUntilTick > tick) continue;
                 if (e instanceof Food f) {
                     if (!f.removed && Collision.overlap(p, f)) { foods.consumed(f); p.xp += f.def.xp * foodXpScale(p.animal.tier) * Modes.foodXpMul(this, p); p.health = Math.min(p.maxHealth(), p.health + f.def.health); }
                 } else if (e instanceof Player o && Modes.canEat(this, p, o)) {
@@ -249,7 +248,9 @@ public final class World {
                 }
             }
         }
+        Abilities.tick(this, dt, dying);
         if (!arena) Modes.tick(this, dt, dying);
+        for (Object[] ld : lateDeaths) die((Player) ld[0], (String) ld[1], EATEN, dying); lateDeaths.clear();
         for (Player o : dying) { players.remove(o.id); onDeath.accept(o); if (o.bot && !arena && !(ms != null && mode.equals("royale"))) { Player nb = join(o.name, null, true); nb.kills = 0; } }
         foods.tick(now);
 
@@ -331,14 +332,14 @@ public final class World {
          .append(",\"xp\":").append((long) me.xp).append(",\"hp\":").append((int) me.health).append(",\"w\":").append((int) me.water).append(",\"a\":\"").append(me.animal.id).append("\",\"ev\":[");
         List<String> ev = sandbox ? List.of() : evolution.evolvable(me.animal, me.xp, me::canHaveRare);
         for (int i = 0; i < ev.size(); i++) { if (i > 0) s.append(','); s.append('"').append(ev.get(i)).append('"'); }
-        s.append("],\"cd\":").append(Math.max(0, me.abilityReadyAt - nowMs())).append("},\"p\":[");
+        s.append("],\"cd\":").append(Math.max(0, me.abilityReadyAt - nowMs())).append(",\"cd2\":").append(Math.max(0, me.abilityReadyAt2 - nowMs())).append(",\"a1\":").append(abJson(Abilities.abilityIdFor(this, me, 0))).append(",\"a2\":").append(abJson(Abilities.abilityIdFor(this, me, 1))).append("},\"p\":[");
         tmp.clear(); tree.query(me.x, me.y, 1100, tmp);
         boolean first = true;
-        for (Entity e : tmp) if (e instanceof Player o && !o.dead) {
+        for (Entity e : tmp) if (e instanceof Player o && !o.dead && Abilities.visibleTo(this, o, me)) {
             if (!first) s.append(','); first = false;
             s.append('[').append(o.id).append(',').append(r1(o.x)).append(',').append(r1(o.y)).append(',')
              .append(cfg.animalOrder.indexOf(o.animal.id)).append(',').append(r2(o.angle)).append(',').append((int) (100 * o.health / o.maxHealth())).append(',')
-             .append(Data.GSON.toJson(o.name)); int fl = Modes.flags(o); if (o.skinId() != null || o.climbing || fl != 0) { s.append(',').append(o.skinId() == null ? "null" : Data.GSON.toJson(o.skinId())); if (o.climbing || fl != 0) s.append(o.climbing ? ",1" : ",0"); if (fl != 0) s.append(',').append(fl); } s.append(']');
+             .append(Data.GSON.toJson(o.name)); int fl = Modes.flags(o) | Abilities.flags(this, o); if (o.skinId() != null || o.climbing || fl != 0) { s.append(',').append(o.skinId() == null ? "null" : Data.GSON.toJson(o.skinId())); if (o.climbing || fl != 0) s.append(o.climbing ? ",1" : ",0"); if (fl != 0) s.append(',').append(fl); } s.append(']');
         }
         s.append("],\"f\":[");
         first = true;
@@ -346,9 +347,10 @@ public final class World {
             if (!first) s.append(','); first = false;
             s.append('[').append(f.id).append(',').append(r1(f.x)).append(',').append(r1(f.y)).append(',').append(f.typeIndex).append(']');
         }
-        s.append("],\"lb\":").append(lbJson).append(disasters.snapshotNear(me.x, me.y, tick, cfg.tickRate)).append(Modes.extraJson(this, me)).append(redemption ? ",\"red\":{\"lv\":" + redLevel + ",\"pro\":" + (redPro ? 1 : 0) + "}" : "").append('}');
+        s.append("],\"lb\":").append(lbJson).append(disasters.snapshotNear(me.x, me.y, tick, cfg.tickRate)).append(Modes.extraJson(this, me)).append(Abilities.snapshotJson(this, me)).append(redemption ? ",\"red\":{\"lv\":" + redLevel + ",\"pro\":" + (redPro ? 1 : 0) + "}" : "").append('}');
         return s.toString();
     }
+    private static String abJson(String id) { return id == null ? "null" : "\"" + id + "\""; }
     private static String r1(double v) { return Double.toString(Math.round(v * 10) / 10.0); }
     private static String r2(double v) { return Double.toString(Math.round(v * 100) / 100.0); }
 }

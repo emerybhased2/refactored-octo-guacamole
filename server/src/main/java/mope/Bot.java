@@ -28,6 +28,8 @@ final class Bot {
         else if (bestPrey != null) { gx = bestPrey.x; gy = bestPrey.y; }
         else if (bestFood != null) { gx = bestFood.x; gy = bestFood.y; }
         else if (Math.hypot(gx - b.x, gy - b.y) < 80 || b.botGoalX == 0) { double[] pt = w.biomes.randomPoint(w.rnd, java.util.List.of(b.animal.biome)); gx = pt[0]; gy = pt[1]; }
+        if (b.ownerId != 0) { Player ow = w.players.get(b.ownerId); if (ow != null) { gx = ow.x + Math.cos(b.id) * 90; gy = ow.y + Math.sin(b.id) * 90; } } // summoned babies follow their parent
+        else if ((flee || bestPrey != null) && w.rnd.nextInt(40) == 0) Abilities.use(w, b, 0, true); // bots use their abilities now and then
         b.botGoalX = gx; b.botGoalY = gy;
         b.inputAngle = Math.atan2(gy - b.y, gx - b.x); b.inputMag = 1;
     }
