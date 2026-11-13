@@ -2759,7 +2759,7 @@
     "name": "Lava Immunity",
     "type": "passive",
     "keyboard": "(passive)",
-    "simulated": true,
+    "simulated": false,
     "usedBy": [
       "dragon",
       "phoenix",
@@ -2768,9 +2768,9 @@
       "kingdragon"
     ],
     "wikiText": "When the player is on a lava source, they will be immune to burning from lava and from fire produced by lava. The Dragon technically does not have this ability, but its \"\" ability causes it to be unaffected by lava by virtue of the mechanics of that ability. It is still burnt by fire produced by lava.",
-    "implemented": true,
+    "implemented": false,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated (numbers inferred)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); NOT simulated (no lava/ink/bee-sting mechanic hook yet)",
     "releaseDate": "2017-02-13",
     "icon": "assets/icons/abilities/lava_immunity.png",
     "iconStatus": "recreated"
@@ -2780,15 +2780,15 @@
     "name": "Ink immunity",
     "type": "passive",
     "keyboard": "(passive)",
-    "simulated": true,
+    "simulated": false,
     "usedBy": [
       "squid",
       "octopus"
     ],
     "wikiText": "While ink from the special abilities of the Squid and Octopus normally stuns most animals, each animal named in this section will be completely unaffected by it when moving around in it.",
-    "implemented": true,
+    "implemented": false,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated (numbers inferred)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); NOT simulated (no lava/ink/bee-sting mechanic hook yet)",
     "releaseDate": "2017-02-13",
     "icon": "assets/icons/abilities/ink_immunity.png",
     "iconStatus": "recreated"
@@ -2798,15 +2798,15 @@
     "name": "Bee Sting Immunity",
     "type": "passive",
     "keyboard": "(passive)",
-    "simulated": true,
+    "simulated": false,
     "usedBy": [
       "bear",
       "polarbear"
     ],
     "wikiText": "Animals with Bee Sting Immunity are immune to all of the effects that are inflicted by Honey Bees when they use their sting. While Bees will normally cause a slight health bar reduction and slowed movement upon stinging, Bears and Polar Bears will not be damaged and their movement speed will barely be affected. However, when they turn red from the Bee sting, the aforementioned animals will also not be able to use their special abilities.",
-    "implemented": true,
+    "implemented": false,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated (numbers inferred)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); NOT simulated (no lava/ink/bee-sting mechanic hook yet)",
     "releaseDate": "2017-02-13",
     "icon": "assets/icons/abilities/bee_immunity.png",
     "iconStatus": "recreated"

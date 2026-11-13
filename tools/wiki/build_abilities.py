@@ -83,7 +83,7 @@ EXTRA={'throw_snow':('throw_snow','throw_snow','press',6000,'W',None,[E(k='proj'
 PASS={ # wiki name -> (id, simulated?, flag)
  'Climbing on hills':('climb_hills',False),'Climbing on rocks':('climb_rocks',False),'Climbing on trees':('climb_trees',True),'Faster movement in water':('fast_water',True),'Faster movement in mud':('fast_mud',False),
  'Diving in mud':('dive_mud',False),'Faster movement in quicksand':('fast_quicksand',False),'Grip on ice':('ice_grip',False),'Increased movement speed':('speed_up',True),'Reduced Boost Interval':('reduced_boost',True),
- 'Sprint when hurt':('sprint_hurt',True),'Poison Bite':('poison_immunity',True),'Lava Immunity':('lava_immunity',True),'Ink immunity':('ink_immunity',True),'Bee Sting Immunity':('bee_immunity',True),
+ 'Sprint when hurt':('sprint_hurt',True),'Poison Bite':('poison_immunity',True),'Lava Immunity':('lava_immunity',False),'Ink immunity':('ink_immunity',False),'Bee Sting Immunity':('bee_immunity',False),
  "Immunity to the River's Current":('river_immunity',False),'Immunity to debuff in other biomes':('biome_immunity',False),'Surviving for longer on dry land':('dry_land',True),'Frostbite':('frostbite',False),
  'Fiery Bite':('fiery_bite',False),'Fly over everything':('fly_over',True),'Consume Carcasses':('carcasses',False),'Exhale food':('exhale_food',True),'Shoot Fire':('shoot_fire',False),
  'Invisibility':('invisible_still',True),'Tentacle Sting':('tentacle_sting',False),'See animals inside Hiding Holes':('see_holes',False),'Mad Donkey':('mad_donkey',False)}
