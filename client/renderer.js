@@ -26,7 +26,9 @@
       for (const f of foods) { // food: light-green outline = edible (archived how-to-play text)
         const def = v.foods[f[3]]; if (!def || !cam.visible(f[1], f[2], def.radius, vw, vh)) continue;
         const [sx, sy] = cam.worldToScreen(f[1], f[2], vw, vh);
-        ctx.fillStyle = def.color; ctx.beginPath(); ctx.arc(sx, sy, def.radius * z, 0, 7); ctx.fill(); ctx.strokeStyle = edge; ctx.lineWidth = Math.max(1.5, 2.5 * z); ctx.stroke();
+        const img = M.Sprites.getFood(def), fr = def.radius * z;
+        if (img) { const h = fr / M.Sprites.FOOD_FRAC; ctx.drawImage(img, sx - h, sy - h, 2 * h, 2 * h); ctx.strokeStyle = edge; ctx.lineWidth = Math.max(1.5, 2.2 * z); ctx.beginPath(); ctx.arc(sx, sy, fr * 1.06, 0, 7); ctx.stroke(); }
+        else { ctx.fillStyle = def.color; ctx.beginPath(); ctx.arc(sx, sy, fr, 0, 7); ctx.fill(); ctx.strokeStyle = edge; ctx.lineWidth = Math.max(1.5, 2.5 * z); ctx.stroke(); }
       }
       const list = players.filter((p) => p.id !== meId); if (myPred) list.push(myPred);
       list.sort((a, b) => v.animals[a.ai].size - v.animals[b.ai].size);
@@ -40,7 +42,7 @@
       ctx.save(); ctx.translate(sx, sy); ctx.rotate(p.angle);
       if (!low) { ctx.fillStyle = 'rgba(0,0,0,0.18)'; ctx.beginPath(); ctx.ellipse(4, 6, pr, pr * 0.9, 0, 0, 7); ctx.fill(); }
       if (this.opts.noImages) { ctx.fillStyle = a.placeholderColor; ctx.beginPath(); ctx.arc(0, 0, pr, 0, 7); ctx.fill(); }
-      else ctx.drawImage(M.Sprites.get(a), -pr * 1.1, -pr * 1.1, pr * 2.2, pr * 2.2);
+      else { const h = pr / M.Sprites.BODY_FRAC; ctx.drawImage(M.Sprites.get(a), -h, -h, 2 * h, 2 * h); } // frame sized so the drawn body matches the hitbox
       ctx.restore();
       if (!isMe) { // outline: LIGHT-GREEN = you can eat it, RED = it can eat you (archived how-to-play text)
         const sand = v.__sandbox, col = sand || a.tier < myTier ? '#8dff8d' : a.tier > myTier ? '#ff4d4d' : null;

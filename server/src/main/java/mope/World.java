@@ -133,8 +133,8 @@ public final class World {
             }
             if (!p.bot && !sandbox) { // thirst (bots and sandbox are exempt)
                 if (inWater(p.x, p.y)) p.water = Math.min(100, p.water + 30 * dt);
-                else p.water = Math.max(0, p.water - (0.8 + (running ? 12 : 0)) * dt);
-                if (p.water <= 0) { p.health -= 10 * dt; if (p.health <= 0) { die(p, "thirst", THIRST, dying); continue; } }
+                else p.water = Math.max(0, p.water - (0.5 + (running ? 5 : 0)) * dt);
+                if (p.water <= 0) { p.health -= 6 * dt; if (p.health <= 0) { die(p, "thirst", THIRST, dying); continue; } }
                 else p.health = Math.min(p.maxHealth(), p.health + 2 * dt);
             } else { p.water = 100; p.health = Math.min(p.maxHealth(), p.health + 2 * dt); }
         }

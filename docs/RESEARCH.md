@@ -41,6 +41,9 @@ speed/size/health/damage, which biome each non-arctic animal belongs to (land vs
 lake counts, food XP/density/biome assignment, ability cooldown/duration/multiplier (except Cheetah's 8 s), suggested-choice rule, HUD bar positions, run speed (1.5x) and water rates, bot population.
 Where the real values are found they replace these via `xp-requirements.json` / `animal-statistics.json` (dated overrides).
 
+## Art
+Animal and food sprites are original art in the Mope.io style (see `docs/ART_STYLE.md`); archived 2017 skins do not exist in any capture.
+
 ## Known gaps / next research
 1. Evolution tree + XP: needs a readable source (wiki, forum posts, videos). The 2018-04-21 client (also fetchable) may show how upgrade options changed.
 2. Animal art: no skins captured in Feb 2017 (`skins/` first appears in 2018-2019 captures, and not for these animals). Placeholders use the verified base colours.
