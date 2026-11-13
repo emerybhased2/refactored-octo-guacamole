@@ -1,0 +1,11 @@
+.git
+archive
+tests
+tools
+docs
+database
+.run
+server/build
+server/target
+node_modules
+*.md

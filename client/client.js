@@ -2,7 +2,8 @@
 (function () {
   const M = window.Mope, $ = (id) => document.getElementById(id);
   const params = new URLSearchParams(location.search), DEV = params.get('dev') === '1';
-  const serverUrl = params.get('server') || ((location.protocol === 'https:' ? 'wss://' : 'ws://') + location.hostname + ':8081');
+  // local dev: game server on :8081; hosted (single public port): the web server proxies /ws to the game server
+  const serverUrl = params.get('server') || (location.port === '8080' || location.port === '' && /^(localhost|127\.)/.test(location.hostname) ? 'ws://' + location.hostname + ':8081' : (location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host + '/ws');
 
   const renderer = new M.Renderer($('gCanvas')); renderer.resize();
   const camera = new M.Camera(), input = new M.Input($('gCanvas')), interp = new M.Interpolator(100), net = new M.Net(serverUrl);
