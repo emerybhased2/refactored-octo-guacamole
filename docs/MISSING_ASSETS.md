@@ -17,3 +17,8 @@ Not available in the archive for 2017-02-13:
 - No 2019 client was captured: ids, abilities, ability icons for the new animals, upgrade-button colours and HUD geometry are missing/inferred.
 - 16 new skins, 3 foods, 9 terrain objects and 2 biome tiles are original recreations (see `docs/ART_STYLE.md`); the archive has only a handful of 2019 skin files.
 - The captured 2019 `settings.png` was an HTML page (2017 icon reused).
+
+## 2019-12-30 additions
+- No client.js and no 2019-12 CSS were captured: geometry for the login/shop elements, ids, abilities and numbers are inferred.
+- `shop/mopecoin.png` (referenced by the page) was not captured; original coin drawn. The 55 unnamed skins and the 'HD art' are not available.
+- Update-panel screenshots (volcanic eruption, skins promo) were not stored.

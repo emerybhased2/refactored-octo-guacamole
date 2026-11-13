@@ -50,3 +50,17 @@ html, body { width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
 #devbar { display: none; position: absolute; z-index: 50; left: 0; bottom: 0; border-radius: 0 8px 0 0; gap: 12px; padding: 6px 10px; background: rgba(0,0,0,.65); color: #fff; font-size: 13px; align-items: center; }
 #status { position: absolute; z-index: 60; left: 50%; top: 14px; transform: translateX(-50%); color: #fff; font-weight: bold; text-shadow: 0 1px 3px #000; }
 #deathMsg { display: none; position: absolute; z-index: 30; left: 0; right: 0; top: 38%; text-align: center; color: #F1C34C; font-size: 28px; font-weight: bold; text-shadow: 2px 2px 3px #000; white-space: pre-line; pointer-events: none; }
+
+/* account / shop (element ids from the archived 2019-12-30 page; geometry INFERRED, no CSS was captured) */
+#loginDiv { position: absolute; z-index: 20; right: 16px; top: 16px; width: 200px; padding: 10px; border-radius: 8px; background: rgba(9,153,47,.55); color: #f8f8f8; font-size: 12px; text-shadow: 1px 1px rgba(0,0,0,.5); text-align: center; }
+#loginDiv p { margin: 4px 0 8px; } #loginDiv button { display: block; width: 100%; margin: 4px 0; padding: 7px; cursor: pointer; font-weight: bold; color: #fff; border: 0; border-bottom: 3px solid #116c17; border-radius: 5px; background: #0aa633; }
+#loginDiv button:hover { background: #16932a; } #loginDiv button.na { background: #5a8a64; border-bottom-color: #3a6a44; }
+#loggedInUserImg { width: 44px; height: 44px; margin: 0 auto 4px; border-radius: 50%; background: #1c9c25; border: 3px solid #fff; font: bold 22px/38px Arial; color: #fff; text-shadow: none; }
+#login_coins { margin: 6px 0; font-size: 16px; font-weight: bold; } #login_coins img, .buycoin-img { width: 18px; height: 18px; vertical-align: middle; }
+.modal { position: absolute; inset: 0; z-index: 40; background: rgba(0,0,0,.55); display: flex; align-items: center; justify-content: center; }
+.modalBox { position: relative; width: 330px; max-width: 92vw; padding: 18px; border-radius: 10px; background: #fff; color: #123; } .modalBox.wide { width: 620px; }
+.modalBox h3 { margin: 0 0 8px; } .modalBox input { display: block; width: 100%; box-sizing: border-box; margin: 6px 0; padding: 8px; font-size: 15px; border: 3px solid #1c9c25; border-radius: 5px; }
+.modalBox button { padding: 8px 14px; margin: 4px 6px 0 0; cursor: pointer; font-weight: bold; color: #fff; border: 0; border-bottom: 3px solid #116c17; border-radius: 5px; background: #0aa633; } .modalBox button:disabled { background: #9ab; border-bottom-color: #789; cursor: default; }
+.modalClose { position: absolute; right: 8px; top: 6px; background: transparent !important; color: #333 !important; border: 0 !important; font-size: 24px; } #authErr, #shopErr { color: #b00; min-height: 18px; font-size: 13px; } #authNote, #shopNote { font-size: 12px; color: #456; }
+#shopGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; } .shopItem { padding: 8px; border-radius: 8px; background: #e8f5ea; text-align: center; border: 2px solid #b8dcc0; } .shopItem canvas { width: 96px; height: 96px; } .shopItem b { display: block; font-size: 13px; } .shopItem small { display: block; margin: 2px 0 8px; color: #567; } .shopItem button { margin: 0; }
+#disasterMsg { display: none; position: absolute; z-index: 30; left: 0; right: 0; top: 110px; text-align: center; color: #fff; font-size: 24px; font-weight: bold; text-shadow: 2px 2px 3px #000; pointer-events: none; }

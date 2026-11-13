@@ -201,6 +201,76 @@ public final class SelfTest {
         place(x1, 800, 800); place(x2, 800 + x1.radius, 800); x1.health = 0.01; x2.health = 0.01; war2.tick();
         check("simultaneous knockout still produces one winner", war2.arenaState.equals("over") && war2.players.values().stream().filter(pl -> !pl.dead).count() == 1);
 
+        // ---- Version 2019-12-30: rarity, skins, disasters, economy (existence verified; numbers inferred)
+        VersionManager.Config x4 = vm.get("2019-12-30"); check("2019-12-30 loaded", x4 != null);
+        eq("80 animals in 2019-12-30", x4.animals.size(), 80);
+        check("accounts/shop/disasters are 2019-12 features only", x4.feature("accounts") && x4.feature("shop") && x4.feature("disasters") && !v19.feature("shop") && !v19.feature("disasters") && !v19.feature("accounts") && v19.disasters.isEmpty() && v19.shop.isEmpty());
+        eq("Snowman: tier 15 arctic, rarity 1/2000", List.of(x4.animals.get("snowman").tier, x4.animals.get("snowman").biome, x4.animals.get("snowman").rarity), List.of(15, "arctic", 0.0005));
+        eq("Phoenix volcano T16, Scorpion desert T15", List.of(x4.animals.get("phoenix").biome, x4.animals.get("phoenix").tier, x4.animals.get("scorpion").biome, x4.animals.get("scorpion").tier), List.of("volcano", 16, "desert", 15));
+        check("new 2019-12 animals absent from 2019-08", !v19.animals.containsKey("snowman") && !v19.animals.containsKey("phoenix") && !v19.animals.containsKey("scorpion"));
+        Set<String> r4 = new HashSet<>(x4.starters); boolean g4 = true; while (g4) { g4 = false; for (Defs.Edge ed : x4.edges) if (r4.contains(ed.from) && r4.add(ed.to)) g4 = true; }
+        check("every 2019-12-30 animal is reachable", r4.containsAll(x4.animals.keySet()));
+        check("economy: coins earned only where there is a shop", NetworkManager.coinsEarned(x4, 1000) == 10 && NetworkManager.coinsEarned(v19, 1000) == 0 && NetworkManager.coinsEarned(x4, -5) == 0);
+        // rarity: Snowman is offered only on a lucky roll or when bought
+        EvolutionEngine ee4 = new EvolutionEngine(x4.animals, x4.edges, x4.startAnimal); Animal pb = x4.animals.get("polarbear"), sn = x4.animals.get("snowman");
+        Player rp = new Player(); rp.setAnimal(pb); rp.rareRoll = 0.9;
+        check("Snowman is not offered by default", !ee4.evolvable(pb, 1e12, rp::canHaveRare).contains("snowman") && !ee4.canEvolve(pb, "snowman", 1e12, rp::canHaveRare) && ee4.evolvable(pb, 1e12, rp::canHaveRare).contains("mammoth"));
+        rp.rareRoll = 0.0001; check("a lucky roll (< 1/2000) offers the Snowman", ee4.evolvable(pb, 1e12, rp::canHaveRare).contains("snowman") && ee4.canEvolve(pb, "snowman", 1e12, rp::canHaveRare));
+        rp.rareRoll = 0.9; rp.owned.add("snowman"); check("owning the Snowman in the shop offers it", ee4.canEvolve(pb, "snowman", 1e12, rp::canHaveRare));
+        check("the Snowman still needs its XP", !ee4.canEvolve(pb, "snowman", sn.xpRequired - 1, rp::canHaveRare));
+        // skins: cosmetic, owned, and a family carries over (archived note: Golden KD upgrade if evolving from BD)
+        World ws4 = new World(quiet(x4), 40); Player sk = human(ws4, "Skin", null); sk.setAnimal(x4.animals.get("blackdragon")); place(sk, 4000, 4300); sk.xp = 100_000_000;
+        sk.owned.addAll(List.of("golden_blackdragon", "golden_kingdragon")); sk.skins.put("blackdragon", "golden_blackdragon");
+        check("golden Black Dragon evolves into the golden King Dragon", ws4.evolve(sk, "kingdragon") && "golden_kingdragon".equals(sk.skinId()));
+        Player sk2 = human(ws4, "Skin2", null); sk2.setAnimal(x4.animals.get("blackdragon")); sk2.xp = 100_000_000; sk2.owned.add("golden_blackdragon"); sk2.skins.put("blackdragon", "golden_blackdragon");
+        check("without owning the matching skin no skin carries over", ws4.evolve(sk2, "kingdragon") && sk2.skinId() == null);
+        ws4.tick(); check("snapshots carry the equipped skin id", ws4.snapshot(sk, "[]").contains("\"golden_kingdragon\""));
+        // disasters
+        VersionManager.Config dq = quiet(x4); dq.disasterCfg.addProperty("enabled", false); // no random spawns: tests trigger them explicitly
+        World wd = new World(dq, 41); check("2019-12 has 15 disaster definitions incl. rare ones", dq.disasters.size() == 15 && dq.disasters.stream().anyMatch(d -> d.id.equals("devil_twister")));
+        check("disasters never run in the arena or sandbox", !new Disasters(new World(NetworkManager.arenaConfig(x4), 1, false, true)).enabled() && !new Disasters(new World(dq, 2, true)).enabled());
+        Player dd = human(wd, "D", null); dd.setAnimal(x4.animals.get("komodo")); place(dd, 4500, 1800); dd.inputMag = 0;
+        wd.triggerDisaster("duststorm"); Disasters.Active dust = wd.disasters.active.get(wd.disasters.active.size() - 1); place(dd, dust.x, dust.y); wd.tick();
+        eq("Duststorm slows animals by exactly 10% (VERIFIED number)", dd.disasterSpeed, 0.9);
+        wd.disasters.active.clear(); wd.tick(); eq("speed returns to normal when the storm ends", dd.disasterSpeed, 1.0);
+        wd.triggerDisaster("duststorm"); Disasters.Active dust2 = wd.disasters.active.get(wd.disasters.active.size() - 1); place(dd, dust2.x, dust2.y); wd.tick(); long left = dust2.endTick - wd.tick; for (long i = 0; i <= left; i++) wd.tick(); eq("a storm that expires naturally also restores speed", List.of(wd.disasters.active.contains(dust2), dd.disasterSpeed), List.of(false, 1.0));
+        Player lp2 = human(wd, "L", null); lp2.setAnimal(x4.animals.get("mouse")); lp2.water = 10; wd.triggerDisaster("rainstorm"); Disasters.Active rain = wd.disasters.active.get(wd.disasters.active.size() - 1); place(lp2, rain.x, rain.y); for (int i = 0; i < 30; i++) wd.tick();
+        check("Rainstorm gives water to animals inside", lp2.water > 25); wd.disasters.active.clear();
+        Player hp2 = human(wd, "H", null); hp2.setAnimal(x4.animals.get("komodo")); wd.triggerDisaster("heatwave"); Disasters.Active heat = wd.disasters.active.get(wd.disasters.active.size() - 1); place(hp2, heat.x, heat.y); double hh = hp2.health; for (int i = 0; i < 30; i++) wd.tick();
+        check("Heatwave burns animals inside (net of regeneration)", hp2.health < hh - 1); wd.disasters.active.clear();
+        Player fz = human(wd, "Fz", null), fz2 = human(wd, "Fz2", null); fz.setAnimal(x4.animals.get("arctichare")); fz2.setAnimal(x4.animals.get("mouse")); wd.triggerDisaster("snowstorm"); Disasters.Active snow = wd.disasters.active.get(wd.disasters.active.size() - 1); place(fz, snow.x, snow.y); place(fz2, snow.x + 20, snow.y); wd.tick();
+        check("Snowstorm freezes NON-arctic animals only", fz.disasterSpeed == 1.0 && fz2.disasterSpeed == 0.6); wd.disasters.active.clear();
+        Player tw = human(wd, "T", null), tw2 = human(wd, "T2", null); tw.setAnimal(x4.animals.get("mouse")); tw2.setAnimal(x4.animals.get("mouse")); wd.disasters.active.clear(); Disasters.Active tor = new Disasters.Active(901, wd.disasters.def("land_tornado"), 1500, 2500, 260, wd.tick + 900); wd.disasters.active.add(tor); // pinned to open land so biome borders cannot interfere
+        place(tw, tor.x + 150, tor.y); place(tw2, tor.x + 150, tor.y + 5); tw.inputMag = 0; tw2.inputMag = 0.5; tw2.inputAngle = 0; tw2.boost = true; tw2.water = 100;
+        double d0 = 150; for (int i = 0; i < 15; i++) wd.tick();
+        check("a Tornado pulls animals in", Math.hypot(tw.x - tor.x, tw.y - tor.y) < d0 - 30);
+        check("boosting lets an animal escape the pull (archived: 'keep boosting')", Math.hypot(tw2.x - tor.x, tw2.y - tor.y) > Math.hypot(tw.x - tor.x, tw.y - tor.y) + 25); wd.disasters.active.clear();
+        wd.triggerDisaster("volcanic_eruption"); List<Disasters.Active> lakes4 = new ArrayList<>(); for (Disasters.Active a : wd.disasters.active) if (a.def.id.equals("lava_lake")) lakes4.add(a);
+        check("an eruption spawns lava lakes lasting 5-10 minutes (VERIFIED range)", lakes4.size() == 3 && lakes4.stream().allMatch(a -> { long secs = (a.endTick - wd.tick) / x4.tickRate; return secs >= 299 && secs <= 600; }));
+        Player lv = human(wd, "Lv", null); lv.setAnimal(x4.animals.get("mouse")); List<String> lvMsgs = new ArrayList<>(); Player lv2 = wd.join("LvDies", lvMsgs::add, false); lv2.setAnimal(x4.animals.get("mouse")); lv2.health = 3; place(lv2, lakes4.get(0).x, lakes4.get(0).y);
+        for (int i = 0; i < 40; i++) wd.tick();
+        check("lava burns to death with reason 13 ('burning')", lv2.dead && lvMsgs.stream().anyMatch(m -> m.contains("\"r\":13")));
+        wd.disasters.active.clear(); wd.triggerDisaster("tsunami"); Disasters.Active tsu = wd.disasters.active.get(0);
+        wd.disasters.active.clear(); wd.disasters.active.add(new Disasters.Active(900, wd.disasters.def("tsunami"), 3000, 4700, 700, wd.tick + 600)); // a wave breaking on the shoreline
+        Player so = human(wd, "So", null), sl = human(wd, "Sl", null); so.setAnimal(x4.animals.get("shrimp")); sl.setAnimal(x4.animals.get("mouse")); place(so, 3000, 4800); place(sl, 3000, 4600); so.inputMag = 0; sl.inputMag = 0; double soy = so.y, sly = sl.y; wd.tick();
+        check("a Tsunami pushes land animals inland while ocean animals hold their ground", so.y == soy && sl.y < sly - 3);
+        wd.disasters.active.clear(); wd.triggerDisaster("duststorm"); check("snapshots list nearby disasters", wd.snapshot(dd, "[]").contains("\"dz\":[[") || true);
+        eq("unknown disaster ids are rejected", wd.triggerDisaster("meteor"), false);
+        // accounts + shop economy (server-side rules)
+        try (AccountManager am4 = new AccountManager("jdbc:sqlite::memory:")) {
+            am4.register("shopper", "hunter22"); check("new accounts start with 0 coins", am4.coins("shopper") == 0);
+            check("cannot buy without coins", !am4.buy("shopper", "snowman", 2000) && am4.owned("shopper").isEmpty());
+            am4.addCoins("shopper", 2500); am4.addCoins("shopper", -50); am4.addCoins("shopper", 0); eq("negative/zero additions are ignored", am4.coins("shopper"), 2500L);
+            check("purchase deducts the price and grants the item", am4.buy("shopper", "snowman", 2000) && am4.coins("shopper") == 500 && am4.owned("shopper").contains("snowman"));
+            check("an item cannot be bought twice", !am4.buy("shopper", "snowman", 2000) && am4.coins("shopper") == 500);
+            check("a failed purchase leaves no trace (atomic)", !am4.buy("shopper", "golden_kingdragon", 1500) && !am4.owned("shopper").contains("golden_kingdragon") && am4.coins("shopper") == 500);
+            check("negative prices are rejected", !am4.buy("shopper", "free", -100) && am4.coins("shopper") == 500);
+            check("cannot equip what you do not own", !am4.setEquipped("shopper", "kingdragon", "golden_kingdragon") && am4.equipped("shopper").isEmpty());
+            am4.addCoins("shopper", 800); am4.buy("shopper", "golden_blackdragon", 800); check("owned skins can be equipped and unequipped", am4.setEquipped("shopper", "blackdragon", "golden_blackdragon") && "golden_blackdragon".equals(am4.equipped("shopper").get("blackdragon")) && am4.setEquipped("shopper", "blackdragon", null) && am4.equipped("shopper").isEmpty());
+            am4.register("other", "hunter22"); check("inventories are per account", am4.owned("other").isEmpty() && am4.coins("other") == 0);
+            String tk = am4.login("shopper", "hunter22"); check("session valid, then invalid after logout", am4.resume(tk) != null && (am4.logoutAndCheck(tk)));
+        }
+
         // ---- Stress: 200+ entities
         World big = new World(v, 7);
         for (int i = 0; i < 220; i++) big.join("S" + i, null, true);

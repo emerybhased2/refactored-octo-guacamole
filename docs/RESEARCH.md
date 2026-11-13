@@ -86,6 +86,29 @@ Animal ids (unknown), abilities of the new animals, base colours, biome of each 
 ### Not implemented
 Spectate, 1v1 Arena/FFA/Teams/Battle-royale buttons, terrain effects (hide, mud, hills, ice, lava damage), the new animals' abilities, scorpion/snowman/skins events.
 
+
+## 2019-12-30 capture (version 4, "#GoldenAge")
+
+**Which capture is "next":** captures exist for 2019-09-14, 09-21, 10-06, 12-13 and 12-30. The first three differ from 2019-08-25 only in one note line ("Aug 16: Fixed bugs."); 12-13 adds "Oct 25th: ... accounts/shop update coming pretty soon". They are recorded in the changelog but are not separate versions. **2019-12-30 is the next capture with real content.**
+
+**Available:** `index.html` only (homepage). **No `client.js`, no 2019-12 CSS** (Arquivo returns the 2018 stylesheet for that date; it was detected and discarded), so geometry and all numbers are inferred except where noted.
+
+| Evidence (homepage notes / element ids) | What it proves |
+|---|---|
+| "DEC 23: #GoldenAge" | Accounts + shop: **59 skins**, Facebook/Google login, coins earned while playing (adblock off) and bought with real money, "HD art for most animals". Element ids: loginDiv, notLoggedInDiv/Txt, facebookLoginBtn, googleLoginBtn, onloggedInDiv, loggedInUserImg, loggedInNameTxt, loginCoins (icon `shop/mopecoin.png`, tooltip "add more coins"), shopbutton "Shop", logoutbut, Xsolla store frame, test-account debug buttons. |
+| Disasters | Tsunami, Volcanic eruption, Tornados (land/fire/dust devil/waterspout/arctic twister/very rare Devil Twister), Snowstorm, Coldstorm, Rainstorm (water), Duststorm (**-10% speed**), Heatwave (burns). Volcanic eruptions throw fireballs and leave **lava lakes for 5-10 minutes**. Tornados can be escaped by boosting, diving or hiding in a hole. |
+| Animals | **Snowman**: new apex, **1/2000 rarity**, also buyable; Yeti-like with passive camouflage. **Phoenix** (10% slower in desert, 15% more boost interval). **Giant Scorpion** (image in the update panel). Golden / Azure Black Dragon and Golden King Dragon skins; "Golden KD upgrade if evolving from BD". "Apex kills" interface. |
+| Terrain | **Arctic Volcano** (erupts slower than the land volcano, shoots freezing snowballs). The land volcano erupts/shakes/throws fireballs. |
+
+### Implemented (this version)
+Accounts with a coin wallet, inventory and equipped skins (server-validated, atomic purchases, per-account); coins earned per XP at death; shop UI; **local account form as a substitute for Facebook/Google** (OAuth is impossible here, the archived buttons are shown and open the local form); the Snowman's 1/2000 roll or shop ownership gating its offer; skin carry-over from BD to KD; a data-driven disaster engine with all the listed disasters, boost-escape for tornados, lava lakes of 300-600 s, and an announcement banner; volcano terrain; dev-only commands guarded by `MOPE_DEV=1`.
+
+### Inferred (not in any archive)
+Prices, the coin earn rate (1 per 100 XP), every disaster number except Duststorm -10% and lava lake duration, disaster spawn rate, tiers/biomes of Phoenix (volcano, tier 16) and Giant Scorpion (desert, tier 15), the Snowman's tier (15, from "Apex"), the 55 unnamed skins, menu geometry, skin art, and the entire economy balance.
+
+### Not implemented
+Real-money purchases, Facebook/Google OAuth, the apex-kill interface, camouflage (Snowman passive), Phoenix boost behaviour, snowball projectiles, terrain effects (hiding, mud), "Waves", HD art.
+
 ## Next versions
 Captures exist for 2018-07-16, 2019-03-27/04-14 and later. The Dec 2, 2016 "Classic Mope" (mope.io/oldmope) may be capturable and would be an earlier baseline.
 

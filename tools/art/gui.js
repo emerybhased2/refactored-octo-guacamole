@@ -43,6 +43,7 @@
     stomp(c) { P.ell(c, 0, 6, 15, 18, CREAM); for (const x of [-9, 0, 9]) P.ell(c, x, -18, 4, 5, CREAM); for (const x of [-24, 24]) P.line(c, [[x, 0], [x * 1.25, 12]], 3.5, CREAM); },
     fly_with_prey(c) { for (const sd of [-1, 1]) P.poly(c, [[sd * 4, 6], [sd * 24, -14], [sd * 26, -2], [sd * 14, 14]], CREAM); P.ell(c, 0, 10, 7, 7, '#e8503a'); },
     stink(c) { c.strokeStyle = '#c8e07a'; c.lineWidth = 5; c.lineCap = 'round'; for (const x of [-14, 0, 14]) { c.beginPath(); c.moveTo(x, 22); c.bezierCurveTo(x - 12, 10, x + 12, 0, x, -10); c.bezierCurveTo(x - 8, -16, x + 6, -20, x, -24); c.stroke(); } },
+    camouflage(c) { P.poly(c, [[-10, -22], [10, -22], [0, 22]], '#f08a1a'); for (const [x, y, r] of [[-18, -6, 4], [18, 0, 3.5], [-14, 14, 3], [14, 16, 4], [0, -26, 3]]) P.ell(c, x, y, r, r, CREAM); P.line(c, [[-6, -14], [6, -14]], 2.5, sh('#f08a1a', -0.3)); },
     back_kick(c) { P.poly(c, [[-22, 0], [-4, -16], [-4, -6], [20, -6], [20, 6], [-4, 6], [-4, 16]], CREAM); P.line(c, [[10, -18], [22, -18]], 3, CREAM); P.line(c, [[10, 18], [22, 18]], 3, CREAM); },
   };
   function abilityIcon(ctx, id, S) {
@@ -82,6 +83,12 @@
     }
     ctx.restore();
   }
-  g.MopeGui = { abilityIcon, soundOff, tile, abilityIds: Object.keys(GL) };
+  /* Shop currency icon (the archived page references shop/mopecoin.png, which was not captured): an original gold coin. */
+  function coin(ctx, S) {
+    ctx.save(); ctx.clearRect(0, 0, S, S); ctx.translate(S / 2, S / 2); ctx.scale(S / 64, S / 64);
+    P.ell(ctx, 0, 0, 30, 30, '#9a6a10'); P.ell(ctx, 0, 0, 27, 27, '#f2c230'); P.ell(ctx, 0, 0, 21, 21, '#c8941c'); P.ell(ctx, 0, 0, 19, 19, '#f8d860');
+    for (const [x, y, r] of [[0, 4, 7], [-10, -6, 4], [0, -10, 4], [10, -6, 4]]) P.ell(ctx, x, y, r, r * 0.9, '#c8941c'); P.ell(ctx, -10, -14, 9, 4, 'rgba(255,255,255,.55)', -0.5); ctx.restore();
+  }
+  g.MopeGui = { coin, abilityIcon, soundOff, tile, abilityIds: Object.keys(GL) };
   if (typeof module !== 'undefined') module.exports = g.MopeGui;
 })(typeof window !== 'undefined' ? window : globalThis);

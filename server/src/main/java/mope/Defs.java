@@ -6,6 +6,14 @@ import java.util.List;
 public final class Defs {
     private Defs() {}
     public static class Edge { public String from, to, releaseDate, removalDate, confidence; }
+    public static class ShopItem { public String id, type, animal, family, name, sprite, spriteStatus, releaseDate, removalDate, confidence; public int price; }
+    public static class DisasterDef {
+        public String id, name, biome, releaseDate, removalDate, spawnedBy, confidence;
+        public double radius, durationSec, weight; public double[] durationRangeSec;
+        public com.google.gson.JsonObject visual, effects, spawns;
+        public double fx(String k, double d) { return effects != null && effects.has(k) ? effects.get(k).getAsDouble() : d; }
+        public boolean fb(String k) { return effects != null && effects.has(k) && effects.get(k).getAsBoolean(); }
+    }
     public static class Cat { public String from, name; }
     public static class Tier { public int tier; public String name, color, releaseDate; public List<Cat> categories; }
     public static class TerrainDef {

@@ -9,7 +9,9 @@ function listVersions() {
   const out = [], walk = (d) => { for (const e of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, e.name); if (e.isDirectory()) walk(p); else if (e.name === 'version.json') out.push(JSON.parse(fs.readFileSync(p, 'utf8'))); } };
   walk(path.join(ROOT, 'versions'));
   const animals = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/progression/animals.json'), 'utf8'));
+  const shop = (() => { try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shop/shop.json'), 'utf8')).items; } catch (e) { return []; } })();
   for (const v of out) v.animalDefs = animals.filter((a) => a.releaseDate && a.releaseDate <= v.date && (!a.removalDate || v.date < a.removalDate)); // same rule as the server
+  for (const v of out) if (v.features && v.features.shop) v.shopItems = shop.filter((i) => i.releaseDate <= v.date && (i.type !== 'skin' && i.type !== 'animal' ? true : animals.some((a) => a.id === i.animal && a.releaseDate <= v.date)));
   return out;
 }
 http.createServer((req, res) => {

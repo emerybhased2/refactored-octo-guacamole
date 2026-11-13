@@ -1,5 +1,13 @@
 # Project changelog
 
+## 0.5.0 - Version 4: 2019-12-30 (#GoldenAge)
+- New version from the 2019-12-30 homepage (no client/CSS exists): Snowman (1/2000 rarity or bought), Phoenix, Giant Scorpion, Arctic Volcano and volcano terrain, **accounts + coin shop** (server-validated; Golden/Azure Black Dragon and Golden King Dragon skins, Snowman unlock), **15 disasters** (tornados, storms, tsunami, eruptions with 5-10 min lava lakes).
+- Menu: login/account block from the archived element ids; Facebook/Google OAuth replaced by a clearly labelled local account form.
+- Security: dev-only commands (dev-coins, dev-disaster) are ignored unless the server is started with MOPE_DEV=1; sessions can be logged out; the database path is configurable (MOPE_DB).
+- Fixes found by tests: stale disaster speed multipliers are always reset.
+- Tests: server 143, client/data 51, integration 25 (two servers: normal and dev).
+
+
 ## 0.4.1 - Spectate and 1v1 Arena (2019)
 - **Spectate** (2019 menu button now works): a body-less spectator follows the XP leader, Space/click cycles targets, Esc leaves. Behaviour inferred; the button is the archived part.
 - **1v1 Arena** (evidence: 2019-06-18 notes; rules INFERRED): small land-only world per match, health-based contact combat, no healing, bot opponent after 4 s, simultaneous knockouts resolve to one winner, opponents drawn semi-transparent (archived note). Reachable from the dev bar only (the archived menu HTML has no Arena button).

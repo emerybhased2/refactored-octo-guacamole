@@ -137,5 +137,35 @@
   "effect": "decor (damage NOT implemented)",
   "sprite": "assets/terrain/lava_pool.png",
   "spriteStatus": "recreated"
+ },
+ {
+  "id": "volcano_cone",
+  "name": "Volcano",
+  "kind": "landmark",
+  "biomes": [
+   "volcano"
+  ],
+  "radius": 120,
+  "density": 0.9,
+  "releaseDate": "2019-12-30",
+  "confidence": "existence verified (2019-12-23 note: 'Volcano now erupt, shake and throw fireballs'); look/density inferred",
+  "effect": "eruption source (disasters)",
+  "sprite": "assets/terrain/volcano_cone.png",
+  "spriteStatus": "recreated"
+ },
+ {
+  "id": "arctic_volcano",
+  "name": "Arctic Volcano",
+  "kind": "landmark",
+  "biomes": [
+   "arctic"
+  ],
+  "radius": 110,
+  "density": 0.7,
+  "releaseDate": "2019-12-30",
+  "confidence": "existence VERIFIED (2019-12-23 note 'NEW: Arctic Volcano'); look/density inferred",
+  "effect": "eruption source (disasters)",
+  "sprite": "assets/terrain/arctic_volcano.png",
+  "spriteStatus": "recreated"
  }
 ]

@@ -1,0 +1,59 @@
+{
+ "currency": {
+  "id": "coin",
+  "name": "Mope coin",
+  "icon": "assets/shop/mopecoin.png",
+  "iconStatus": "recreated",
+  "earnNote": "Coins are earned while playing (2019-12-23 note: only with the adblocker disabled; here: per XP, INFERRED rate) and bought with real money (NOT implemented)"
+ },
+ "verifiedTotalSkins": 59,
+ "catalogNote": "The page says 59 brand new skins exist; only the items below are named in the archived notes. Prices are INFERRED. Skins are cosmetic only.",
+ "releaseDate": "2019-12-30",
+ "items": [
+  {
+   "id": "snowman",
+   "type": "animal",
+   "animal": "snowman",
+   "name": "Snowman",
+   "price": 2000,
+   "releaseDate": "2019-12-30",
+   "confidence": "existence verified ('can be bought from shop as well'); price inferred"
+  },
+  {
+   "id": "golden_blackdragon",
+   "type": "skin",
+   "animal": "blackdragon",
+   "family": "golden",
+   "name": "Golden Black Dragon",
+   "price": 800,
+   "sprite": "assets/skins/golden_blackdragon.png",
+   "spriteStatus": "recreated",
+   "releaseDate": "2019-12-30",
+   "confidence": "existence verified (2019-12-29 notes: Golden/Azure BD); price/look inferred"
+  },
+  {
+   "id": "azure_blackdragon",
+   "type": "skin",
+   "animal": "blackdragon",
+   "family": "azure",
+   "name": "Azure Black Dragon",
+   "price": 800,
+   "sprite": "assets/skins/azure_blackdragon.png",
+   "spriteStatus": "recreated",
+   "releaseDate": "2019-12-30",
+   "confidence": "existence verified (2019-12-29 notes: Golden/Azure BD); price/look inferred"
+  },
+  {
+   "id": "golden_kingdragon",
+   "type": "skin",
+   "animal": "kingdragon",
+   "family": "golden",
+   "name": "Golden King Dragon",
+   "price": 1500,
+   "sprite": "assets/skins/golden_kingdragon.png",
+   "spriteStatus": "recreated",
+   "releaseDate": "2019-12-30",
+   "confidence": "existence verified (2019-12-29 notes: 'Golden KD upgrade if evolving from BD'); price/look inferred"
+  }
+ ]
+}

@@ -163,5 +163,44 @@
     "name": "1v1 Arena (mentioned in notes; not implemented)"
    }
   ]
+ },
+ {
+  "version": "0.4",
+  "date": "2019-12-30",
+  "confidence": "existence verified (2019-12-30 homepage); numbers inferred",
+  "changes": [
+   {
+    "type": "animals_added",
+    "count": 3,
+    "names": [
+     "Snowman (apex, 1/2000 rarity, shop)",
+     "Phoenix",
+     "Giant Scorpion"
+    ]
+   },
+   {
+    "type": "feature_added",
+    "name": "Accounts + coin shop (59 skins; Golden/Azure Black Dragon, Golden King Dragon, Snowman evidenced)"
+   },
+   {
+    "type": "feature_added",
+    "name": "Disasters: tornados, storms, tsunami, volcanic eruptions with lava lakes (5-10 min), arctic volcano"
+   },
+   {
+    "type": "terrain_added",
+    "names": [
+     "Volcano",
+     "Arctic Volcano"
+    ]
+   },
+   {
+    "type": "art",
+    "name": "'NEW HD art for most animals' (not reproducible; project art unchanged)"
+   },
+   {
+    "type": "capture_note",
+    "name": "Captures 2019-09-14, 09-21, 10-06, 12-13 changed only note text (e.g. 'Aug 16: Fixed bugs', 'accounts/shop coming soon')"
+   }
+  ]
  }
 ]

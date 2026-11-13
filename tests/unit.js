@@ -126,7 +126,7 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
     assert.strictEqual(v['--logo-w'], '350px'); assert.strictEqual(v['--logo-h'], '178px'); assert.strictEqual(v['--col-w'], '350px'); assert.strictEqual(v['--opt-bg'], 'rgba(11,164,52,0.95)');
   });
   await t('main menu: elements of this version; none from later eras', () => {
-    const e = MenuRenderer.elementsPresent(mcfg); assert.deepStrictEqual(e, { modes: true, sandbox: true, settings: true, mute: true, howToPlay: true, updates: true, options: true, spectate: false });
+    const e = MenuRenderer.elementsPresent(mcfg); assert.deepStrictEqual(e, { modes: true, sandbox: true, settings: true, mute: true, howToPlay: true, updates: true, options: true, spectate: false, account: false });
     for (const k of ['login', 'register', 'shop', 'currency', 'events']) assert.ok(mcfg.absentInThisVersion.includes(k)); assert.strictEqual(mcfg.animation, null);
     const stripped = JSON.parse(JSON.stringify(mcfg)); delete stripped.modes.sandbox; assert.strictEqual(MenuRenderer.elementsPresent(stripped).sandbox, false);
   });
@@ -172,7 +172,7 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
   });
   await t('2018 main menu: archived wordmark 350x99, no modes, no How-to-play, 5 options, 3 update notes', () => {
     const i = png(m18.logo.src); assert.deepStrictEqual([i.w, i.h], [350, 99]); assert.strictEqual(m18.logo.h, 99);
-    const e = MenuRenderer.elementsPresent(m18); assert.deepStrictEqual(e, { modes: false, sandbox: false, settings: true, mute: true, howToPlay: false, updates: true, options: true, spectate: false });
+    const e = MenuRenderer.elementsPresent(m18); assert.deepStrictEqual(e, { modes: false, sandbox: false, settings: true, mute: true, howToPlay: false, updates: true, options: true, spectate: false, account: false });
     assert.ok(!m18.options.checkboxes.some((c) => c.id === 'christmasSkins')); assert.strictEqual(m18.options.checkboxes.length, 5);
     assert.strictEqual(m18.panels.updates.sections.length, 3); assert.ok(m18.absentInThisVersion.includes('sandbox'));
   });
@@ -190,7 +190,7 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
   const inV = (e, d) => e.releaseDate <= d && (!e.removalDate || d < e.removalDate);
   const stateAt = (id, d) => { const a = all.find((x) => x.id === id); let r = { tier: a.tier, xp: a.xpRequired, biome: a.biome }; for (const c of (J('data/progression/animal-statistics.json').changes[id] || []).filter((c) => c.from <= d).sort((x, y) => x.from.localeCompare(y.from))) r = { tier: c.tier !== undefined ? c.tier : r.tier, xp: c.xpRequired !== undefined ? c.xpRequired : r.xp, biome: c.biome || r.biome }; return r; };
   await t('every version: tier strictly increases along edges, XP never decreases, every animal reachable from a starter', () => {
-    for (const vf of ['versions/2017/february-13/version.json', 'versions/2018/april-21/version.json', 'versions/2019/august-25/version.json']) {
+    for (const vf of ['versions/2017/february-13/version.json', 'versions/2018/april-21/version.json', 'versions/2019/august-25/version.json', 'versions/2019/december-30/version.json']) {
       const v = J(vf), roster = all.filter((a) => act(a, v.date) && v.biomes.includes(stateAt(a.id, v.date).biome)), ed = allEdges.filter((e) => inV(e, v.date) && roster.some((a) => a.id === e.from) && roster.some((a) => a.id === e.to));
       for (const e of ed) { const f = stateAt(e.from, v.date), t = stateAt(e.to, v.date); assert.ok(t.tier > f.tier, `${v.id} ${e.from}>${e.to}`); assert.ok(t.xp >= f.xp, `${v.id} xp ${e.from}>${e.to}`); }
       const reach = new Set(v.starters); let ch = true; while (ch) { ch = false; for (const e of ed) if (reach.has(e.from) && !reach.has(e.to)) { reach.add(e.to); ch = true; } }
@@ -231,7 +231,7 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
     for (const x of terr) { const i = png(x.sprite); assert.deepStrictEqual([i.w, i.h, i.type], [128, 128, 6], x.id); } for (const b of ['desert', 'volcano']) assert.deepStrictEqual([png('assets/biomes/' + b + '.png').w], [256]);
   });
   await t('2019 main menu: Spectate button, 2em Play (height 50), hover #067d26, scrollable update panel, no mute button, column top 30', () => {
-    const e = MenuRenderer.elementsPresent(m19); assert.deepStrictEqual(e, { modes: false, sandbox: false, settings: true, mute: false, howToPlay: false, updates: true, options: true, spectate: true });
+    const e = MenuRenderer.elementsPresent(m19); assert.deepStrictEqual(e, { modes: false, sandbox: false, settings: true, mute: false, howToPlay: false, updates: true, options: true, spectate: true, account: false });
     const v = MenuRenderer.themeVars(m19); assert.strictEqual(v['--play-h'], '50px'); assert.strictEqual(v['--play-hover'], '#067d26'); assert.strictEqual(v['--play-fs'], '2em'); assert.strictEqual(v['--col-top'], '30px'); assert.strictEqual(v['--upd-maxh'], '400px'); assert.strictEqual(v['--upd-ov'], 'scroll'); assert.strictEqual(v['--spec-w'], '200px');
     assert.strictEqual(m19.panels.updates.sections.length, 4); assert.ok(m19.absentInThisVersion.includes('mute-button')); assert.ok(/NOT implemented/.test(m19.spectate.note));
     assert.deepStrictEqual([png(m19.logo.src).w, png(m19.logo.src).h], [350, 99]);
@@ -240,6 +240,56 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
     const u19 = J(v19.upgradeMenu); assert.ok(u19.choices.biomeColors.desert && u19.choices.biomeColors.volcano); assert.ok(/inferred/.test(u19.choices.biomeColorsNote));
     const an = all.filter((a) => act(a, v19.date)); const ord = UpgradeMenu.orderChoices(['kingdragon', 'komodo', 'flytrap', 'trout'], an, 'land'); assert.strictEqual(ord.length, 4); assert.deepStrictEqual(ord.filter((x) => x === 'trout' || x === 'flytrap' || x === 'komodo' || x === 'kingdragon').slice(0, 1).length, 1);
     assert.deepStrictEqual(UpgradeMenu.BIOME_ORDER.slice(0, 3), ['land', 'ocean', 'arctic']);
+  });
+
+  // ---- version 2019-12-30 (#GoldenAge): accounts, shop, disasters
+  const v4 = J('versions/2019/december-30/version.json'), m4 = J(v4.menu), shopData = J('data/shop/shop.json'), dis = J('data/disasters/disasters.json'), Shop = require('../client/ui/Shop.js');
+  await t('2019-12-30 roster: 80 animals; Snowman (apex, 1/2000), Phoenix, Giant Scorpion are new and evidenced', () => {
+    assert.strictEqual(all.filter((a) => act(a, v4.date)).length, 80); assert.strictEqual(all.filter((a) => act(a, v19.date)).length, 77);
+    for (const id of ['snowman', 'phoenix', 'scorpion']) { const a = all.find((x) => x.id === id); assert.strictEqual(a.releaseDate, '2019-12-30'); assert.ok(a.evidence, id); assert.strictEqual(a.internalId, null); }
+    const sn = all.find((x) => x.id === 'snowman'); assert.strictEqual(sn.rarity, 0.0005); assert.strictEqual(sn.tier, 15); assert.strictEqual(sn.biome, 'arctic'); assert.ok(sn.classification.includes('apex'));
+    assert.ok(!all.filter((a) => act(a, v19.date)).some((a) => ['snowman', 'phoenix', 'scorpion'].includes(a.id)));
+  });
+  await t('2019-12-30 menu: login/account block with the archived texts; OAuth not faked; no 2019-12 CSS claimed', () => {
+    const e = MenuRenderer.elementsPresent(m4); assert.deepStrictEqual(e, { modes: false, sandbox: false, settings: true, mute: false, howToPlay: false, updates: true, options: true, spectate: true, account: true });
+    assert.strictEqual(m4.account.loggedOutText, 'Log in to earn coins and unlock new skins!'); assert.deepStrictEqual(m4.account.providers.map((p) => p.label), ['Login with Facebook', 'Login with Google']); assert.ok(m4.account.providers.every((p) => p.available === false));
+    assert.strictEqual(m4.account.loggedIn.logout, 'Logout of account'); assert.strictEqual(m4.account.loggedIn.shopButton, 'Shop'); assert.ok(/LOCAL account/.test(m4.account.providerNote));
+    assert.ok(/INFERRED/.test(m4.confidence)); assert.ok(/does not exist|not exist/.test(m4.source)); assert.ok(m4.notReproduced.some((x) => /Xsolla/.test(x))); assert.ok(!m4.absentInThisVersion.includes('shop') && !m4.absentInThisVersion.includes('login'));
+    assert.deepStrictEqual(m4.panels.updates.sections.slice(0, 2).map((s) => s.title), ['DEC 29: Bug Fixes', 'DEC 23: #GoldenAge']); assert.ok(m4.panels.updates.sections.length >= 4);
+    const m19 = J(v19.menu); assert.strictEqual(m19.account, undefined); assert.strictEqual(MenuRenderer.elementsPresent(m19).account, false);
+  });
+  await t('shop catalog: 59 skins exist (verified) but only 4 items are named; prices flagged inferred; art + coin icon present', () => {
+    assert.strictEqual(shopData.verifiedTotalSkins, 59); assert.strictEqual(shopData.items.length, 4); assert.deepStrictEqual(shopData.items.map((i) => i.id).sort(), ['azure_blackdragon', 'golden_blackdragon', 'golden_kingdragon', 'snowman']);
+    for (const it of shopData.items) { assert.ok(Number.isInteger(it.price) && it.price > 0, it.id); assert.ok(/inferred/.test(it.confidence), it.id); assert.ok(all.some((a) => a.id === it.animal), it.id); if (it.type === 'skin') { const i = png(it.sprite); assert.deepStrictEqual([i.w, i.h, i.type], [256, 256, 6], it.id); assert.ok(it.family); } }
+    const c = png(shopData.currency.icon); assert.deepStrictEqual([c.w, c.h], [64, 64]); assert.ok(/NOT implemented/.test(shopData.currency.earnNote)); assert.strictEqual(v4.economy.coinsPerXp, 0.01);
+    assert.ok(shopData.items.find((i) => i.id === 'snowman').type === 'animal'); assert.ok(!J(v19.menu).panels.updates.sections.some((s) => /shop/i.test(JSON.stringify(s))));
+  });
+  await t('shop button logic (the server stays authoritative)', () => {
+    const it = { id: 'golden_blackdragon', type: 'skin', animal: 'blackdragon', price: 800 }, an = { id: 'snowman', type: 'animal', animal: 'snowman', price: 2000 };
+    const S = Shop.itemState; assert.strictEqual(S(it, null), 'login'); assert.strictEqual(S(it, { user: 'a', coins: 799, owned: [], equipped: {} }), 'poor'); assert.strictEqual(S(it, { user: 'a', coins: 800, owned: [], equipped: {} }), 'buy');
+    assert.strictEqual(S(it, { user: 'a', coins: 0, owned: ['golden_blackdragon'], equipped: {} }), 'equip'); assert.strictEqual(S(it, { user: 'a', coins: 0, owned: ['golden_blackdragon'], equipped: { blackdragon: 'golden_blackdragon' } }), 'equipped');
+    assert.strictEqual(S(an, { user: 'a', coins: 9999, owned: ['snowman'], equipped: {} }), 'owned'); assert.ok(Shop.available(v4.features) && !Shop.available(v19.features));
+  });
+  await t('disaster data: 15 definitions, verified numbers (Duststorm -10%, lava lakes 5-10 min), everything else flagged', () => {
+    const D = dis.disasters; assert.strictEqual(D.length, 15); assert.strictEqual(new Set(D.map((d) => d.id)).size, 15);
+    assert.strictEqual(D.find((d) => d.id === 'duststorm').effects.speedMul, 0.9); assert.ok(/VERIFIED/.test(D.find((d) => d.id === 'duststorm').confidence));
+    assert.deepStrictEqual(D.find((d) => d.id === 'lava_lake').durationRangeSec, [300, 600]); assert.strictEqual(D.find((d) => d.id === 'lava_lake').weight, 0); assert.strictEqual(D.find((d) => d.id === 'volcanic_eruption').spawns.id, 'lava_lake');
+    for (const d of D) { assert.ok(/existence verified|VERIFIED/.test(d.confidence), d.id); assert.ok(['land', 'ocean', 'arctic', 'desert', 'volcano', 'any'].includes(d.biome), d.id); assert.ok(d.radius > 0 && d.durationSec > 0, d.id); }
+    for (const id of ['tsunami', 'volcanic_eruption', 'devil_twister']) assert.ok(D.find((d) => d.id === id).weight <= 2, id + ' must be rare');
+    const kinds = new Set(D.map((d) => d.visual.kind)); for (const k of kinds) assert.ok(['cloud', 'heat', 'wave', 'eruption', 'lava', 'swirl'].includes(k), k);
+    for (const id of ['land_tornado', 'dustdevil', 'waterspout', 'arctic_twister', 'fire_tornado', 'devil_twister']) assert.ok(D.find((d) => d.id === id).effects.boostEscapes, id);
+    assert.ok(D.every((d) => d.releaseDate === '2019-12-30')); assert.ok(!v19.features.disasters && v4.features.disasters);
+  });
+  await t('Disasters renderer draws every visual kind without throwing (stub canvas)', () => {
+    const calls = []; const mk = () => new Proxy({}, { get: (o, k) => (k === 'createRadialGradient' ? () => ({ addColorStop() {} }) : (typeof k === 'string' && !(k in o) ? (...a) => { calls.push(k); } : o[k])), set: (o, k, v) => { o[k] = v; return true; } });
+    const Dz = require('../client/ui/Disasters.js'), cam = { worldToScreen: (x, y) => [x, y], zoom: 1 }; const defs = dis.disasters;
+    Dz.draw(mk(), cam, 2000, 2000, defs.map((d, i) => [i, d.id, 500 + i * 10, 500, d.radius, 1000]), defs, 1234); assert.ok(calls.length > 50);
+    Dz.draw(mk(), cam, 100, 100, [[1, 'duststorm', 9000, 9000, 100, 1]], defs, 0); Dz.draw(mk(), cam, 100, 100, [[1, 'nope', 0, 0, 100, 1]], defs, 0);
+  });
+  await t('2019-12 terrain: volcano + arctic volcano exist (verified existence), versions list them; HUD knows the burning death message', () => {
+    const terr2 = J('data/terrain/terrain.json'); for (const id of ['volcano_cone', 'arctic_volcano']) { const x = terr2.find((y) => y.id === id); assert.strictEqual(x.releaseDate, '2019-12-30'); assert.ok(v4.terrain.includes(id)); assert.ok(!v19.terrain.includes(id)); }
+    assert.ok(/VERIFIED/.test(terr2.find((y) => y.id === 'arctic_volcano').confidence)); assert.ok(/burning/.test(J(v4.hud).messages.burn)); assert.ok(J(v4.hud).messagesNote);
+    assert.ok(all.find((a) => a.id === 'snowman').ability === 'camouflage'); const cam = J('data/abilities/abilities.json').find((a) => a.id === 'camouflage'); assert.strictEqual(cam.implemented, false); assert.strictEqual(cam.type, 'passive');
   });
 
   console.log(`unit: ${pass} passed, ${fail} failed`); process.exit(fail ? 1 : 0);

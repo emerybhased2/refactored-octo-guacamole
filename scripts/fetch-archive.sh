@@ -16,3 +16,4 @@ get 20180421014215 img/logo.png logo_2018-04-21.png
 get 20190825113653 ""         index_2019-08-25.html
 get 20190825113700 "main.css?v=1.224" main_2019-08-25.css
 get 20190327115440 img/logo.png logo_2019.png
+get 20191230093554 "" index_2019-12-30.html   # NOTE: no main.css exists for this date (Arquivo substitutes the 2018 file), do not fetch one

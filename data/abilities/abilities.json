@@ -702,5 +702,26 @@
   "clientId": 48,
   "icon": "assets/icons/abilities/stink.png",
   "iconStatus": "recreated"
+ },
+ {
+  "id": "camouflage",
+  "name": "Camouflage",
+  "type": "passive",
+  "cooldownMs": 0,
+  "durationMs": 0,
+  "speedMultiplier": 1,
+  "damage": 0,
+  "range": 0,
+  "biomes": [
+   "arctic"
+  ],
+  "implemented": false,
+  "releaseDate": "2019-12-30",
+  "verified": true,
+  "keyboard": "(passive)",
+  "clientId": null,
+  "icon": "assets/icons/abilities/camouflage.png",
+  "iconStatus": "recreated",
+  "note": "Passive: if not moving the Snowman camouflages (carrot turns orange = hidden); ends when it moves or is hurt (2019-12-23 note). Not simulated."
  }
 ]

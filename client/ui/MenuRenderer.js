@@ -18,7 +18,7 @@
   /** Pure: which optional menu elements this version's config actually contains (nothing from later eras leaks in). */
   function elementsPresent(cfg) {
     return { modes: !!(cfg.modes && cfg.modes.normal), sandbox: !!(cfg.modes && cfg.modes.sandbox), settings: !!(cfg.icons && cfg.icons.settings), mute: !!(cfg.icons && cfg.icons.mute),
-      howToPlay: !!(cfg.panels && cfg.panels.howToPlay), updates: !!(cfg.panels && cfg.panels.updates), options: !!cfg.options, spectate: !!cfg.spectate };
+      howToPlay: !!(cfg.panels && cfg.panels.howToPlay), updates: !!(cfg.panels && cfg.panels.updates), options: !!cfg.options, spectate: !!cfg.spectate, account: !!cfg.account };
   }
   /** Panels are either {title, items} or {sections:[{title, items}]} (the 2018 update panel stacks dated notes). */
   function fillList(el, panel) {
@@ -40,6 +40,8 @@
     $('button_mute').style.display = has.mute ? '' : 'none'; if (has.mute) set('button_mute', cfg.icons.mute);
     set('closeBut', Object.assign({ title: 'Close' }, cfg.icons.close));
     $('btnSpectate').style.display = has.spectate ? 'block' : 'none'; if (has.spectate) $('btnSpectate').textContent = cfg.spectate.label;
+    $('loginDiv').style.display = has.account ? '' : 'none';
+    if (has.account) { const A = cfg.account; $('notLoggedInTxt').textContent = A.loggedOutText; $('facebookLoginBtn').textContent = A.providers[0].label; $('googleLoginBtn').textContent = A.providers[1].label; for (const id of ['facebookLoginBtn', 'googleLoginBtn']) $(id).className = 'na'; $('coinImg').src = A.coinIcon; $('login_coins').title = A.loggedIn.coinsTitle; $('shopbutton').textContent = A.loggedIn.shopButton; $('logoutbut').textContent = A.loggedIn.logout; $('authNote').textContent = A.providerNote; }
     const ni = $('nickInput'); ni.placeholder = cfg.nickname.placeholder; ni.maxLength = cfg.nickname.maxLength;
     $('startButton').textContent = cfg.play.label;
     $('howToPlayDiv').style.display = has.howToPlay ? '' : 'none'; if (has.howToPlay) fillList($('howToPlayDiv'), cfg.panels.howToPlay);

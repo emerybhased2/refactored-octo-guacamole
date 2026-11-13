@@ -129,6 +129,14 @@
  },
  {
   "from": "cassowary",
+  "to": "komodo",
+  "releaseDate": "2019-08-25",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "satellite biome entry from the previous land tier (inferred)"
+ },
+ {
+  "from": "cassowary",
   "to": "rhino",
   "releaseDate": "2019-08-25",
   "removalDate": null,
@@ -369,6 +377,14 @@
  },
  {
   "from": "eagle",
+  "to": "komodo",
+  "releaseDate": "2019-08-25",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "satellite biome entry from the previous land tier (inferred)"
+ },
+ {
+  "from": "eagle",
   "to": "rhino",
   "releaseDate": "2018-04-21",
   "removalDate": null,
@@ -398,6 +414,14 @@
   "removalDate": null,
   "confidence": "inferred",
   "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "elephant",
+  "to": "phoenix",
+  "releaseDate": "2019-12-30",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "satellite biome entry from the previous land tier (inferred)"
  },
  {
   "from": "flamingo",
@@ -561,6 +585,14 @@
  },
  {
   "from": "hippo",
+  "to": "komodo",
+  "releaseDate": "2019-08-25",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "satellite biome entry from the previous land tier (inferred)"
+ },
+ {
+  "from": "hippo",
   "to": "rhino",
   "releaseDate": "2017-02-13",
   "removalDate": null,
@@ -582,6 +614,14 @@
   "removalDate": null,
   "confidence": "inferred",
   "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "jaguar",
+  "to": "komodo",
+  "releaseDate": "2019-08-25",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "satellite biome entry from the previous land tier (inferred)"
  },
  {
   "from": "jaguar",
@@ -651,7 +691,7 @@
   "from": "komodo",
   "to": "blackwidow",
   "releaseDate": "2019-08-25",
-  "removalDate": null,
+  "removalDate": "2019-12-30",
   "confidence": "inferred",
   "basis": "satellite biome exit to the next land tier (inferred)"
  },
@@ -659,7 +699,7 @@
   "from": "komodo",
   "to": "giraffe",
   "releaseDate": "2019-08-25",
-  "removalDate": null,
+  "removalDate": "2019-12-30",
   "confidence": "inferred",
   "basis": "satellite biome exit to the next land tier (inferred)"
  },
@@ -667,9 +707,17 @@
   "from": "komodo",
   "to": "sabertoothtiger",
   "releaseDate": "2019-08-25",
-  "removalDate": null,
+  "removalDate": "2019-12-30",
   "confidence": "inferred",
   "basis": "satellite biome exit to the next land tier (inferred)"
+ },
+ {
+  "from": "komodo",
+  "to": "scorpion",
+  "releaseDate": "2019-12-30",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "satellite-biome chain (inferred)"
  },
  {
   "from": "lemming",
@@ -896,6 +944,14 @@
   "basis": "same-biome next tier (inferred)"
  },
  {
+  "from": "phoenix",
+  "to": "blackdragon",
+  "releaseDate": "2019-12-30",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "satellite-biome chain (inferred)"
+ },
+ {
   "from": "pig",
   "to": "deer",
   "releaseDate": "2017-02-13",
@@ -923,6 +979,14 @@
   "from": "polarbear",
   "to": "mammoth",
   "releaseDate": "2017-02-13",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "polarbear",
+  "to": "snowman",
+  "releaseDate": "2019-12-30",
   "removalDate": null,
   "confidence": "inferred",
   "basis": "same-biome next tier (inferred)"
@@ -1008,6 +1072,14 @@
   "basis": "same-biome next tier (inferred)"
  },
  {
+  "from": "scorpion",
+  "to": "dragon",
+  "releaseDate": "2019-12-30",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "satellite biome exit to the next land tier (inferred)"
+ },
+ {
   "from": "seahorse",
   "to": "squid",
   "releaseDate": "2017-02-13",
@@ -1067,6 +1139,22 @@
   "from": "snowleopard",
   "to": "walrus",
   "releaseDate": "2017-02-13",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "snowman",
+  "to": "icemonster",
+  "releaseDate": "2019-12-30",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "snowman",
+  "to": "yeti",
+  "releaseDate": "2019-12-30",
   "removalDate": null,
   "confidence": "inferred",
   "basis": "same-biome next tier (inferred)"
@@ -1158,6 +1246,14 @@
   "removalDate": "2019-08-25",
   "confidence": "inferred",
   "basis": "same-biome next tier (inferred)"
+ },
+ {
+  "from": "trex",
+  "to": "phoenix",
+  "releaseDate": "2019-12-30",
+  "removalDate": null,
+  "confidence": "inferred",
+  "basis": "satellite biome entry from the previous land tier (inferred)"
  },
  {
   "from": "trout",

@@ -52,7 +52,7 @@
       if (!low) { ctx.fillStyle = 'rgba(0,0,0,0.18)'; ctx.beginPath(); ctx.ellipse(4, 6, pr, pr * 0.9, 0, 0, 7); ctx.fill(); }
       if (v.__arena && !isMe) ctx.globalAlpha = 0.5; // archived 2019 note: inside the Arena opponents go semi-transparent so they can see through each other
       if (this.opts.noImages) { ctx.fillStyle = a.placeholderColor; ctx.beginPath(); ctx.arc(0, 0, pr, 0, 7); ctx.fill(); }
-      else { const h = pr / M.Sprites.BODY_FRAC; ctx.drawImage(M.Sprites.get(a), -h, -h, 2 * h, 2 * h); } // frame sized so the drawn body matches the hitbox
+      else { const h = pr / M.Sprites.BODY_FRAC, skin = p.skin && v.shop ? M.Sprites.getSkin(v.shop.items.find((i) => i.id === p.skin)) : null; ctx.drawImage(skin || M.Sprites.get(a), -h, -h, 2 * h, 2 * h); } // equipped skin if loaded, else the normal sprite // frame sized so the drawn body matches the hitbox
       ctx.globalAlpha = 1; ctx.restore();
       if (!isMe && !v.__spectate) { // (spectators have no body, so no edible/dangerous outlines) outline: LIGHT-GREEN = you can eat it, RED = it can eat you (archived how-to-play text)
         const sand = v.__sandbox, col = sand || a.tier < myTier ? '#8dff8d' : a.tier > myTier ? '#ff4d4d' : null;

@@ -27,6 +27,9 @@ Engine decorations added for version 2: spiral shell (snail), cobra hood, spider
 ## Version 3 additions (2019)
 New primitives: peacock-style feather fan, flytrap jaws, pelican pouch, ice crystals, crown, comb, eye iris colour. New generators: `terrain.js` (9 top-down objects), desert and volcano biome tiles, 3 foods. All original; the same exporter writes them to the paths declared in the data.
 
+## Version 4 additions (2019-12-30)
+Snowman, Phoenix, Giant Scorpion; shop skins as palette recolors of the Black/King Dragon recipes (`recolor()` keeps each part's luminance); coin icon; volcano and arctic volcano terrain; camouflage icon. Disasters are drawn procedurally by `client/ui/Disasters.js` (no image assets).
+
 ## Polish pass (after version 2)
 - **Depth:** every body gets a very soft highlight (upper-left) and shadow (lower), toned down on dark bodies so it never reads as a blob.
 - **Tentacles:** tapered, suckered tentacles that start at the back edge and trail behind (squid, octopus, kraken, jellyfish).

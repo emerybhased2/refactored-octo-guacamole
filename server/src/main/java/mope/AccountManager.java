@@ -22,6 +22,9 @@ public final class AccountManager implements AutoCloseable {
                 s.execute("CREATE TABLE IF NOT EXISTS sessions(token_hash TEXT PRIMARY KEY, username TEXT NOT NULL, expires INTEGER NOT NULL)");
                 s.execute("CREATE TABLE IF NOT EXISTS stats(username TEXT PRIMARY KEY, best_xp INTEGER NOT NULL DEFAULT 0, kills INTEGER NOT NULL DEFAULT 0, deaths INTEGER NOT NULL DEFAULT 0, games INTEGER NOT NULL DEFAULT 0)");
                 s.execute("CREATE TABLE IF NOT EXISTS settings(username TEXT PRIMARY KEY, json TEXT NOT NULL)");
+                s.execute("CREATE TABLE IF NOT EXISTS wallet(username TEXT PRIMARY KEY, coins INTEGER NOT NULL DEFAULT 0 CHECK(coins >= 0))");
+                s.execute("CREATE TABLE IF NOT EXISTS inventory(username TEXT NOT NULL, item TEXT NOT NULL, PRIMARY KEY(username, item))");
+                s.execute("CREATE TABLE IF NOT EXISTS equipped(username TEXT NOT NULL, animal TEXT NOT NULL, item TEXT NOT NULL, PRIMARY KEY(username, animal))");
             }
         } catch (SQLException e) { throw new IllegalStateException(e); }
     }
@@ -76,6 +79,12 @@ public final class AccountManager implements AutoCloseable {
         } catch (SQLException | GeneralSecurityException e) { throw new IllegalStateException(e); }
     }
 
+    public synchronized void logout(String token) {
+        if (token == null) return;
+        try (PreparedStatement ps = db.prepareStatement("DELETE FROM sessions WHERE token_hash=?")) { ps.setString(1, sha256(token)); ps.executeUpdate(); } catch (SQLException | GeneralSecurityException e) { throw new IllegalStateException(e); }
+    }
+    /** Test helper: logs the token out and reports whether it no longer resolves. */
+    public synchronized boolean logoutAndCheck(String token) { logout(token); return resume(token) == null; }
     public synchronized void recordGame(String user, long xp, int kills) {
         try (PreparedStatement ps = db.prepareStatement("UPDATE stats SET best_xp=MAX(best_xp,?), kills=kills+?, deaths=deaths+1, games=games+1 WHERE username=?")) {
             ps.setLong(1, xp); ps.setInt(2, kills); ps.setString(3, user); ps.executeUpdate();
@@ -85,6 +94,48 @@ public final class AccountManager implements AutoCloseable {
         try (PreparedStatement ps = db.prepareStatement("SELECT best_xp,kills,deaths,games FROM stats WHERE username=?")) {
             ps.setString(1, user);
             try (ResultSet rs = ps.executeQuery()) { return rs.next() ? new long[] { rs.getLong(1), rs.getLong(2), rs.getLong(3), rs.getLong(4) } : null; }
+        } catch (SQLException e) { throw new IllegalStateException(e); }
+    }
+    // ---- economy (kept separate from gameplay progression; every change is validated here, never trusted from the client)
+    public synchronized long coins(String user) {
+        try (PreparedStatement ps = db.prepareStatement("SELECT coins FROM wallet WHERE username=?")) { ps.setString(1, user); try (ResultSet rs = ps.executeQuery()) { return rs.next() ? rs.getLong(1) : 0; } }
+        catch (SQLException e) { throw new IllegalStateException(e); }
+    }
+    public synchronized void addCoins(String user, long n) {
+        if (n <= 0) return;
+        try (PreparedStatement ps = db.prepareStatement("INSERT INTO wallet(username,coins) VALUES(?,?) ON CONFLICT(username) DO UPDATE SET coins = coins + excluded.coins")) { ps.setString(1, user); ps.setLong(2, n); ps.executeUpdate(); }
+        catch (SQLException e) { throw new IllegalStateException(e); }
+    }
+    public synchronized java.util.Set<String> owned(String user) {
+        java.util.Set<String> out = new java.util.HashSet<>();
+        try (PreparedStatement ps = db.prepareStatement("SELECT item FROM inventory WHERE username=?")) { ps.setString(1, user); try (ResultSet rs = ps.executeQuery()) { while (rs.next()) out.add(rs.getString(1)); } }
+        catch (SQLException e) { throw new IllegalStateException(e); }
+        return out;
+    }
+    /** Atomic purchase: succeeds only if the item is not owned and the balance covers the price. */
+    public synchronized boolean buy(String user, String item, int price) {
+        if (price < 0 || owned(user).contains(item) || coins(user) < price) return false;
+        try {
+            db.setAutoCommit(false);
+            try (PreparedStatement a = db.prepareStatement("UPDATE wallet SET coins = coins - ? WHERE username=? AND coins >= ?"); PreparedStatement b = db.prepareStatement("INSERT INTO inventory(username,item) VALUES(?,?)")) {
+                a.setInt(1, price); a.setString(2, user); a.setInt(3, price); if (a.executeUpdate() != 1 && price > 0) { db.rollback(); return false; }
+                b.setString(1, user); b.setString(2, item); b.executeUpdate(); db.commit(); return true;
+            } catch (SQLException e) { db.rollback(); return false; } finally { db.setAutoCommit(true); }
+        } catch (SQLException e) { throw new IllegalStateException(e); }
+    }
+    public synchronized java.util.Map<String, String> equipped(String user) {
+        java.util.Map<String, String> out = new java.util.HashMap<>();
+        try (PreparedStatement ps = db.prepareStatement("SELECT animal,item FROM equipped WHERE username=?")) { ps.setString(1, user); try (ResultSet rs = ps.executeQuery()) { while (rs.next()) out.put(rs.getString(1), rs.getString(2)); } }
+        catch (SQLException e) { throw new IllegalStateException(e); }
+        return out;
+    }
+    /** Equip an OWNED skin for an animal (item == null unequips). */
+    public synchronized boolean setEquipped(String user, String animal, String item) {
+        try {
+            if (item == null) { try (PreparedStatement ps = db.prepareStatement("DELETE FROM equipped WHERE username=? AND animal=?")) { ps.setString(1, user); ps.setString(2, animal); ps.executeUpdate(); } return true; }
+            if (!owned(user).contains(item)) return false;
+            try (PreparedStatement ps = db.prepareStatement("INSERT INTO equipped(username,animal,item) VALUES(?,?,?) ON CONFLICT(username,animal) DO UPDATE SET item=excluded.item")) { ps.setString(1, user); ps.setString(2, animal); ps.setString(3, item); ps.executeUpdate(); }
+            return true;
         } catch (SQLException e) { throw new IllegalStateException(e); }
     }
     @Override public void close() { try { db.close(); } catch (SQLException ignored) {} }

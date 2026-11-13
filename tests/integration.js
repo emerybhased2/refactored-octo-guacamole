@@ -1,12 +1,12 @@
 // End-to-end test against a real server process (Node 22 global WebSocket). Run: node tests/integration.js
 const assert = require('assert'), { spawn } = require('child_process'), path = require('path');
-const ROOT = path.resolve(__dirname, '..'), PORT = 18081;
+const ROOT = path.resolve(__dirname, '..'), PORT = 18081, PORT_DEV = 18082, os = require('os'), fs = require('fs');
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 let pass = 0, fail = 0;
 async function t(name, fn) { try { await fn(); pass++; } catch (e) { fail++; console.log('FAIL: ' + name + '\n   ' + e.message); } }
 
-function client() {
-  const ws = new WebSocket('ws://127.0.0.1:' + PORT), c = { ws, msgs: [], last: {}, ready: new Promise((r) => (ws.onopen = r)) };
+function client(port = PORT) {
+  const ws = new WebSocket('ws://127.0.0.1:' + port), c = { ws, msgs: [], last: {}, ready: new Promise((r) => (ws.onopen = r)) };
   ws.onmessage = (e) => { const m = JSON.parse(e.data); c.msgs.push(m); c.last[m.t] = m; };
   c.send = (o) => ws.send(JSON.stringify(o));
   c.until = async (type, ms = 4000) => { const t0 = Date.now(); while (Date.now() - t0 < ms) { const m = c.msgs.find((x) => x.t === type); if (m) return m; await sleep(25); } throw new Error('timeout waiting for ' + type); };
@@ -17,6 +17,11 @@ function client() {
   const srv = spawn('java', ['-Dmope.root=' + ROOT, '-jar', path.join(ROOT, 'server/target/mope-server.jar')], { env: Object.assign({}, process.env, { MOPE_PORT: PORT }), stdio: ['ignore', 'pipe', 'pipe'] });
   let log = ''; srv.stdout.on('data', (d) => (log += d)); srv.stderr.on('data', (d) => (log += d));
   for (let i = 0; i < 100 && !log.includes('listening'); i++) await sleep(100);
+  // second server: dev flag on (dev-only messages) + a throwaway database, so shop/disaster flows can be tested without touching the real one
+  const dbFile = path.join(os.tmpdir(), 'mope-it-' + process.pid + '.db');
+  const srvDev = spawn('java', ['-Dmope.root=' + ROOT, '-jar', path.join(ROOT, 'server/target/mope-server.jar')], { env: Object.assign({}, process.env, { MOPE_PORT: PORT_DEV, MOPE_DEV: '1', MOPE_DB: dbFile }), stdio: ['ignore', 'pipe', 'pipe'] });
+  let logDev = ''; srvDev.stdout.on('data', (d) => (logDev += d)); srvDev.stderr.on('data', (d) => (logDev += d));
+  for (let i = 0; i < 100 && !logDev.includes('listening'); i++) await sleep(100);
   try {
     const a = client(), b = client(); await a.ready; await b.ready;
     await t('join unknown version -> error', async () => { a.send({ t: 'join', name: 'x', v: '1999-01-01' }); await a.until('error'); });
@@ -87,7 +92,52 @@ function client() {
     });
     await t('accounts unavailable in 2017 build', async () => { a.send({ t: 'register', v: '2017-02-13', u: 'carol', p: 'secret12' }); const m = await a.until('auth'); assert.strictEqual(m.ok, false); });
     await t('disconnect and reconnect rejoin', async () => { b.ws.close(); await sleep(200); const b2 = client(); await b2.ready; b2.send({ t: 'join', name: 'Bob2', v: '2017-02-13' }); await b2.until('welcome'); await b2.until('snap'); b2.ws.close(); });
+    // ---------- version 2019-12-30: accounts, shop, disasters ----------
+    const uniq = () => 'u' + Math.random().toString(36).slice(2, 9);
+    const login = async (port, v = '2019-12-30') => { const c = client(port); await c.ready; const u = uniq(); c.send({ t: 'register', v, u, p: 'secret12' }); const r = await c.until('auth'); assert.strictEqual(r.ok, true, 'register failed'); c.user = u; c.token = r.token; c.auth = r; return c; };
+    await t('2019-12-30 welcome carries the shop catalog and disaster definitions; 2019-08-25 does not', async () => {
+      const c = client(); await c.ready; c.send({ t: 'join', name: 'V4', v: '2019-12-30' }); const w = await c.until('welcome');
+      assert.strictEqual(w.version.animals.length, 80); assert.strictEqual(w.version.shop.items.length, 4); assert.strictEqual(w.version.shop.currency.id, 'coin'); assert.strictEqual(w.version.disasterDefs.length, 15); assert.ok(w.version.features.shop && w.version.features.disasters && w.version.features.accounts);
+      const c2 = client(); await c2.ready; c2.send({ t: 'join', name: 'V3', v: '2019-08-25' }); const w2 = await c2.until('welcome'); assert.strictEqual(w2.version.shop, undefined); assert.strictEqual(w2.version.disasterDefs, undefined); c.ws.close(); c2.ws.close();
+    });
+    await t('normal server: dev-only commands (dev-coins, dev-disaster) are ignored', async () => {
+      const c = await login(PORT); assert.strictEqual(c.auth.coins, 0); c.send({ t: 'join', name: 'Cheater', v: '2019-12-30' }); await c.until('welcome');
+      c.send({ t: 'dev-coins', n: 99999 }); c.send({ t: 'dev-disaster', id: 'rainstorm' }); await sleep(700); c.send({ t: 'shop-info', v: '2019-12-30' }); const s = await c.until('shop');
+      assert.strictEqual(s.coins, 0); assert.ok(!c.msgs.some((m) => m.t === 'disaster'), 'a normal player triggered a disaster'); c.ws.close();
+    });
+    await t('shop requires login and a version that has a shop', async () => {
+      const c = client(PORT_DEV); await c.ready; c.send({ t: 'shop-info', v: '2019-12-30' }); const e1 = await c.until('shop-error'); assert.ok(/log in/.test(e1.err));
+      const d = await login(PORT_DEV, '2018-04-21').catch((e) => e.message); assert.ok(typeof d === 'string', 'accounts must be unavailable in 2018'); c.ws.close();
+    });
+    await t('economy end to end: dev coins, buy, double-buy rejected, insufficient rejected, equip/unequip ownership rules', async () => {
+      const c = await login(PORT_DEV); const msg = async (o, type = 'shop') => { const n = c.msgs.length; c.send(Object.assign({ v: '2019-12-30' }, o)); const t0 = Date.now(); while (Date.now() - t0 < 3000) { const m = c.msgs.slice(n).find((x) => x.t === type || x.t === 'shop-error'); if (m) return m; await sleep(20); } throw new Error('no reply to ' + JSON.stringify(o)); };
+      let r = await msg({ t: 'buy', item: 'snowman' }); assert.strictEqual(r.t, 'shop-error'); // 0 coins
+      r = await msg({ t: 'dev-coins', n: 3000 }); assert.strictEqual(r.coins, 3000);
+      r = await msg({ t: 'buy', item: 'snowman' }); assert.deepStrictEqual([r.t, r.coins, r.owned.includes('snowman')], ['shop', 1000, true]);
+      r = await msg({ t: 'buy', item: 'snowman' }); assert.strictEqual(r.t, 'shop-error'); // already owned
+      r = await msg({ t: 'buy', item: 'golden_kingdragon' }); assert.strictEqual(r.t, 'shop-error'); // 1500 > 1000
+      r = await msg({ t: 'equip', item: 'golden_blackdragon' }); assert.strictEqual(r.t, 'shop-error'); // not owned
+      r = await msg({ t: 'buy', item: 'golden_blackdragon' }); assert.deepStrictEqual([r.t, r.coins], ['shop', 200]);
+      r = await msg({ t: 'equip', item: 'golden_blackdragon' }); assert.strictEqual(r.equipped.blackdragon, 'golden_blackdragon');
+      r = await msg({ t: 'equip', item: 'snowman' }); assert.strictEqual(r.t, 'shop-error'); // animals are unlocks, not skins
+      r = await msg({ t: 'buy', item: 'no_such_item' }); assert.strictEqual(r.t, 'shop-error');
+      r = await msg({ t: 'unequip', animal: 'blackdragon' }); assert.deepStrictEqual(r.equipped, {}); assert.ok(r.owned.includes('golden_blackdragon')); c.ws.close();
+    });
+    await t('sessions: resume restores coins/inventory; logout invalidates the token', async () => {
+      const c = await login(PORT_DEV); c.send({ t: 'dev-coins', v: '2019-12-30', n: 500 }); await c.until('shop'); c.ws.close();
+      const c2 = client(PORT_DEV); await c2.ready; c2.send({ t: 'resume', v: '2019-12-30', token: c.token }); const r = await c2.until('auth'); assert.deepStrictEqual([r.ok, r.user, r.coins], [true, c.user, 500]);
+      c2.send({ t: 'logout', token: c.token }); await sleep(200); const c3 = client(PORT_DEV); await c3.ready; c3.send({ t: 'resume', v: '2019-12-30', token: c.token }); const r3 = await c3.until('auth'); assert.strictEqual(r3.ok, false); c2.ws.close(); c3.ws.close();
+    });
+    await t('passwords/tokens are never echoed; wrong password is rejected', async () => {
+      const c = await login(PORT_DEV); assert.ok(!JSON.stringify(c.auth).includes('secret12')); assert.ok(!('hash' in c.auth) && !('salt' in c.auth));
+      const w = client(PORT_DEV); await w.ready; w.send({ t: 'login', v: '2019-12-30', u: c.user, p: 'wrong-pass' }); const r = await w.until('auth'); assert.strictEqual(r.ok, false); assert.ok(!('token' in r)); w.ws.close(); c.ws.close();
+    });
+    await t('dev server: a disaster is announced to players in the world', async () => {
+      const c = client(PORT_DEV); await c.ready; c.send({ t: 'join', name: 'Storm', v: '2019-12-30' }); await c.until('welcome');
+      c.send({ t: 'dev-disaster', id: 'rainstorm' }); const m = await c.until('disaster'); assert.deepStrictEqual([m.id, m.name], ['rainstorm', 'Rainstorm']);
+      const n = c.msgs.filter((x) => x.t === 'disaster').length; c.send({ t: 'dev-disaster', id: 'meteor' }); await sleep(400); assert.strictEqual(c.msgs.filter((x) => x.t === 'disaster').length, n, 'unknown disaster id was accepted'); c.ws.close();
+    });
     a.ws.close();
-  } finally { srv.kill('SIGTERM'); }
+  } finally { srv.kill('SIGTERM'); srvDev.kill('SIGTERM'); try { fs.unlinkSync(dbFile); } catch (e) {} }
   console.log(`integration: ${pass} passed, ${fail} failed`); if (fail) console.log(log.slice(-1500)); process.exit(fail ? 1 : 0);
 })();

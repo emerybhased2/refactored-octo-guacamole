@@ -1,0 +1,292 @@
+{
+ "_note": "Rare world events (2019-12-23 'NEW Disasters'). Only the Duststorm 10% slowdown and the 5-10 minute lava lake duration are numbers from the notes; every other value is INFERRED.",
+ "defaults": {
+  "meanIntervalSec": 180,
+  "minIntervalSec": 60,
+  "intervalNote": "inferred; the notes say each disaster 'happens rarely'"
+ },
+ "disasters": [
+  {
+   "id": "rainstorm",
+   "name": "Rainstorm",
+   "biome": "land",
+   "radius": 520,
+   "durationSec": 60,
+   "weight": 10,
+   "visual": {
+    "kind": "cloud",
+    "color": "#6a8fb8"
+   },
+   "effects": {
+    "waterPerSec": 18
+   },
+   "confidence": "existence verified; effect verified qualitatively ('each raindrop gives water to every animal'); rate inferred",
+   "releaseDate": "2019-12-30"
+  },
+  {
+   "id": "duststorm",
+   "name": "Duststorm",
+   "biome": "desert",
+   "radius": 480,
+   "durationSec": 50,
+   "weight": 8,
+   "visual": {
+    "kind": "cloud",
+    "color": "#c9a24a"
+   },
+   "effects": {
+    "speedMul": 0.9,
+    "pushPerSec": 25
+   },
+   "confidence": "existence verified; speed -10% VERIFIED; push strength inferred",
+   "releaseDate": "2019-12-30"
+  },
+  {
+   "id": "heatwave",
+   "name": "Heatwave",
+   "biome": "desert",
+   "radius": 480,
+   "durationSec": 45,
+   "weight": 6,
+   "visual": {
+    "kind": "heat",
+    "color": "#ff8a3a"
+   },
+   "effects": {
+    "dps": 4,
+    "pushPerSec": 15
+   },
+   "confidence": "existence verified; 'give burns' verified qualitatively; damage inferred",
+   "releaseDate": "2019-12-30"
+  },
+  {
+   "id": "snowstorm",
+   "name": "Snowstorm",
+   "biome": "arctic",
+   "radius": 520,
+   "durationSec": 60,
+   "weight": 8,
+   "visual": {
+    "kind": "cloud",
+    "color": "#e8f2f8"
+   },
+   "effects": {
+    "speedMul": 0.6,
+    "freezeNonNative": true
+   },
+   "confidence": "existence verified; 'Freeze to non-arctic animals' verified qualitatively; slowdown inferred",
+   "releaseDate": "2019-12-30"
+  },
+  {
+   "id": "coldstorm",
+   "name": "Coldstorm",
+   "biome": "arctic",
+   "radius": 480,
+   "durationSec": 45,
+   "weight": 6,
+   "visual": {
+    "kind": "heat",
+    "color": "#9fd0f0"
+   },
+   "effects": {
+    "speedMul": 0.6,
+    "pushPerSec": 15,
+    "freezeNonNative": false
+   },
+   "confidence": "existence verified; 'freeze animals and push food/animals away gently' verified qualitatively; numbers inferred",
+   "releaseDate": "2019-12-30"
+  },
+  {
+   "id": "tsunami",
+   "name": "Tsunami",
+   "biome": "ocean",
+   "radius": 700,
+   "durationSec": 25,
+   "weight": 2,
+   "visual": {
+    "kind": "wave",
+    "color": "#2f9fd0"
+   },
+   "effects": {
+    "pushPerSec": 260,
+    "washOutNonOcean": true
+   },
+   "confidence": "existence verified; 'wash food/animals out of ocean' verified qualitatively ('very rarely'); strength inferred",
+   "releaseDate": "2019-12-30"
+  },
+  {
+   "id": "volcanic_eruption",
+   "name": "Volcanic Eruption",
+   "biome": "volcano",
+   "radius": 420,
+   "durationSec": 40,
+   "weight": 2,
+   "visual": {
+    "kind": "eruption",
+    "color": "#ff5a1a"
+   },
+   "effects": {
+    "dps": 10,
+    "pushPerSec": 80
+   },
+   "confidence": "existence verified; fireballs and lava lakes verified qualitatively ('very rarely'); damage inferred",
+   "releaseDate": "2019-12-30",
+   "spawns": {
+    "id": "lava_lake",
+    "count": 3,
+    "spread": 260
+   }
+  },
+  {
+   "id": "arctic_eruption",
+   "name": "Arctic Volcano Eruption",
+   "biome": "arctic",
+   "radius": 360,
+   "durationSec": 45,
+   "weight": 3,
+   "visual": {
+    "kind": "eruption",
+    "color": "#dff0fa"
+   },
+   "effects": {
+    "speedMul": 0.5,
+    "pushPerSec": 40,
+    "freezeNonNative": false
+   },
+   "confidence": "existence verified; 'slower than land volcano... snowballs that freeze' verified qualitatively; numbers inferred",
+   "releaseDate": "2019-12-30"
+  },
+  {
+   "id": "lava_lake",
+   "name": "Lava lake",
+   "biome": "volcano",
+   "radius": 150,
+   "durationSec": 450,
+   "weight": 0,
+   "visual": {
+    "kind": "lava",
+    "color": "#ff7a1a"
+   },
+   "effects": {
+    "dps": 8
+   },
+   "confidence": "existence verified; lasts 5-10 minutes VERIFIED (durationSec range below); damage inferred",
+   "releaseDate": "2019-12-30",
+   "durationRangeSec": [
+    300,
+    600
+   ],
+   "spawnedBy": "volcanic_eruption"
+  },
+  {
+   "id": "land_tornado",
+   "name": "Land Tornado",
+   "biome": "land",
+   "radius": 260,
+   "durationSec": 40,
+   "weight": 6,
+   "visual": {
+    "kind": "swirl",
+    "color": "#8a8f98"
+   },
+   "effects": {
+    "pullPerSec": 150,
+    "boostEscapes": true
+   },
+   "confidence": "existence verified; pull + escape by boosting/diving/hiding VERIFIED qualitatively; strength inferred",
+   "releaseDate": "2019-12-30"
+  },
+  {
+   "id": "dustdevil",
+   "name": "Dust Devil",
+   "biome": "desert",
+   "radius": 240,
+   "durationSec": 40,
+   "weight": 5,
+   "visual": {
+    "kind": "swirl",
+    "color": "#c9a24a"
+   },
+   "effects": {
+    "pullPerSec": 150,
+    "boostEscapes": true
+   },
+   "confidence": "existence verified; as Land Tornado",
+   "releaseDate": "2019-12-30"
+  },
+  {
+   "id": "waterspout",
+   "name": "Waterspout",
+   "biome": "ocean",
+   "radius": 260,
+   "durationSec": 40,
+   "weight": 4,
+   "visual": {
+    "kind": "swirl",
+    "color": "#6fc3d9"
+   },
+   "effects": {
+    "pullPerSec": 150,
+    "boostEscapes": true
+   },
+   "confidence": "existence verified; as Land Tornado",
+   "releaseDate": "2019-12-30"
+  },
+  {
+   "id": "arctic_twister",
+   "name": "Arctic Twister",
+   "biome": "arctic",
+   "radius": 260,
+   "durationSec": 40,
+   "weight": 4,
+   "visual": {
+    "kind": "swirl",
+    "color": "#cfe6f2"
+   },
+   "effects": {
+    "pullPerSec": 150,
+    "boostEscapes": true
+   },
+   "confidence": "existence verified; as Land Tornado",
+   "releaseDate": "2019-12-30"
+  },
+  {
+   "id": "fire_tornado",
+   "name": "Fire Tornado",
+   "biome": "volcano",
+   "radius": 260,
+   "durationSec": 40,
+   "weight": 4,
+   "visual": {
+    "kind": "swirl",
+    "color": "#ff6a2a"
+   },
+   "effects": {
+    "pullPerSec": 150,
+    "dps": 6,
+    "boostEscapes": true
+   },
+   "confidence": "existence verified; damage inferred",
+   "releaseDate": "2019-12-30"
+  },
+  {
+   "id": "devil_twister",
+   "name": "Devil Twister",
+   "biome": "any",
+   "radius": 300,
+   "durationSec": 40,
+   "weight": 1,
+   "visual": {
+    "kind": "swirl",
+    "color": "#a0202a",
+    "face": true
+   },
+   "effects": {
+    "pullPerSec": 260,
+    "boostEscapes": true
+   },
+   "confidence": "existence verified; 'very rare... more suck power and a devil face' VERIFIED qualitatively; strength inferred",
+   "releaseDate": "2019-12-30"
+  }
+ ]
+}

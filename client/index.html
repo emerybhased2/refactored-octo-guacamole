@@ -38,9 +38,18 @@
   <div id="howToPlayDiv"></div>
   <div id="updatesDiv"></div>
 </div>
+<div id="loginDiv" style="display:none">
+  <div id="notLoggedInDiv"><p id="notLoggedInTxt"></p><button id="facebookLoginBtn" type="button"></button><button id="googleLoginBtn" type="button"></button></div>
+  <div id="onloggedInDiv" style="display:none"><div id="loggedInUserImg"></div><p id="loggedInNameTxt"></p><div id="login_coins"><img id="coinImg" alt="coins"> <span id="loginCoins">0</span></div><button id="shopbutton" type="button">Shop</button><button id="logoutbut" type="button">Logout of account</button></div>
+</div>
+<div id="authModal" class="modal" style="display:none"><div class="modalBox"><button class="modalClose" type="button" id="authClose">&times;</button><h3>Local account</h3><p id="authNote"></p>
+  <input id="authUser" type="text" maxlength="16" placeholder="username (3-16 letters/numbers)" autocomplete="off"><input id="authPass" type="password" maxlength="64" placeholder="password (6+ characters)" autocomplete="off">
+  <div><button id="authLogin" type="button">Log in</button><button id="authRegister" type="button">Register</button></div><p id="authErr"></p></div></div>
+<div id="shopModal" class="modal" style="display:none"><div class="modalBox wide"><button class="modalClose" type="button" id="shopClose">&times;</button><h3>Shop <span id="shopCoins"></span></h3><p id="shopNote"></p><div id="shopGrid"></div><p id="shopErr"></p></div></div>
 <div id="devbar"><label>Historical version: <select id="versionSelect"></select></label><span id="versionLabel"></span><span id="arenaCtl" style="display:none"> | <label>Dev mode: <select id="modeSelect"><option value="normal">normal</option><option value="arena">1v1 arena (inferred)</option></select></label> <label>Arena animal: <select id="arenaAnimal"></select></label></span></div>
 <div id="status"></div>
 <div id="deathMsg"></div>
+<div id="disasterMsg"></div>
 <script src="interpolation.js"></script>
 <script src="camera.js"></script>
 <script src="input.js"></script>
@@ -55,6 +64,7 @@
 <script src="ui/HUD.js"></script>
 <script src="ui/Settings.js"></script>
 <script src="ui/Shop.js"></script>
+  <script src="ui/Disasters.js"></script>
 <script src="renderer.js"></script>
 <script src="client.js"></script>
 </body>

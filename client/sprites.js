@@ -44,6 +44,7 @@
   function getAbilityIcon(def) { if (!def || !def.icon) return null; const im = image(def.icon); return ready(im) ? im : null; }
   function getTile(biome) { if (!biome || !biome.tile) return null; const im = image(biome.tile); return ready(im) ? im : null; }
   function getTerrain(def) { if (!def || def.spriteStatus === 'none') return null; const im = image(def.sprite); return ready(im) ? im : null; }
-  M.Sprites = { get, getIcon, getFood, getAbilityIcon, getTile, getTerrain, TERRAIN_FRAC: 0.8, TILE_WORLD: 256, BODY_FRAC, FOOD_FRAC, SIZE, shade };
+  function getSkin(item) { if (!item || !item.sprite) return null; const im = image(item.sprite); return ready(im) ? im : null; }
+  M.Sprites = { getSkin, get, getIcon, getFood, getAbilityIcon, getTile, getTerrain, TERRAIN_FRAC: 0.8, TILE_WORLD: 256, BODY_FRAC, FOOD_FRAC, SIZE, shade };
   if (typeof module !== 'undefined') module.exports = M.Sprites;
 })(typeof window !== 'undefined' ? window : globalThis);

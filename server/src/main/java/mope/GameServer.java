@@ -7,7 +7,8 @@ public final class GameServer {
         int port = Integer.parseInt(System.getenv().getOrDefault("MOPE_PORT", "8081"));
         VersionManager vm = new VersionManager();
         Files.createDirectories(Data.root.resolve("database"));
-        AccountManager am = new AccountManager("jdbc:sqlite:" + Data.root.resolve("database/mope.db"));
+        String dbPath = System.getenv("MOPE_DB"); // optional override (tests use a throwaway database)
+        AccountManager am = new AccountManager("jdbc:sqlite:" + (dbPath != null ? dbPath : Data.root.resolve("database/mope.db").toString()));
         NetworkManager net = new NetworkManager(port, vm, am, System.nanoTime());
         net.start();
         System.out.println("[server] root=" + Data.root + " versions=" + vm.all().stream().map(c -> c.id).toList());
