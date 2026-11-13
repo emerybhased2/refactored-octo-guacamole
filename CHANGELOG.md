@@ -1,5 +1,10 @@
 # Project changelog
 
+## 0.3.1 - Art polish
+- Redrew the weakest animals (kraken, octopus, squid, jellyfish, crab, king crab, yeti, penguin, seahorse, arctic fox, eagle, cobra, giraffe, wolf, croc, fox) with new engine primitives: tapered suckered tentacles, two-lobed pincers, bird wings, fur tufts, fangs, fan fins.
+- Soft body shading on all animals; exporter writes to each animal's declared sprite path (no stray files); regression test added.
+
+
 ## 0.3.0 - Version 2: 2018-04-21
 - New historical version built from the Arquivo.pt capture: 61 animals (17 new), 17 new abilities, tier 9, regenerated evolution links (the 2017 tree is asserted unchanged).
 - 2018 main menu from the archived HTML/CSS: wordmark logo (350x99), no Normal/Sandbox buttons, no Winter Skins, hidden How-to-play, three-note update panel in light text; server and version manager now date-gate abilities per version.

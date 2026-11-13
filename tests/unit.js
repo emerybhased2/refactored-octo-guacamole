@@ -47,6 +47,11 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
     for (const a of animals) { assert.ok(specs[a.id], 'no art recipe for ' + a.id); assert.strictEqual(a.spriteStatus, 'recreated'); const i = png(a.sprite); assert.deepStrictEqual([i.w, i.h, i.depth, i.type], [256, 256, 8, 6], a.id); assert.ok(i.size > 1500, a.id + ' looks empty'); }
     assert.deepStrictEqual(Object.keys(specs).sort(), J('data/progression/animals.json').map((a) => a.id).sort()); // one recipe per animal across all versions
   });
+  await t('no stray sprites: every PNG under assets/animals is exactly some animal\'s declared sprite path', () => {
+    const declared = new Set(J('data/progression/animals.json').map((x) => x.sprite)), dir = path.join(ROOT, 'assets/animals');
+    for (const v of fs.readdirSync(dir)) { if (v.startsWith('.')) continue; for (const f of fs.readdirSync(path.join(dir, v))) { if (f.startsWith('.')) continue; assert.ok(declared.has('assets/animals/' + v + '/' + f), 'stray or misplaced sprite: ' + v + '/' + f); } }
+    const r17 = animals.map((x) => x.sprite); for (const sp of r17) assert.ok(sp.includes('/2017-02-13/'), 'a 2017 animal points outside its version dir: ' + sp);
+  });
   await t('every food has a 128x128 RGBA PNG', () => { for (const f of J('data/food/foods.json')) { const i = png(f.sprite); assert.deepStrictEqual([i.w, i.h, i.type], [128, 128, 6], f.id); } });
   await t('sprite sizing constants agree between art engine and client', () => {
     const Sprites = require('../client/sprites.js'), art = require('../tools/art/draw.js'), food = require('../tools/art/food.js');

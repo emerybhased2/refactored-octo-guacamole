@@ -5,7 +5,7 @@
 const fs = require('fs'), path = require('path');
 const { chromium } = require('playwright');
 const ROOT = path.resolve(__dirname, '../..');
-const args = process.argv.slice(2); let version = '2017-02-13', sheet = null; const only = [];
+const args = process.argv.slice(2); let version = '2017-02-13', sheet = null; const only = []; // --version only names the menu assets folder
 for (let i = 0; i < args.length; i++) { if (args[i] === '--version') version = args[++i]; else if (args[i] === '--sheet') sheet = args[++i]; else only.push(args[i]); }
 (async () => {
   const animals = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/progression/animals.json'), 'utf8'));
@@ -27,10 +27,9 @@ for (let i = 0; i < args.length; i++) { if (args[i] === '--version') version = a
     }
     return res;
   }, list);
-  const dir = path.join(ROOT, 'assets/animals', version); fs.mkdirSync(dir, { recursive: true });
-  let n = 0, missing = [];
-  for (const [id, url] of Object.entries(out)) { if (!url) { missing.push(id); continue; } fs.writeFileSync(path.join(dir, id + '.png'), Buffer.from(url.split(',')[1], 'base64')); n++; }
-  console.log(`exported ${n} sprites to ${path.relative(ROOT, dir)}` + (missing.length ? `; NO SPEC for: ${missing.join(', ')}` : ''));
+  let n = 0, missing = []; const byId = Object.fromEntries(animals.map((a) => [a.id, a]));
+  for (const [id, url] of Object.entries(out)) { if (!url) { missing.push(id); continue; } const dest = path.join(ROOT, byId[id].sprite); fs.mkdirSync(path.dirname(dest), { recursive: true }); fs.writeFileSync(dest, Buffer.from(url.split(',')[1], 'base64')); n++; } // each sprite goes to the exact path named in animals.json
+  console.log(`exported ${n} sprites (paths from animals.json)` + (missing.length ? `; NO SPEC for: ${missing.join(', ')}` : ''));
   if (sheet) {
     const cols = 8, cell = 160, rows = Math.ceil(list.length / cols);
     const html = '<body style="margin:0;background:#4fbf5a"><canvas id=s width=' + cols * cell + ' height=' + rows * cell + '></canvas></body>';
