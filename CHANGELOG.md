@@ -1,5 +1,19 @@
 # Project changelog
 
+## 1.0.0 - Wardrobe + all game modes
+- **Wardrobe:** new menu button (every build with accounts + shop). Pick an animal, see every skin for it (equipped / owned / buyable / locked), search, equip, remove or buy; works on touch.
+- **Game modes (from the Mope.io Wiki, `data/modes/modes.json`):** Free For All, Sandbox (2017 build), 1v1 Arena, **1v1 Redemption** (10 AI bosses, Noob 400 / Pro 750 coins, one credit per round, credit packs of 5/10/20 in the Store), **Classic Mode** (Land + Ocean, 14 tiers per the wiki's table), **Zombie Infection**, **Battle Royale** (shrinking red zone, 25+ players, last alive wins, ghosts spectate, auto-restart), **Team Mode** (Yellow/Cyan/Purple, Team Stones with capture/neutralise, 5 of the 13 perks simulated, 10-stone meteor apocalypse), **Wild Mope** (+10% speed, -20% cooldown, +30% ability duration), **Viral Pandemic** (immunity/infection, masks, aloe, sneezing).
+- Mode picker in the menu: every implemented mode is playable in every build that can host it; the original era is in the label and out-of-era modes are marked "bonus". Beta Mope.io (a rotating test server) is listed as not implemented.
+- Server: `Modes.java` (rules + state per world), mode worlds keyed by (version, mode), credits in the account database, `useAbility` applies mode cooldown/duration; client overlays (zone, stones, meteors, viruses, bars, team outlines, zombie tint).
+- Tests: server 168, client/data 68, integration 30.
+
+## 0.9.0 - Mobile support + Evolution Tray
+- **Mobile:** touch controls (floating left-thumb joystick, BOOST / ABILITY / CLIMB / CHAT buttons, tap-to-spectate), responsive menu/shop/settings, compact leaderboard on short screens, no pinch/scroll/pull-to-refresh, safe-area insets, devbar hidden while playing on touch devices.
+- **Evolution Tray (original UI, not an archived menu):** bottom sheet with every animal you can evolve into now (biome-coloured cards, tier chip, best-fit star, ability) plus the nearest upcoming ones with XP progress; collapses to a one-line "Next: X 7/150 XP" chip; on touch the first tap selects and shows details, a second tap on EVOLVE confirms. Default on touch devices and in the wiki-sourced version; a "New upgrade tray" option in settings enables it in any version (historical menus stay the default elsewhere).
+- Evolution Tray shows each animal's own artwork (bigger portraits, a large preview when selected); fixed a bug where the grey placeholder could be cached before the PNG loaded.
+- Dev: `dev-xp` message + "+XP" button (MOPE_DEV only).
+- Tests: client/data 66, integration 29.
+
 ## 0.8.0 - Version 7: 2026-11-13 (wiki-sourced)
 - New playable version built from the Mope.io Wiki: 97-animal current roster, 17 tiers, wiki XP thresholds, all-to-all evolution by tier, removed animals (Snowman/Snowgirl/Bigfoot...) gone, 375 skins (Halloween 2020-25, Summer, Christmas, Gold-trim, Golden, Locked, Storefront, Cosmic...) with original generated art, version dropdown for all captures.
 - Corrections: Queen Flame / Tully Monster are skins (removed as animals from the 2021 version).

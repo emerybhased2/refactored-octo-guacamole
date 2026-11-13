@@ -2,13 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="theme-color" content="#3FBA54">
   <title>Mope.io Historical Evolution</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <!-- Structure mirrors the archived 2017-02-13 index.html (ids kept); content/geometry comes from the version's menu config. -->
 <div id="xpPopups"></div>
+<div id="evoTray" class="hidden"><div class="evoHead"><span id="evoTitle">EVOLVE!</span><span class="evoHint">tap an animal</span></div><div id="evoRow"></div><div id="evoDetail"></div></div>
+<div id="touchUi" style="display:none"><div id="tuBase"><div id="tuKnob"></div></div><div id="tuBtns"><button id="tuBoost" type="button">BOOST</button><button id="tuAbility" type="button">ABILITY</button><button id="tuClimb" type="button" style="display:none">CLIMB</button><button id="tuChat" type="button" style="display:none">CHAT</button></div></div>
 <div id="gameAreaWrapper">
   <input id="chatinput" type="text" class="chat-input" placeholder="Chat here..." maxlength="35" autocomplete="off">
   <canvas tabindex="1" id="gCanvas"></canvas>
@@ -21,12 +24,14 @@
       <button id="button_GMnormal" class="button" type="button"><img alt="Normal"></button>
       <button id="button_GMsandbox" class="button" type="button"><img alt="Sandbox"></button>
       <div id="nickInputContainer"><input id="nickInput" autofocus maxlength="15" autocomplete="off"></div>
+      <div id="gmRow"><select id="gmSelect" title="Game mode"></select><div id="gmExtras" style="display:none"><select id="gmAnimal" title="Your animal"></select><select id="gmDiff" title="Difficulty"><option value="noob">NOOB - 400 coins</option><option value="pro">PRO - 750 coins</option></select></div><p id="gmNote"></p></div>
       <button id="settingsButton" class="button" type="button"><img alt="Settings"></button>
       <button id="button_mute" class="button" type="button"><img id="button_mute_img" alt="Sound"></button>
       <a><button id="startButton" type="button">Play</button></a>
       <button id="btnSpectate" type="button">Spectate</button>
       <p id="spawnXpLabel"></p>
       <button id="storeButton" type="button" style="display:none"></button>
+      <button id="wardrobeButton" type="button" style="display:none">WARDROBE</button>
       <div id="footerLinks" style="display:none"></div>
       <p id="plusCoins" style="display:none"><img id="plusCoinsImg" alt="coins"> <span id="plusCoinsLabel"></span></p>
     </div>
@@ -51,8 +56,11 @@
 <div id="authModal" class="modal" style="display:none"><div class="modalBox"><button class="modalClose" type="button" id="authClose">&times;</button><h3>Local account</h3><p id="authNote"></p>
   <input id="authUser" type="text" maxlength="16" placeholder="username (3-16 letters/numbers)" autocomplete="off"><input id="authPass" type="password" maxlength="64" placeholder="password (6+ characters)" autocomplete="off">
   <div><button id="authLogin" type="button">Log in</button><button id="authRegister" type="button">Register</button></div><p id="authErr"></p></div></div>
+<div id="wardrobeModal" class="modal" style="display:none"><div class="modalBox wide wdBox"><button class="modalClose" type="button" id="wardrobeClose">&times;</button><h3>Wardrobe <span id="wardrobeCoins"></span></h3>
+  <div class="wdBar"><input id="wardrobeSearch" type="search" placeholder="Search skins..." autocomplete="off"><label><input id="wardrobeOwned" type="checkbox"> owned animals only</label></div>
+  <div class="wdBody"><div id="wardrobeAnimals"></div><div id="wardrobeGrid"></div></div><p id="wardrobeErr"></p></div></div>
 <div id="shopModal" class="modal" style="display:none"><div class="modalBox wide"><button class="modalClose" type="button" id="shopClose">&times;</button><h3>Shop <span id="shopCoins"></span></h3><p id="shopNote"></p><div id="shopTabs" class="shopTabs"></div><div id="shopCats" class="shopTabs"></div><div id="shopFilters" class="shopFilters"></div><div id="shopGrid"></div><p id="shopErr"></p><div id="shopConfirm" style="display:none"></div></div></div>
-<div id="devbar"><label>Version: <select id="versionSelect"></select></label><span id="versionLabel"></span><span id="devTools" style="display:none"> | <button id="devCoins" type="button">+1000 coins</button> <select id="devDisaster"></select><button id="devDisasterGo" type="button">Trigger</button> <span id="devMsg"></span></span><span id="arenaCtl" style="display:none"> | <label>Dev mode: <select id="modeSelect"><option value="normal">normal</option><option value="arena">1v1 arena (inferred)</option></select></label> <label>Arena animal: <select id="arenaAnimal"></select></label></span></div>
+<div id="devbar"><label>Version: <select id="versionSelect"></select></label><span id="versionLabel"></span><span id="devTools" style="display:none"> | <button id="devCoins" type="button">+1000 coins</button> <button id="devXp" type="button">+XP</button> <select id="devDisaster"></select><button id="devDisasterGo" type="button">Trigger</button> <span id="devMsg"></span></span><span id="arenaCtl" style="display:none"> | <label>Dev mode: <select id="modeSelect"><option value="normal">normal</option><option value="arena">1v1 arena (inferred)</option></select></label> <label>Arena animal: <select id="arenaAnimal"></select></label></span></div>
 <div id="status"></div>
 <div id="deathMsg"></div>
 <div id="disasterMsg"></div>
@@ -66,12 +74,16 @@
 <script src="ui/MenuAnimations.js"></script>
 <script src="ui/MainMenu.js"></script>
 <script src="ui/UpgradeMenu.js"></script>
+<script src="ui/EvolveTray.js"></script>
 <script src="ui/Leaderboard.js"></script>
 <script src="ui/HUD.js"></script>
 <script src="ui/Settings.js"></script>
 <script src="ui/Shop.js"></script>
+<script src="ui/Wardrobe.js"></script>
+<script src="ui/ModeHud.js"></script>
   <script src="ui/Disasters.js"></script>
   <script src="audio.js"></script>
+<script src="touch.js"></script>
 <script src="extras.js"></script>
 <script src="renderer.js"></script>
 <script src="client.js"></script>

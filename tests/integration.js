@@ -102,7 +102,7 @@ function client(port = PORT) {
     const login = async (port, v = '2019-12-30') => { const c = client(port); await c.ready; const u = uniq(); c.send({ t: 'register', v, u, p: 'secret12' }); const r = await c.until('auth'); assert.strictEqual(r.ok, true, 'register failed'); c.user = u; c.token = r.token; c.auth = r; return c; };
     await t('2019-12-30 welcome carries the shop catalog and disaster definitions; 2019-08-25 does not', async () => {
       const c = client(); await c.ready; c.send({ t: 'join', name: 'V4', v: '2019-12-30' }); const w = await c.until('welcome');
-      assert.strictEqual(w.version.animals.length, 80); assert.strictEqual(w.version.shop.items.length, 4); assert.strictEqual(w.version.shop.currency.id, 'coin'); assert.strictEqual(w.version.disasterDefs.length, 15); assert.ok(w.version.features.shop && w.version.features.disasters && w.version.features.accounts);
+      assert.strictEqual(w.version.animals.length, 80); assert.strictEqual(w.version.shop.items.length, 7); assert.strictEqual(w.version.shop.currency.id, 'coin'); assert.strictEqual(w.version.disasterDefs.length, 15); assert.ok(w.version.features.shop && w.version.features.disasters && w.version.features.accounts);
       const c2 = client(); await c2.ready; c2.send({ t: 'join', name: 'V3', v: '2019-08-25' }); const w2 = await c2.until('welcome'); assert.strictEqual(w2.version.shop, undefined); assert.strictEqual(w2.version.disasterDefs, undefined); c.ws.close(); c2.ws.close();
     });
     await t('normal server: dev-only commands (dev-coins, dev-disaster) are ignored', async () => {
@@ -141,6 +141,25 @@ function client(port = PORT) {
     await t('dev-info: dev server reports on, normal server reports off', async () => {
       const d = client(PORT_DEV); await d.ready; d.send({ t: 'dev-info' }); assert.strictEqual((await d.until('dev')).on, true); d.ws.close();
       const n = client(PORT); await n.ready; n.send({ t: 'dev-info' }); assert.strictEqual((await n.until('dev')).on, false); n.ws.close();
+    });
+    await t('dev-xp (dev server only): XP makes evolution choices appear; normal server ignores it', async () => {
+      const c = client(PORT_DEV); await c.ready; c.send({ t: 'join', name: 'Xp', v: '2021-06-12' }); await c.until('welcome'); c.send({ t: 'dev-xp', n: 500 });
+      const t0 = Date.now(); let ev = []; while (Date.now() - t0 < 4000 && !ev.length) { await sleep(100); const m = c.msgs.filter((x) => x.t === 'snap').pop(); if (m && m.you && m.you.ev) ev = m.you.ev; } assert.ok(ev.length > 0, 'no evolution offered after dev-xp'); c.ws.close();
+      const n = client(PORT); await n.ready; n.send({ t: 'join', name: 'Xp2', v: '2021-06-12' }); await n.until('welcome'); n.send({ t: 'dev-xp', n: 500 }); await sleep(1500); const m2 = n.msgs.filter((x) => x.t === 'snap').pop(); assert.ok(!m2 || !m2.you.ev || m2.you.ev.length === 0); n.ws.close();
+    });
+    await t('game modes: each shared mode joins, reports gm + mode data; royale spectate-of works; redemption needs an account and credits', async () => {
+      for (const gm of ['classic', 'zombie', 'royale', 'team', 'wild', 'pandemic']) {
+        const c = client(PORT_DEV); await c.ready; c.send({ t: 'join', name: 'M' + gm, v: '2021-06-12', mode: gm }); const w = await c.until('welcome'); assert.strictEqual(w.gm, gm); assert.strictEqual(w.mode, 'normal');
+        if (gm === 'classic') { assert.strictEqual(w.version.tiers.length, 14); assert.deepStrictEqual(w.version.biomes.map((b) => b.id), ['land', 'ocean']); assert.strictEqual(w.version.animals.length, 23); }
+        else { const t0 = Date.now(); let md = null; while (Date.now() - t0 < 3000 && !md) { await sleep(80); const s = c.msgs.filter((x) => x.t === 'snap').pop(); if (s && s.md) md = s.md; } assert.ok(md && md.m === gm, gm + ' snapshot data'); if (gm === 'royale') assert.ok(md.z && md.z.length === 3 && md.al >= 25); if (gm === 'team') assert.ok(md.st.length === 12 && md.tm.length === 3); if (gm === 'pandemic') assert.ok(md.im > 0); }
+        c.ws.close();
+      }
+      const sp = client(PORT_DEV); await sp.ready; sp.send({ t: 'join', name: 'Spec', v: '2021-06-12', mode: 'spectate', of: 'royale' }); await sp.until('welcome'); const t1 = Date.now(); let md2 = null; while (Date.now() - t1 < 3000 && !md2) { await sleep(80); const s = sp.msgs.filter((x) => x.t === 'snap').pop(); if (s && s.md) md2 = s.md; } assert.ok(md2 && md2.m === 'royale', 'spectators watch the royale world'); sp.ws.close();
+      const anon = client(PORT_DEV); await anon.ready; anon.send({ t: 'join', name: 'Anon', v: '2021-06-12', mode: 'redemption' }); const e1 = await anon.until('error'); assert.ok(/log in/.test(e1.err)); anon.ws.close();
+      const a = await login(PORT_DEV, '2021-06-12'); a.send({ t: 'join', name: 'Rd', v: '2021-06-12', mode: 'redemption' }); const e2 = await a.until('error'); assert.ok(/credit/.test(e2.err));
+      a.send({ t: 'dev-coins', v: '2021-06-12', n: 1500 }); await sleep(300); a.send({ t: 'buy', v: '2021-06-12', item: 'redemption_credits_5' }); const sh = await (async () => { const t2 = Date.now(); while (Date.now() - t2 < 3000) { const r = a.msgs.filter((x) => x.t === 'shop' && x.credits === 5).pop(); if (r) return r; await sleep(50); } return null; })(); assert.ok(sh, 'bought 5 credits'); assert.strictEqual(sh.credits, 5);
+      a.send({ t: 'join', name: 'Rd', v: '2021-06-12', mode: 'redemption', animal: 'dragon', difficulty: 'pro' }); const w2 = await a.until('welcome'); assert.strictEqual(w2.mode, 'arena'); assert.strictEqual(w2.gm, 'redemption'); const sh2 = a.msgs.filter((x) => x.t === 'shop').pop(); assert.strictEqual(sh2.credits, 4, 'one credit spent');
+      const t3 = Date.now(); let red = null; while (Date.now() - t3 < 3500 && !red) { await sleep(80); const s = a.msgs.filter((x) => x.t === 'snap').pop(); if (s && s.red) red = s.red; } assert.ok(red && red.lv === 1 && red.pro === 1); a.ws.close();
     });
     await t('sessions: resume restores coins/inventory; logout invalidates the token', async () => {
       const c = await login(PORT_DEV); c.send({ t: 'dev-coins', v: '2019-12-30', n: 500 }); await c.until('shop'); c.ws.close();

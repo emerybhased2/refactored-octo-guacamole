@@ -259,8 +259,8 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
     const m19 = J(v19.menu); assert.strictEqual(m19.account, undefined); assert.strictEqual(MenuRenderer.elementsPresent(m19).account, false);
   });
   await t('shop catalog: 59 skins exist (verified) but only the named/inferred items exist; prices flagged inferred; art + coin icon present', () => {
-    assert.strictEqual(shopData.verifiedTotalSkins, 59); assert.strictEqual(shopData.items.length, 14); for (const id of ['azure_blackdragon', 'golden_blackdragon', 'golden_kingdragon', 'snowman', 'bigfoot', 'mouse_skin_1', 'mouse_skin_2', 'tigershark', 'hammerhead']) assert.ok(shopData.items.some((i) => i.id === id), id);
-    for (const it of shopData.items) { assert.ok(Number.isInteger(it.price) && it.price >= 0, it.id); assert.ok(/inferred|behaviour/.test(it.confidence), it.id); if (it.type === 'bundle' || it.type === 'feature') continue; assert.ok(all.some((a) => a.id === it.animal), it.id); if (it.type === 'skin') { const i = png(it.sprite); assert.deepStrictEqual([i.w, i.h, i.type], [256, 256, 6], it.id); assert.ok(it.family); } }
+    assert.strictEqual(shopData.verifiedTotalSkins, 59); assert.strictEqual(shopData.items.length, 17); for (const id of ['azure_blackdragon', 'golden_blackdragon', 'golden_kingdragon', 'snowman', 'bigfoot', 'mouse_skin_1', 'mouse_skin_2', 'tigershark', 'hammerhead']) assert.ok(shopData.items.some((i) => i.id === id), id);
+    for (const it of shopData.items) { assert.ok(Number.isInteger(it.price) && it.price >= 0, it.id); assert.ok(/inferred|behaviour/.test(it.confidence), it.id); if (it.type === 'bundle' || it.type === 'feature' || it.type === 'credits') continue; assert.ok(all.some((a) => a.id === it.animal), it.id); if (it.type === 'skin') { const i = png(it.sprite); assert.deepStrictEqual([i.w, i.h, i.type], [256, 256, 6], it.id); assert.ok(it.family); } }
     const c = png(shopData.currency.icon); assert.deepStrictEqual([c.w, c.h], [64, 64]); assert.ok(/NOT implemented/.test(shopData.currency.earnNote)); assert.strictEqual(v4.economy.coinsPerXp, 0.01);
     assert.ok(shopData.items.find((i) => i.id === 'snowman').type === 'animal'); assert.ok(!J(v19.menu).panels.updates.sections.some((s) => /shop/i.test(JSON.stringify(s))));
   });
@@ -375,6 +375,43 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
   await t('v7 (wiki): menu reuses the verified 2021 UI and says so; evolution edges all-to-all by tier', () => {
     const m = J(v7.menu); assert.strictEqual(m.theme, '2021'); assert.ok(/reused/.test(m.confidence)); assert.strictEqual(m.panels.updates.sections[0].title, 'About this build');
     const E = J('data/progression/evolution.json').filter((e) => e.releaseDate === '2026-11-13'); assert.ok(E.length > 400); assert.ok(J('data/progression/evolution.json').filter((e) => e.releaseDate < '2026-11-13').every((e) => e.removalDate)); // old trees stay available to older versions only
+  });
+
+  // ---- mobile + Evolution Tray
+  await t('touch: joystick maths (dead zone, clamping, angle) and tray model (available first, soon sorted by XP, progress)', () => {
+    const { stick } = require('../client/touch.js'), { trayModel } = require('../client/ui/EvolveTray.js');
+    assert.strictEqual(stick(100, 100, 104, 100).mag, 0); const r = stick(100, 100, 100 + 200, 100); assert.deepStrictEqual([r.mag, r.angle, r.dx], [1, 0, 56]); assert.ok(Math.abs(stick(0, 0, 0, -56).angle + Math.PI / 2) < 1e-9);
+    const animals = [{ id: 'a', name: 'A', tier: 1, biome: 'land', xpRequired: 0 }, { id: 'b', name: 'B', tier: 2, biome: 'land', xpRequired: 100, ability: 'extra_boost' }, { id: 'c', name: 'C', tier: 2, biome: 'ocean', xpRequired: 100 }, { id: 'd', name: 'D', tier: 2, biome: 'arctic', xpRequired: 300 }, { id: 'e', name: 'E', tier: 2, biome: 'desert', xpRequired: 200 }];
+    const edges = ['b', 'c', 'd', 'e'].map((to) => ({ from: 'a', to })), m = trayModel(animals, edges, { a: 'a', xp: 150 }, ['b', 'c']);
+    assert.deepStrictEqual(m.available.map((c) => [c.id, c.suggested || false, c.ability]), [['b', true, 'Extra Boost'], ['c', false, 'No special ability']]);
+    assert.deepStrictEqual(m.soon.map((c) => [c.id, c.progress]), [['e', 0.75], ['d', 0.5]]); assert.deepStrictEqual(trayModel(animals, edges, { a: 'zz', xp: 0 }, []).soon, []);
+  });
+  await t('mobile: viewport meta, touch UI + tray markup, scripts, coarse-pointer CSS, tray default on touch/wiki versions', () => {
+    const html = fs.readFileSync(path.join(ROOT, 'client/index.html'), 'utf8'), css = fs.readFileSync(path.join(ROOT, 'client/css/style.css'), 'utf8'), cs = fs.readFileSync(path.join(ROOT, 'client/client.js'), 'utf8');
+    for (const id of ['evoTray', 'evoRow', 'evoDetail', 'touchUi', 'tuBase', 'tuBoost', 'tuAbility', 'tuClimb', 'tuChat']) assert.ok(html.includes('id="' + id + '"'), id);
+    assert.ok(/viewport-fit=cover/.test(html) && /user-scalable=no/.test(html) && html.includes('touch.js') && html.includes('EvolveTray.js')); assert.ok(/@media \(pointer: coarse\)/.test(css) && /touch-action: none/.test(css));
+    assert.ok(/default: touchDevice \|\| !!\(vi0\.features && vi0\.features\.wikiSourced\)/.test(cs));
+  });
+
+  // ---- wardrobe + game modes
+  await t('wardrobe model: per-animal skins sorted equipped > owned > buyable, search, states, owned-only list', () => {
+    const { wardrobeModel } = require('../client/ui/Wardrobe.js');
+    const items = [{ id: 's1', type: 'skin', animal: 'fox', name: 'Red Fox', price: 100 }, { id: 's2', type: 'skin', animal: 'fox', name: 'Blue Fox', price: 300 }, { id: 's3', type: 'skin', animal: 'fox', name: 'Gold Fox', price: 900 }, { id: 'k1', type: 'skin', animal: 'bear', name: 'Bear Skin', price: 50 }, { id: 'x', type: 'feature', name: 'Theme', price: 0 }];
+    const animals = [{ id: 'fox', name: 'Fox', tier: 6 }, { id: 'bear', name: 'Bear', tier: 10 }, { id: 'mouse', name: 'Mouse', tier: 1 }];
+    const acct = { user: 'u', coins: 400, owned: ['s1', 's2'], equipped: { fox: 's2' } }, m = wardrobeModel(items, animals, acct, 'fox');
+    assert.deepStrictEqual(m.cards.map((c) => [c.id, c.state]), [['s2', 'equipped'], ['s1', 'owned'], ['s3', 'poor']]); assert.strictEqual(m.equippedId, 's2'); assert.deepStrictEqual(m.animals.map((a) => a.id), ['fox', 'bear']);
+    assert.strictEqual(wardrobeModel(items, animals, { user: 'u', coins: 1000, owned: [], equipped: {} }, 'fox').cards[2].state, 'buy'); assert.strictEqual(wardrobeModel(items, animals, null, 'fox').cards[0].state, 'login');
+    assert.deepStrictEqual(wardrobeModel(items, animals, acct, 'fox', { search: 'gold' }).cards.map((c) => c.id), ['s3']); assert.deepStrictEqual(wardrobeModel(items, animals, acct, null, { ownedOnly: true }).animals.map((a) => a.id), ['fox']);
+  });
+  await t('modes catalogue: wiki dates, every implemented mode listed; picker marks era/bonus and gating', () => {
+    const C = J('data/modes/modes.json').modes, ids = C.map((m) => m.id); for (const id of ['normal', 'sandbox', 'arena', 'redemption', 'classic', 'zombie', 'royale', 'team', 'wild', 'pandemic', 'beta']) assert.ok(ids.includes(id), id);
+    assert.strictEqual(C.find((m) => m.id === 'sandbox').removed, '2017-02-18'); assert.strictEqual(C.find((m) => m.id === 'royale').removed, '2018-11-23'); assert.strictEqual(C.find((m) => m.id === 'redemption').released, '2021-02-16'); assert.strictEqual(C.find((m) => m.id === 'beta').implemented, false);
+    const MH = require('../client/ui/ModeHud.js'), v2017 = { date: '2017-02-13', modes: ['normal', 'sandbox'], features: {} }, v21 = { date: '2021-06-12', modes: ['normal'], features: { arena: true, shop: true, accounts: true } };
+    const o17 = Object.fromEntries(MH.modeOptions(C, v2017, null).map((o) => [o.id, o])), o21 = Object.fromEntries(MH.modeOptions(C, v21, { user: 'a', credits: 3 }).map((o) => [o.id, o]));
+    assert.ok(/\(2017\)/.test(o17.sandbox.label) && /\(2018\)/.test(o17.zombie.label) && /\(2018-2024\)/.test(o17.team.label)); assert.ok(!o17.sandbox.disabled && o17.arena.disabled && o17.redemption.disabled && o17.beta.disabled && /not implemented/.test(o17.beta.label)); assert.ok(/bonus/.test(o17.royale.label) && /bonus/.test(o21.royale.label) && !/bonus/.test(o21.redemption.label) && /3 credit/.test(o21.redemption.label) && o21.sandbox.disabled);
+    assert.deepStrictEqual(MH.flagsOf(1 | 4 | 8), { team: 1, zombie: true, infected: true }); assert.deepStrictEqual(MH.flagsOf(0), { team: 0, zombie: false, infected: false });
+    const cl = J('data/modes/classic.json'); assert.strictEqual(cl.maxTier, 14); assert.deepStrictEqual(cl.biomes, ['land', 'ocean']); assert.strictEqual(Object.keys(cl.tiers).length, 23); assert.strictEqual(cl.tiers.dragon, 14);
+    const sh = J('data/shop/shop.json').items.filter((i) => i.type === 'credits'); assert.deepStrictEqual(sh.map((i) => i.credits), [5, 10, 20]);
   });
 
   console.log(`unit: ${pass} passed, ${fail} failed`); process.exit(fail ? 1 : 0);

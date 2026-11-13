@@ -1,0 +1,40 @@
+{
+  "id": "classic",
+  "label": "Classic Mode (Old Mope, Dec 2016 state)",
+  "source": "Mope.io Wiki 'Classic Mode' (tier table); XP curve = project tier curve (inferred)",
+  "maxTier": 14,
+  "biomes": [
+    "land",
+    "ocean"
+  ],
+  "starters": [
+    "mouse",
+    "shrimp"
+  ],
+  "tiers": {
+    "mouse": 1,
+    "rabbit": 2,
+    "pig": 3,
+    "fox": 4,
+    "mole": 5,
+    "deer": 6,
+    "zebra": 7,
+    "lion": 8,
+    "cheetah": 9,
+    "bear": 10,
+    "croc": 11,
+    "rhino": 12,
+    "hippo": 13,
+    "dragon": 14,
+    "shrimp": 1,
+    "trout": 2,
+    "crab": 3,
+    "squid": 4,
+    "seahorse": 5,
+    "jellyfish": 6,
+    "turtle": 7,
+    "stingray": 8,
+    "shark": 12
+  },
+  "edgeRule": "each animal evolves into every animal of the next tier in its own biome; if none exists, into every animal of the next tier; animals with no way in are fed from the whole tier below (inferred)"
+}

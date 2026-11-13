@@ -30,7 +30,7 @@
       const list = $('optionsList'); list.innerHTML = '';
       for (const c of cfg.options.checkboxes) {
         const lab = document.createElement('label'), cb = document.createElement('input'), sp = document.createElement('span');
-        cb.type = 'checkbox'; cb.id = 'options_' + c.id; cb.disabled = !c.implemented; cb.checked = c.implemented && store.get('mope.opt.' + c.id, '0') === '1';
+        cb.type = 'checkbox'; cb.id = 'options_' + c.id; cb.disabled = !c.implemented; cb.checked = c.implemented && store.get('mope.opt.' + c.id, c.default ? '1' : '0') === '1';
         sp.style.color = c.color; sp.textContent = c.label + (c.implemented ? '' : ' (not implemented)'); if (!c.implemented) lab.className = 'na';
         this.options[c.id] = cb.checked;
         cb.addEventListener('change', () => { this.options[c.id] = cb.checked; store.set('mope.opt.' + c.id, cb.checked ? '1' : '0'); });

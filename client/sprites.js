@@ -39,6 +39,8 @@
     if (src !== phCache.get(animal.id)) iconCache.set(animal.id, cv);
     return cv;
   }
+  /** True once the animal's real artwork (not the grey placeholder) is loaded. */
+  function isReady(animal) { return (animal.spriteStatus === 'recreated' || animal.spriteStatus === 'original') && ready(image(animal.sprite)); }
   function getFood(def) { if (def.spriteStatus === 'recreated' || def.spriteStatus === 'original') { const im = image(def.sprite); if (ready(im)) return im; } return null; }
   /** Ability icon / terrain tile images, or null until loaded (callers fall back to flat colour / no icon). */
   function getAbilityIcon(def) { if (!def || !def.icon) return null; const im = image(def.icon); return ready(im) ? im : null; }
@@ -47,6 +49,6 @@
   /** Classic Theme (2021 Legacy Pack): the project's own 2017-02-13 art for animals that existed then; null otherwise. */
   function getClassic(animal) { const im = image('assets/animals/2017-02-13/' + animal.id + '.png'); return ready(im) ? im : null; }
   function getSkin(item) { if (!item || !item.sprite) return null; const im = image(item.sprite); return ready(im) ? im : null; }
-  M.Sprites = { getClassic, getSkin, get, getIcon, getFood, getAbilityIcon, getTile, getTerrain, TERRAIN_FRAC: 0.8, TILE_WORLD: 256, BODY_FRAC, FOOD_FRAC, SIZE, shade };
+  M.Sprites = { isReady, getClassic, getSkin, get, getIcon, getFood, getAbilityIcon, getTile, getTerrain, TERRAIN_FRAC: 0.8, TILE_WORLD: 256, BODY_FRAC, FOOD_FRAC, SIZE, shade };
   if (typeof module !== 'undefined') module.exports = M.Sprites;
 })(typeof window !== 'undefined' ? window : globalThis);
