@@ -137,5 +137,60 @@
   "spriteStatus": "recreated",
   "releaseDate": "2017-02-13",
   "confidence": "existence verified (client draws it); name/xp/biome inferred"
+ },
+ {
+  "id": "watermelon",
+  "name": "Watermelon",
+  "xp": 20,
+  "health": 4,
+  "radius": 16,
+  "density": 12,
+  "respawnMs": 2500,
+  "biomes": [
+   "land",
+   "desert"
+  ],
+  "color": "#4aa04a",
+  "sprite": "assets/food/watermelon.png",
+  "spriteStatus": "recreated",
+  "releaseDate": "2019-08-25",
+  "confidence": "existence verified; xp/density inferred",
+  "evidence": "2019-06-18 note: 'Melons not getting watered' (melons exist)"
+ },
+ {
+  "id": "cactus_fruit",
+  "name": "Cactus fruit",
+  "xp": 14,
+  "health": 4,
+  "radius": 11,
+  "density": 30,
+  "respawnMs": 2500,
+  "biomes": [
+   "desert"
+  ],
+  "color": "#d65a8a",
+  "sprite": "assets/food/cactus_fruit.png",
+  "spriteStatus": "recreated",
+  "releaseDate": "2019-08-25",
+  "confidence": "INFERRED (existence not evidenced)",
+  "evidence": "INFERRED desert food (no archived list)"
+ },
+ {
+  "id": "ember_fruit",
+  "name": "Ember fruit",
+  "xp": 18,
+  "health": 4,
+  "radius": 11,
+  "density": 26,
+  "respawnMs": 2500,
+  "biomes": [
+   "volcano"
+  ],
+  "color": "#ff7a1a",
+  "sprite": "assets/food/ember_fruit.png",
+  "spriteStatus": "recreated",
+  "releaseDate": "2019-08-25",
+  "confidence": "INFERRED (existence not evidenced)",
+  "evidence": "INFERRED volcano food (no archived list)"
  }
 ]

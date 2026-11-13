@@ -8,3 +8,17 @@ Not available in the archive for 2017-02-13:
 - Audio: `audio/click.mp3`, `music_menu.mp3`, `music_game.mp3` (music was removed from the game per the Feb 10 note anyway).
 - Terrain/water/ice textures, lakes, mud, hills, berry bushes: look unknown; flat colours used.
 - App-store/promo images were deliberately not reproduced.
+
+## 2018-04-21 additions
+- 17 new animal skins and 17 ability icons: not captured (only `skins/giraffe.png` exists in that crawl). Recreated as original art, see `docs/ART_STYLE.md`.
+- The captured 2018 `sound_on.png` was an HTML page; 2017's icon is reused. `ability_crabSmashSkin.png`, `spiderWeb.png`, `blocked.png` and others were referenced but not captured.
+
+## 2019-08-25 additions
+- No 2019 client was captured: ids, abilities, ability icons for the new animals, upgrade-button colours and HUD geometry are missing/inferred.
+- 16 new skins, 3 foods, 9 terrain objects and 2 biome tiles are original recreations (see `docs/ART_STYLE.md`); the archive has only a handful of 2019 skin files.
+- The captured 2019 `settings.png` was an HTML page (2017 icon reused).
+
+## 2019-12-30 additions
+- No client.js and no 2019-12 CSS were captured: geometry for the login/shop elements, ids, abilities and numbers are inferred.
+- `shop/mopecoin.png` (referenced by the page) was not captured; original coin drawn. The 55 unnamed skins and the 'HD art' are not available.
+- Update-panel screenshots (volcanic eruption, skins promo) were not stored.

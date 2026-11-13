@@ -37,5 +37,170 @@
     "name": "Arctic teleporting, upgrade UI sorted by biome, sandbox up/down upgrade, music removed (from page update panel)"
    }
   ]
+ },
+ {
+  "version": "0.2",
+  "date": "2018-04-21",
+  "confidence": "verified (existence from the archived client and page update notes); tiers/xp inferred",
+  "changes": [
+   {
+    "type": "capture",
+    "name": "Archived capture Arquivo.pt 20180421014032"
+   },
+   {
+    "type": "animals_added",
+    "count": 17,
+    "names": [
+     "Snail",
+     "Black Dragon",
+     "Sabertooth Tiger",
+     "Elephant",
+     "Blue Whale",
+     "Cobra",
+     "Boa Constrictor",
+     "Giant Spider",
+     "T-Rex",
+     "Tiger",
+     "Giraffe",
+     "Eagle",
+     "Hedgehog",
+     "Duck",
+     "Duckling",
+     "Lemming",
+     "King Crab"
+    ]
+   },
+   {
+    "type": "feature_removed",
+    "name": "Sandbox mode (Normal/Sandbox buttons gone from the menu)"
+   },
+   {
+    "type": "feature_removed",
+    "name": "Winter skins option"
+   },
+   {
+    "type": "feature_removed",
+    "name": "Party links, replaced by server URL sharing (Jan 26 note)"
+   },
+   {
+    "type": "rule_changed",
+    "name": "All animals can now enter/swim in water spots (Jan 26 note)"
+   },
+   {
+    "type": "balance",
+    "name": "Rebalanced top animals incl. kraken, dragon, giant crab, tiger, giraffe, eagle (Jan 26 note; values unknown)"
+   },
+   {
+    "type": "abilities_added",
+    "count": 17
+   },
+   {
+    "type": "menu_change",
+    "name": "Shorter wordmark logo (350x99); 'How to play' panel hidden; update panel now has Feb 16, Feb 13 and Jan 26 notes; 'Classic Mope' beta link (Dec 2, 2016 version)"
+   }
+  ]
+ },
+ {
+  "version": "0.3",
+  "date": "2019-08-25",
+  "confidence": "existence verified from the 2019-08-25 homepage notes and 2019 skin captures; structure per user",
+  "changes": [
+   {
+    "type": "animals_added",
+    "count": 16,
+    "names": [
+     "Chicken",
+     "Woodpecker",
+     "Toucan",
+     "Flamingo",
+     "Macaw",
+     "Pelican",
+     "Flytrap",
+     "Peacock",
+     "Leopard",
+     "Cassowary",
+     "Jaguar",
+     "Black Panther",
+     "Komodo Dragon",
+     "Black Widow",
+     "Ice Monster",
+     "King Dragon"
+    ]
+   },
+   {
+    "type": "biomes_added",
+    "names": [
+     "Desert",
+     "Volcano (inferred)"
+    ]
+   },
+   {
+    "type": "food_added",
+    "names": [
+     "Watermelon",
+     "Cactus fruit (inferred)",
+     "Ember fruit (inferred)"
+    ]
+   },
+   {
+    "type": "terrain_added",
+    "names": [
+     "Tree",
+     "Cactus (inferred)",
+     "Lava pool (inferred)"
+    ]
+   },
+   {
+    "type": "tiers",
+    "name": "18 tiers: apex=15, monsters=16, Black Dragon=17, King Dragon=18 at 100,000,000 XP (user-provided)"
+   },
+   {
+    "type": "menu_change",
+    "name": "Spectate button; larger Play button; scrollable update panel; no mute button; menu column top:30px"
+   },
+   {
+    "type": "feature_added",
+    "name": "1v1 Arena (mentioned in notes; not implemented)"
+   }
+  ]
+ },
+ {
+  "version": "0.4",
+  "date": "2019-12-30",
+  "confidence": "existence verified (2019-12-30 homepage); numbers inferred",
+  "changes": [
+   {
+    "type": "animals_added",
+    "count": 3,
+    "names": [
+     "Snowman (apex, 1/2000 rarity, shop)",
+     "Phoenix",
+     "Giant Scorpion"
+    ]
+   },
+   {
+    "type": "feature_added",
+    "name": "Accounts + coin shop (59 skins; Golden/Azure Black Dragon, Golden King Dragon, Snowman evidenced)"
+   },
+   {
+    "type": "feature_added",
+    "name": "Disasters: tornados, storms, tsunami, volcanic eruptions with lava lakes (5-10 min), arctic volcano"
+   },
+   {
+    "type": "terrain_added",
+    "names": [
+     "Volcano",
+     "Arctic Volcano"
+    ]
+   },
+   {
+    "type": "art",
+    "name": "'NEW HD art for most animals' (not reproducible; project art unchanged)"
+   },
+   {
+    "type": "capture_note",
+    "name": "Captures 2019-09-14, 09-21, 10-06, 12-13 changed only note text (e.g. 'Aug 16: Fixed bugs', 'accounts/shop coming soon')"
+   }
+  ]
  }
 ]

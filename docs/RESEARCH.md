@@ -44,6 +44,74 @@ Where the real values are found they replace these via `xp-requirements.json` / 
 ## Art
 Animal and food sprites are original art in the Mope.io style (see `docs/ART_STYLE.md`); archived 2017 skins do not exist in any capture.
 
+
+## 2018-04-21 capture (version 2): what is verified
+Sources: `index.html` (20180421014032), `main.css` (014110), `client.js` (014457), `img/logo.png` (014215), `skins/giraffe.png` (014423, style reference only). Only 14 URLs were captured for that crawl.
+
+| Area | Verified (2018-04-21 vs 2017-02-13) |
+|---|---|
+| Roster | 61 animals (ids 1-61). Ids 1-44 unchanged; **17 new**: Snail, Black Dragon, Sabertooth Tiger, Elephant, Blue Whale, Cobra, Boa Constrictor, Giant Spider, T-Rex, Tiger, Giraffe, Eagle, Hedgehog, Duck, Duckling, Lemming (arctic), King Crab. None removed. `data/research/archive-2018-04-21-animals.json` |
+| Release dates | The new animals' exact dates are unknown: somewhere between 2017-02-13 and 2018-04-21. Data uses 2018-04-21 (first sighting) with a note. |
+| Abilities | 35 named abilities in the HUD table; 17 new: Tail Slap, Trunk Hit, Dig For Food, Suffocate prey, Burrow Hole, Pull from Hole, Venom Spit, Spin Web, Throw Banana, Cause Wave, Spikes, Arm Smash, Jaws Bite, Ambush Attack, Stomp, Fly with prey, Stink. Per-animal ability keys from the upgrade texts (Cobra venom, Boa suffocate, Spider web, T-Rex jaws, Tiger ambush, Giraffe stomp, Eagle flies with prey, Elephant trunk, Blue Whale tail, Hedgehog spikes, King Crab arm smash, Black Dragon fire). |
+| Biomes | Still three (upgrade buttons use the same land/ocean/arctic colours). Black Dragon text mentions lava/healing stones: no lava biome is evidenced. |
+| Features removed | Sandbox (Normal/Sandbox buttons gone, 1 code mention left), Winter skins option, party links (replaced by server-URL sharing per the Jan 26 note). |
+| Rule changes | "All animals can now enter/swim in water spots" (Jan 26). Top animals rebalanced (kraken, dragon, giant crab, tiger, giraffe, eagle): **values unknown**. |
+| Menu | Wordmark logo 350x99 (no dragon/mouse); column margin-top -10px; mode buttons removed; "How to play" panel hidden (`display:none`); update panel text #f8f8f8 with text shadow and three dated notes (Feb 16 Classic Mope BETA, Feb 13, Jan 26); ads hidden; same nickname/Play/options geometry. Note: a "Classic Mope" beta of the **2 Dec 2016** version is linked, a possible future earlier-version source. |
+| Upgrade buttons | Same 100x100 biome-coloured squares; the animal name moved to the TOP of the button. |
+| HUD | Ability button is a translucent black box + icon + name + gold (#F3C553) recharge bar. |
+| Colours | Several base colours changed since 2017 (e.g. Fox #FF9D43, Lion #f8c923, Croc #30F51C, Octopus #ff8340). Art keeps its own natural palettes. |
+
+## Inferred for the new animals (NOT archived)
+Biome (all but Lemming), tier, XP, evolution links, stats; **tier 9** (Black Dragon) and its 12000 XP threshold; which animals spawn as starters beyond Mouse/Shrimp/Chipmunk (Snail and Lemming are assumed starters from their intro text); bot starter mix.
+
+
+## 2019-08-25 capture (version 3)
+
+**What exists in the archive for that date:** only `index.html` (20190825113653) and `main.css` (20190825113700). **There is no 2019 `client.js`** (Arquivo has a single client capture between 2018 and 2020: 2018-04-21), so ids, abilities, tiers, XP, stats and biome layout cannot be read from code. Evidence used:
+
+| Source | What it proves |
+|---|---|
+| Homepage update notes (Jun 18 - Aug 16, 2019) | These exist by 2019: T-Rex, Golden Eagle (a rarity), Komodo Dragon, Flytrap, King Crab, Ice Monster, Pelican, Black Widow, Black Dragon, Toucan (and a lava toucan), bees, ducks; a **Desert biome**; **lava**; melons and killable food; trees, hills and hiding holes; a **1v1 Arena** (inside-arena transparency); the **Spectate** button. |
+| 2019 skin captures (paths only) | Chicken, Woodpecker, Flamingo, Macaw, Peacock, Cassowary (2019-03-27); Leopard, Jaguar, Black Panther, lion variants, **King Dragon** (`blackdragon/1/kingdragon.png`, 2019-06-01). A giant scorpion (desert) and a "volcanic eruption" update image appear only in the 2019-12-30 crawl, so they are **not** placed in this version. |
+| Homepage CSS/HTML | Spectate button (200px), Play 2em / 50px (hover #067d26), column `top:30px`, scrollable update panel (max-height 400px, rgba(9,153,47,.52)), menu has no mute button, 2019 logo = 2018 wordmark (350x99). CSS contains FFA/TEAMS/BR/Arena button styles that are not in the page HTML (not reproduced). |
+
+### Tier structure (USER-PROVIDED, not archived)
+- 2017-02-13 and 2018-04-21: **16 tiers**.
+- 2019-08-25: **18 tiers**. Tier 15 = apex animals, tier 16 = monsters, tier 17 = Black Dragon, tier 18 = King Dragon, which needs **100,000,000 XP**.
+- Which animals count as apex/monster is **inferred**: apex = T-Rex, Elephant, King Crab, Blue Whale, Mammoth; monsters = Kraken, Dragon, Yeti, Ice Monster. Black Dragon and King Dragon live in the (inferred) Volcano biome. All placement per tier, the XP curve (1.35x food scaling, 10M for tier 17, 1M for tier 16...) and stats are **inferred**. Every record says so.
+
+### Inferred for 2019 (not evidenced by any file)
+Animal ids (unknown), abilities of the new animals, base colours, biome of each new animal, Volcano as a named biome (lava is evidenced), biome layout, foods for the desert and volcano (cactus fruit, ember fruit), terrain look/density, desert/volcano upgrade-button colours, option checkboxes, Spectate behaviour, the Arena.
+
+### Not implemented
+Spectate, 1v1 Arena/FFA/Teams/Battle-royale buttons, terrain effects (hide, mud, hills, ice, lava damage), the new animals' abilities, scorpion/snowman/skins events.
+
+
+## 2019-12-30 capture (version 4, "#GoldenAge")
+
+**Which capture is "next":** captures exist for 2019-09-14, 09-21, 10-06, 12-13 and 12-30. The first three differ from 2019-08-25 only in one note line ("Aug 16: Fixed bugs."); 12-13 adds "Oct 25th: ... accounts/shop update coming pretty soon". They are recorded in the changelog but are not separate versions. **2019-12-30 is the next capture with real content.**
+
+**Available:** `index.html` only (homepage). **No `client.js`, no 2019-12 CSS** (Arquivo returns the 2018 stylesheet for that date; it was detected and discarded), so geometry and all numbers are inferred except where noted.
+
+| Evidence (homepage notes / element ids) | What it proves |
+|---|---|
+| "DEC 23: #GoldenAge" | Accounts + shop: **59 skins**, Facebook/Google login, coins earned while playing (adblock off) and bought with real money, "HD art for most animals". Element ids: loginDiv, notLoggedInDiv/Txt, facebookLoginBtn, googleLoginBtn, onloggedInDiv, loggedInUserImg, loggedInNameTxt, loginCoins (icon `shop/mopecoin.png`, tooltip "add more coins"), shopbutton "Shop", logoutbut, Xsolla store frame, test-account debug buttons. |
+| Disasters | Tsunami, Volcanic eruption, Tornados (land/fire/dust devil/waterspout/arctic twister/very rare Devil Twister), Snowstorm, Coldstorm, Rainstorm (water), Duststorm (**-10% speed**), Heatwave (burns). Volcanic eruptions throw fireballs and leave **lava lakes for 5-10 minutes**. Tornados can be escaped by boosting, diving or hiding in a hole. |
+| Animals | **Snowman**: new apex, **1/2000 rarity**, also buyable; Yeti-like with passive camouflage. **Phoenix** (10% slower in desert, 15% more boost interval). **Giant Scorpion** (image in the update panel). Golden / Azure Black Dragon and Golden King Dragon skins; "Golden KD upgrade if evolving from BD". "Apex kills" interface. |
+| Terrain | **Arctic Volcano** (erupts slower than the land volcano, shoots freezing snowballs). The land volcano erupts/shakes/throws fireballs. |
+
+### Implemented (this version)
+Accounts with a coin wallet, inventory and equipped skins (server-validated, atomic purchases, per-account); coins earned per XP at death; shop UI; **local account form as a substitute for Facebook/Google** (OAuth is impossible here, the archived buttons are shown and open the local form); the Snowman's 1/2000 roll or shop ownership gating its offer; skin carry-over from BD to KD; a data-driven disaster engine with all the listed disasters, boost-escape for tornados, lava lakes of 300-600 s, and an announcement banner; volcano terrain; dev-only commands guarded by `MOPE_DEV=1`.
+
+### Inferred (not in any archive)
+Prices, the coin earn rate (1 per 100 XP), every disaster number except Duststorm -10% and lava lake duration, disaster spawn rate, tiers/biomes of Phoenix (volcano, tier 16) and Giant Scorpion (desert, tier 15), the Snowman's tier (15, from "Apex"), the 55 unnamed skins, menu geometry, skin art, and the entire economy balance.
+
+### Not implemented
+Real-money purchases, Facebook/Google OAuth, the apex-kill interface, camouflage (Snowman passive), Phoenix boost behaviour, snowball projectiles, terrain effects (hiding, mud), "Waves", HD art.
+
+## Next versions
+Captures exist for 2018-07-16, 2019-03-27/04-14 and later. The Dec 2, 2016 "Classic Mope" (mope.io/oldmope) may be capturable and would be an earlier baseline.
+
 ## Known gaps / next research
 1. Evolution tree + XP: needs a readable source (wiki, forum posts, videos). The 2018-04-21 client (also fetchable) may show how upgrade options changed.
 2. Animal art: no skins captured in Feb 2017 (`skins/` first appears in 2018-2019 captures, and not for these animals). Placeholders use the verified base colours.

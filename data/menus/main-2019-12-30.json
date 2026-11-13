@@ -1,0 +1,205 @@
+{
+  "version": "2019-12-30",
+  "confidence": "mixed: ELEMENTS/ids/text VERIFIED from the archived 2019-12-30 homepage HTML; geometry INFERRED (no 2019-12 CSS captured; the base menu is assumed unchanged from 2019-08-25)",
+  "source": "Arquivo.pt capture 20191230093554 (index.html). main.css for that date does not exist in the archive (Arquivo returns the 2018 file), so it was not used.",
+  "page": {
+    "background": "#3FBA54",
+    "font": "Arial"
+  },
+  "column": {
+    "w": 350,
+    "h": 700,
+    "top": 30,
+    "onconnectMarginTop": -10
+  },
+  "logo": {
+    "src": "assets/menus/2018-04-21/logo.png",
+    "w": 350,
+    "h": 99,
+    "marginTop": -20
+  },
+  "nickname": {
+    "w": 250,
+    "placeholder": "Your name",
+    "maxLength": 15,
+    "border": "4px solid #1c9c25",
+    "font": "30px Arial",
+    "padding": 5,
+    "radius": 5,
+    "background": "#ffffff",
+    "color": "#000000"
+  },
+  "play": {
+    "label": "Play",
+    "w": 250,
+    "h": 50,
+    "marginTop": 10,
+    "background": "#0aa633",
+    "hover": "#067d26",
+    "borderBottom": "4px solid #116c17",
+    "color": "#ffffff",
+    "font": "bold large Arial",
+    "radius": 5,
+    "fontSize": "2em"
+  },
+  "icons": {
+    "settings": {
+      "src": "assets/menus/2017-02-13/settings.png",
+      "w": 30,
+      "h": 30
+    },
+    "close": {
+      "src": "assets/menus/2017-02-13/x.png",
+      "w": 35,
+      "h": 35
+    }
+  },
+  "options": {
+    "background": "rgba(11,164,52,0.95)",
+    "top": 175,
+    "radius": 8,
+    "padding": 5,
+    "fontSize": 12,
+    "select": {
+      "background": "#3fba54",
+      "border": "3px solid #1F9A1F",
+      "regionW": 190,
+      "serverW": 240
+    },
+    "checkboxes": [
+      {
+        "id": "noImages",
+        "label": "No Animal images",
+        "color": "#000",
+        "implemented": true
+      },
+      {
+        "id": "noNames",
+        "label": "No Names & Chat",
+        "color": "#000",
+        "implemented": true
+      },
+      {
+        "id": "lowGraphics",
+        "label": "Use Low graphics",
+        "color": "#000",
+        "implemented": true
+      },
+      {
+        "id": "noJoystick",
+        "label": "No Joystick (mobile)",
+        "color": "#194614",
+        "implemented": false
+      },
+      {
+        "id": "leftHanded",
+        "label": "LEFT-handed Joystick",
+        "color": "#194614",
+        "implemented": false
+      }
+    ]
+  },
+  "panels": {
+    "howToPlay": null,
+    "updates": {
+      "title": null,
+      "background": "rgba(9,153,47,0.52)",
+      "w": 200,
+      "marginLeft": 17,
+      "marginTop": 20,
+      "textColor": "#f8f8f8",
+      "textShadow": "1px 1px rgba(0,0,0,0.52)",
+      "titleColor": "#061304",
+      "titleShadow": "1px 1px #064e1982",
+      "maxHeight": 400,
+      "scroll": true,
+      "sections": [
+        {
+          "title": "DEC 29: Bug Fixes",
+          "items": [
+            "fixed: Golden KD upgrade if evolving from BD",
+            "fixed: KD not counted as Apex kill",
+            "nerf: Phoenix is 10% slow in desert, has 15% more boost interval"
+          ]
+        },
+        {
+          "title": "DEC 23: #GoldenAge",
+          "items": [
+            "NEW: Accounts + shop: 59 brand new skins you can buy (log in to see it)",
+            "NEW: log on with Facebook and Google; earn coins and buy skins with coins",
+            "NEW HD art for most animals",
+            "NEW Disasters: Tsunami, Volcano eruption, Tornados, Storms, Waves",
+            "NEW: Snowman, a new Apex animal (1/2000 rarity, also in the shop)",
+            "NEW: Arctic Volcano"
+          ]
+        },
+        {
+          "title": "Aug 16",
+          "items": [
+            "Fixed bugs, removed video ads for now, so you can re-join the game quickly."
+          ]
+        },
+        {
+          "title": "July 8: Bug Fixes",
+          "items": [
+            "Fixed issues with food/water not spawning properly around the game.",
+            "Fixed mouse and ducks walking on hills after getting hurt."
+          ]
+        }
+      ]
+    }
+  },
+  "animation": null,
+  "absentInThisVersion": [
+    "sandbox",
+    "winter-skins",
+    "party-link",
+    "mute-button",
+    "how-to-play",
+    "xsolla-payments",
+    "test-accounts"
+  ],
+  "notReproduced": [
+    "third-party ads",
+    "app-store promo banners",
+    "YouTube subscribe widget",
+    "1v1 Arena / game-mode buttons (CSS exists, not in the page HTML)",
+    "reddit/changelog/privacy links",
+    "Xsolla real-money store",
+    "test-account/Add Coins/Reset purchases debug buttons (TESTING block)",
+    "Facebook/Google OAuth"
+  ],
+  "modes": null,
+  "spectate": {
+    "label": "Spectate",
+    "w": 200,
+    "background": "#0aa633",
+    "hover": "#16932a",
+    "borderBottom": "4px solid #116c17",
+    "color": "#ffffff",
+    "note": "button verified (id btnSpectate); spectating itself is NOT implemented"
+  },
+  "account": {
+    "loggedOutText": "Log in to earn coins and unlock new skins!",
+    "providers": [
+      {
+        "id": "facebookLoginBtn",
+        "label": "Login with Facebook",
+        "available": false
+      },
+      {
+        "id": "googleLoginBtn",
+        "label": "Login with Google",
+        "available": false
+      }
+    ],
+    "providerNote": "Facebook/Google OAuth cannot be provided in this project: the buttons are shown as in the archived page and open a LOCAL account form instead (non-historical substitute).",
+    "loggedIn": {
+      "coinsTitle": "add more coins",
+      "shopButton": "Shop",
+      "logout": "Logout of account"
+    },
+    "position": "right column (inferred)",
+    "coinIcon": "assets/shop/mopecoin.png"
+  }
+}

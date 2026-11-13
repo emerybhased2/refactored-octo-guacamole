@@ -1,0 +1,76 @@
+{
+  "version": "2019-08-25",
+  "confidence": "low (2019 client not archived; 2018 ability-button style assumed unchanged)",
+  "verifiedElements": [
+    "xp/score",
+    "water bar (thirst death exists)",
+    "leaderboard (rank, name, score)",
+    "'N players' counter",
+    "chat input (200x35, rgba(68,159,94,.8), 25px #F1C34C)",
+    "ability button icon",
+    "centre messages (upgrade/death text)"
+  ],
+  "xpBar": {
+    "w": 320,
+    "h": 20,
+    "marginBottom": 24,
+    "fill": "#f2c94c",
+    "back": "rgba(0,0,0,0.45)"
+  },
+  "healthBar": {
+    "w": 320,
+    "h": 10,
+    "marginBottom": 50,
+    "fill": "#e24b4b",
+    "back": "rgba(0,0,0,0.45)"
+  },
+  "waterBar": {
+    "w": 320,
+    "h": 10,
+    "marginBottom": 64,
+    "fill": "#3aa7ff",
+    "back": "rgba(0,0,0,0.45)"
+  },
+  "leaderboard": {
+    "max": 10,
+    "width": 190,
+    "marginTop": 12,
+    "marginRight": 12,
+    "title": "Leaderboard"
+  },
+  "playerCount": {
+    "marginRight": 12,
+    "marginTop": 8,
+    "suffix": " players"
+  },
+  "chat": {
+    "w": 200,
+    "h": 35,
+    "background": "rgba(68,159,94,0.8)",
+    "font": "25px Arial",
+    "color": "#F1C34C",
+    "maxLength": 35
+  },
+  "messages": {
+    "eaten": "Oh no, You were eaten! Watch out for red-circled players!",
+    "thirst": "You died of thirst :( Don't let your water run out!"
+  },
+  "outline": {
+    "edible": "#8dff8d",
+    "dangerous": "#ff4d4d",
+    "note": "How-to-play text: eat players/food outlined LIGHT-GREEN, avoid players outlined RED"
+  },
+  "abilityButton": {
+    "style": "rechargeBar",
+    "size": 84,
+    "marginRight": 22,
+    "marginBottom": 24,
+    "keyLabel": "W",
+    "boxAlpha": 0.2,
+    "boxColor": "#000000",
+    "rechargeFill": "#F3C553",
+    "rechargeBack": "rgba(0,0,0,0.35)",
+    "nameFont": "bold 15px Arial",
+    "note": "Style VERIFIED from the 2018 client (black translucent box, icon, name, gold recharge bar over a dark bar); screen position inferred"
+  }
+}

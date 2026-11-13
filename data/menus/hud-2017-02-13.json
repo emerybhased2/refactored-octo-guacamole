@@ -65,6 +65,7 @@
     "marginRight": 22,
     "marginBottom": 24,
     "keyLabel": "W",
-    "note": "element verified (client shows an ability icon); position inferred"
+    "note": "element verified (client shows an ability icon); position inferred",
+    "style": "sweep"
   }
 }

@@ -22,5 +22,21 @@ set `spriteStatus: "original"` in `animals.json`, drop the PNG in, and record th
   `NODE_PATH=$(npm root -g) node tools/art/export.js [--sheet /tmp/sheet.png] [id ...]`. PNGs are committed, so Playwright is only needed to regenerate.
 - Sizing contract: body radius = `BODY_FRAC` (0.5625) of half the frame; the client scales frames by `radius / BODY_FRAC` so the visible body matches the hitbox. Unit-tested.
 
+Engine decorations added for version 2: spiral shell (snail), cobra hood, spider legs, bird wings (eagle), ossicones (giraffe).
+
+## Version 3 additions (2019)
+New primitives: peacock-style feather fan, flytrap jaws, pelican pouch, ice crystals, crown, comb, eye iris colour. New generators: `terrain.js` (9 top-down objects), desert and volcano biome tiles, 3 foods. All original; the same exporter writes them to the paths declared in the data.
+
+## Version 4 additions (2019-12-30)
+Snowman, Phoenix, Giant Scorpion; shop skins as palette recolors of the Black/King Dragon recipes (`recolor()` keeps each part's luminance); coin icon; volcano and arctic volcano terrain; camouflage icon. Disasters are drawn procedurally by `client/ui/Disasters.js` (no image assets).
+
+## Polish pass (after version 2)
+- **Depth:** every body gets a very soft highlight (upper-left) and shadow (lower), toned down on dark bodies so it never reads as a blob.
+- **Tentacles:** tapered, suckered tentacles that start at the back edge and trail behind (squid, octopus, kraken, jellyfish).
+- **Crabs:** jointed pincers with two lobes, side legs and eye stalks (crab, king crab).
+- **Yeti:** shaggy fur ring, paws with claws, mask and fangs. **Penguin:** dark back with a white belly halo. **Seahorse:** longer snout, big curled tail, side fins.
+- **Eagle:** swept feathered wings. **Giraffe:** evenly spaced patches. **Cobra:** flared hood. **Tails** that touched the frame edge (croc, fox, wolf) were shortened.
+- **Exporter:** `tools/art/export.js` now writes each sprite to the exact `sprite` path in `animals.json`, so a full re-render can never place an animal in the wrong version folder (unit-tested).
+
 ## Known weak spots (next polish)
-Seahorse, kraken, crab claws, yeti arms and the arctic fox's tail read weakly; ocean animals are simple top-down fish rather than the more detailed originals; no skins/animations; each animal would benefit from a hand pass.
+Ocean animals other than crabs/cephalopods are still simple top-down fish; the Seal's and Walrus's flippers are plain; the Elephant's trunk and the Boa's coils are subtle; no animations (idle bob, blinking, tail wiggle); no alternate skins; each animal would still benefit from a hand pass by an artist.

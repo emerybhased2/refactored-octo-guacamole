@@ -61,5 +61,48 @@
   "buttonColor": "#B2B2B2",
   "tile": "assets/biomes/arctic.png",
   "tileStatus": "recreated"
+ },
+ {
+  "id": "desert",
+  "name": "Desert",
+  "rect": [
+   0.64,
+   0.22,
+   0.36,
+   0.28
+  ],
+  "color": "#e3c47c",
+  "lakes": {
+   "count": 2,
+   "radius": 130
+  },
+  "releaseDate": "2019-08-25",
+  "hazards": [],
+  "confidence": "existence VERIFIED (2019-06-18 note: 'Toucans not getting hurt in Desert biome'); layout, colours inferred",
+  "clientBiomeNum": null,
+  "buttonColor": "#C9A24A",
+  "tile": "assets/biomes/desert.png",
+  "tileStatus": "recreated",
+  "evidence": "2019-08-25 homepage update notes"
+ },
+ {
+  "id": "volcano",
+  "name": "Volcano",
+  "rect": [
+   0.64,
+   0.5,
+   0.36,
+   0.28
+  ],
+  "color": "#6a3f38",
+  "lakes": null,
+  "releaseDate": "2019-08-25",
+  "hazards": [],
+  "confidence": "existence EVIDENCED (lava toucan; Black Dragon heals on lava; lava referenced in 2018 and 2019); name/layout/colours inferred",
+  "clientBiomeNum": null,
+  "buttonColor": "#8C3A2B",
+  "tile": "assets/biomes/volcano.png",
+  "tileStatus": "recreated",
+  "evidence": "2018 client text 'drink lava'; 2019-08-25 homepage notes (lava toucan, Black Dragon)"
  }
 ]

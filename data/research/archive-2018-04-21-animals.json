@@ -1,0 +1,434 @@
+{
+ "source": "Arquivo.pt capture of http://mope.io/client.js, timestamp 20180421014457",
+ "confidence": "verified (names, internal ids, skin names, base colours only). Tiers, XP, tree and stats are server-side and NOT in the client.",
+ "captureDate": "2018-04-21",
+ "animals": [
+  {
+   "internalId": 1,
+   "name": "Mouse",
+   "skin": "mouse",
+   "color": "#9BA9B9",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 2,
+   "name": "Rabbit",
+   "skin": "rabbit",
+   "color": "#AA937E",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 3,
+   "name": "Pig",
+   "skin": "pig",
+   "color": "#DD6BD4",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 4,
+   "name": "Fox",
+   "skin": "fox",
+   "color": "#FF9D43",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 5,
+   "name": "Deer",
+   "skin": "deer",
+   "color": "#C4773E",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 6,
+   "name": "Mole",
+   "skin": "mole",
+   "color": "#4C4A45",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 7,
+   "name": "Zebra",
+   "skin": "zebra",
+   "color": "#FFFFFF",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 8,
+   "name": "Lion",
+   "skin": "lion",
+   "color": "#f8c923",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 9,
+   "name": "Cheetah",
+   "skin": "cheetah",
+   "color": "#CAC05B",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 10,
+   "name": "Bear",
+   "skin": "bear",
+   "color": "#99591C",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 11,
+   "name": "Croc",
+   "skin": "croc",
+   "color": "#30F51C",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 12,
+   "name": "Rhino",
+   "skin": "rhino",
+   "color": "#94a3a9",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 13,
+   "name": "Hippo",
+   "skin": "hippo",
+   "color": "#945A99",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 14,
+   "name": "Dragon",
+   "skin": "dragon",
+   "color": "#22FF8A",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 15,
+   "name": "Shrimp",
+   "skin": "shrimp",
+   "color": "#f88e37",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 16,
+   "name": "Trout",
+   "skin": "trout",
+   "color": "#ac8686",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 17,
+   "name": "Crab",
+   "skin": "crab",
+   "color": "#bf2408",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 18,
+   "name": "Squid",
+   "skin": "squid",
+   "color": "#40dda4",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 19,
+   "name": "Shark",
+   "skin": "shark",
+   "color": "#999fc6",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 20,
+   "name": "Stringray",
+   "skin": "stingray",
+   "color": "#164336",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 21,
+   "name": "Turtle",
+   "skin": "turtle",
+   "color": "#502E1A",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 22,
+   "name": "Sea-horse",
+   "skin": "seahorse",
+   "color": "#73BE2F",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 23,
+   "name": "Jellyfish",
+   "skin": "jellyfish",
+   "color": "#FDB9BA",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 24,
+   "name": "The Kraken",
+   "skin": "kraken",
+   "color": "#64a034",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 25,
+   "name": "Pufferfish",
+   "skin": "pufferfish",
+   "color": "#6C5C2C",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 26,
+   "name": "Killer Whale",
+   "skin": "killerwhale",
+   "color": "#141414",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 27,
+   "name": "Swordfish",
+   "skin": "swordfish",
+   "color": "#689CD7",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 28,
+   "name": "Gorilla",
+   "skin": "gorilla",
+   "color": "#323232",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 29,
+   "name": "Octopus",
+   "skin": "octopus",
+   "color": "#ff8340",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 30,
+   "name": "Wolf",
+   "skin": "arctic/wolf",
+   "color": "#6B6B6B",
+   "biomeEvidence": "arctic (skin path)"
+  },
+  {
+   "internalId": 31,
+   "name": "Arctic Hare",
+   "skin": "arctic/arctichare",
+   "color": "#D5D5D5",
+   "biomeEvidence": "arctic (skin path)"
+  },
+  {
+   "internalId": 32,
+   "name": "The Yeti!",
+   "skin": "arctic/yeti",
+   "color": "#839eb5",
+   "biomeEvidence": "arctic (skin path)"
+  },
+  {
+   "internalId": 33,
+   "name": "Chipmunk",
+   "skin": "arctic/chipmunk",
+   "color": "#A77C30",
+   "biomeEvidence": "arctic (skin path)"
+  },
+  {
+   "internalId": 34,
+   "name": "Muskox",
+   "skin": "arctic/muskox",
+   "color": "#231f18",
+   "biomeEvidence": "arctic (skin path)"
+  },
+  {
+   "internalId": 35,
+   "name": "Penguin",
+   "skin": "arctic/penguin",
+   "color": "#FFFFFF",
+   "biomeEvidence": "arctic (skin path)"
+  },
+  {
+   "internalId": 36,
+   "name": "Polar Bear",
+   "skin": "arctic/polarbear",
+   "color": "#e4e4e4",
+   "biomeEvidence": "arctic (skin path)"
+  },
+  {
+   "internalId": 37,
+   "name": "Seal",
+   "skin": "arctic/seal",
+   "color": "#cfcfcf",
+   "biomeEvidence": "arctic (skin path)"
+  },
+  {
+   "internalId": 38,
+   "name": "Snow leopard",
+   "skin": "arctic/snowleopard",
+   "color": "#cfcfcf",
+   "biomeEvidence": "arctic (skin path)"
+  },
+  {
+   "internalId": 39,
+   "name": "Walrus",
+   "skin": "arctic/walrus",
+   "color": "#633838",
+   "biomeEvidence": "arctic (skin path)"
+  },
+  {
+   "internalId": 40,
+   "name": "Reindeer",
+   "skin": "arctic/reindeer",
+   "color": "#a68976",
+   "biomeEvidence": "arctic (skin path)"
+  },
+  {
+   "internalId": 41,
+   "name": "Arctic Fox",
+   "skin": "arctic/arcticfox",
+   "color": "#CFCFCF",
+   "biomeEvidence": "arctic (skin path)"
+  },
+  {
+   "internalId": 42,
+   "name": "Wolverine",
+   "skin": "arctic/wolverine",
+   "color": "#843A0F",
+   "biomeEvidence": "arctic (skin path)"
+  },
+  {
+   "internalId": 43,
+   "name": "Mammoth",
+   "skin": "arctic/mammoth",
+   "color": "#9d4717",
+   "biomeEvidence": "arctic (skin path)"
+  },
+  {
+   "internalId": 44,
+   "name": "Donkey",
+   "skin": "donkey",
+   "color": "#8c7c64",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 45,
+   "name": "Snail",
+   "skin": "snail",
+   "color": "#fcc02b",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 46,
+   "name": "Black Dragon",
+   "skin": "blackdragon",
+   "color": "black",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 47,
+   "name": "Sabertooth Tiger",
+   "skin": "sabertoothtiger",
+   "color": "#945A99",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 48,
+   "name": "Elephant",
+   "skin": "elephant",
+   "color": "#945A99",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 49,
+   "name": "Blue Whale",
+   "skin": "bluewhale",
+   "color": "#945A99",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 50,
+   "name": "Cobra",
+   "skin": "cobra",
+   "color": "black",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 51,
+   "name": "Boa Constrictor",
+   "skin": "boaConstrictor",
+   "color": "black",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 52,
+   "name": "Giant Spider",
+   "skin": "giantSpider",
+   "color": "black",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 53,
+   "name": "T-REX",
+   "skin": "trex",
+   "color": "#862A2A",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 54,
+   "name": "Tiger",
+   "skin": "tiger",
+   "color": "#FF9000",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 55,
+   "name": "Giraffe",
+   "skin": "giraffe",
+   "color": "#E9BD23",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 56,
+   "name": "Eagle",
+   "skin": "eagle",
+   "color": "#5b400d",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 57,
+   "name": "Hedgehog",
+   "skin": "hedgehog",
+   "color": "#5b400d",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 58,
+   "name": "Duck",
+   "skin": "duck",
+   "color": "#FF9000",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 59,
+   "name": "Duckling",
+   "skin": "duckling",
+   "color": "#FF9000",
+   "biomeEvidence": null
+  },
+  {
+   "internalId": 60,
+   "name": "Lemming",
+   "skin": "arctic/lemming",
+   "color": "#A77C30",
+   "biomeEvidence": "arctic (skin path)"
+  },
+  {
+   "internalId": 61,
+   "name": "King Crab",
+   "skin": "kingcrab",
+   "color": "#971f0e",
+   "biomeEvidence": null
+  }
+ ]
+}

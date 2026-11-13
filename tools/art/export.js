@@ -5,7 +5,7 @@
 const fs = require('fs'), path = require('path');
 const { chromium } = require('playwright');
 const ROOT = path.resolve(__dirname, '../..');
-const args = process.argv.slice(2); let version = '2017-02-13', sheet = null; const only = [];
+const args = process.argv.slice(2); let version = '2017-02-13', sheet = null; const only = []; // --version only names the menu assets folder
 for (let i = 0; i < args.length; i++) { if (args[i] === '--version') version = args[++i]; else if (args[i] === '--sheet') sheet = args[++i]; else only.push(args[i]); }
 (async () => {
   const animals = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/progression/animals.json'), 'utf8'));
@@ -15,7 +15,9 @@ for (let i = 0; i < args.length; i++) { if (args[i] === '--version') version = a
   await page.addScriptTag({ content: fs.readFileSync(path.join(__dirname, 'specs.js'), 'utf8') });
   await page.addScriptTag({ content: fs.readFileSync(path.join(__dirname, 'food.js'), 'utf8') });
   await page.addScriptTag({ content: fs.readFileSync(path.join(__dirname, 'gui.js'), 'utf8') });
+  await page.addScriptTag({ content: fs.readFileSync(path.join(__dirname, 'terrain.js'), 'utf8') });
   const list = animals.filter((a) => !only.length || only.includes(a.id));
+  const skinItems = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shop/shop.json'), 'utf8')).items.filter((i) => i.type === 'skin' && (!only.length || only.includes(i.id)));
   const out = await page.evaluate((list) => {
     const res = {}, src = document.createElement('canvas'); src.width = src.height = 256;
     for (const a of list) {
@@ -27,10 +29,9 @@ for (let i = 0; i < args.length; i++) { if (args[i] === '--version') version = a
     }
     return res;
   }, list);
-  const dir = path.join(ROOT, 'assets/animals', version); fs.mkdirSync(dir, { recursive: true });
-  let n = 0, missing = [];
-  for (const [id, url] of Object.entries(out)) { if (!url) { missing.push(id); continue; } fs.writeFileSync(path.join(dir, id + '.png'), Buffer.from(url.split(',')[1], 'base64')); n++; }
-  console.log(`exported ${n} sprites to ${path.relative(ROOT, dir)}` + (missing.length ? `; NO SPEC for: ${missing.join(', ')}` : ''));
+  let n = 0, missing = []; const byId = Object.fromEntries(animals.map((a) => [a.id, a]));
+  for (const [id, url] of Object.entries(out)) { if (!url) { missing.push(id); continue; } const dest = path.join(ROOT, byId[id].sprite); fs.mkdirSync(path.dirname(dest), { recursive: true }); fs.writeFileSync(dest, Buffer.from(url.split(',')[1], 'base64')); n++; } // each sprite goes to the exact path named in animals.json
+  console.log(`exported ${n} sprites (paths from animals.json)` + (missing.length ? `; NO SPEC for: ${missing.join(', ')}` : ''));
   if (sheet) {
     const cols = 8, cell = 160, rows = Math.ceil(list.length / cols);
     const html = '<body style="margin:0;background:#4fbf5a"><canvas id=s width=' + cols * cell + ' height=' + rows * cell + '></canvas></body>';
@@ -46,6 +47,18 @@ for (let i = 0; i < args.length; i++) { if (args[i] === '--version') version = a
   for (const [id, url] of Object.entries(fo)) fs.writeFileSync(path.join(fdir, id + '.png'), Buffer.from(url.split(',')[1], 'base64'));
   console.log(`exported ${Object.keys(fo).length} food sprites to assets/food`);
   if (sheet) { const p3 = await b.newPage(); await p3.setContent('<body style="margin:0;background:#4fbf5a"><canvas id=s width=1024 height=128></canvas></body>'); await p3.evaluate(async (fo) => { const c = document.getElementById('s').getContext('2d'); let i = 0; for (const u of Object.values(fo)) { const im = new Image(); im.src = u; await im.decode(); c.drawImage(im, i++ * 128, 0); } }, fo); const fpng = await p3.evaluate(() => document.getElementById('s').toDataURL('image/png')); fs.writeFileSync(sheet.replace('.png', '_food.png'), Buffer.from(fpng.split(',')[1], 'base64')); }
+  // terrain object sprites (128x128)
+  { const T = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/terrain/terrain.json'), 'utf8')).filter((t) => !only.length || only.includes(t.id));
+    const tr = await page.evaluate((T) => { const r = {}, cv = document.createElement('canvas'); cv.width = cv.height = 128; for (const t of T) { window.MopeTerrain.draw(cv.getContext('2d'), t.id, 128); r[t.id] = cv.toDataURL('image/png'); } return r; }, T);
+    for (const t of T) { const dest = path.join(ROOT, t.sprite); fs.mkdirSync(path.dirname(dest), { recursive: true }); fs.writeFileSync(dest, Buffer.from(tr[t.id].split(',')[1], 'base64')); }
+    console.log(`exported ${T.length} terrain sprites`);
+    if (sheet) { const p4 = await b.newPage(); await p4.setContent('<body style="margin:0;background:#4fbf5a"><canvas id=s width=1152 height=128></canvas></body>'); await p4.evaluate(async (tr) => { const c = document.getElementById('s').getContext('2d'); let i = 0; for (const u of Object.values(tr)) { const im = new Image(); im.src = u; await im.decode(); c.drawImage(im, i++ * 128, 0); } }, tr); const png = await p4.evaluate(() => document.getElementById('s').toDataURL('image/png')); fs.writeFileSync(sheet.replace('.png', '_terrain.png'), Buffer.from(png.split(',')[1], 'base64')); } }
+  // shop skins (256x256, facing +x like animals)
+  { const items = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shop/shop.json'), 'utf8')).items.filter((i) => i.type === 'skin' && (!only.length || only.includes(i.id)));
+    const base = Object.fromEntries(animals.map((a) => [a.id, a]));
+    const sk = await page.evaluate((items) => { const r = {}, src = document.createElement('canvas'); src.width = src.height = 256; for (const it of items) { const spec = window.MopeSkinSpecs[it.id]; window.MopeArt.drawAnimal(src.getContext('2d'), spec, 256); const dst = document.createElement('canvas'); dst.width = dst.height = 256; const d = dst.getContext('2d'); d.translate(128, 128); d.rotate(-Math.PI / 2); d.drawImage(src, -128, -128); r[it.id] = dst.toDataURL('image/png'); } return r; }, items);
+    for (const it of items) { const dest = path.join(ROOT, it.sprite); fs.mkdirSync(path.dirname(dest), { recursive: true }); fs.writeFileSync(dest, Buffer.from(sk[it.id].split(',')[1], 'base64')); }
+    console.log(`exported ${items.length} skins`); }
   // GUI: ability icons (64x64), muted-sound icon, terrain tiles (256x256)
   if (!only.length) {
     const abil = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/abilities/abilities.json'), 'utf8')).map((a) => a.id);
@@ -58,6 +71,7 @@ for (let i = 0; i < args.length; i++) { if (args[i] === '--version') version = a
     for (const [id, u] of Object.entries(gu.abilities)) w(path.join(ROOT, 'assets/icons/abilities', id + '.png'), u);
     w(path.join(ROOT, 'assets/menus', version, 'sound_off.png'), gu.soundOff);
     for (const [id, u] of Object.entries(gu.tiles)) w(path.join(ROOT, 'assets/biomes', id + '.png'), u);
+    { const cv = await page.evaluate(() => { const c = document.createElement('canvas'); c.width = c.height = 64; window.MopeGui.coin(c.getContext('2d'), 64); return c.toDataURL(); }); w(path.join(ROOT, 'assets/shop/mopecoin.png'), cv); }
     console.log(`exported ${Object.keys(gu.abilities).length} ability icons, sound_off, ${Object.keys(gu.tiles).length} terrain tiles`);
   }
   await b.close();

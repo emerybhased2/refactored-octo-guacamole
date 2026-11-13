@@ -9,5 +9,11 @@ get 20170213100949 ""         index_2017-02-13.html
 get 20170213101214 client.js  client_2017-02-13.js
 get 20170213101002 main.css   main_2017-02-13.css
 get 20170213101026 img/logo.png logo_2017-02-13.png
+get 20180421014032 ""         index_2018-04-21.html
 get 20180421014457 client.js  client_2018-04-21.js
 get 20180421014110 main.css   main_2018-04-21.css
+get 20180421014215 img/logo.png logo_2018-04-21.png
+get 20190825113653 ""         index_2019-08-25.html
+get 20190825113700 "main.css?v=1.224" main_2019-08-25.css
+get 20190327115440 img/logo.png logo_2019.png
+get 20191230093554 "" index_2019-12-30.html   # NOTE: no main.css exists for this date (Arquivo substitutes the 2018 file), do not fetch one

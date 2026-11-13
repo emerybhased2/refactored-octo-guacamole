@@ -1,4 +1,25 @@
 {
- "_note": "Overrides to animals.json xpRequired, latest 'from' <= version date. None researched yet.",
+ "_note": "Overrides to animals.json xpRequired, latest 'from' <= version date. Base values come from the tier XP curve in animals.json.",
+ "tierXpCurve": {
+  "1": 0,
+  "2": 50,
+  "3": 150,
+  "4": 350,
+  "5": 700,
+  "6": 1300,
+  "7": 2300,
+  "8": 4000,
+  "9": 6500,
+  "10": 10000,
+  "11": 16000,
+  "12": 25000,
+  "13": 40000,
+  "14": 65000,
+  "15": 150000,
+  "16": 1000000,
+  "17": 10000000,
+  "18": 100000000
+ },
+ "curveConfidence": "inferred; tier 18 = 100,000,000 is user-provided",
  "entries": []
 }

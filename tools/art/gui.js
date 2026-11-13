@@ -26,6 +26,24 @@
     whirlpool(c) { c.strokeStyle = CREAM; c.lineWidth = 4; c.lineCap = 'round'; c.beginPath(); for (let t = 0; t < 14; t += 0.2) { const r = 2 + t * 1.6; c.lineTo(Math.cos(t * 0.9) * r, Math.sin(t * 0.9) * r); } c.stroke(); },
     freeze(c) { for (let i = 0; i < 3; i++) { const a = i * Math.PI / 3; P.line(c, [[Math.cos(a) * -24, Math.sin(a) * -24], [Math.cos(a) * 24, Math.sin(a) * 24]], 4, '#e6f6ff'); } for (let i = 0; i < 6; i++) { const a = i * Math.PI / 3; P.line(c, [[Math.cos(a) * 14, Math.sin(a) * 14], [Math.cos(a + 0.6) * 20, Math.sin(a + 0.6) * 20]], 3, '#e6f6ff'); } },
     growl(c) { P.poly(c, [[-24, -12], [-14, -22], [-4, -12], [6, -22], [16, -12], [24, -20], [24, 14], [-24, 14]], CREAM); for (let i = -2; i <= 2; i++) P.poly(c, [[i * 9 - 4, 14], [i * 9 + 4, 14], [i * 9, 4]], INK); },
+    tail_slap(c) { c.strokeStyle = CREAM; c.lineWidth = 8; c.lineCap = 'round'; c.beginPath(); c.moveTo(-20, 18); c.quadraticCurveTo(-18, -22, 12, -14); c.stroke(); for (const k of [0, 1, 2]) P.line(c, [[16 + k * 3, -22 + k * 9], [26 + k * 2, -24 + k * 9]], 3, CREAM); },
+    trunk_hit(c) { c.strokeStyle = CREAM; c.lineWidth = 10; c.lineCap = 'round'; c.beginPath(); c.moveTo(-18, -18); c.quadraticCurveTo(-22, 14, 4, 16); c.stroke(); for (let i = 0; i < 5; i++) { const a = -0.6 + i * 0.5; P.line(c, [[14 + Math.cos(a) * 6, 14 + Math.sin(a) * 6], [14 + Math.cos(a) * 16, 14 + Math.sin(a) * 16]], 3, CREAM); } },
+    dig_for_food(c) { P.ell(c, 0, 14, 22, 8, '#8a6a44'); P.ell(c, -6, 2, 7, 7, '#e8503a'); P.line(c, [[14, -22], [4, 6]], 5, CREAM); P.poly(c, [[-2, 8], [10, 8], [4, 20]], CREAM); },
+    suffocate_prey(c) { c.strokeStyle = CREAM; c.lineWidth = 6; for (const r of [8, 15, 22]) { c.beginPath(); c.arc(0, 0, r, 0.4 + r * 0.05, 5.8 - r * 0.04); c.stroke(); } },
+    burrow_hole(c) { P.ell(c, 0, 10, 20, 9, '#3a2a1c'); P.poly(c, [[-7, -22], [7, -22], [7, -8], [14, -8], [0, 4], [-14, -8], [-7, -8]], CREAM); },
+    pull_from_hole(c) { P.ell(c, 0, 14, 20, 8, '#3a2a1c'); P.poly(c, [[-7, 6], [7, 6], [7, -8], [14, -8], [0, -22], [-14, -8], [-7, -8]], CREAM); },
+    venom_spit(c) { P.ell(c, -6, 4, 11, 13, '#9be05a'); P.poly(c, [[-14, -4], [2, -4], [-6, -22]], '#9be05a'); for (const [x, y, r] of [[14, -6, 4], [20, 4, 3], [13, 12, 3]]) P.ell(c, x, y, r, r, '#9be05a'); },
+    spin_web(c) { c.strokeStyle = CREAM; c.lineWidth = 2.5; for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4; c.beginPath(); c.moveTo(0, 0); c.lineTo(Math.cos(a) * 24, Math.sin(a) * 24); c.stroke(); } for (const r of [8, 15, 22]) { c.beginPath(); for (let i = 0; i <= 8; i++) { const a = i * Math.PI / 4; c.lineTo(Math.cos(a) * r, Math.sin(a) * r); } c.stroke(); } },
+    throw_banana(c) { c.strokeStyle = '#f2d43d'; c.lineWidth = 12; c.lineCap = 'round'; c.beginPath(); c.arc(-4, -6, 18, 0.5, 2.6); c.stroke(); c.strokeStyle = CREAM; c.lineWidth = 3; c.setLineDash([3, 5]); c.beginPath(); c.moveTo(8, 8); c.quadraticCurveTo(18, -18, 26, -12); c.stroke(); c.setLineDash([]); },
+    cause_wave(c) { for (const y of [-14, 0, 14]) { c.strokeStyle = y === 0 ? '#bfe6f7' : CREAM; c.lineWidth = 5; c.lineCap = 'round'; c.beginPath(); c.moveTo(-24, y); for (let x = -24; x <= 24; x += 4) c.lineTo(x, y + Math.sin(x * 0.28) * 6); c.stroke(); } },
+    spikes(c) { for (let i = 0; i < 9; i++) { const a = -Math.PI + i * Math.PI / 8; P.poly(c, [[Math.cos(a - 0.14) * 10, Math.sin(a - 0.14) * 10 + 8], [Math.cos(a + 0.14) * 10, Math.sin(a + 0.14) * 10 + 8], [Math.cos(a) * 26, Math.sin(a) * 26 + 8]], CREAM); } P.ell(c, 0, 8, 12, 8, CREAM); },
+    arm_smash(c) { P.ell(c, 0, -2, 17, 14, CREAM); P.poly(c, [[-6, 6], [6, 6], [0, 24]], CREAM); for (const a of [-1.0, 0, 1.0]) P.line(c, [[Math.sin(a) * 22, -Math.cos(a) * 22 - 2], [Math.sin(a) * 28, -Math.cos(a) * 28 - 2]], 3.5, CREAM); },
+    jaws_bite(c) { P.poly(c, [[-22, -2], [22, -8], [18, -22], [-18, -18]], CREAM); P.poly(c, [[-22, 2], [22, 8], [18, 22], [-18, 18]], CREAM); for (let i = -2; i <= 2; i++) { P.poly(c, [[i * 8 - 3, -8], [i * 8 + 3, -8], [i * 8, -1]], INK); P.poly(c, [[i * 8 - 3, 8], [i * 8 + 3, 8], [i * 8, 1]], INK); } },
+    ambush_attack(c) { for (const [x, y, r] of [[-10, 6, 13], [8, 8, 14], [0, -4, 14]]) P.ell(c, x, y, r, r, '#1f6a2a'); P.ell(c, -5, 2, 3.5, 3.5, '#ffd94a'); P.ell(c, 5, 2, 3.5, 3.5, '#ffd94a'); },
+    stomp(c) { P.ell(c, 0, 6, 15, 18, CREAM); for (const x of [-9, 0, 9]) P.ell(c, x, -18, 4, 5, CREAM); for (const x of [-24, 24]) P.line(c, [[x, 0], [x * 1.25, 12]], 3.5, CREAM); },
+    fly_with_prey(c) { for (const sd of [-1, 1]) P.poly(c, [[sd * 4, 6], [sd * 24, -14], [sd * 26, -2], [sd * 14, 14]], CREAM); P.ell(c, 0, 10, 7, 7, '#e8503a'); },
+    stink(c) { c.strokeStyle = '#c8e07a'; c.lineWidth = 5; c.lineCap = 'round'; for (const x of [-14, 0, 14]) { c.beginPath(); c.moveTo(x, 22); c.bezierCurveTo(x - 12, 10, x + 12, 0, x, -10); c.bezierCurveTo(x - 8, -16, x + 6, -20, x, -24); c.stroke(); } },
+    camouflage(c) { P.poly(c, [[-10, -22], [10, -22], [0, 22]], '#f08a1a'); for (const [x, y, r] of [[-18, -6, 4], [18, 0, 3.5], [-14, 14, 3], [14, 16, 4], [0, -26, 3]]) P.ell(c, x, y, r, r, CREAM); P.line(c, [[-6, -14], [6, -14]], 2.5, sh('#f08a1a', -0.3)); },
     back_kick(c) { P.poly(c, [[-22, 0], [-4, -16], [-4, -6], [20, -6], [20, 6], [-4, 6], [-4, 16]], CREAM); P.line(c, [[10, -18], [22, -18]], 3, CREAM); P.line(c, [[10, 18], [22, 18]], 3, CREAM); },
   };
   function abilityIcon(ctx, id, S) {
@@ -53,12 +71,24 @@
     } else if (kind === 'ocean') {
       for (let i = 0; i < 26; i++) { const x = R() * S, y = R() * S, w = 18 + R() * 20; wrap(() => { ctx.strokeStyle = sh(base, 0.14); ctx.lineWidth = 3.5; ctx.lineCap = 'round'; ctx.beginPath(); ctx.arc(x, y + w * 0.6, w, Math.PI * 1.15, Math.PI * 1.85); ctx.stroke(); }); }
       for (let i = 0; i < 12; i++) { const x = R() * S, y = R() * S; wrap(() => { P.ell(ctx, x, y, 12 + R() * 14, 6 + R() * 6, sh(base, -0.06)); }); }
+    } else if (kind === 'desert') {
+      for (let i = 0; i < 14; i++) { const x = R() * S, y = R() * S, w = 40 + R() * 50; wrap(() => { ctx.strokeStyle = sh(base, -0.07); ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(x - w, y); ctx.quadraticCurveTo(x, y - 12, x + w, y); ctx.stroke(); ctx.strokeStyle = sh(base, 0.1); ctx.beginPath(); ctx.moveTo(x - w * 0.7, y + 7); ctx.quadraticCurveTo(x, y - 4, x + w * 0.7, y + 7); ctx.stroke(); }); }
+      for (let i = 0; i < 30; i++) { const x = R() * S, y = R() * S; wrap(() => P.ell(ctx, x, y, 1.5 + R() * 3, 1 + R() * 2, sh(base, R() > 0.5 ? -0.14 : 0.16))); }
+    } else if (kind === 'volcano') {
+      for (let i = 0; i < 20; i++) { const x = R() * S, y = R() * S; wrap(() => P.ell(ctx, x, y, 8 + R() * 18, 6 + R() * 12, sh(base, R() > 0.5 ? -0.12 : 0.08), R() * 3)); }
+      for (let i = 0; i < 9; i++) { let x = R() * S, y = R() * S; const pts = [[x, y]]; for (let k = 0; k < 4; k++) { x += (R() - 0.5) * 50; y += (R() - 0.3) * 40; pts.push([x, y]); } wrap(() => { P.line(ctx, pts, 5, '#8a2a14'); P.line(ctx, pts, 2.4, '#ff8a2a'); }); }
     } else { // arctic
       for (let i = 0; i < 9; i++) { let x = R() * S, y = R() * S; const pts = [[x, y]]; for (let k = 0; k < 4; k++) { x += (R() - 0.5) * 60; y += (R() - 0.2) * 40; pts.push([x, y]); } wrap(() => P.line(ctx, pts, 2.5, sh(base, -0.1))); }
       for (let i = 0; i < 28; i++) { const x = R() * S, y = R() * S; wrap(() => P.ell(ctx, x, y, 2 + R() * 3, 2 + R() * 3, '#ffffff')); }
     }
     ctx.restore();
   }
-  g.MopeGui = { abilityIcon, soundOff, tile, abilityIds: Object.keys(GL) };
+  /* Shop currency icon (the archived page references shop/mopecoin.png, which was not captured): an original gold coin. */
+  function coin(ctx, S) {
+    ctx.save(); ctx.clearRect(0, 0, S, S); ctx.translate(S / 2, S / 2); ctx.scale(S / 64, S / 64);
+    P.ell(ctx, 0, 0, 30, 30, '#9a6a10'); P.ell(ctx, 0, 0, 27, 27, '#f2c230'); P.ell(ctx, 0, 0, 21, 21, '#c8941c'); P.ell(ctx, 0, 0, 19, 19, '#f8d860');
+    for (const [x, y, r] of [[0, 4, 7], [-10, -6, 4], [0, -10, 4], [10, -6, 4]]) P.ell(ctx, x, y, r, r * 0.9, '#c8941c'); P.ell(ctx, -10, -14, 9, 4, 'rgba(255,255,255,.55)', -0.5); ctx.restore();
+  }
+  g.MopeGui = { coin, abilityIcon, soundOff, tile, abilityIds: Object.keys(GL) };
   if (typeof module !== 'undefined') module.exports = g.MopeGui;
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -13,7 +13,7 @@
       const k = zoom * M.Sprites.TILE_WORLD / img.naturalWidth; if (p.setTransform) p.setTransform(new DOMMatrix([k, 0, 0, k, ox, oy])); return p;
     }
     begin() { this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); }
-    drawWorld(cam, v, lakes, players, foods, meId, myPred, chats, now) {
+    drawWorld(cam, v, lakes, players, foods, meId, myPred, chats, now, terrain) {
       const ctx = this.ctx, vw = this.vw, vh = this.vh, z = cam.zoom, ws = v.worldSize, low = this.opts.lowGraphics;
       ctx.fillStyle = '#1b3a1f'; ctx.fillRect(0, 0, vw, vh);
       for (const b of v.biomes) { // biome rectangles (layout inferred)
@@ -27,6 +27,9 @@
         for (let x = ((ox % step) + step) % step; x < vw; x += step) { ctx.moveTo(x, 0); ctx.lineTo(x, vh); }
         for (let y = ((oy % step) + step) % step; y < vh; y += step) { ctx.moveTo(0, y); ctx.lineTo(vw, y); }
         ctx.stroke();
+      }
+      if (terrain && terrain.length && !low) { // static decoration (effects such as hide/mud/hills are not simulated)
+        for (const o of terrain) { const def = v.terrain[o[0]]; if (!def || !cam.visible(o[1], o[2], def.radius, vw, vh)) continue; const img = M.Sprites.getTerrain(def); if (!img) continue; const [sx, sy] = cam.worldToScreen(o[1], o[2], vw, vh), h = def.radius * z / M.Sprites.TERRAIN_FRAC; ctx.drawImage(img, sx - h, sy - h, 2 * h, 2 * h); }
       }
       const edge = '#8dff8d';
       for (const f of foods) { // food: light-green outline = edible (archived how-to-play text)
@@ -47,10 +50,11 @@
       const [sx, sy] = cam.worldToScreen(p.x, p.y, this.vw, this.vh), pr = r * cam.zoom, low = this.opts.lowGraphics;
       ctx.save(); ctx.translate(sx, sy); ctx.rotate(p.angle);
       if (!low) { ctx.fillStyle = 'rgba(0,0,0,0.18)'; ctx.beginPath(); ctx.ellipse(4, 6, pr, pr * 0.9, 0, 0, 7); ctx.fill(); }
+      if (v.__arena && !isMe) ctx.globalAlpha = 0.5; // archived 2019 note: inside the Arena opponents go semi-transparent so they can see through each other
       if (this.opts.noImages) { ctx.fillStyle = a.placeholderColor; ctx.beginPath(); ctx.arc(0, 0, pr, 0, 7); ctx.fill(); }
-      else { const h = pr / M.Sprites.BODY_FRAC; ctx.drawImage(M.Sprites.get(a), -h, -h, 2 * h, 2 * h); } // frame sized so the drawn body matches the hitbox
-      ctx.restore();
-      if (!isMe) { // outline: LIGHT-GREEN = you can eat it, RED = it can eat you (archived how-to-play text)
+      else { const h = pr / M.Sprites.BODY_FRAC, skin = p.skin && v.shop ? M.Sprites.getSkin(v.shop.items.find((i) => i.id === p.skin)) : null; ctx.drawImage(skin || M.Sprites.get(a), -h, -h, 2 * h, 2 * h); } // equipped skin if loaded, else the normal sprite // frame sized so the drawn body matches the hitbox
+      ctx.globalAlpha = 1; ctx.restore();
+      if (!isMe && !v.__spectate) { // (spectators have no body, so no edible/dangerous outlines) outline: LIGHT-GREEN = you can eat it, RED = it can eat you (archived how-to-play text)
         const sand = v.__sandbox, col = sand || a.tier < myTier ? '#8dff8d' : a.tier > myTier ? '#ff4d4d' : null;
         if (col) { ctx.strokeStyle = col; ctx.lineWidth = Math.max(2, 3.5 * cam.zoom); ctx.beginPath(); ctx.arc(sx, sy, pr * 1.02, 0, 7); ctx.stroke(); }
       }

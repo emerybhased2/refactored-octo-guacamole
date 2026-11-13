@@ -24,13 +24,23 @@
       bar(ctx, h.xpBar, cx, vh - h.xpBar.marginBottom, nxt ? you.xp / nxt : 1, you.xp + (nxt ? ' / ' + nxt + ' XP' : ' XP'));
       bar(ctx, h.healthBar, cx, vh - h.healthBar.marginBottom, you.hp / animal.health, null);
       if (v.features.waterBar && h.waterBar) bar(ctx, h.waterBar, cx, vh - h.waterBar.marginBottom, you.w / 100, null);
+      const tn = (v.tiers.find((t) => t.tier === animal.tier) || {}).name || ('Tier ' + animal.tier), tl = tn.startsWith('Tier') ? tn : 'Tier ' + animal.tier + ' - ' + tn; // tier categories (Apex, Monsters...) come from the version data
+      ctx.fillStyle = 'rgba(255,255,255,0.8)'; ctx.font = '12px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.fillText(tl, cx, vh - (v.features.waterBar && h.waterBar ? h.waterBar.marginBottom + h.waterBar.h : h.healthBar.marginBottom + h.healthBar.h) - 28);
       ctx.fillStyle = '#fff'; ctx.font = 'bold 16px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
       ctx.fillText(animal.name, cx, vh - (v.features.waterBar && h.waterBar ? h.waterBar.marginBottom + h.waterBar.h : h.healthBar.marginBottom + h.healthBar.h) - 10);
       M.Leaderboard.draw(ctx, vw, h.leaderboard, rows, you.id);
       const ab = h.abilityButton && abilityState(animal, v.abilities, you.cd);
       if (ab) {
         const s = h.abilityButton.size, x = vw - h.abilityButton.marginRight - s, y = vh - h.abilityButton.marginBottom - s, icon = M.Sprites.getAbilityIcon(ab.def);
-        ctx.save(); ctx.globalAlpha = ab.implemented ? 1 : 0.45; if (icon) ctx.drawImage(icon, x, y, s, s);
+        ctx.save();
+        if (h.abilityButton.style === 'rechargeBar') { // 2018: translucent box + icon + name + gold recharge bar (verified from the archived draw code)
+          const A = h.abilityButton; ctx.globalAlpha = A.boxAlpha * (ab.ready ? 1 : 0.5); ctx.fillStyle = A.boxColor; ctx.fillRect(x, y, s, s);
+          ctx.globalAlpha = ab.implemented ? 1 : 0.4; if (icon) ctx.drawImage(icon, x + s * 0.1, y + s * 0.2, s * 0.8, s * 0.8);
+          ctx.globalAlpha = 1; ctx.fillStyle = '#fff'; ctx.font = A.nameFont; ctx.textAlign = 'center'; ctx.textBaseline = 'top'; ctx.fillText(ab.name + (ab.implemented ? '' : ' (inactive)'), x + s / 2, y + 3);
+          if (!ab.ready) { const bw = s * 0.8, bh = s * 0.5; ctx.fillStyle = A.rechargeBack; ctx.fillRect(x + s / 2 - bw / 2, y + s / 2 - bh / 2 + s * 0.1, bw, bh); ctx.fillStyle = A.rechargeFill; ctx.fillRect(x + s / 2 - bw / 2, y + s / 2 - bh / 2 + s * 0.1, bw * ab.frac, bh); }
+          ctx.fillStyle = '#fff'; ctx.font = 'bold 12px Arial'; ctx.textBaseline = 'alphabetic'; ctx.fillText('[' + A.keyLabel + ']', x + s / 2, y + s + 14); ctx.restore(); return;
+        }
+        ctx.globalAlpha = ab.implemented ? 1 : 0.45; if (icon) ctx.drawImage(icon, x, y, s, s);
         if (!ab.ready) { ctx.globalAlpha = 0.6; ctx.fillStyle = '#000'; ctx.beginPath(); ctx.moveTo(x + s / 2, y + s / 2); ctx.arc(x + s / 2, y + s / 2, s / 2, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * ab.frac); ctx.closePath(); ctx.fill(); ctx.globalAlpha = 1; ctx.fillStyle = '#fff'; ctx.font = 'bold 18px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(ab.remainingSec, x + s / 2, y + s / 2); }
         ctx.globalAlpha = 1; ctx.fillStyle = '#fff'; ctx.font = 'bold 13px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.fillText(ab.name + ' [' + h.abilityButton.keyLabel + ']' + (ab.implemented ? '' : ' (inactive)'), x + s / 2, y - 6); ctx.restore();
       }

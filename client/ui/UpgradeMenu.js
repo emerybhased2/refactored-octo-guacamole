@@ -1,13 +1,13 @@
 (function (g) {
   const M = (g.Mope = g.Mope || {});
-  const BIOME_ORDER = ['land', 'ocean', 'arctic']; // client biomeNum 0,1,2 in the archived client
+  const BIOME_ORDER = ['land', 'ocean', 'arctic', 'desert', 'volcano']; // land/ocean/arctic = client biomeNum 0,1,2 (archived); desert/volcano appended (2019, order inferred)
 
   /* ---------------- pure logic (unit-tested in Node) ---------------- */
 
   /** Order offered choices: sorted by biome (archived update note); the suggested choice (first/leftmost) is the first one in the animal's own biome, else the first overall (INFERRED rule). */
   function orderChoices(ids, animals, currentBiome) {
     const A = (id) => animals.find((a) => a.id === id);
-    const list = ids.slice().sort((a, b) => BIOME_ORDER.indexOf(A(a).biome) - BIOME_ORDER.indexOf(A(b).biome) || A(a).internalId - A(b).internalId);
+    const list = ids.slice().sort((a, b) => BIOME_ORDER.indexOf(A(a).biome) - BIOME_ORDER.indexOf(A(b).biome) || (A(a).internalId || 0) - (A(b).internalId || 0));
     const own = list.findIndex((id) => A(id).biome === currentBiome);
     if (own > 0) list.unshift(list.splice(own, 1)[0]);
     return list;
@@ -89,8 +89,8 @@
           const a = this.animals.find((x) => x.id === b.id), hov = this.mx >= b.x && this.mx <= b.x + b.w && this.my >= b.y && this.my <= b.y + b.h;
           ctx.save(); ctx.globalAlpha = C.fillAlpha; ctx.fillStyle = C.biomeColors[a.biome]; ctx.fillRect(b.x, b.y, b.w, b.h);
           if (hov) { ctx.globalAlpha = C.highlightAlpha; ctx.fillStyle = '#fff'; ctx.fillRect(b.x, b.y, b.w, b.h); }
-          ctx.globalAlpha = 1; const d = C.iconRadiusFactor * b.w / M.Sprites.BODY_FRAC; ctx.drawImage(M.Sprites.getIcon(a), b.x + b.w / 2 - d / 2, b.y + b.h * 0.46 - d / 2, d, d); // body diameter = iconRadiusFactor * button width
-          ctx.fillStyle = C.nameColor; ctx.font = C.nameFont; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.fillText(a.name, b.x + b.w / 2, b.y + b.h - 8);
+          ctx.globalAlpha = 1; const top = C.namePosition === 'top', d = C.iconRadiusFactor * b.w / M.Sprites.BODY_FRAC; ctx.drawImage(M.Sprites.getIcon(a), b.x + b.w / 2 - d / 2, b.y + b.h * (top ? 0.58 : 0.46) - d / 2, d, d); // body diameter = iconRadiusFactor * button width
+          ctx.fillStyle = C.nameColor; ctx.font = C.nameFont; ctx.textAlign = 'center'; ctx.textBaseline = top ? 'top' : 'alphabetic'; ctx.fillText(a.name, b.x + b.w / 2, top ? b.y + 7 : b.y + b.h - 8); // 2018: name at the top of the button (archived draw code)
           ctx.restore();
         }
         if (this.devTree) { const r = this.badgeRect(vw, vh); ctx.fillStyle = 'rgba(0,0,0,.5)'; ctx.fillRect(r.x, r.y, r.w, r.h); ctx.fillStyle = '#fff'; ctx.font = '13px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('[U] tree (dev)', r.x + r.w / 2, r.y + r.h / 2); }

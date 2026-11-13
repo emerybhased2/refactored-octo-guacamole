@@ -1,4 +1,38 @@
 {
- "_note": "Historical stat changes: id -> [{from,health?,speed?,size?,damage?}]",
- "changes": {}
+ "_note": "Historical changes per animal: [{from, health?, speed?, size?, damage?, tier?, xpRequired?, biome?}]. Latest 'from' <= version date wins.",
+ "changes": {
+  "trex": [
+   {
+    "from": "2019-08-25",
+    "note": "2019 tier structure (user-provided): apex=15, monsters=16, black dragon=17, king dragon=18",
+    "tier": 15,
+    "xpRequired": 150000
+   }
+  ],
+  "kingcrab": [
+   {
+    "from": "2019-08-25",
+    "note": "2019 tier structure (user-provided): apex=15, monsters=16, black dragon=17, king dragon=18",
+    "tier": 15,
+    "xpRequired": 150000
+   }
+  ],
+  "mammoth": [
+   {
+    "from": "2019-08-25",
+    "note": "2019 tier structure (user-provided): apex=15, monsters=16, black dragon=17, king dragon=18",
+    "tier": 15,
+    "xpRequired": 150000
+   }
+  ],
+  "blackdragon": [
+   {
+    "from": "2019-08-25",
+    "note": "2019 tier structure (user-provided): apex=15, monsters=16, black dragon=17, king dragon=18",
+    "tier": 17,
+    "xpRequired": 10000000,
+    "biome": "volcano"
+   }
+  ]
+ }
 }

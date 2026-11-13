@@ -1,0 +1,113 @@
+{
+  "id": "2019-08-25",
+  "date": "2019-08-25",
+  "label": "August 25, 2019 - 18 tiers, Desert & Volcano",
+  "confidence": "mixed",
+  "notes": "Existence of the 16 added animals, the Desert biome, lava, melons, trees, the Spectate button and the menu layout are evidenced by the archived 2019-08-25 homepage/CSS and 2019 skin captures. NO 2019 client.js exists in the archive, so ids, abilities, tiers, XP (except the user-provided tier structure), stats, layout and art are inferred. See docs/RESEARCH.md.",
+  "menu": "data/menus/main-2019-08-25.json",
+  "upgradeMenu": "data/menus/upgrade-2019-08-25.json",
+  "hud": "data/menus/hud-2019-08-25.json",
+  "startAnimal": "mouse",
+  "starters": [
+    "mouse",
+    "shrimp",
+    "chipmunk",
+    "snail",
+    "lemming"
+  ],
+  "modes": [
+    "normal"
+  ],
+  "biomes": [
+    "land",
+    "ocean",
+    "arctic",
+    "desert",
+    "volcano"
+  ],
+  "foods": [
+    "red_berry",
+    "blue_berry",
+    "orange_fruit",
+    "raspberry",
+    "pear",
+    "banana",
+    "coconut",
+    "lillypad",
+    "watermelon",
+    "cactus_fruit",
+    "ember_fruit"
+  ],
+  "features": {
+    "accounts": false,
+    "shop": false,
+    "chat": true,
+    "events": false,
+    "waterBar": true,
+    "serverSelect": true,
+    "settings": true,
+    "sandbox": false,
+    "mute": true,
+    "party": false,
+    "spectate": true,
+    "arena": true,
+    "arenaNote": "1v1 Arena evidenced by the 2019-06-18 note; rules INFERRED; reachable only from the dev bar (no Arena button exists in the archived menu HTML)"
+  },
+  "tickRate": 30,
+  "netRate": 20,
+  "worldSize": 6000,
+  "bots": 36,
+  "terrain": [
+    "bush",
+    "hill",
+    "mud",
+    "hole",
+    "rock",
+    "ice_patch",
+    "tree",
+    "cactus",
+    "lava_pool"
+  ],
+  "layout": {
+    "arctic": [
+      0,
+      0,
+      1,
+      0.22
+    ],
+    "land": [
+      0,
+      0.22,
+      0.64,
+      0.56
+    ],
+    "desert": [
+      0.64,
+      0.22,
+      0.36,
+      0.28
+    ],
+    "volcano": [
+      0.64,
+      0.5,
+      0.36,
+      0.28
+    ],
+    "ocean": [
+      0,
+      0.78,
+      1,
+      0.22
+    ]
+  },
+  "layoutConfidence": "inferred",
+  "tierStructure": {
+    "source": "USER-PROVIDED",
+    "tiers": 18,
+    "apex": 15,
+    "monsters": 16,
+    "blackDragon": 17,
+    "kingDragon": 18,
+    "kingDragonXp": 100000000
+  }
+}

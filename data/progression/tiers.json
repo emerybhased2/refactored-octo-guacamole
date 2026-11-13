@@ -4,55 +4,149 @@
   "name": "Tier 1",
   "color": "#9bd36b",
   "releaseDate": "2017-02-13",
-  "confidence": "inferred"
+  "confidence": "tier count user-provided; colours inferred"
  },
  {
   "tier": 2,
   "name": "Tier 2",
-  "color": "#6fc3d9",
+  "color": "#7fcf86",
   "releaseDate": "2017-02-13",
-  "confidence": "inferred"
+  "confidence": "tier count user-provided; colours inferred"
  },
  {
   "tier": 3,
   "name": "Tier 3",
-  "color": "#8fd0a0",
+  "color": "#6fc3d9",
   "releaseDate": "2017-02-13",
-  "confidence": "inferred"
+  "confidence": "tier count user-provided; colours inferred"
  },
  {
   "tier": 4,
   "name": "Tier 4",
-  "color": "#e8c24a",
+  "color": "#5fb0e0",
   "releaseDate": "2017-02-13",
-  "confidence": "inferred"
+  "confidence": "tier count user-provided; colours inferred"
  },
  {
   "tier": 5,
   "name": "Tier 5",
-  "color": "#e8984a",
+  "color": "#8fd0a0",
   "releaseDate": "2017-02-13",
-  "confidence": "inferred"
+  "confidence": "tier count user-provided; colours inferred"
  },
  {
   "tier": 6,
   "name": "Tier 6",
-  "color": "#e06a4a",
+  "color": "#b6d86a",
   "releaseDate": "2017-02-13",
-  "confidence": "inferred"
+  "confidence": "tier count user-provided; colours inferred"
  },
  {
   "tier": 7,
   "name": "Tier 7",
-  "color": "#c94a6a",
+  "color": "#e8c24a",
   "releaseDate": "2017-02-13",
-  "confidence": "inferred"
+  "confidence": "tier count user-provided; colours inferred"
  },
  {
   "tier": 8,
   "name": "Tier 8",
+  "color": "#e8aa4a",
+  "releaseDate": "2017-02-13",
+  "confidence": "tier count user-provided; colours inferred"
+ },
+ {
+  "tier": 9,
+  "name": "Tier 9",
+  "color": "#e8984a",
+  "releaseDate": "2017-02-13",
+  "confidence": "tier count user-provided; colours inferred"
+ },
+ {
+  "tier": 10,
+  "name": "Tier 10",
+  "color": "#e07a4a",
+  "releaseDate": "2017-02-13",
+  "confidence": "tier count user-provided; colours inferred"
+ },
+ {
+  "tier": 11,
+  "name": "Tier 11",
+  "color": "#e06a4a",
+  "releaseDate": "2017-02-13",
+  "confidence": "tier count user-provided; colours inferred"
+ },
+ {
+  "tier": 12,
+  "name": "Tier 12",
+  "color": "#d9545a",
+  "releaseDate": "2017-02-13",
+  "confidence": "tier count user-provided; colours inferred"
+ },
+ {
+  "tier": 13,
+  "name": "Tier 13",
+  "color": "#c94a6a",
+  "releaseDate": "2017-02-13",
+  "confidence": "tier count user-provided; colours inferred"
+ },
+ {
+  "tier": 14,
+  "name": "Tier 14",
+  "color": "#b04a8a",
+  "releaseDate": "2017-02-13",
+  "confidence": "tier count user-provided; colours inferred"
+ },
+ {
+  "tier": 15,
+  "name": "Tier 15",
   "color": "#8a4ad0",
   "releaseDate": "2017-02-13",
-  "confidence": "inferred"
+  "confidence": "tier count user-provided; colours inferred",
+  "categories": [
+   {
+    "from": "2019-08-25",
+    "name": "Apex"
+   }
+  ]
+ },
+ {
+  "tier": 16,
+  "name": "Tier 16",
+  "color": "#5a3ad0",
+  "releaseDate": "2017-02-13",
+  "confidence": "tier count user-provided; colours inferred",
+  "categories": [
+   {
+    "from": "2019-08-25",
+    "name": "Monsters"
+   }
+  ]
+ },
+ {
+  "tier": 17,
+  "name": "Tier 17",
+  "color": "#2a2a3a",
+  "releaseDate": "2019-08-25",
+  "confidence": "tier count user-provided; colours inferred",
+  "categories": [
+   {
+    "from": "2019-08-25",
+    "name": "Black Dragon"
+   }
+  ]
+ },
+ {
+  "tier": 18,
+  "name": "Tier 18",
+  "color": "#d4a017",
+  "releaseDate": "2019-08-25",
+  "confidence": "tier count user-provided; colours inferred",
+  "categories": [
+   {
+    "from": "2019-08-25",
+    "name": "King Dragon"
+   }
+  ]
  }
 ]

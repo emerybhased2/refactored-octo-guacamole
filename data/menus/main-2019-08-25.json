@@ -1,0 +1,185 @@
+{
+  "version": "2019-08-25",
+  "confidence": "verified (geometry/colours/elements from the archived 2019-08-25 index.html + main.css); update-panel text from the page; option checkboxes inferred (built dynamically in the 2019 client, not in the HTML)",
+  "source": "Arquivo.pt captures 20190825113653 (index), 20190825113700 (main.css), 20190327115440 (logo, identical to the 2018 wordmark). settings/x icons reused from 2017 (the captured 2019 settings.png was an HTML page).",
+  "page": {
+    "background": "#3FBA54",
+    "font": "Arial"
+  },
+  "column": {
+    "w": 350,
+    "h": 700,
+    "top": 30,
+    "onconnectMarginTop": -10
+  },
+  "logo": {
+    "src": "assets/menus/2018-04-21/logo.png",
+    "w": 350,
+    "h": 99,
+    "marginTop": -20
+  },
+  "nickname": {
+    "w": 250,
+    "placeholder": "Your name",
+    "maxLength": 15,
+    "border": "4px solid #1c9c25",
+    "font": "30px Arial",
+    "padding": 5,
+    "radius": 5,
+    "background": "#ffffff",
+    "color": "#000000"
+  },
+  "play": {
+    "label": "Play",
+    "w": 250,
+    "h": 50,
+    "marginTop": 10,
+    "background": "#0aa633",
+    "hover": "#067d26",
+    "borderBottom": "4px solid #116c17",
+    "color": "#ffffff",
+    "font": "bold large Arial",
+    "radius": 5,
+    "fontSize": "2em"
+  },
+  "icons": {
+    "settings": {
+      "src": "assets/menus/2017-02-13/settings.png",
+      "w": 30,
+      "h": 30
+    },
+    "close": {
+      "src": "assets/menus/2017-02-13/x.png",
+      "w": 35,
+      "h": 35
+    }
+  },
+  "options": {
+    "background": "rgba(11,164,52,0.95)",
+    "top": 175,
+    "radius": 8,
+    "padding": 5,
+    "fontSize": 12,
+    "select": {
+      "background": "#3fba54",
+      "border": "3px solid #1F9A1F",
+      "regionW": 190,
+      "serverW": 240
+    },
+    "checkboxes": [
+      {
+        "id": "noImages",
+        "label": "No Animal images",
+        "color": "#000",
+        "implemented": true
+      },
+      {
+        "id": "noNames",
+        "label": "No Names & Chat",
+        "color": "#000",
+        "implemented": true
+      },
+      {
+        "id": "lowGraphics",
+        "label": "Use Low graphics",
+        "color": "#000",
+        "implemented": true
+      },
+      {
+        "id": "noJoystick",
+        "label": "No Joystick (mobile)",
+        "color": "#194614",
+        "implemented": false
+      },
+      {
+        "id": "leftHanded",
+        "label": "LEFT-handed Joystick",
+        "color": "#194614",
+        "implemented": false
+      }
+    ]
+  },
+  "panels": {
+    "howToPlay": null,
+    "updates": {
+      "title": null,
+      "background": "rgba(9,153,47,0.52)",
+      "w": 200,
+      "marginLeft": 17,
+      "marginTop": 20,
+      "textColor": "#f8f8f8",
+      "textShadow": "1px 1px rgba(0,0,0,0.52)",
+      "titleColor": "#061304",
+      "titleShadow": "1px 1px #064e1982",
+      "maxHeight": 400,
+      "scroll": true,
+      "sections": [
+        {
+          "title": "Aug 16",
+          "items": [
+            "Fixed bugs, removed video ads for now, so you can re-join the game quickly."
+          ]
+        },
+        {
+          "title": "July 8: Bug Fixes",
+          "items": [
+            "Fixed issues with food/water not spawning properly around the game.",
+            "Fixed mouse and ducks walking on hills after getting hurt."
+          ]
+        },
+        {
+          "title": "June 18: Bug Fixes",
+          "items": [
+            "NERF: Trex shaking damage removed. Damage occurs on first grab and then on bleeding",
+            "NERF: Trex can't grab diving ocean animals",
+            "NERF: Golden Eagle rarity increased by 33%",
+            "NERF: Komodo Dragon's sweat duration/amount reduced by 20%",
+            "NERF: Flytrap's bite damage reduced by 20%",
+            "BUFF: King Crab's speed outside ocean increased to 10%",
+            "BUFF: Ice Monster's crystal growth/speed increased",
+            "FIXED: Pelican water bomb not hitting victims",
+            "FIXED: Black Widow web teleport catching animals when spider is too far or was stunned",
+            "FIXED: Black Dragon not healing in 1v1 arena",
+            "FIXED: Toucans not getting hurt in Desert biome (only lava toucan is allowed to not hurt)",
+            "NEW: Inside Arena, opponents go semi transparent so they can see through each other when fighting"
+          ]
+        },
+        {
+          "title": "Try upcoming updates on the beta:",
+          "items": [
+            "beta.mope.io"
+          ]
+        }
+      ]
+    }
+  },
+  "animation": null,
+  "absentInThisVersion": [
+    "login",
+    "register",
+    "shop",
+    "currency",
+    "sandbox",
+    "winter-skins",
+    "party-link",
+    "mute-button",
+    "how-to-play"
+  ],
+  "notReproduced": [
+    "third-party ads",
+    "app-store promo banners",
+    "YouTube subscribe widget",
+    "1v1 Arena / game-mode buttons (CSS exists, not in the page HTML)",
+    "reddit/changelog/privacy links"
+  ],
+  "modes": null,
+  "spectate": {
+    "label": "Spectate",
+    "w": 200,
+    "background": "#0aa633",
+    "hover": "#16932a",
+    "borderBottom": "4px solid #116c17",
+    "color": "#ffffff",
+    "note": "button verified (id btnSpectate); spectating itself is NOT implemented"
+  }
+}
