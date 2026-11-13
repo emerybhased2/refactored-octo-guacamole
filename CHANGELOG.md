@@ -1,9 +1,18 @@
 # Project changelog
 
+## 0.8.0 - Version 7: 2026-11-13 (wiki-sourced)
+- New playable version built from the Mope.io Wiki: 97-animal current roster, 17 tiers, wiki XP thresholds, all-to-all evolution by tier, removed animals (Snowman/Snowgirl/Bigfoot...) gone, 375 skins (Halloween 2020-25, Summer, Christmas, Gold-trim, Golden, Locked, Storefront, Cosmic...) with original generated art, version dropdown for all captures.
+- Corrections: Queen Flame / Tully Monster are skins (removed as animals from the 2021 version).
+- Tests: client/data 64, integration 28.
+
+## Wiki-sourced roster (stage 1)
+- `data/research/wiki-animals.json`: facts (tier, biome, XP, abilities, release dates, upgrade lists) for 147 animal pages of the Mope.io Wiki (CC BY-SA; no wiki images used) via `tools/wiki/`.
+- 64 animals missing from the project added with original art (`tools/art/specs2.js`, `assets/animals/2026-wiki/`), 34 of them flagged unreleased (release date 2099, never available). New biomes: Forest, Deep Ocean, Underground (tiles recreated).
+
 ## 0.7.0 - Version 6: 2021-06-12 (React UI, Storefront)
 - Built from the real 2021 homepage bundle and CSS (2022-2023 captures are Cloudflare pages, so this is the last evidenced version): mint 2021 menu, STORE button, settings (SOUND, graphics LOW/MEDIUM/HIGH, No XP Popups, Snowfall), footer links, verbatim May-June 2021 update notes.
 - Storefront: Skins/Features/Deals + My ... categories, filters, purchase confirmation, FREE/NEW/SALE tags, Gold bundle (atomic bundle purchase on the server), Classic Theme feature, free skins; gold Blue Whale/Black Widow/Cassowary skins.
-- Animals: Queen Flame, Snowgirl, Santa, Tully Monster (existence verified, placement inferred). Total 86.
+- Animals: Snowgirl and Santa (existence verified, placement inferred). **Correction (found via the Mope.io Wiki):** Queen Flame and Tully Monster, first modelled as animals, are King Dragon / Seahorse *skins*; removed as animals.
 - Tests: server 143, client/data 60, integration 26.
 
 ## 0.6.1 - Style-tightening pass (all art)

@@ -267,12 +267,10 @@
       {
         "type": "animals_added",
         "names": [
-          "Queen Flame",
           "Snowgirl",
-          "Santa",
-          "Tully Monster"
+          "Santa"
         ],
-        "note": "named in the update notes; tiers/biomes inferred"
+        "note": "named in the update notes/wiki; tiers/biomes inferred. Queen Flame and Tully Monster are storefront SKINS (King Dragon / Seahorse), not animals."
       },
       {
         "type": "settings",
@@ -281,6 +279,34 @@
       {
         "type": "capture_note",
         "name": "2022-2023 captures are Cloudflare challenge pages: this is the last version with archived evidence"
+      }
+    ]
+  },
+  {
+    "version": "0.7",
+    "date": "2026-11-13",
+    "confidence": "wiki-sourced facts (Mope.io Wiki, CC BY-SA); art original; UI reused from 2021",
+    "changes": [
+      {
+        "type": "roster",
+        "name": "97 animals, 17 tiers, wiki XP thresholds, tier-to-tier evolution"
+      },
+      {
+        "type": "removed",
+        "names": [
+          "Snowman",
+          "Snowgirl",
+          "Bigfoot"
+        ],
+        "note": "removed 2026-06-20 per the wiki"
+      },
+      {
+        "type": "skins",
+        "name": "375 skins from the wiki's List of skins (names/categories/dates), original generated art"
+      },
+      {
+        "type": "capture_note",
+        "name": "No 2022-2026 captures exist; wiki used as the source"
       }
     ]
   }

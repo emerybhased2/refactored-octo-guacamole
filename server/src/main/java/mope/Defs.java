@@ -17,7 +17,7 @@ public final class Defs {
         public boolean fb(String k) { return effects != null && effects.has(k) && effects.get(k).getAsBoolean(); }
     }
     public static class Cat { public String from, name; }
-    public static class Tier { public int tier; public String name, color, releaseDate; public List<Cat> categories; }
+    public static class Tier { public int tier; public String name, color, releaseDate, removalDate; public List<Cat> categories; }
     public static class TerrainDef {
         public String id, name, kind, sprite, spriteStatus, releaseDate, removalDate, confidence, effect;
         public double radius, density, forestDensity;

@@ -11,7 +11,8 @@ function listVersions() {
   const animals = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/progression/animals.json'), 'utf8'));
   const shop = (() => { try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shop/shop.json'), 'utf8')).items; } catch (e) { return []; } })();
   for (const v of out) v.animalDefs = animals.filter((a) => a.releaseDate && a.releaseDate <= v.date && (!a.removalDate || v.date < a.removalDate)); // same rule as the server
-  for (const v of out) if (v.features && v.features.shop) v.shopItems = shop.filter((i) => i.releaseDate <= v.date && (i.type !== 'skin' && i.type !== 'animal' ? true : animals.some((a) => a.id === i.animal && a.releaseDate <= v.date))).map((i) => (v.shopPriceOverrides && i.id in v.shopPriceOverrides ? Object.assign({}, i, { price: v.shopPriceOverrides[i.id], free: v.shopPriceOverrides[i.id] === 0 }) : i));
+  const wikiSkins = (() => { try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shop/skins-wiki.json'), 'utf8')).items; } catch (e) { return []; } })();
+  for (const v of out) if (v.features && v.features.shop) v.shopItems = shop.concat(wikiSkins.filter((w) => !shop.some((s) => s.id === w.id))).filter((i) => i.releaseDate <= v.date && (i.type !== 'skin' && i.type !== 'animal' ? true : animals.some((a) => a.id === i.animal && a.releaseDate <= v.date))).map((i) => (v.shopPriceOverrides && i.id in v.shopPriceOverrides ? Object.assign({}, i, { price: v.shopPriceOverrides[i.id], free: v.shopPriceOverrides[i.id] === 0 }) : i));
   return out;
 }
 const server = http.createServer((req, res) => {

@@ -43,7 +43,7 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
   // ---- art pipeline (original art in the Mope.io style, tools/art)
   const png = (f) => { const b = fs.readFileSync(path.join(ROOT, f)); assert.strictEqual(b.toString('latin1', 1, 4), 'PNG'); return { w: b.readUInt32BE(16), h: b.readUInt32BE(20), depth: b[24], type: b[25], size: b.length }; };
   await t('every animal has a recipe and a 256x256 RGBA PNG', () => {
-    global.MopeArt = require('../tools/art/draw.js'); const specs = require('../tools/art/specs.js');
+    global.MopeArt = require('../tools/art/draw.js'); global.window = global; const specs = require('../tools/art/specs.js'); require('../tools/art/specs2.js');
     for (const a of animals) { assert.ok(specs[a.id], 'no art recipe for ' + a.id); assert.strictEqual(a.spriteStatus, 'recreated'); const i = png(a.sprite); assert.deepStrictEqual([i.w, i.h, i.depth, i.type], [256, 256, 8, 6], a.id); assert.ok(i.size > 1500, a.id + ' looks empty'); }
     assert.deepStrictEqual(Object.keys(specs).sort(), J('data/progression/animals.json').map((a) => a.id).sort()); // one recipe per animal across all versions
   });
@@ -166,7 +166,7 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
     for (const a of all.filter((x) => x.releaseDate === '2018-04-21' && x.ability)) assert.ok(ab.find((x) => x.id === a.ability), a.id);
   });
   await t('2018 art exists for every animal and ability icon', () => {
-    global.MopeArt = require('../tools/art/draw.js'); const specs = require('../tools/art/specs.js');
+    global.MopeArt = require('../tools/art/draw.js'); global.window = global; const specs = require('../tools/art/specs.js'); require('../tools/art/specs2.js');
     for (const a of all) { assert.ok(specs[a.id], 'recipe ' + a.id); const i = png(a.sprite); assert.deepStrictEqual([i.w, i.h, i.type], [256, 256, 6], a.id); }
     for (const a of J('data/abilities/abilities.json')) { const i = png(a.icon); assert.deepStrictEqual([i.w, i.h], [64, 64], a.id); }
   });
@@ -207,7 +207,7 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
     assert.strictEqual(stateAt('blackdragon', '2018-04-21').tier, 16); assert.strictEqual(stateAt('blackdragon', '2018-04-21').biome, 'land'); assert.strictEqual(stateAt('trex', '2018-04-21').tier, 14);
     const tr = J('data/progression/tiers.json'); assert.strictEqual(tr.length, 18); assert.strictEqual(tr.filter((x) => x.releaseDate <= '2018-04-21').length, 16);
     assert.deepStrictEqual([15, 16, 17, 18].map((n) => tr[n - 1].categories[0].name), ['Apex', 'Monsters', 'Black Dragon', 'King Dragon']);
-    const xp = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18].map((n) => all.filter((a) => stateAt(a.id, '2019-08-25').tier === n).map((a) => stateAt(a.id, '2019-08-25').xp)); xp.forEach((l) => assert.strictEqual(new Set(l).size <= 1, true)); // one XP value per tier
+    const xp = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18].map((n) => all.filter((a) => act(a, '2019-08-25') && stateAt(a.id, '2019-08-25').tier === n).map((a) => stateAt(a.id, '2019-08-25').xp)); xp.forEach((l) => assert.strictEqual(new Set(l).size <= 1, true)); // one XP value per tier
   });
   const v19 = J('versions/2019/august-25/version.json'), m19 = J(v19.menu), biomes = J('data/biomes/biomes.json'), terr = J('data/terrain/terrain.json'), foodsAll = J('data/food/foods.json');
   await t('2019 roster: 77 animals, the 16 added are evidenced, none appear earlier', () => {
@@ -259,7 +259,7 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
     const m19 = J(v19.menu); assert.strictEqual(m19.account, undefined); assert.strictEqual(MenuRenderer.elementsPresent(m19).account, false);
   });
   await t('shop catalog: 59 skins exist (verified) but only the named/inferred items exist; prices flagged inferred; art + coin icon present', () => {
-    assert.strictEqual(shopData.verifiedTotalSkins, 59); assert.strictEqual(shopData.items.length, 15); for (const id of ['azure_blackdragon', 'golden_blackdragon', 'golden_kingdragon', 'snowman', 'bigfoot', 'mouse_skin_1', 'mouse_skin_2', 'tigershark', 'hammerhead']) assert.ok(shopData.items.some((i) => i.id === id), id);
+    assert.strictEqual(shopData.verifiedTotalSkins, 59); assert.strictEqual(shopData.items.length, 14); for (const id of ['azure_blackdragon', 'golden_blackdragon', 'golden_kingdragon', 'snowman', 'bigfoot', 'mouse_skin_1', 'mouse_skin_2', 'tigershark', 'hammerhead']) assert.ok(shopData.items.some((i) => i.id === id), id);
     for (const it of shopData.items) { assert.ok(Number.isInteger(it.price) && it.price >= 0, it.id); assert.ok(/inferred|behaviour/.test(it.confidence), it.id); if (it.type === 'bundle' || it.type === 'feature') continue; assert.ok(all.some((a) => a.id === it.animal), it.id); if (it.type === 'skin') { const i = png(it.sprite); assert.deepStrictEqual([i.w, i.h, i.type], [256, 256, 6], it.id); assert.ok(it.family); } }
     const c = png(shopData.currency.icon); assert.deepStrictEqual([c.w, c.h], [64, 64]); assert.ok(/NOT implemented/.test(shopData.currency.earnNote)); assert.strictEqual(v4.economy.coinsPerXp, 0.01);
     assert.ok(shopData.items.find((i) => i.id === 'snowman').type === 'animal'); assert.ok(!J(v19.menu).panels.updates.sections.some((s) => /shop/i.test(JSON.stringify(s))));
@@ -321,10 +321,10 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
 
   // ---- 2021-06-12
   const v6 = J('versions/2021/june-12/version.json');
-  await t('2021-06-12: version, 4 evidenced animals (inferred placement), art, edges, reachable', () => {
+  await t('2021-06-12: version, 2 evidenced animals (Queen Flame/Tully Monster are skins, not animals) (inferred placement), art, edges, reachable', () => {
     assert.strictEqual(v6.date, '2021-06-12'); const A = J('data/progression/animals.json'), by = Object.fromEntries(A.map((a) => [a.id, a]));
-    for (const id of ['queenflame', 'snowgirl', 'santa', 'tullymonster']) { assert.ok(by[id], id); assert.strictEqual(by[id].releaseDate, '2021-06-12'); assert.ok(/verified/.test(by[id].confidence.existence)); assert.ok(/inferred/.test(by[id].confidence.tier)); assert.ok(fs.existsSync(path.join(ROOT, by[id].sprite)), id); }
-    const E = J('data/progression/evolution.json').filter((e) => e.releaseDate === '2021-06-12'); for (const id of ['queenflame', 'snowgirl', 'santa', 'tullymonster']) assert.ok(E.some((e) => e.to === id), id + ' reachable');
+    for (const id of ['snowgirl', 'santa']) { assert.ok(by[id], id); assert.strictEqual(by[id].releaseDate, '2021-06-12'); assert.ok(/verified/.test(by[id].confidence.existence)); assert.ok(/inferred/.test(by[id].confidence.tier)); assert.ok(fs.existsSync(path.join(ROOT, by[id].sprite)), id); }
+    const E = J('data/progression/evolution.json').filter((e) => e.releaseDate === '2021-06-12'); for (const id of ['snowgirl', 'santa']) assert.ok(E.some((e) => e.to === id), id + ' reachable');
   });
   await t('2021-06-12: menu config is the verified React UI (mint panel, 266x92 Play, STORE, settings texts, verbatim updates)', () => {
     const m = J(v6.menu); assert.strictEqual(m.theme, '2021'); assert.deepStrictEqual([m.play.w, m.play.h, m.play.background], [266, 92, '#0faa29']); assert.strictEqual(m.menuPanel.border, '4px solid #8af5af'); assert.strictEqual(m.store.label, 'STORE');
@@ -345,6 +345,36 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
   await t('2021 extras: xpGain is pure and ignores animal changes; snowfall/XP/classic client hooks exist', () => {
     const X = require('../client/extras.js'); assert.strictEqual(X.xpGain({ xp: 10, a: 'mouse' }, { xp: 25.9, a: 'mouse' }), 15); assert.strictEqual(X.xpGain({ xp: 10, a: 'mouse' }, { xp: 99, a: 'rabbit' }), 0); assert.strictEqual(X.xpGain(null, { xp: 5, a: 'x' }), 0);
     const cs = fs.readFileSync(path.join(ROOT, 'client/client.js'), 'utf8'); assert.ok(/classic_theme/.test(cs) && /Extras\.Snow/.test(cs) && /Extras\.popup/.test(cs));
+  });
+
+  // ---- wiki-sourced roster (Mope.io Wiki facts, original art)
+  await t('wiki roster: 64 added animals have wiki provenance, original art, valid biome; unreleased ones are never available', () => {
+    const W = J('data/research/wiki-animals.json'), A = J('data/progression/animals.json'), added = A.filter((a) => a.wiki), bio = new Set(J('data/biomes/biomes.json').map((b) => b.id));
+    assert.strictEqual(added.length, 64); assert.ok(Object.keys(W.animals).length >= 140); assert.ok(/CC BY-SA/.test(W.source));
+    for (const a of added) { assert.ok(W.animals[a.wiki], a.id); assert.ok(bio.has(a.biome), a.id); assert.strictEqual(a.spriteStatus, 'recreated'); assert.ok(a.sprite.includes('2026-wiki'), a.id); assert.ok(/verified/.test(a.confidence.existence)); assert.strictEqual(a.releaseDate, a.unreleased || a.removedOnWiki ? '2099-01-01' : '2026-11-13'); }
+    assert.ok(added.filter((a) => a.unreleased).length >= 30); assert.ok(added.every((a) => a.releaseDate > '2021-06-12')); // no earlier version gains an animal
+  });
+
+  // ---- 2026-11-13 (wiki-sourced version 7)
+  const v7 = J('versions/2026/november-13/version.json');
+  await t('v7 (wiki): 17 tiers, tier/XP table from the wiki, roster 97, removed/unreleased excluded, snowman/bigfoot gone', () => {
+    assert.strictEqual(v7.date, '2026-11-13'); assert.strictEqual(v7.tierStructure.tiers, 17); assert.ok(/WIKI/.test(v7.tierStructure.source));
+    const A = J('data/progression/animals.json'), act7 = A.filter((a) => a.releaseDate <= v7.date && (!a.removalDate || v7.date < a.removalDate)); assert.strictEqual(act7.length, 97);
+    const ids = new Set(act7.map((a) => a.id)); for (const gone of ['snowman', 'snowgirl', 'bigfoot', 'deathworm', 'raven', 'tarsier', 'flytrap', 'queenflame']) assert.ok(!ids.has(gone), gone);
+    for (const keep of ['mouse', 'kangaroorat', 'armadillo', 'camel', 'falcon', 'santa', 'blackdragon', 'kingdragon', 'honeybee']) assert.ok(ids.has(keep), keep);
+    const st = J('data/progression/animal-statistics.json').changes; const at = (id) => (st[id] || []).filter((c) => c.from <= v7.date).pop();
+    assert.deepStrictEqual([at('kingdragon').tier, at('kingdragon').xpRequired, at('blackdragon').tier], [17, 10000000, 17]); assert.deepStrictEqual([at('fox').tier, at('fox').xpRequired], [6, 5000]); assert.strictEqual(at('camel').biome, 'desert');
+    const T = J('data/progression/tiers.json').filter((x) => x.releaseDate <= v7.date && (!x.removalDate || v7.date < x.removalDate)); assert.strictEqual(T.length, 17);
+  });
+  await t('v7 (wiki): 375 wiki skins with original art, deduplicated against hand-made ones; every skin animal exists', () => {
+    const W = J('data/shop/skins-wiki.json'), A = new Set(J('data/progression/animals.json').map((a) => a.id)); assert.strictEqual(W.count, 375); assert.strictEqual(W.items.length, 375); assert.ok(/CC BY-SA/.test(W.source));
+    const seen = new Set(); for (const it of W.items) { assert.ok(!seen.has(it.id), 'dup ' + it.id); seen.add(it.id); assert.ok(A.has(it.animal), it.id); assert.strictEqual(it.type, 'skin'); assert.strictEqual(it.spriteStatus, 'recreated'); const i = png(it.sprite); assert.deepStrictEqual([i.w, i.h, i.type], [256, 256, 6], it.id); }
+    assert.ok(!W.items.some((i) => i.category.startsWith('Classic'))); assert.ok(W.items.some((i) => /Halloween/.test(i.category)) && W.items.some((i) => /Summer/.test(i.category)) && W.items.some((i) => /Christmas/.test(i.category)));
+    assert.ok(W.items.some((i) => i.wikiReleaseDate >= '2025-01-01') && W.items.some((i) => i.wikiReleaseDate.startsWith('2020')));
+  });
+  await t('v7 (wiki): menu reuses the verified 2021 UI and says so; evolution edges all-to-all by tier', () => {
+    const m = J(v7.menu); assert.strictEqual(m.theme, '2021'); assert.ok(/reused/.test(m.confidence)); assert.strictEqual(m.panels.updates.sections[0].title, 'About this build');
+    const E = J('data/progression/evolution.json').filter((e) => e.releaseDate === '2026-11-13'); assert.ok(E.length > 400); assert.ok(J('data/progression/evolution.json').filter((e) => e.releaseDate < '2026-11-13').every((e) => e.removalDate)); // old trees stay available to older versions only
   });
 
   console.log(`unit: ${pass} passed, ${fail} failed`); process.exit(fail ? 1 : 0);
