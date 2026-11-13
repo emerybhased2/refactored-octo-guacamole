@@ -133,6 +133,10 @@ function client(port = PORT) {
       r = await msg({ t: 'buy', item: 'classic_theme' }); assert.strictEqual(r.t, 'shop'); r = await msg({ t: 'equip', item: 'classic_theme' }); assert.strictEqual(r.equipped.__theme, 'classic_theme');
       r = await msg({ t: 'unequip', animal: '__theme' }); assert.ok(!r.equipped.__theme); c.ws.close();
     });
+    await t('dev-info: dev server reports on, normal server reports off', async () => {
+      const d = client(PORT_DEV); await d.ready; d.send({ t: 'dev-info' }); assert.strictEqual((await d.until('dev')).on, true); d.ws.close();
+      const n = client(PORT); await n.ready; n.send({ t: 'dev-info' }); assert.strictEqual((await n.until('dev')).on, false); n.ws.close();
+    });
     await t('sessions: resume restores coins/inventory; logout invalidates the token', async () => {
       const c = await login(PORT_DEV); c.send({ t: 'dev-coins', v: '2019-12-30', n: 500 }); await c.until('shop'); c.ws.close();
       const c2 = client(PORT_DEV); await c2.ready; c2.send({ t: 'resume', v: '2019-12-30', token: c.token }); const r = await c2.until('auth'); assert.deepStrictEqual([r.ok, r.user, r.coins], [true, c.user, 500]);
