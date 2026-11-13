@@ -23,6 +23,9 @@ public final class FoodEngine {
         double[] p = biomes.randomPoint(rnd, defs.get(i).biomes);
         foods.add(new Food(nextId++, defs.get(i), i, p[0], p[1])); count[i]++;
     }
+    /** Extra food created by abilities (Dig Food, Spits Food, Exhale): counts towards the density so it is not over-replaced. */
+    public void spawnAt(double x, double y, int typeIndex) { if (defs.isEmpty()) return; int i = Math.floorMod(typeIndex, defs.size()); foods.add(new Food(nextId++, defs.get(i), i, x, y)); count[i]++; }
+    public int typeCount() { return defs.size(); }
     public void consumed(Food f) { f.removed = true; count[f.typeIndex]--; }
     public void tick(double nowMs) {
         foods.removeIf(f -> f.removed);

@@ -66,7 +66,8 @@
     "snowfall": true,
     "noXpPopups": true,
     "mopeId": true,
-    "wikiSourced": true
+    "wikiSourced": true,
+    "wikiAbilities": true
   },
   "tickRate": 30,
   "netRate": 20,

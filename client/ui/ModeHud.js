@@ -17,7 +17,7 @@
     }
     return out;
   }
-  const flagsOf = (f) => ({ team: (f | 0) & 3, zombie: !!((f | 0) & 4), infected: !!((f | 0) & 8) });
+  const flagsOf = (f) => ({ team: (f | 0) & 3, zombie: !!((f | 0) & 4), infected: !!((f | 0) & 8), stun: !!((f | 0) & 16), shield: !!((f | 0) & 32), hidden: !!((f | 0) & 64), fly: !!((f | 0) & 128), invis: !!((f | 0) & 256), carried: !!((f | 0) & 512), poison: !!((f | 0) & 1024) });
 
   function banner(ctx, vw, text, y, color) { ctx.save(); ctx.textAlign = 'center'; ctx.font = 'bold 22px Arial'; ctx.fillStyle = color || '#fff'; ctx.strokeStyle = 'rgba(0,0,0,.7)'; ctx.lineWidth = 4; ctx.strokeText(text, vw / 2, y); ctx.fillText(text, vw / 2, y); ctx.restore(); }
   function bar(ctx, x, y, w, h, frac, fill, label) { ctx.save(); ctx.fillStyle = 'rgba(0,0,0,.5)'; ctx.fillRect(x, y, w, h); ctx.fillStyle = fill; ctx.fillRect(x + 2, y + 2, Math.max(0, (w - 4) * Math.min(1, frac)), h - 4); if (label) { ctx.fillStyle = '#fff'; ctx.font = 'bold 11px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(label, x + w / 2, y + h / 2); } ctx.restore(); }

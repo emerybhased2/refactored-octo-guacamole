@@ -59,7 +59,7 @@ public final class SelfTest {
         eq("boost expires", ab.speedMultiplier(cp, 5000), 1.0);
         check("boost on cooldown until 8s", !ab.activate(cp, 8999, null) && ab.activate(cp, 9000, null));
         Player lp = new Player(); lp.setAnimal(v.animals.get("shark")); check("no ability, no activate", !ab.activate(lp, 99999, null));
-        Player kp = new Player(); kp.setAnimal(v.animals.get("kraken")); check("unimplemented ability does not activate", !ab.activate(kp, 99999, null));
+        Player kp = new Player(); kp.setAnimal(v.animals.get("kraken")); check("an animal whose ability id is unknown to the engine does not activate", ab.def("nope") == null && ab.def(null) == null);
 
         // ---- World: movement, food, evolution, predation
         World w = new World(quiet(v), 42);
@@ -132,7 +132,7 @@ public final class SelfTest {
         eq("2018 offers only normal mode", v18.modes, List.of("normal")); check("2018 has no sandbox feature", !v18.feature("sandbox") && v.feature("sandbox"));
         check("abilities are date-gated per version", v.abilities.stream().noneMatch(a -> a.id.equals("venom_spit")) && v18.abilities.stream().anyMatch(a -> a.id.equals("venom_spit")));
         Player cobra = new Player(); cobra.setAnimal(v18.animals.get("cobra")); eq("cobra has its verified ability", cobra.animal.ability, "venom_spit");
-        check("catalogued-but-unimplemented ability stays inert", !new AbilityEngine(v18.abilities, v18.date).activate(cobra, 99999, null));
+        check("every special ability is implemented now (effects data present)", v18.abilities.stream().filter(a -> !"passive".equals(a.type)).allMatch(a -> a.effects != null));
         World w18 = new World(v18, 3); Set<String> kinds = new HashSet<>(); for (Player p : w18.players.values()) kinds.add(p.animal.id);
         check("2018 bots spawn as varied starters", kinds.size() >= 3 && v18.starters.containsAll(kinds));
         for (int i = 0; i < 90; i++) w18.tick();
@@ -293,9 +293,48 @@ public final class SelfTest {
             am.recordGame("alice", 500, 3); am.recordGame("alice", 200, 1);
             eq("stats best_xp", am.stats("alice")[0], 500L); eq("stats kills", am.stats("alice")[1], 4L);
         }
-        modeTests(vm);
+        modeTests(vm); abilityTests(vm);
         System.out.printf("SelfTest: %d passed, %d failed%n", passed, failed);
         System.exit(failed == 0 ? 0 : 1);
+    }
+
+    static World quietWorld(VersionManager.Config c, long seed) { return new World(quiet(c), seed); }
+    static void abilityTests(VersionManager vm) throws Exception {
+        VersionManager.Config v7 = vm.get("2026-11-13"), v6 = vm.get("2021-06-12");
+        check("wiki version: 92 wiki abilities catalogued (64 special + 28 passive)", v7.abilities.stream().filter(a -> a.effects != null).count() >= 64 && v7.abilities.stream().filter(a -> "passive".equals(a.type)).count() >= 28);
+        check("King Dragon has Fire and Tail Slap (keys W and S)", v7.animals.get("kingdragon").abilities.containsAll(List.of("tail_slap", "fire")));
+        World w = quietWorld(v7, 91); Player kd = human(w, "KD", null); kd.setAnimal(v7.animals.get("kingdragon")); kd.xp = 0;
+        check("slot 0 (W) = fire, slot 1 (S) = tail slap", "fire".equals(Abilities.abilityIdFor(w, kd, 0)) && "tail_slap".equals(Abilities.abilityIdFor(w, kd, 1)));
+        Player rv = human(w, "Rv", null); rv.setAnimal(v7.animals.get("macaw")); boolean ground = "loud_noise".equals(Abilities.abilityIdFor(w, rv, 0)); rv.climbing = true; check("macaw: loud caw on the ground, fly when up a tree", ground && "fly".equals(Abilities.abilityIdFor(w, rv, 0)));
+        // stomp / area stun + knockback
+        Player el = human(w, "El", null), mo = human(w, "Mo", null), mo2 = human(w, "Mo2", null); el.setAnimal(v7.animals.get("elephant")); mo.setAnimal(v7.animals.get("mouse")); mo2.setAnimal(v7.animals.get("blackdragon"));
+        place(el, 2000, 2000); place(mo, 2060, 2000); place(mo2, 2090, 2060); place(kd, 100, 100); el.angle = 0;
+        Defs.AbilityDef st = w.abilities.def("stomp"); check("stomp implemented", st != null && st.effects != null);
+        el.animal.abilities = List.of("stomp"); check("elephant stomp activates", Abilities.use(w, el, 0, true));
+        check("stomp stuns and shoves the prey", mo.stunUntilTick > w.tick && Math.abs(mo.x - 2060) > 5); check("stomp stuns a bigger predator for less time but still stuns", mo2.stunUntilTick > w.tick);
+        check("stun freezes movement", Abilities.speedFactor(w, mo) == 0); check("cooldown: cannot stomp again immediately", !Abilities.use(w, el, 0, true));
+        // zone: fire damage
+        Player fr = human(w, "Fr", null), vic = human(w, "Vi", null); fr.setAnimal(v7.animals.get("dragon")); fr.animal.abilities = List.of("fire"); vic.setAnimal(v7.animals.get("mouse")); place(fr, 3000, 3000); place(vic, 3000 + fr.radius + 50, 3000); fr.angle = 0; vic.health = 100;
+        Abilities.use(w, fr, 0, true); for (int i = 0; i < 20; i++) { w.tick(); place(vic, 3000 + fr.radius + 50, 3000); } check("fire zone burns animals in front", vic.health < 100 || vic.dead);
+        // shield blocks eating, spikes hurt
+        Player tg = human(w, "Tg", null), pr2 = human(w, "Pr", null); tg.setAnimal(v7.animals.get("turtle")); pr2.setAnimal(v7.animals.get("lion")); place(tg, 4000, 4000); place(pr2, 4000, 4000); tg.animal.abilities = List.of("shell");
+        check("a lion can eat the turtle normally", Collision.canEat(pr2, tg)); Abilities.use(w, tg, 0, true); check("hide in shell makes it uneatable", !Collision.canEat(pr2, tg));
+        // hide + fly + invisibility
+        Player hd = human(w, "Hd", null); hd.setAnimal(v7.animals.get("rabbit")); hd.animal.abilities = List.of("hide_hole_dig"); place(hd, 5000, 5000); Abilities.use(w, hd, 0, true); check("dig hole hides the animal from others and from eating", Abilities.flags(w, hd) == 64 && !Collision.canEat(pr2, hd));
+        Player fl = human(w, "Fl", null); fl.setAnimal(v7.animals.get("eagle")); fl.animal.abilities = List.of("glide"); place(fl, 5200, 5200); Abilities.use(w, fl, 0, true); check("gliding animals fly (flag, out of reach of walkers)", (Abilities.flags(w, fl) & 128) != 0 && !Collision.canEat(pr2, fl));
+        // projectile
+        Player th = human(w, "Th", null), tv = human(w, "Tv", null); th.setAnimal(v7.animals.get("cobra")); th.animal.abilities = List.of("venom_spit"); tv.setAnimal(v7.animals.get("mouse")); place(th, 1500, 1500); place(tv, 1500 + th.radius + 200, 1500); th.angle = 0;
+        Abilities.use(w, th, 0, true); check("spitting creates a projectile", !w.fxState.projs.isEmpty()); for (int i = 0; i < 40; i++) { w.tick(); place(tv, 1500 + th.radius + 200, 1500); } check("the projectile stuns and poisons its target", tv.stunUntilTick > 0 && tv.dotUntilTick > 0);
+        // grab
+        Player gb = human(w, "Gb", null), gp = human(w, "Gp", null); gb.setAnimal(v7.animals.get("eagle")); gb.animal.abilities = List.of("fly_with_prey"); gp.setAnimal(v7.animals.get("mouse")); place(gb, 800, 800); place(gp, 820, 800);
+        Abilities.use(w, gb, 0, true); check("fly with prey picks up a smaller animal", gp.carriedBy == gb.id); gb.x += 300; w.tick(); check("a carried animal moves with its carrier", Math.abs(gp.x - gb.x) < 150);
+        // summon + food + passives
+        Player sm = human(w, "Sm", null); sm.setAnimal(v7.animals.get("hyena")); sm.animal.abilities = List.of("command_babies"); place(sm, 6000, 600); int n0 = w.players.size(); Abilities.use(w, sm, 0, true); check("command babies summons allied helpers", w.players.size() == n0 + 3 && w.players.values().stream().filter(q -> q.ownerId == sm.id).count() == 3);
+        Player bb = w.players.values().stream().filter(q -> q.ownerId == sm.id).findFirst().get(); sm.setAnimal(v7.animals.get("lion")); place(bb, sm.x, sm.y); bb.protectedUntilTick = 0; check("a parent cannot eat its babies", !Collision.canEat(sm, bb));
+        Player df = human(w, "Df", null); df.setAnimal(v7.animals.get("deer")); df.animal.abilities = List.of("dig_for_food"); place(df, 700, 5600); int f0 = w.foods.foods.size(); Abilities.use(w, df, 0, true); check("dig food conjures food nearby", w.foods.foods.size() == f0 + 3);
+        Player ps = human(w, "Ps", null); ps.setAnimal(v7.animals.get("penguin")); check("fast_water passive speeds swimming (wiki version)", ps.animal.passives != null && ps.animal.passives.contains("fast_water"));
+        // legacy versions still use their own single ability field (no wiki mapping)
+        World w6 = quietWorld(v6, 92); Player vp = human(w6, "V", null); vp.setAnimal(v6.animals.get("cobra")); check("2021 build: cobra uses its archived single ability", "venom_spit".equals(Abilities.abilityIdFor(w6, vp, 0)));
     }
 
     static void modeTests(VersionManager vm) throws Exception {

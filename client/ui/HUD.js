@@ -13,8 +13,8 @@
     if (label) { ctx.fillStyle = '#fff'; ctx.font = 'bold 13px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(label, cx, y + cfg.h / 2 + 1); }
   }
   /** Ability button state: {id,name,implemented,ready,remainingSec} or null if the animal has no ability. cdMs = remaining cooldown from the server. */
-  function abilityState(animal, abilities, cdMs) {
-    if (!animal.ability) return null; const d = (abilities || []).find((a) => a.id === animal.ability); if (!d) return null;
+  function abilityState(animal, abilities, cdMs, idOverride) {
+    const id = idOverride !== undefined ? idOverride : animal.ability; if (!id) return null; const d = (abilities || []).find((a) => a.id === id); if (!d) return null;
     return { id: d.id, name: d.name, implemented: !!d.implemented, ready: cdMs <= 0, remainingSec: Math.ceil(cdMs / 1000), frac: d.cooldownMs > 0 ? Math.max(0, Math.min(1, cdMs / d.cooldownMs)) : 0, def: d };
   }
   M.HUD = {
@@ -29,7 +29,7 @@
       ctx.fillStyle = '#fff'; ctx.font = 'bold 16px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
       ctx.fillText(animal.name, cx, vh - (v.features.waterBar && h.waterBar ? h.waterBar.marginBottom + h.waterBar.h : h.healthBar.marginBottom + h.healthBar.h) - 10);
       M.Leaderboard.draw(ctx, vw, h.leaderboard, rows, you.id);
-      const ab = h.abilityButton && abilityState(animal, v.abilities, you.cd);
+      const ab = h.abilityButton && abilityState(animal, v.abilities, you.cd, you.a1 !== undefined ? you.a1 : undefined);
       if (ab) {
         const s = h.abilityButton.size, x = vw - h.abilityButton.marginRight - s, y = vh - h.abilityButton.marginBottom - s, icon = M.Sprites.getAbilityIcon(ab.def);
         ctx.save();

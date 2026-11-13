@@ -7,13 +7,15 @@
   }
   class Input {
     constructor(el) {
-      this.px = window.innerWidth / 2; this.py = window.innerHeight / 2; this.enabled = false; this.keyHandlers = {}; this.stick = null; // stick: on-screen joystick override {angle, mag}
+      this.px = window.innerWidth / 2; this.py = window.innerHeight / 2; this.enabled = false; this.keyHandlers = {}; this.stick = null; this.upHandlers = {}; // stick: on-screen joystick override {angle, mag}
       el.addEventListener('mousemove', (e) => { this.px = e.clientX; this.py = e.clientY; });
       el.addEventListener('touchstart', (e) => { const t = e.touches[0]; this.px = t.clientX; this.py = t.clientY; }, { passive: true });
       el.addEventListener('touchmove', (e) => { const t = e.touches[0]; this.px = t.clientX; this.py = t.clientY; }, { passive: true });
+      g.addEventListener('keyup', (e) => { if (e.target && e.target.tagName === 'INPUT') return; const h = this.upHandlers[e.key.toLowerCase()]; if (h) h(e); });
       g.addEventListener('keydown', (e) => { if (e.target && e.target.tagName === 'INPUT') return; const h = this.keyHandlers[e.key.toLowerCase()]; if (h) { h(e); } });
     }
     on(key, fn) { this.keyHandlers[key.toLowerCase()] = fn; }
+    onUp(key, fn) { this.upHandlers[key.toLowerCase()] = fn; }
     current(vw, vh) { if (this.stick) return this.stick; return pointerToInput(this.px, this.py, vw, vh); }
   }
   M.Input = Input; M.pointerToInput = pointerToInput;

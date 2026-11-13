@@ -143,6 +143,9 @@ All art (original generator: recolours + costume/pattern accessories chosen from
 Verified dates: Sandbox 2017-02-04..02-18; Classic Mode 2018-02-16..early 2019; Battle Royale 2018-10-06..11-23; Zombie Infection 2018-10-27..11-23; Team Mode 2018-10-06..11-23 and 2022-08-29..2024-11-15; Wild Mope 2018-10-27..11-23 and 2023-03-07..2024-11-15; Viral Pandemic 2020-03-28..05-18 (Beta); 1v1 Redemption 2021-02-16..2026-06-20; 1v1 available as a sub-mode for tier 15+ animals. Rules come from the wiki pages; numbers marked inferred in the data (zone radii/damage, infection rates, stone capture speed, boss strength).
 Not simulated: Battle Royale spawn eggs and the ghost toggle, zombie infection orbs/lotus/healing stones, 8 of the 13 Team Stone perks, Wild Mope per-animal wave buffs, Pandemic hiding-hole quarantine, Beta Mope.io. Every implemented mode is offered in every build that can host it (labelled 'bonus' outside its era) because the original eras fall between the project's captures.
 
+## Abilities (Mope.io Wiki: Special Abilities / Passive Abilities)
+64 special and 28 passive abilities with users and press/hold activation were extracted (`tools/wiki/parse_abilities.py`). `tools/wiki/build_abilities.py` maps each to an effect archetype (all numbers inferred) and each animal to its wiki abilities/passives for the wiki-sourced version. Contextual abilities (the Raven/Macaw's fly up a tree vs loud caw on the ground) win when their condition holds; a consequence is that the Macaw's Disguise cannot be triggered while one of those two applies (known limitation). Hill/rock climbing, mud, quicksand and ice grip passives are catalogued but need terrain the game does not simulate.
+
 ## Next versions
 Captures exist for 2018-07-16, 2019-03-27/04-14 and later. The Dec 2, 2016 "Classic Mope" (mope.io/oldmope) may be capturable and would be an earlier baseline.
 

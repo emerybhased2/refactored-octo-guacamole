@@ -8,7 +8,7 @@ public class Animal {
     public com.google.gson.JsonElement confidence;
     public int internalId;
     public double rarity; // chance a player is offered this animal (e.g. Snowman 1/2000); 0 = always offered
-    public List<String> aliases, classification;
+    public List<String> aliases, classification, abilities, passives;
     public int tier;
     public double xpRequired, health, speed, size, damage;
 

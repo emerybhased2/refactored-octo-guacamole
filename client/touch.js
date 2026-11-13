@@ -15,9 +15,9 @@
       cv.addEventListener('touchstart', (e) => this.start(e), { passive: false }); cv.addEventListener('touchmove', (e) => this.move(e), { passive: false });
       const end = (e) => this.end(e); cv.addEventListener('touchend', end, { passive: false }); cv.addEventListener('touchcancel', end, { passive: false });
       const hold = (id, on, off) => { const el = doc.getElementById(id); if (!el) return; const dn = (e) => { e.preventDefault(); el.classList.add('down'); on && on(); }, up = (e) => { e.preventDefault(); el.classList.remove('down'); off && off(); }; el.addEventListener('touchstart', dn, { passive: false }); el.addEventListener('touchend', up, { passive: false }); el.addEventListener('touchcancel', up, { passive: false }); };
-      hold('tuBoost', () => h.boost(true), () => h.boost(false)); hold('tuAbility', () => h.ability()); hold('tuClimb', () => h.climb()); hold('tuChat', () => h.chat());
+      hold('tuBoost', () => h.boost(true), () => h.boost(false)); hold('tuAbility', () => h.ability(true), () => h.ability(false)); hold('tuAbility2', () => h.ability2(true), () => h.ability2(false)); hold('tuClimb', () => h.climb()); hold('tuChat', () => h.chat());
     }
-    enable(on, features) { this.enabled = on; this.root.style.display = on ? 'block' : 'none'; this.doc.body.classList.toggle('touchUi', on); if (!on) this.release(); const f = features || {}; this.doc.getElementById('tuClimb').style.display = f.climb ? '' : 'none'; this.doc.getElementById('tuChat').style.display = f.chat ? '' : 'none'; }
+    enable(on, features) { this.enabled = on; this.root.style.display = on ? 'block' : 'none'; this.doc.body.classList.toggle('touchUi', on); if (!on) this.release(); const f = features || {}; this.second = this.doc.getElementById('tuAbility2'); this.doc.getElementById('tuClimb').style.display = f.climb ? '' : 'none'; this.doc.getElementById('tuChat').style.display = f.chat ? '' : 'none'; }
     start(e) {
       if (!this.enabled) return; e.preventDefault();
       if (this.h.spectating && this.h.spectating()) { this.h.next(); return; } // spectating: tap = next target

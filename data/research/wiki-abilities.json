@@ -1,0 +1,949 @@
+{
+ "source": "Mope.io Wiki 'Special Abilities' and 'Passive Abilities' (CC BY-SA 3.0); names, users, activation and descriptions only",
+ "special": [
+  {
+   "name": "Claw Slash; Bear Attack",
+   "used": [
+    "Bear",
+    "Gobi Bear",
+    "Polar Bear",
+    "Sabertooth Tiger"
+   ],
+   "activate": "press",
+   "description": "When used, the animal using it will slash with one (or both in the Sabertooth Tiger\u2019s case) of its arms in a small radius in the rightmost-front (or both sides in the Sabertooth Tiger\u2019s case) of the animal. If it comes into contact with another animal, the animal will be stunned (it also moderately damages prey). The Sabertooth Tiger's claw slash will use both arms to create two slashes rather than one. Prey will be stunned for 2 seconds and predators for 4.5, and prey will also have its health reduced by a significant amount."
+  },
+  {
+   "name": "Dig Hole",
+   "used": [
+    "Rabbit"
+   ],
+   "activate": "press",
+   "description": "When activated, the animal using it will dig a small hiding hole, which can be used by any animal from 1 through to 6, as well as the Cobra, Giant Spider and Blackwidow Spider. The hole will last as long as an animal is in it, but once no animal is hiding in it, it'll last for 20 seconds. The hole itself can be dug anywhere that isn't in an area of water."
+  },
+  {
+   "name": "Pull from Hole",
+   "used": [
+    "Fox",
+    "Arctic Fox"
+   ],
+   "activate": "press",
+   "description": "When used inside a hiding hole, a maximum of two animals will be forcibly ejected from the hole and stunned, causing them to say \"Woah!\" in Chat (the effects listed above will only work on animals that are within 1 to 9). Any animals pulled from the hole will be unable to enter it for a few seconds. Note that this ability only works when the Fox or Arctic Fox themselves is inside a hiding hole of some sort."
+  },
+  {
+   "name": "Hide in Shell",
+   "used": [
+    "Crab",
+    "Turtle"
+   ],
+   "activate": "hold",
+   "description": "When used, the animal will retreat into a shell (the Crab will cover a conch-like shell over itself while the turtle will retract its head and flippers inside its own body's shell). While hiding in their shells, the damage and XP loss taken by the animal is reduced by 70%. However, the animal\u2019s speed will also be reduced by 50% for the entire length of the ability. This ability can only be used on dry-land, and hills or rocks."
+  },
+  {
+   "name": "Squirt Ink",
+   "used": [
+    "Squid",
+    "Octopus"
+   ],
+   "activate": "other",
+   "description": "When the Squid is injured, it can squirt ink, stunning all tier 14 and below animals that come in contact with it for five seconds. The Octopus can use this ability but only when animals bite it in its disguised form. Prey of the animal that squirted the ink will be injured slightly if they touch the ink."
+  },
+  {
+   "name": "Dig",
+   "used": [
+    "Mole",
+    "Meerkat"
+   ],
+   "activate": "hold",
+   "description": "When used, the animal will leave a muddy trail that certain animals can , though the trail fades eventually. The Mole has more air than the Meerkat, and as such can use this ability for longer than the latter."
+  },
+  {
+   "name": "Glide",
+   "used": [
+    "Flying Lizard"
+   ],
+   "activate": "press",
+   "description": ""
+  },
+  {
+   "name": "Electric Shock",
+   "used": [
+    "Stingray"
+   ],
+   "activate": "press",
+   "description": "When activated, the animal will cause a circular area of electricity to appear, stunning players who are physically inside the radius. It does an small-moderate amount of damage to both prey and predators, and stuns for a short time. It can also be used by diving, and releasing the W key to resurface; the Stingray will use the electrick shock when emerging. It has a 9.5 second cooldown, and will not affect diving animals. Killing an animal with the shock ability will turn it into pieces of meat."
+  },
+  {
+   "name": "Bite Drag",
+   "used": [
+    "Crocodile"
+   ],
+   "activate": "press",
+   "description": "When used, the Crocodile will pull around any creature that touches the chomp texture. While dragging, the Crocodile itself will move very slowly, and inflict stunning onto the dragged animal, and damage if it is prey. The ability can be ended early by pressing W again."
+  },
+  {
+   "name": "Roll Snow",
+   "used": [
+    "Mammoth",
+    "Arctic Hare"
+   ],
+   "activate": "press",
+   "description": "A snowball will be projected from the Mammoth upon ability's usage, that grows larger the farther it rolls. The snowball freezes any animal on impact, freezing longer depending on how far it has rolled. It does a moderate amount of damage to prey, and a very small amount of damage to predators."
+  },
+  {
+   "name": "Fire; Shoot Fire; Fire Stream",
+   "used": [
+    "Dragon",
+    "Black Dragon",
+    "King Dragon"
+   ],
+   "activate": "other",
+   "description": "This ability differs for each animal that has it. The fire that comes from it will damage on impact and light the animal that it touches on fire (prey will be damaged more than predators), draining both health and water bars of whoever is lit on fire. For the Dragon, it can shoot a single short-ranged fireball, while the Black Dragon can shoot 2-3 fireballs. Meanwhile, the King Dragon can shoot a whole fire-stream."
+  },
+  {
+   "name": "Kick, Back Kick",
+   "used": [
+    "Donkey",
+    "Zebra"
+   ],
+   "activate": "press",
+   "description": "This ability differs for each animal that has it. While the effect of stunning and damaging is similar for both animals, the Donkey's kick comes straight from behind, while the Zebra's kick is angled south-east and south-west. The kick itself inflicts physical force, stunning and damaging both predator and prey (though the latter more severely)."
+  },
+  {
+   "name": "Inflate",
+   "used": [
+    "Pufferfish"
+   ],
+   "activate": "hold",
+   "description": "When used, the Pufferfish doubles in size, and its spikes become more apparent. Upon contact, any other animal aside from other Pufferfishes will be stunned and damaged, including predators. The Pufferfish can only stay in its enlarged form for 8 seconds, after which, it will shoot out a water drop stream."
+  },
+  {
+   "name": "Charge; Charge and Kick",
+   "used": [
+    "Muskox",
+    "Warthog",
+    "Swordfish",
+    "Turkey",
+    "Rhino",
+    "Cassowary"
+   ],
+   "activate": "other",
+   "description": "This ability differs slightly for each animal that has it. The simplified concept starts with the animal accelerating, and when they make contact with another animal, that animal will be stunned and damaged even if it is a predator (though more for prey). Charges also inflict quite a bit of knockback. The Rhino, Swordfish, Warthog and Muskox's ability only requires tapping W once; then these animals will charge forward until either hitting a creature or the charge ending by itself. For the Cassowary and Turkey, they must hold down W and release it when ready; causing them to charge while still having full maneuvering capabilities, and then kick whichever animal is in front of them after releasing W , knocking the animal back, stunning it and inflicting some damage."
+  },
+  {
+   "name": "Knock in Air",
+   "used": [
+    "Dino Monster"
+   ],
+   "activate": "press",
+   "description": "The ability works similar to the Gores ability of the Bison. The Dino Monster will accelerate forwards for about 4 seconds, pointing its horns forward. When it touches an animal, it will inflict damage and stun. At the end of the Dino Monster's charge the victim will be tossed into the air and lose extra health on impact."
+  },
+  {
+   "name": "Trunk Hit",
+   "used": [
+    "Elephant"
+   ],
+   "activate": "press",
+   "description": "When used, the Elephant will lash out with their trunk, stunning and damaging whatever creature was hit by it, and being forcefully pushed back (this affect includes the Elephant's predators). Unlike all other special abilities, the Trunk Hit can also affect the health bar of food sources. Not to mention it can kill Honeybees, Frogs, Snails, and Ducks in a single shot."
+  },
+  {
+   "name": "Whirlpool",
+   "used": [
+    "Kraken",
+    "Sea Monster"
+   ],
+   "activate": "press",
+   "description": "When used, a water \"whirlpool\" that sucks in, stuns and damaged nearby animals will be created. The Kraken's whirlpool will only suck in its prey and certain food sources, unlike the Sea Monster's whirlpool which sucks in its predators and equivalents along with prey and food sources. The Sea Monster's whirlpool also has a larger radius and duration, and makes the Sea Monster and any other animals stuck inside appear to be diving when it is used. Food sources that get sucked into the Sea Monster\u2019s whirlpool also get their sizes significantly reduced for the entire duration of the whirlpool."
+  },
+  {
+   "name": "Disguise; Mimic Animals",
+   "used": [
+    "Macaw",
+    "Octopus",
+    "Blackwidow Spider",
+    "Yeti",
+    "Snowman",
+    "Snowgirl"
+   ],
+   "activate": "hold",
+   "description": "Though what each animal can disguise at differs, when using the disguise ability, movement speed will be slower. The Yeti, Snowman and Snowgirl each can disguise as a snowball; the Macaw can disguise as any animal at random from 1 to 14 (while its species have other disguises; the Octopus can disguise as a range of different animals, even some AI Animals. While the snowball ruse is indistinguishable from real snowballs, Macaw and Octopi disguises are usually easy to recognise as the animal will move strangely and never have a full health bar; Macaw disguises also are nameless. When releasing W and stopping the disguise, each of the cited animals will perform another ability. See here for a list of Macaw disguises, and refer to this article for a list of Octopus disguises. The Blackwidow Spider can also disguise; if it is spinning a web whilst standing on a rock or underneath a bush, it will become almost invisible, although if a player looks hard enough, it can still be seen."
+  },
+  {
+   "name": "Tail Slap",
+   "used": [
+    "Blue Whale",
+    "King Dragon"
+   ],
+   "activate": "other",
+   "description": "When used, the Blue Whale and King Dragon will slap with their tail, creating knockback and inflicting stunning and damage on whatever animal is in the required vicinity. The King Dragon's tail slap ability can kill all non-tier 16 animals instantly provided they are close by, and reducing the Monster tier animals' health bar to half. Meanwhile the Blue Whale's slap inflicts only a bite's worth of damage but is superior in propelling the affected animal and/or food source backwards."
+  },
+  {
+   "name": "Slide on Ice",
+   "used": [
+    "Penguin",
+    "Seal",
+    "Walrus"
+   ],
+   "activate": "hold",
+   "description": "When used on patches of ice, the animal will slide. This will cause the animal to move 1.7 times faster than animals with grip, though it is hard to turn when using. Due to only being used on ice, it technically has no cooldown."
+  },
+  {
+   "name": "Snow Roar",
+   "used": [
+    "Yeti",
+    "Snowman",
+    "Snowgirl"
+   ],
+   "activate": "press",
+   "description": "When activated, a circle of freezing air will appear around the animal that is using the ability, as well as some snowballs. The freezing air cloud will freeze any animal in a close enough radius, stunning and damaging them. Snowballs from this ability have the same effect; there will be 5 emitted, with three at the front and two behind. Prior to the Snow Roar occurring, the Yeti and Snowman disguise as a snowball, with the roar happening when W is released. The snowballs from the freezing radius of The Snowgirl's and Aqua Yeti's ability have the additional effect of turning any animal hit by the snowball into an \"ice statue\". While a player is an ice statue, they will be unable to move, experience a further depletion of their health bar, and receive additional stunning once the ice statue wears off after about 5 seconds."
+  },
+  {
+   "name": "Roar; Growl; Groan",
+   "used": [
+    "Lion",
+    "Wolverine",
+    "Hippo"
+   ],
+   "activate": "press",
+   "description": "Though the ability name differs for each animal (ability name and usage's order is aligned), the effect of them all is nearly identical. When used, a circular sound-wave will be emitted from around the animal, stunning and slightly repelling any animal (and damaging prey). The Lion's Roar ability has the largest radius, while the Hippo's Groan becomes larger when it is in a water area."
+  },
+  {
+   "name": "Howl",
+   "used": [
+    "Wolf"
+   ],
+   "activate": "press",
+   "description": "Unlike the Loud Noise abilities as described above, the Wolf's howl ability will create a sound-projectile in whatever direction the Wolf is facing, causing the Wolf to say \"AWOOOOO!\" in the chat. The howl itself will 'scare' animals that are impacted by it, stunning them and causing them to say \"Ahh!\" in the chat, and forcing them away in the direction of the howl. Prey will also be damaged by the Howl."
+  },
+  {
+   "name": "Extra Boost; Dash",
+   "used": [
+    "Trout",
+    "Seahorse",
+    "Cheetah",
+    "Snow Leopard"
+   ],
+   "activate": "press",
+   "description": "The animals that can access this ability will have a brief increase in speed when using it; a dark circle patch will appear on the ground where this ability is used, and will fade after a few seconds."
+  },
+  {
+   "name": "Throw Fruit",
+   "used": [
+    "Gorilla"
+   ],
+   "activate": "press",
+   "description": "When on a hill or tree, the Gorilla will throw a fruit (either a banana or coconut) that will stun predators and prey, damaging only the latter."
+  },
+  {
+   "name": "Dig Food; Find Food",
+   "used": [
+    "Deer",
+    "Reindeer",
+    "Flamingo",
+    "Warthog"
+   ],
+   "activate": "hold",
+   "description": "For the Deer and Reindeer, if used, certain food sources and usually water drops will be produced from the ground. On normal land, usually the only food that will be created is brown mushrooms and water drops, while in mud patches, there is a higher chance that red mushrooms, lilypads, mushroom bushes and carrots can appear. This cannot be used on hills by the Doe, Marsh Deer or Musk Deer, all of which can climb hills. The Flamingo's ability is called \"Find Food\" and is different, as it is activated in areas of water rather than on dry land. While being used, food such as plankton, and AI Trout, Crabs and Seahorses will be produced (all AI provide the same amount of XP regardless of the human-operated versions being different tiers). The Flamingo will appear to have its head alone underwater while using the ability, which is shown by the four diving dots being where its head normally is. For the Warthog, it will dig for a few seconds, and eventually produce a combination of oranges and aloevera leaves (unlike the Deer and Reindeer's abilities which digs up food for the complete course of the ability). Once the food has been dug, the Warthog will say \"GRRRUNT!\" in the chat."
+  },
+  {
+   "name": "Cause Wave",
+   "used": [
+    "Killer Whale"
+   ],
+   "activate": "press",
+   "description": "When used, a large wave comprising of three individual waves will be created in water, which stuns and pushes all affected creatures in the direction of the wave."
+  },
+  {
+   "name": "Spin Web",
+   "used": [
+    "Giant Spider",
+    "Blackwidow Spider"
+   ],
+   "activate": "press",
+   "description": "The Giant Spider can spin webs from its tail, dropping them by pressing W . The time that a web is spun for will determine its size; large webs are quite visible while smaller webs are almost transparent. Webs will trap prey of the Giant Spider by paralysing it until the web wears off; all predators except for the Giant Scorpion, Black Dragon and King Dragon are unable to walk through Giant Spider webs. Blackwidow webs are slightly different. When it is spinning a web, the Blackwidow Spider will be unable to move (Giant Spiders can move at a slow pace while using their ability). If the Blackwidow is underneath a desert bush or standing on a rock, it will become almost invisible. Once pressing W again, the Blackwidow Spider will extend its web, with the distance depending on how long the web was spun for. After a few seconds of the web being untouched, A.I. bait could potentially spawn in the form of food or a low-tier animal. When prey touches the web, it will become entangled in it and the web will be dragged back to the Blackwidow Spider. Once bitten, the web will wear off (the web can also wear off naturally if the animal trapped by it isn't bitten for a few seconds). Predators except for 17 animals will become trapped too if they walk into the web, though they will not be dragged towards the Blackwidow."
+  },
+  {
+   "name": "Venom Spit",
+   "used": [
+    "Cobra"
+   ],
+   "activate": "hold",
+   "description": "The Cobra will rear its head back, and spit two venom balls (four if it is on a mud patch), up to three times if W is held. The venom from this ability is much more effective than poisonous bites, and affects both predators and prey. animals won't be affected by the venom, and it also wears off faster by being in a water source."
+  },
+  {
+   "name": "Suffocate Prey",
+   "used": [
+    "Boa Constrictor"
+   ],
+   "activate": "press",
+   "description": "This and the Bite Drag ability are almost alike. Upon activation, the Boa Constrictor will strangle any creature that is in close enough distance. While doing so, the constricted animal will receive stunning, damage, and be unable to move around of its own will. The Boa Constrictor will also move both itself and the suffocating animal in whatever direction the mouse is pointed at. Though this ability also works on predators, the predator is able to stop the constricting by biting the Boa."
+  },
+  {
+   "name": "Ambush Attack",
+   "used": [
+    "Tiger"
+   ],
+   "activate": "press",
+   "description": "The Tiger will leap forward and grab onto any creature that is close enough, saying \"ROAR!\" in the chat. Whatever has been grabbed will be stunned and slowly have its health bar reduced; the ability lasts for about 5 or 6 seconds. It can also be used on predators of the Tiger, particularly to tail-bite them from behind."
+  },
+  {
+   "name": "Stomp",
+   "used": [
+    "Giraffe"
+   ],
+   "activate": "hold",
+   "description": "The ability makes the giraffe stomp right, then left, then right, then left, then both legs. The stomps formerly did much more damage. The giraffe is slowed hugely while using this ability, and it is difficult to aim well."
+  },
+  {
+   "name": "Jaw Bite",
+   "used": [
+    "Shark",
+    "T-Rex"
+   ],
+   "activate": "press",
+   "description": "The animal using this ability will shake around any animal that is initially grabbed when the Jaw Bite is activated, creating small meat (the T-Rex can create medium-sized meat for animals above 13) and degrading the health bar of the bitten animal, also stunning them. If the Jaw Bite doesn't grab prey when used, it will reload faster. The target will also start bleeding after the attack."
+  },
+  {
+   "name": "Stink Cloud",
+   "used": [
+    "Pig"
+   ],
+   "activate": "press",
+   "description": "This ability can only be used on mud, or if the Pig's health bar isn't completely full, or inside a hiding hole. When used, a brown odor cloud will be created that decreases the health bar of all animals from 1 through to 12. Animals affected by the cloud will say \"YUCK!\" in the chat and consequently move a lot slower. The only animal immune to it is the Pig that created the cloud, and tiers 13 to 17 animals."
+  },
+  {
+   "name": "Fly; Fly From Hills",
+   "used": [
+    "Pigeon",
+    "Chukar",
+    "Woodpecker",
+    "Flamingo",
+    "Swinehoe",
+    "Peacock",
+    "Raven",
+    "Macaw",
+    "Toucan",
+    "Turkey"
+   ],
+   "activate": "hold",
+   "description": "This ability lets the birds fly in the sky layer of the game, going over all terrain, and become safe from ground-dwelling predators for a few seconds (unless another bird that can fly in the sky, as predatory birds that are flying can harm other flying birds). When flying, the bird doing so will spread out its wings. The Toucan can fly longer and will throw fruit upon landing, if it started flying from a bush or tree. The toucan has other variants that either decrease the cooldown, have longer flight, have quicker flight, or become immune to lava and throw a fireball if it started from the volcano. The Woodpecker, Flamingo, Peacock, Raven and Macaw have this as a secondary ability. For Turkey, is the third ability. Any flying will drain water faster. All versions of flight include the ability to boost mid-air (sprint fly), draining water even faster, provided that the animal is not in some other state such as diving or holding an animal."
+  },
+  {
+   "name": "Fly with Prey; Dive Attack",
+   "used": [
+    "Eagle",
+    "Pterodactyl"
+   ],
+   "activate": "press",
+   "description": "This ability will cause the animals that use it to not only fly, but also pick up prey and drop them. For the Eagle, it will initially fly low to the ground and carry prey up with it if it hits them. Then, after pressing W for a second time, the prey can be dropped at the Eagle's discretion (or it will be automatically dropped at the end of the ability). Then, the Eagle will descend back down to land level. The Eagle's rares can pick up predators, too. The Pterodactyl has a similar ability; it will begin to fly at ground level for a few seconds in order to take off (if damaged in this time the ability will cease). Then, when flying in the sky, it will dive down after pressing W again and pick up any animal in the appropriate hit-box. Then the prey will be dropped to the ground and receive a reduced health bar and stunning. Note that the Pterodactyl can also dive attack with all other 15 apexes, excluding the King Crab and Kraken."
+  },
+  {
+   "name": "Fly With Water",
+   "used": [
+    "Pelican"
+   ],
+   "activate": "press",
+   "description": "It makes it fly in a straight line, scooping up water. If it hits prey while scooping, you scoop up the prey with the water. If you hit any animal that is not prey while scooping, you lose your water and the animal that was hit gets stunned. When you have scooped the water, you can drop it on someone, stunning them. This is a sub-ability of Fly."
+  },
+  {
+   "name": "Sky Dive",
+   "used": [
+    "Falcon"
+   ],
+   "activate": "press",
+   "description": "Upon activation, the Falcon will begin flying and a red target will appear. The crosshair is used to hone in on the location that the Falcon will dive in; when the player clicks on an area of the map, the target will stop moving and turn green. Then, the Falcon will \"sky dive\" downwards in the direction of the crosshair, stunning any animal that it hits with the dive and damaging that animal if it is prey of the Falcon."
+  },
+  {
+   "name": "Target Attack",
+   "used": [
+    "Snowy Owl"
+   ],
+   "activate": "press",
+   "description": "When used, the Snowy Owl starts flying, and a cross-hair will appear on the screen. The cross-hair can lock onto prey by clicking on the desired animal, and the owl will peck them slowly while flying. Each peck does some damage and stuns, and drags the animal in whatever direction the Snowy Owl is flying."
+  },
+  {
+   "name": "Fly/Pickup Bones",
+   "used": [
+    "Vulture"
+   ],
+   "activate": "press",
+   "description": "Working similarly to the Eagle's \"Fly with prey\" ability, the Vulture will fly at ground-level at the start of the ability. If it flies into a carcass, it will instantly take off and ascend much higher into the sky. Then, once W is pressed again the Vulture will drop the carcass, turning it into bones once it lands on the ground. The ability's flying effect will still work if the Vulture doesn't pick up a carcass, only it will have to wait for the default duration to take off."
+  },
+  {
+   "name": "Spikes",
+   "used": [
+    "Hedgehog"
+   ],
+   "activate": "hold",
+   "description": "When used, the Hedgehog will puff up and stun any creature that comes close to it with its spikes. The spikes don't harm the health bar of any animal, but have some knockback. Essentially, no animal can come close to the Hedgehog while it is using Spikes, though other special abilities can stop this ability."
+  },
+  {
+   "name": "Peck",
+   "used": [
+    "Woodpecker"
+   ],
+   "activate": "hold",
+   "description": "When used, the Woodpecker will spread its wings out, gain angry eyes, and peck with its beak. Any prey of the Woodpecker that is affected by the peck will be stunned and receive damage, while predators are unaffected by it. Note that this ability can only be activated on low ground (i.e. not on a hill or tree)."
+  },
+  {
+   "name": "Sinkhole",
+   "used": [
+    "Lava Monster"
+   ],
+   "activate": "press",
+   "description": "This ability will create a gargantuan version of a Hiding Hole, which though it has an identical appearance, has different functions. Like the Ocean-based Whirlpool ability of the Kraken and Sea Monster, the Sinkhole will try to suck any nearby creatures into it. When inside, the Lava Monster is able to damage them (Black Dragons, the predator of the Lava Monster, can also be sucked inside)."
+  },
+  {
+   "name": "Command Babies",
+   "used": [
+    "Ostrich"
+   ],
+   "activate": "press",
+   "description": "Upon activation, the Ostrich will lay its own eggs, which eventually hatch into Ostrich Babies. Once the maximum of approximately 8 babies have been hatched, a target will be fixated on wherever the W key is pressed. If the target is focused on an animal, it will follow that animal wherever it goes. On the other hand, the target will stay still if it is focused on a terrain/the ground."
+  },
+  {
+   "name": "Fire Tornado",
+   "used": [
+    "Phoenix"
+   ],
+   "activate": "press",
+   "description": "This ability also uses a crosshair. When the crosshair is focused on a living creature, the Phoenix will create a fire tornado that will spew fire on the animal of focus in 5 second or so intervals. Fire Tornadoes have a health bar, which is decreased if it hovers above water. However, when the Phoenix that created the fire tornado enters a hiding hole, all fire tornadoes created by it will disappear."
+  },
+  {
+   "name": "Arm Smash",
+   "used": [
+    "King Crab"
+   ],
+   "activate": "press",
+   "description": "The King Crab will extend one of its arms out and cause damage, stunning and knockback to the hitbox that is created when this ability is activated. A side effect of the Arm Smash ability is that it causes a wave to be generated; if it smashes both arms after diving for a while, two waves will be created."
+  },
+  {
+   "name": "Freeze Prey",
+   "used": [
+    "Ice Monster"
+   ],
+   "activate": "press",
+   "description": "The Ice Monster will shoot an ice crystal from its mouth, which will freeze and damage prey and predators upon impact. The ice crystal will be fired depending on whichever direction the Ice Monster's head is facing, and it will be unable to move over hills/rocks. Crystals that don't hit anything will create a small ice pool (this doesn't have the same effect that ice patches in the Arctic do). Furthermore, this ability will only work if the Ice Monster has crystals on its back; if there are no crystals to be seen, the ability will be unusable for a while until they all regenerate."
+  },
+  {
+   "name": "Hypnotize",
+   "used": [
+    "Peacock"
+   ],
+   "activate": "hold",
+   "description": "When used, the Peacock's tail feathers will open and spread out, causing prey of it and predators within the range of 7 to 10 to be stunned and unable to move. It will apply for any of the named animals that are in a close radius to the Peacock."
+  },
+  {
+   "name": "Spits Food",
+   "used": [
+    "Desert Chipmunk"
+   ],
+   "activate": "press",
+   "description": "Upon activation, the Desert Chipmunk will boost forward and spit out a combination of food and/or water that stuns animals hit by it. When spitting on another animal, that animal technically consumes the food. This means even high tier animals such as Bison that can't normally eat dates and such are able to through this ability. However, they are still stunned."
+  },
+  {
+   "name": "Run",
+   "used": [
+    "Chicken"
+   ],
+   "activate": "press",
+   "description": "Once started, the Chicken will boost forward multiple times, spreading its wings out and saying \"CLUCK\" in the chat. Sometimes if the Chicken is damaged by a predator, this ability will automatically activate. However, despite this, Run is still a Special Ability and not Passive. It lasts for about ~6 seconds"
+  },
+  {
+   "name": "Roll",
+   "used": [
+    "Armadillo"
+   ],
+   "activate": "hold",
+   "description": "When used, the Armadillo will tuck its head into its body and begin to roll around, increasing its speed. This ability also allows the Armadillo to climb on hills when it is being used, but this will decrease its speed to become even slower than if it were not using the ability at all."
+  },
+  {
+   "name": "Jump High",
+   "used": [
+    "Gazelle",
+    "Markhor"
+   ],
+   "activate": "other",
+   "description": "The effects differ for each animal. For the Gazelle, it will be able to jump around anywhere the player chooses; it can easily be maneuvered around. When at ground level during the jump, Gazelles can damage prey, and bite tails. The Markhor on the other hand can only use the jump ability on hills or rocks. While pressing W on a hill, a Crosshair will appear. When the player clicks to target the crosshair, the Markhor will jump to wherever that crosshair is. While jumping, it doesn't damage prey/tail-bite predators."
+  },
+  {
+   "name": "Whine",
+   "used": [
+    "Fennec Fox"
+   ],
+   "activate": "press",
+   "description": "Once activated, the Fennec Fox will emit two small sound clouds that move at a slow pace. The clouds stun all animals in the range of 2 to 13 (Desert Chipmunk to Komodo Dragon), and additionally damages animals within tier 2 to 5 (prey of the Fennec Fox)."
+  },
+  {
+   "name": "Spit",
+   "used": [
+    "Camel"
+   ],
+   "activate": "press",
+   "description": "This ability will cause the Camel to spit a blue glob of saliva (it looks similar to a drop of water) that stuns animals and will reduce a bite-worth of health from prey and predators. Briefly, there will be a small spot that appears after the spit touches the ground. If this spot is touched, the animal will be subject to slime, similarly to the Frog's ability."
+  },
+  {
+   "name": "Rattle",
+   "used": [
+    "Rattlesnake"
+   ],
+   "activate": "hold",
+   "description": "This ability will cause the Rattlesnake to rattle its tail and create soundwaves to stun animals that get close to it. The soundwaves will become larger and larger until they collide with another creature, causing them to reduce. Other Rattlesnakes are immune to this ability's affects."
+  },
+  {
+   "name": "Laugh",
+   "used": [
+    "Hyena"
+   ],
+   "activate": "hold",
+   "description": "The Hyena will open its mouth and laugh, creating up to four crescent-shaped sound waves that will stun any creature that is impacted by it. When used, the Laugh ability has some recoil, causing the Hyena to move backwards slightly. The ability can be canceled early by pressing W again or with right click."
+  },
+  {
+   "name": "Gores",
+   "used": [
+    "Bison"
+   ],
+   "activate": "hold",
+   "description": "While holding W , the Bison will extend its horns and toss the first player it touches into the air, similarly to the Dino Monster's Charge and Toss ability. Animals between tier 5 and 13 can be tossed into the air multiple times, while 14 and 15 animals can only be tossed a single time. If the Bison has tossed one animal into the air already, other animals will merely be stunned if they come into contact with a Goring Bison."
+  },
+  {
+   "name": "Poison Bite",
+   "used": [
+    "Komodo Dragon"
+   ],
+   "activate": "",
+   "description": "When activated, the Komodo Dragon will lurch forward with its head. If it bites an animal, it will drag them for about a second, and then cause them to rapidly sweat. The effect works on all animals, but the sweating lasts longer on prey than predators. While sweating from this ability, animals can't use their abilities or boost."
+  },
+  {
+   "name": "Grab and Sting",
+   "used": [
+    "Giant Scorpion"
+   ],
+   "activate": "press",
+   "description": "The Giant Scorpion will use its pincers to grab whichever animal is closest in front of it, and cause them to be momentarily stunned and begin to shiver, which inflicts repetitive damage, causes the shivering animal to be unable to dash/boost and to also appear to vibrate. If a shivering player enters a Hiding Hfoiole or whirlpool, the shivering effect will decrease in severity and duration. The sting's damage and shivering length is massively reduced if stung outside of the Desert."
+  },
+  {
+   "name": "Headbutt",
+   "used": [
+    "Markhor",
+    "Big Goat"
+   ],
+   "activate": "press",
+   "description": "The ability is the same with the Dino Monster's ability but a longer cooldown. The Markhor only can knock its prey, while the Big Goat can knock any predator up to tier 15 (Apex) and inflicts more damage. When used, the Markhor/Big Goat will initially move backwards, and then charge with its horns. Any animal that is hit will fly in the air and receive bleeding when landing back on the ground (but no stunning). The charge portion (not the backwards movement) of the ability can be canceled early with W or right-click ."
+  },
+  {
+   "name": "Throw Spear",
+   "used": [
+    "Bigfoot"
+   ],
+   "activate": "press",
+   "description": "When a BigFoot throws a spear, it will say \u201cOOGA BOOGA!\u201d and when you are speared by it, you will bleed 4 seconds and a notification which is \u201cOuch, you've been speared by your Ooga!\u201d. When a Bigfoot is on the tree, it can spear prey and stop the prey from flying immediately and prey will bleed too."
+  },
+  {
+   "name": "Campfire",
+   "used": [
+    "Bigfoot"
+   ],
+   "activate": "hold",
+   "description": "The Bigfoot will say \u201cFIRE BOOGA!\u201d and a firestream with woodpile on bottom appears. When a predator get burned by it, the fire will not disappear; in fact, new fire will be grown. The only way to stop the fire is waiting for the ability to end. It is weak against anything but cannot be stopped."
+  },
+  {
+   "name": "Loud Caw",
+   "used": [
+    "Raven",
+    "Macaw"
+   ],
+   "activate": "press",
+   "description": "While being used, the Raven will emit multiple soundwaves that stuns animals and forcefully pushes them away from the Raven. The Raven will also say \"CAW!!!\" in the chat when doing this. Also, the Raven can only use the \"Loud Caw\" on low ground, as pressing W on a hill will cause the Raven to fly instead. The Macaw's Caw is functionally similar to the Raven's except that it will only emit a single caw after having used its \"Disguise\" ability. Hence, the caws of the Macaw will also not inflict as much recoil as those of the Raven's."
+  },
+  {
+   "name": "Hop",
+   "used": [
+    "Kakapo"
+   ],
+   "activate": "hold",
+   "description": "The Animal will sprint when using this ability, moving faster than usual and lunging with its beak and wings."
+  }
+ ],
+ "passive": [
+  {
+   "name": "Climbing on hills",
+   "used": [
+    "Pigeon",
+    "Chukar",
+    "Flying Lizard",
+    "Crab",
+    "Chicken",
+    "Woodpecker",
+    "Kakapo",
+    "Seal",
+    "Swinehoe",
+    "Flamingo",
+    "Peacock",
+    "Raven",
+    "Turtle",
+    "Macaw",
+    "Walrus",
+    "Snowy Owl",
+    "Gorilla",
+    "Toucan",
+    "Bear",
+    "Tiger",
+    "Gobi Bear",
+    "Vulture",
+    "Polar Bear",
+    "Falcon",
+    "Eagle",
+    "Markhor",
+    "Harpy Eagle",
+    "Sabertooth Tiger",
+    "Boa Constrictor",
+    "Giant Spider",
+    "Blackwidow Spider",
+    "Pterodactyl",
+    "Yeti",
+    "Dino Monster",
+    "Giant Scorpion",
+    "Ice Monster"
+   ],
+   "description": "Climbing on hills is an ability that allows certain animals to move around on hills, like they do on low ground. When standing on a hill, FoV is increased. However, the latter effect does not apply to animals that have the ability to , as their FoV will not change."
+  },
+  {
+   "name": "Climbing on rocks",
+   "used": [
+    "Crab",
+    "Flying Lizard",
+    "Seal",
+    "Turtle",
+    "Walrus",
+    "Vulture",
+    "Markhor",
+    "Harpy Eagle",
+    "Blackwidow Spider",
+    "Pterodactyl",
+    "King Crab",
+    "Giant Scorpion"
+   ],
+   "description": "Rocks are a little different to hills, but have comparable mechanics. While the majority of hill-climbers are unable to climb on rocks, all rock-climbers are also able to use hills. Like hills, rocks will also advance one's field of view. However, the latter effect does not apply to animals that have the ability to , as their FoV will not change."
+  },
+  {
+   "name": "Climbing on trees",
+   "used": [
+    "Mouse",
+    "Chipmunk",
+    "Pigeon",
+    "Flying Lizard",
+    "Woodpecker",
+    "Kakapo",
+    "Fox",
+    "Arctic Fox",
+    "Fennec Fox",
+    "Raven",
+    "Macaw",
+    "Cobra",
+    "Snowy Owl",
+    "Gorilla",
+    "Toucan",
+    "Bear",
+    "Tiger",
+    "Gobi Bear",
+    "Lion",
+    "Turkey",
+    "Polar Bear",
+    "Vulture",
+    "Eagle",
+    "Wolverine",
+    "Boa Constrictor",
+    "Komodo Dragon",
+    "Giant Spider",
+    "Blackwidow Spider",
+    "Bigfoot"
+   ],
+   "description": "Trees are similar to hills in some ways; it should be noted that not all hill-climbers automatically can access trees, and vice versa. By pressing S at the trunk of a tree, an animal will be transported to the higher layer of the tree. Pressing S whilst on top of the tree will cause the animal to be brought back down to ground-level. Animals with the ability will automatically reside on the canopy of the tree, and cannot go underneath trees."
+  },
+  {
+   "name": "Faster movement in water",
+   "used": [
+    "Penguin",
+    "Pig",
+    "Seal",
+    "Tiger",
+    "Crocodile",
+    "Hippo",
+    "Sabertooth Tiger",
+    "Mammoth",
+    "Yeti",
+    "Snowman",
+    "Snowgirl"
+   ],
+   "description": "All Ocean animals by default can move fast in water. However, if a non-Ocean animal is able to move at a pace that is not very slow, then it is considered a passive ability. While all animals with this ability are quick in water compared to slower dry-land-based animals, the speed that each moves at varies. All passively flying animals except for the Phoenix and Land Monster can move over water almost entirely unhindered."
+  },
+  {
+   "name": "Faster movement in mud",
+   "used": [
+    "Chicken",
+    "Pig",
+    "Cobra",
+    "Crocodile",
+    "Rhino",
+    "Wolverine",
+    "Hippo",
+    "Boa Constrictor",
+    "Sabertooth Tiger",
+    "Komodo Dragon",
+    "Ostrich",
+    "Elephant",
+    "Cassowary",
+    "Mammoth",
+    "T-Rex",
+    "Dino Monster",
+    "Sea Monster",
+    "Ice Monster",
+    "Giant Scorpion"
+   ],
+   "description": "While mud patches slow most animals down when they move around in it, certain animals have the ability to have mostly or entirely unhindered speed whilst in mud. Most don't receive the muddy effect afterwards, with the exception of the Cobra, Ostrich, Elephant, Cassowary, T-Rex, and all Rares whose normal counterpart is slowed. All animals who can can move over Mud without slowing down at all or receiving the muddy effect."
+  },
+  {
+   "name": "Diving in mud",
+   "used": [
+    "Chicken",
+    "Pig",
+    "Donkey",
+    "Warthog",
+    "Crocodile",
+    "Rhino",
+    "Hippo",
+    "Boa Constrictor",
+    "Komodo Dragon"
+   ],
+   "description": "Some fast-moving mud animals are also able to dive in mud. Unlike diving in water, this trait is mostly exclusive to a few animals, and is therefore considered a passive ability. Moreover, while not all animals that are speedy in mud can dive in it, all mud-diving animals are quick in mud. However, after an animal emerges from diving in mud, they will become muddy and slow until the mud fades (by leaving the mud patch). This ability also applies for the muddy ground that is left behind from the Meerkat's ."
+  },
+  {
+   "name": "Faster movement in quicksand",
+   "used": [
+    "Meerkat",
+    "Camel",
+    "Rattlesnake",
+    "Crocodile",
+    "Hippo",
+    "Komodo Dragon",
+    "Blackwidow Spider",
+    "T-Rex",
+    "Pterodactyl",
+    "Dino Monster",
+    "Giant Scorpion"
+   ],
+   "description": "The animals listed are able to move quickly over quicksand instead of being slowed. While this applies to both quicksand in its own patches and the layer surrounding oases for most animals, the Pterodactyl and Dino Monster are slowed in oasis quicksand but not in separate patches of quicksand."
+  },
+  {
+   "name": "Grip on ice",
+   "used": [
+    "Reindeer",
+    "Muskox",
+    "Wolf",
+    "Wolverine",
+    "Sabertooth Tiger",
+    "Mammoth",
+    "Yeti",
+    "Ice Monster"
+   ],
+   "description": "Grip allows for animals to turn much easier on ice, even more than normal turning, and with increased speed than on normal ground. In contrast, animals without this ability will slide around with less control, and are mildly slowed by ice. Animals with the ability technically have grip on ice by virtue of constantly hovering above the ground."
+  },
+  {
+   "name": "Increased movement speed",
+   "used": [
+    "Cheetah",
+    "Snow Leopard",
+    "Girabie",
+    "Lioness",
+    "Lion Cub"
+   ],
+   "description": "Certain animals and Rares cover more ground naturally than normal to different degrees of speed, making them faster than most animals. A good deal of these animals drain water faster as a caveat."
+  },
+  {
+   "name": "Reduced Boost Interval",
+   "used": [
+    "Cheetah",
+    "Ostrich"
+   ],
+   "description": "While all animals can boost, the Cheetah and Ostrich can boost more frequently with less delay per boost to different intervals. Because of this, while consistently boosting, they cover more ground but also drain their Water Bar more in the same duration in comparison."
+  },
+  {
+   "name": "Sprint when hurt, Sprint",
+   "used": [
+    "Desert Rat",
+    "Shrimp",
+    "Tarsier"
+   ],
+   "description": "All Tier 1 animals have the passive ability of sprinting when hurt. When their health bar is reduced/damaged in any way, these animals will immediately dash for a moderate distance and their speed will also increase for about 6 seconds. While this occurs, the Shrimp will say \"SPLASH!!!\" and the Mouse, Tarsier, Desert Rat and Chipmunk will say \"SQUEAK!!!\" in the Chat. The chicken also possesses this ability, but instead of being just a passive ability that is activated by taking damage, it is in fact also the chicken's special ability and can therefore be started manually by pressing W without needing to take damage to trigger it (basically part passive, part special ability)."
+  },
+  {
+   "name": "Poison Bite, Poisonous Bite; Poison Immunity",
+   "used": [
+    "Cobra",
+    "Rattlesnake",
+    "Giant Spider",
+    "Blackwidow Spider",
+    "Boa Constrictor",
+    "Giant Scorpion"
+   ],
+   "description": "For the poison bite, when touching prey or predators, non-immune animals will have their outline turn light yellowish-green and their health will gradually decrease (it is more effective if the poisoned animal is prey). The potency of the poison varies per animal. ---- Animals that are immune to poison\u2013meaning poisonous entities will not affect them\u2013such as the Boa Constrictor and Giant Scorpion do not all have a poisonous bite. However, all animals with a poisonous bite are by default immune to poison. They are additionally immune to the poison lake poison."
+  },
+  {
+   "name": "Lava Immunity, Immunity to Lava",
+   "used": [
+    "Lava Toucan",
+    "Dragon",
+    "Phoenix",
+    "Land Monster",
+    "Giant Scorpion",
+    "Black Dragon",
+    "King Dragon"
+   ],
+   "description": "When the player is on a lava source, they will be immune to burning from lava and from fire produced by lava. The Dragon technically does not have this ability, but its \"\" ability causes it to be unaffected by lava by virtue of the mechanics of that ability. It is still burnt by fire produced by lava."
+  },
+  {
+   "name": "Ink immunity, immunity to ink",
+   "used": [
+    "Squid",
+    "Octopus"
+   ],
+   "description": "While ink from the special abilities of the Squid and Octopus normally stuns most animals, each animal named in this section will be completely unaffected by it when moving around in it."
+  },
+  {
+   "name": "Bee Sting Immunity, Bee Immunity",
+   "used": [
+    "Bear",
+    "Polar Bear"
+   ],
+   "description": "Animals with Bee Sting Immunity are immune to all of the effects that are inflicted by Honey Bees when they use their sting. While Bees will normally cause a slight health bar reduction and slowed movement upon stinging, Bears and Polar Bears will not be damaged and their movement speed will barely be affected. However, when they turn red from the Bee sting, the aforementioned animals will also not be able to use their special abilities."
+  },
+  {
+   "name": "Immunity to the River's Current",
+   "used": [
+    "Crocodile",
+    "Hippo",
+    "Sabertooth Tiger",
+    "Dino Monster",
+    "Sea Monster",
+    "Ice Monster",
+    "Giant Scorpion",
+    "Frog"
+   ],
+   "description": "When animals with this ability are moving on the river, their movement will be unaffected by the river's current. When moving with the current, they will not become faster, and vice versa. Animals with the \"\" ability will also be unaffected by the current by virtue of the mechanics of that ability."
+  },
+  {
+   "name": "Immunity to debuff in other biomes",
+   "used": [
+    "Flying Lizard",
+    "Tiger",
+    "Lion",
+    "Wolverine",
+    "Markhor",
+    "Ostrich",
+    "Sabertooth Tiger",
+    "Yeti",
+    "Snowman",
+    "Snowgirl",
+    "Ice Monster"
+   ],
+   "description": "This Passive Ability allows animals to survive in other biomes without experiencing the effects of debuff (i.e. freezing or burning). For instance, the Lion, unlike most other Land-spawning animals, can enter the Desert biome without burning periodically. Despite this, these animals still lose water at a faster rate than in their native biome and are slightly slower."
+  },
+  {
+   "name": "Surviving for longer on dry land",
+   "used": [
+    "Crab",
+    "Flamingo",
+    "Turtle",
+    "Pelican",
+    "King Crab"
+   ],
+   "description": "In the same way that speed in water for non-Ocean animals is not a common trait and thereby deemed a passive ability, Ocean animals are normally not able to go at a fast pace on dry land and lose water fast when outside of a water source. However, the named animals above are able to survive in the Land, Arctic and Desert biomes on dry land for extended periods of time compared to other Ocean animals (though they experience debuff in the latter two biomes). Notably, Ocean animals that can survive on dry land do move slower compared to land-dwelling animals, and lose water at a faster rate than them (though can still last for significantly longer than most of the other Ocean animals that can make it for several seconds at most before dying from dehydration)."
+  },
+  {
+   "name": "Frostbite, Freeze Bite",
+   "used": [
+    "Ice Monster"
+   ],
+   "description": "The animal with this ability will produce a stunning freeze effect every time it bites prey (not including predators). The stun is similar to the debuff effect of a non-Arctic animal going into the Arctic biome; the prey will be slowed down for a second and lose additional health, but will also slow down the predator for a slightly shorter time. Freezing lasts longer in the Arctic and shorter against Arctic animals."
+  },
+  {
+   "name": "Fiery Bite, Fire Bite",
+   "used": [
+    "Phoenix",
+    "Land Monster"
+   ],
+   "description": "This effect only works on prey, and for the Phoenix and Land Monster, their tier 15/16 equivalents when biting them in 1v1. Animals affected by the Fiery Bite will be set on fire for a brief period, draining their water bar and doing additional damage. If killed through the extra damage alone, the inflicter receives the XP."
+  },
+  {
+   "name": "Fly over everything",
+   "used": [
+    "Dragon",
+    "Phoenix",
+    "Land Monster",
+    "Honey Bee"
+   ],
+   "description": "The passive ability of Flying over everything differs from the special ability of flying that many animals have. Though the term 'fly' in this ability is confusing, a more accurate description would be that this ability allows animals that use it to hover over ground-level. It is a constant presence that allows the movement consistency of animals that have the ability to remain relatively unhindered; the terrain of different biomes will not affect how fast an animal moves (exceptions are the Phoenix and Land Monster, who are slower over water; and the Honey Bee, as it flies slower over hills). This means that while animals that fly over everything can move over any surface, when on top of hills and rocks, their FoV will remain unchanged. By default, these animals are immune to river current, have normal grip on Ice, and are unaffected by Mud due to their flying nature. Furthermore, this ability also makes these animals unable to be underneath trees, as they are constantly flying above the trees. Animals with this ability is also immune to lava, as they are flying above the lava as seen with the dragon, they are immune to lava but they can still be set on fire with ground fires, meaning they are not fire resistant"
+  },
+  {
+   "name": "Consume Carcasses; Consume Bones",
+   "used": [
+    "Hyena",
+    "Vulture",
+    "Crocodile",
+    "Wolverine",
+    "Komodo Dragon",
+    "T-Rex",
+    "Pterodactyl"
+   ],
+   "description": "The animals with this ability are able to consume animal carcasses, by affecting their health bar. Animals that have the ability to consume carcasses can also eat bones (the latter of which are created through ). Whilst damaging the carcass, small meat pieces will be produced around it; one will appear each time the carcass is hit."
+  },
+  {
+   "name": "Exhale food",
+   "used": [
+    "Killer Whale",
+    "Blue Whale"
+   ],
+   "description": "In the wake of either of these animals diving, food will appear from out of their blowhole. It can be a varying mix of Plankton, water droplets, or mushroom species. This ability has no fixed cooldown; but if a player dives and emerges, if they dive again within the next few seconds, the ability won't activate."
+  },
+  {
+   "name": "Shoot Fire, Spit Fire",
+   "used": [
+    "Lava Toucan",
+    "Phoenix",
+    "Land Monster"
+   ],
+   "description": "It is activated by pressing S , similarly to non-Volcanic animals also being able to spit water pods by pressing S . However, there are some notable differences between the latter and shooting fire. Unlike water, when fire is shot at another player, it will not replenish their lava if they have a lava bar, but will reduce their health and water bar in the same way that all fire does. Furthermore, fire shooting reduces the lava bar of the animal doing it much faster than water, meaning it cannot be done too many times; 5 at most with a full lava bar and 8 if the player is a Land Monster."
+  },
+  {
+   "name": "Invisibility, Turn Invisible; Camouflage",
+   "used": [
+    "Snowman",
+    "Snowgirl",
+    "Lioness",
+    "Black Lion Cub"
+   ],
+   "description": "When they are at a standstill, the animals with this ability can turn completely invisible. For the Lioness and Black Lion Cub, this ability is called 'Camouflage' while it is 'Invisibility' for The Snowman and The Snowgirl. If their special ability is used or if they move, the player will become visible once again. This ability will also deactivate if a predator touches the Snowman/Snowgirl."
+  },
+  {
+   "name": "Tentacle Sting",
+   "used": [
+    "Jellyfish"
+   ],
+   "description": "When another player within 1 to approximately 9 attempts to bite its tail, it loses 1% of its XP up to 1K, receives loss of health and gets stunned. There is a 1-2 second cooldown for it. Interestingly, the tentacle sting also affects AI such as the Snail."
+  },
+  {
+   "name": "See animals inside Hiding Holes",
+   "used": [
+    "Fennec Fox"
+   ],
+   "description": "In August of 2020, all animals were given the ability to see animals that have been hiding inside Hiding Holes for under 15 seconds. However, the Fennec Fox has the ability to see any animals that are using hiding holes in spite of however long they have been inside. Moreover, the Fennec Fox can see inside holes even if it is not in one itself. The ability will apply to any type of hiding holes that are within the Fennec Fox's FoV, but does not apply to Caves or Igloos, where all animals will be able to see any other animal inside for an infinite period of time until death."
+  },
+  {
+   "name": "Mad Donkey",
+   "used": [
+    "Jackass"
+   ],
+   "description": "The Jackass gains a significant speed increase for a maximum of around 10 seconds, reduced boost interval, and will stun any animal it comes into contact with. The Jackass must keep boosting to keep the ability active, or it'll stop. As a visual indicator, its face contorts into anger while its passive ability is active."
+  }
+ ]
+}

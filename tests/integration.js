@@ -161,6 +161,12 @@ function client(port = PORT) {
       a.send({ t: 'join', name: 'Rd', v: '2021-06-12', mode: 'redemption', animal: 'dragon', difficulty: 'pro' }); const w2 = await a.until('welcome'); assert.strictEqual(w2.mode, 'arena'); assert.strictEqual(w2.gm, 'redemption'); const sh2 = a.msgs.filter((x) => x.t === 'shop').pop(); assert.strictEqual(sh2.credits, 4, 'one credit spent');
       const t3 = Date.now(); let red = null; while (Date.now() - t3 < 3500 && !red) { await sleep(80); const s = a.msgs.filter((x) => x.t === 'snap').pop(); if (s && s.red) red = s.red; } assert.ok(red && red.lv === 1 && red.pro === 1); a.ws.close();
     });
+    await t('abilities over the wire: snapshot carries slot ids/cooldowns; Dragon fire creates a zone in the arena', async () => {
+      const c = client(PORT_DEV); await c.ready; c.send({ t: 'join', name: 'KD', v: '2026-11-13', mode: 'arena', animal: 'dragon' }); await c.until('welcome');
+      const t0 = Date.now(); let you = null; while (Date.now() - t0 < 3000 && !you) { await sleep(80); const s = c.msgs.filter((x) => x.t === 'snap').pop(); if (s) you = s.you; } assert.strictEqual(you.a1, 'fire'); assert.strictEqual(you.a2, null); assert.ok('cd' in you && 'cd2' in you);
+      c.send({ t: 'ability', slot: 0, d: 1 }); const t1 = Date.now(); let zn = null; while (Date.now() - t1 < 3000 && !zn) { await sleep(80); const s = c.msgs.filter((x) => x.t === 'snap').pop(); if (s && s.ab && s.ab.zn && s.ab.zn.length) zn = s.ab.zn; } assert.ok(zn, 'fire zone in the snapshot'); c.send({ t: 'ability', slot: 0, d: 0 });
+      c.ws.close();
+    });
     await t('sessions: resume restores coins/inventory; logout invalidates the token', async () => {
       const c = await login(PORT_DEV); c.send({ t: 'dev-coins', v: '2019-12-30', n: 500 }); await c.until('shop'); c.ws.close();
       const c2 = client(PORT_DEV); await c2.ready; c2.send({ t: 'resume', v: '2019-12-30', token: c.token }); const r = await c2.until('auth'); assert.deepStrictEqual([r.ok, r.user, r.coins], [true, c.user, 500]);

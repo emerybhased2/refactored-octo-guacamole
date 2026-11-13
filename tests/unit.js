@@ -65,14 +65,14 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
     for (const a of J('data/abilities/abilities.json')) { const i = png(a.icon); assert.deepStrictEqual([i.w, i.h, i.type], [64, 64, 6], a.id); }
     for (const b of J('data/biomes/biomes.json')) { const i = png(b.tile); assert.deepStrictEqual([i.w, i.h], [256, 256], b.id); }
     const s = png(mcfg.icons.muteOff.src); assert.deepStrictEqual([s.w, s.h], [60, 60]);
-    const gui = require('../tools/art/gui.js'); for (const a of J('data/abilities/abilities.json')) assert.ok(gui.abilityIds.includes(a.id), 'no glyph for ' + a.id);
+    const gui = require('../tools/art/gui.js'); for (const a of J('data/abilities/abilities.json')) assert.ok(a.type === 'passive' || gui.abilityIds.includes(a.glyph || a.id), 'no glyph for ' + a.id);
   });
   await t('HUD ability button state (cooldown from server)', () => {
     const ab = J('data/abilities/abilities.json'), cheetah = animals.find((a) => a.id === 'cheetah');
     assert.strictEqual(HUD.abilityState(animals.find((a) => a.id === 'mouse'), ab, 0), null);
     const ready = HUD.abilityState(cheetah, ab, 0); assert.ok(ready.ready && ready.implemented && ready.name === 'Extra Boost');
     const cd = HUD.abilityState(cheetah, ab, 6000); assert.ok(!cd.ready && cd.remainingSec === 6 && Math.abs(cd.frac - 0.75) < 1e-9);
-    assert.strictEqual(HUD.abilityState(animals.find((a) => a.id === 'kraken'), ab, 0).implemented, false);
+    assert.strictEqual(HUD.abilityState(animals.find((a) => a.id === 'kraken'), ab, 0).implemented, true); assert.strictEqual(HUD.abilityState(cheetah, ab, 0, 'fire').name, 'Fire'); assert.strictEqual(HUD.abilityState(cheetah, ab, 0, null), null);
   });
   await t('muted icon is wired in the menu config', () => assert.ok(mcfg.icons.muteOff && mcfg.icons.mute));
 
@@ -297,7 +297,7 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
   await t('2020-06-13: version, roster (82 animals), Warthog/Bigfoot, rarity, throw_spear', () => {
     assert.strictEqual(v5.date, '2020-06-13'); const A0 = J('data/progression/animals.json'), A = A0.filter((a) => a.releaseDate <= '2020-06-13'); assert.strictEqual(A.length, 82);
     const bf = A.find((a) => a.id === 'bigfoot'), wh = A.find((a) => a.id === 'warthog'); assert.ok(bf && wh); assert.strictEqual(bf.rarity, 0.001); assert.strictEqual(bf.releaseDate, '2020-06-13');
-    assert.ok(J('data/abilities/abilities.json').some((a) => a.id === 'throw_spear' && a.implemented === false));
+    assert.ok(J('data/abilities/abilities.json').some((a) => a.id === 'throw_spear' && a.implemented === true && a.effects && a.effects[0].pk === 'spear'));
     for (const a of [bf, wh]) assert.ok(fs.existsSync(path.join(ROOT, a.sprite)), a.id);
   });
   await t('2020-06-13: variants rarities verified, art present', () => {
@@ -409,9 +409,26 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
     const MH = require('../client/ui/ModeHud.js'), v2017 = { date: '2017-02-13', modes: ['normal', 'sandbox'], features: {} }, v21 = { date: '2021-06-12', modes: ['normal'], features: { arena: true, shop: true, accounts: true } };
     const o17 = Object.fromEntries(MH.modeOptions(C, v2017, null).map((o) => [o.id, o])), o21 = Object.fromEntries(MH.modeOptions(C, v21, { user: 'a', credits: 3 }).map((o) => [o.id, o]));
     assert.ok(/\(2017\)/.test(o17.sandbox.label) && /\(2018\)/.test(o17.zombie.label) && /\(2018-2024\)/.test(o17.team.label)); assert.ok(!o17.sandbox.disabled && o17.arena.disabled && o17.redemption.disabled && o17.beta.disabled && /not implemented/.test(o17.beta.label)); assert.ok(/bonus/.test(o17.royale.label) && /bonus/.test(o21.royale.label) && !/bonus/.test(o21.redemption.label) && /3 credit/.test(o21.redemption.label) && o21.sandbox.disabled);
-    assert.deepStrictEqual(MH.flagsOf(1 | 4 | 8), { team: 1, zombie: true, infected: true }); assert.deepStrictEqual(MH.flagsOf(0), { team: 0, zombie: false, infected: false });
+    assert.deepStrictEqual([MH.flagsOf(1 | 4 | 8).team, MH.flagsOf(1 | 4 | 8).zombie, MH.flagsOf(1 | 4 | 8).infected], [1, true, true]); assert.deepStrictEqual([MH.flagsOf(0).team, MH.flagsOf(0).zombie, MH.flagsOf(0).infected, MH.flagsOf(0).stun], [0, false, false, false]);
     const cl = J('data/modes/classic.json'); assert.strictEqual(cl.maxTier, 14); assert.deepStrictEqual(cl.biomes, ['land', 'ocean']); assert.strictEqual(Object.keys(cl.tiers).length, 23); assert.strictEqual(cl.tiers.dragon, 14);
     const sh = J('data/shop/shop.json').items.filter((i) => i.type === 'credits'); assert.deepStrictEqual(sh.map((i) => i.credits), [5, 10, 20]);
+  });
+
+  // ---- abilities + skin popover
+  await t('skin popover: only owned skins of that animal, equipped first', () => {
+    const { ownedSkinsFor } = require('../client/ui/SkinPopover.js'), items = [{ id: 'a', type: 'skin', animal: 'fox', name: 'Zed', sprite: 'a.png' }, { id: 'b', type: 'skin', animal: 'fox', name: 'Amber', sprite: 'b.png' }, { id: 'c', type: 'skin', animal: 'fox', name: 'Locked', sprite: 'c.png' }, { id: 'd', type: 'skin', animal: 'bear', name: 'Bear', sprite: 'd.png' }, { id: 'e', type: 'feature', animal: 'fox', name: 'F' }];
+    assert.deepStrictEqual(ownedSkinsFor(items, { owned: ['a', 'b', 'd', 'e'], equipped: { fox: 'a' } }, 'fox').map((s) => [s.id, s.equipped]), [['a', true], ['b', false]]); assert.deepStrictEqual(ownedSkinsFor(items, { owned: [], equipped: {} }, 'fox'), []); assert.deepStrictEqual(ownedSkinsFor(items, null, 'fox'), []);
+    const cs = fs.readFileSync(path.join(ROOT, 'client/client.js'), 'utf8'), tr = fs.readFileSync(path.join(ROOT, 'client/ui/EvolveTray.js'), 'utf8'); assert.ok(/contextmenu/.test(cs) && /skinPop\.show/.test(cs) && /contextmenu/.test(tr) && /450/.test(tr) && /touchstart/.test(tr));
+  });
+  await t('abilities: 92 wiki abilities catalogued with effects, glyph + icon; every wiki-used animal exists; client flag bits', () => {
+    const W = J('data/research/wiki-abilities.json'), A = J('data/abilities/abilities.json'), animalsAll = new Set(J('data/progression/animals.json').map((a) => a.id));
+    assert.strictEqual(W.special.length, 64); assert.strictEqual(W.passive.length, 28); assert.ok(/CC BY-SA/.test(W.source));
+    const sp = A.filter((a) => a.type !== 'passive'), pa = A.filter((a) => a.type === 'passive'); assert.ok(sp.length >= 64 && pa.length >= 28);
+    for (const a of sp) { assert.ok(Array.isArray(a.effects) && a.effects.length && a.implemented, a.id); assert.ok(['press', 'hold'].includes(a.activation), a.id); assert.ok(a.cooldownMs > 0, a.id); const i = png(a.icon); assert.deepStrictEqual([i.w, i.h], [64, 64], a.id); for (const u of a.usedBy || []) assert.ok(animalsAll.has(u), a.id + ' > ' + u); for (const e of a.effects) assert.ok(['speed', 'area', 'zone', 'shield', 'hide', 'invis', 'fly', 'grab', 'proj', 'summon', 'food', 'water'].includes(e.k), a.id + ' ' + e.k); }
+    const sim = pa.filter((a) => a.simulated).map((a) => a.id); for (const id of ['fast_water', 'speed_up', 'sprint_hurt', 'fly_over', 'invisible_still', 'exhale_food', 'reduced_boost', 'dry_land', 'poison_immunity', 'climb_trees']) assert.ok(sim.includes(id), id); assert.strictEqual(sim.length, 10); assert.ok(pa.some((a) => !a.simulated && /NOT simulated/.test(a.confidence)));
+    const AF = require('../client/ui/AbilityFx.js'); assert.deepStrictEqual(Object.entries(AF.flagsOf(16 | 32 | 128)).filter(([, v]) => v === true).map(([k]) => k), ['stun', 'shield', 'fly']); assert.strictEqual(AF.KINDS[1], 'fire'); assert.strictEqual(AF.KINDS.length, 18);
+    const kd = J('data/progression/animals.json').find((a) => a.id === 'kingdragon'); assert.ok(kd.abilities.includes('tail_slap') && kd.abilities.includes('fire')); assert.strictEqual(A.find((a) => a.id === 'tail_slap').keyboard, 'S');
+    assert.ok(J('versions/2026/november-13/version.json').features.wikiAbilities && !J('versions/2021/june-12/version.json').features.wikiAbilities);
   });
 
   console.log(`unit: ${pass} passed, ${fail} failed`); process.exit(fail ? 1 : 0);
