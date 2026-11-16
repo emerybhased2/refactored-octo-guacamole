@@ -168,6 +168,14 @@ function client(port = PORT) {
       c.send({ t: 'ability', slot: 0, d: 1 }); const t1 = Date.now(); let zn = null; while (Date.now() - t1 < 3000 && !zn) { await sleep(80); const s = c.msgs.filter((x) => x.t === 'snap').pop(); if (s && s.ab && s.ab.zn && s.ab.zn.length) zn = s.ab.zn; } assert.ok(zn, 'fire zone in the snapshot'); c.send({ t: 'ability', slot: 0, d: 0 });
       c.ws.close();
     });
+    await t('single-port hosting: the web server serves the client and proxies WebSocket /ws to the game server', async () => {
+      const PORT_WEB = 18083, web = spawn('node', [path.join(ROOT, 'scripts/devserver.js')], { env: Object.assign({}, process.env, { PORT: PORT_WEB, MOPE_PORT: PORT_DEV }), stdio: 'ignore' });
+      try {
+        await sleep(700); const r = await fetch('http://127.0.0.1:' + PORT_WEB + '/'); assert.strictEqual(r.status, 200); const vs = await (await fetch('http://127.0.0.1:' + PORT_WEB + '/api/versions')).json(); assert.strictEqual(vs.length, 7);
+        const ws = new WebSocket('ws://127.0.0.1:' + PORT_WEB + '/ws'); const got = await new Promise((res, rej) => { ws.onopen = () => ws.send(JSON.stringify({ t: 'join', name: 'Proxy', v: '2017-02-13' })); ws.onmessage = (e) => { const m = JSON.parse(e.data); if (m.t === 'welcome') res(m); }; ws.onerror = () => rej(new Error('ws error')); setTimeout(() => rej(new Error('timeout')), 4000); }); assert.strictEqual(got.version.id, '2017-02-13'); ws.close();
+        const bad = await new Promise((res) => { const w2 = new WebSocket('ws://127.0.0.1:' + PORT_WEB + '/elsewhere'); w2.onopen = () => res('open'); w2.onerror = () => res('refused'); w2.onclose = () => res('refused'); setTimeout(() => res('refused'), 2000); }); assert.strictEqual(bad, 'refused');
+      } finally { web.kill('SIGTERM'); }
+    });
     await t('sessions: resume restores coins/inventory; logout invalidates the token', async () => {
       const c = await login(PORT_DEV); c.send({ t: 'dev-coins', v: '2019-12-30', n: 500 }); await c.until('shop'); c.ws.close();
       const c2 = client(PORT_DEV); await c2.ready; c2.send({ t: 'resume', v: '2019-12-30', token: c.token }); const r = await c2.until('auth'); assert.deepStrictEqual([r.ok, r.user, r.coins], [true, c.user, 500]);

@@ -1,8 +1,11 @@
 # Project changelog
 
-## 1.2.0 - Completion pass (in progress)
+## 1.2.0 - Completion pass
 - Terrain effects (2020+ builds, `features.terrainEffects`): bushes/holes hide small animals, mud (fast/diving for the 2020 mud animals, slow for others), ice patches, lava pools hurt, hills and rocks block non-climbers (wiki-sourced build). Pull-from-hole reaches animals hiding in holes.
 - 26 of 28 passives simulated (the other two - river current, biome debuffs - do not apply: the game has neither).
+- Battle Royale spawn eggs + healing stones, Zombie lotus flowers + infection orbs, all 13 Team Stone perks, Wild Mope tier waves, Pandemic hole quarantine, **Beta Mope.io** (unreleased animals in Underground + Deep Ocean), ink blindness, sounds for abilities, portrait phone layout.
+- Art QA test: no blank/duplicate sprites; wiki skins now carry unique markings; fixed a mis-mapped skin (Golden Lava Monster).
+- Integration test for single-port hosting (/ws proxy). docs/STATUS.md added.
 - Soak test (ability-spamming players of every animal in every mode/version) found and fixed a ConcurrentModificationException in Viral Pandemic.
 
 ## 1.1.0 - Every Mope.io ability + skin picker on upgrade choices
