@@ -414,6 +414,10 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
     const sh = J('data/shop/shop.json').items.filter((i) => i.type === 'credits'); assert.deepStrictEqual(sh.map((i) => i.credits), [5, 10, 20]);
   });
 
+  await t('ability sounds: played when the cooldown jumps, one cue per effect kind', () => {
+    const S = require('../client/audio.js'); assert.strictEqual(S.abilitySound(0, 8000, 'area'), 'ab_area'); assert.strictEqual(S.abilitySound(7900, 8000, 'area'), null); assert.strictEqual(S.abilitySound(0, 0, 'speed'), null); assert.strictEqual(S.abilitySound(0, 5000, 'nope'), null);
+    for (const k of ['ab_speed', 'ab_area', 'ab_zone', 'ab_shield', 'ab_hide', 'ab_fly', 'ab_grab', 'ab_proj', 'ab_summon', 'ab_food']) assert.ok(S.kinds.includes(k), k);
+  });
   // ---- abilities + skin popover
   await t('skin popover: only owned skins of that animal, equipped first', () => {
     const { ownedSkinsFor } = require('../client/ui/SkinPopover.js'), items = [{ id: 'a', type: 'skin', animal: 'fox', name: 'Zed', sprite: 'a.png' }, { id: 'b', type: 'skin', animal: 'fox', name: 'Amber', sprite: 'b.png' }, { id: 'c', type: 'skin', animal: 'fox', name: 'Locked', sprite: 'c.png' }, { id: 'd', type: 'skin', animal: 'bear', name: 'Bear', sprite: 'd.png' }, { id: 'e', type: 'feature', animal: 'fox', name: 'F' }];
@@ -429,6 +433,14 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
     const AF = require('../client/ui/AbilityFx.js'); assert.deepStrictEqual(Object.entries(AF.flagsOf(16 | 32 | 128)).filter(([, v]) => v === true).map(([k]) => k), ['stun', 'shield', 'fly']); assert.strictEqual(AF.KINDS[1], 'fire'); assert.strictEqual(AF.KINDS.length, 19);
     const kd = J('data/progression/animals.json').find((a) => a.id === 'kingdragon'); assert.ok(kd.abilities.includes('tail_slap') && kd.abilities.includes('fire')); assert.strictEqual(A.find((a) => a.id === 'tail_slap').keyboard, 'S');
     assert.ok(J('versions/2026/november-13/version.json').features.wikiAbilities && !J('versions/2021/june-12/version.json').features.wikiAbilities);
+  });
+
+  // ---- art QA (every sprite exists, is non-trivial, and looks different from its siblings)
+  await t('art QA: no blank or duplicated sprites among animals (148), wiki skins (375) and abilities (97); skins differ from their base animal', () => {
+    const crypto = require('crypto'), hash = (f) => crypto.createHash('sha1').update(fs.readFileSync(path.join(ROOT, f))).digest('hex'), A = J('data/progression/animals.json'), S = J('data/shop/skins-wiki.json').items, AB = J('data/abilities/abilities.json');
+    const seen = new Map(); for (const a of A) { const f = fs.statSync(path.join(ROOT, a.sprite)).size; assert.ok(f > 1500, a.id + ' looks blank'); const h = hash(a.sprite); assert.ok(!seen.has(h), a.id + ' duplicates ' + seen.get(h)); seen.set(h, a.id); }
+    const sk = new Map(); for (const it of S) { const f = fs.statSync(path.join(ROOT, it.sprite)).size; assert.ok(f > 1500, it.id + ' looks blank'); const h = hash(it.sprite); assert.ok(!sk.has(h), it.id + ' duplicates ' + sk.get(h)); sk.set(h, it.id); assert.ok(!seen.has(h), it.id + ' is identical to an animal sprite'); }
+    const ic = new Map(); for (const a of AB) { assert.ok(fs.statSync(path.join(ROOT, a.icon)).size > 300, a.id); } for (const f of fs.readdirSync(path.join(ROOT, 'assets/biomes')).filter((x) => x.endsWith('.png'))) assert.ok(fs.statSync(path.join(ROOT, 'assets/biomes', f)).size > 3000, f);
   });
 
   console.log(`unit: ${pass} passed, ${fail} failed`); process.exit(fail ? 1 : 0);

@@ -402,9 +402,9 @@
    "confidence": "name/animal/category/date VERIFIED (Mope.io Wiki 'List of skins'); look and price are original/inferred"
   },
   {
-   "id": "dinomonster_golden_lava_monster",
+   "id": "lavamonster_golden_lava_monster",
    "type": "skin",
-   "animal": "dinomonster",
+   "animal": "lavamonster",
    "name": "Golden Lava Monster",
    "category": "Golden skins",
    "wikiDates": [
@@ -415,8 +415,8 @@
    "releaseDate": "2026-11-13",
    "wikiReleaseDate": "2019-12-23",
    "price": 800,
-   "family": "dinomonster_golden_lava_monster",
-   "sprite": "assets/skins/wiki/dinomonster_golden_lava_monster.png",
+   "family": "lavamonster_golden_lava_monster",
+   "sprite": "assets/skins/wiki/lavamonster_golden_lava_monster.png",
    "spriteStatus": "recreated",
    "confidence": "name/animal/category/date VERIFIED (Mope.io Wiki 'List of skins'); look and price are original/inferred"
   },

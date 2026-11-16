@@ -12,7 +12,7 @@
   const WORDS = [
     [/gold|golden|sun|solar/, 'golden'], [/aqua|azure|blue|ocean|frost|ice|icy|glacier|winter|snow|sapphire|water|wave|tide|sea/, 'azure'], [/ruby|red|crimson|fire|flame|lava|magma|blood|ember|inferno|cherry|devil|demon|hell|phoenix/, 'red'],
     [/emerald|green|jungle|toxic|acid|slime|zombie|plague|swamp|moss|leaf|clover|forest|mint|lime|goo/, 'green'], [/violet|purple|amethyst|void|cosmic|galaxy|nebula|singularity|dark matter|witch|magic|mystic|wizard|grape|plum/, 'purple'],
-    [/shadow|dark|night|black|ebony|obsidian|midnight|raven|coal|soot|abyss|eclipse|ninja|bat|shade/, 'dark'], [/white|albino|pale|ghost|pearl|ivory|cloud|cotton|angel|spirit|bone|skeleton|milk|marshmallow/, 'pale'],
+    [/shadow|dark|night|black|ebony|obsidian|midnight|raven|coal|soot|abyss|eclipse|ninja|bat|shade/, 'dark'], [/white|albino|pale|light|ghost|pearl|ivory|cloud|cotton|angel|spirit|bone|skeleton|milk|marshmallow/, 'pale'],
     [/pink|candy|bubblegum|rose|floral|flower|blossom|love|valentine|heart|cupid|sweet|cake|cookie/, 'pink'], [/orange|pumpkin|amber|autumn|tiger|carrot|citrus|sunset|dawn|burlone|ginger/, 'orange'],
     [/copper|bronze|rust|brass|clay|mud|desert|sand|dune|cactus|cacti/, 'copper'], [/silver|steel|chrome|robot|cyber|bot|mech|metal|iron|titan|neon|electric|storm|thunder|platinum/, 'steel'],
     [/teal|turquoise|lagoon|coral|mermaid|tropical|beach|summer|pool|balloon/, 'teal'], [/yellow|banana|lemon|honey|bee|corn|sunny|party|piñata|pinata/, 'yellow'], [/brown|chocolate|choco|coffee|mocha|bear|wood|oak|nut/, 'brown'],
@@ -38,6 +38,10 @@
     for (const [re, mk] of ACC) if (re.test(nm)) { o.top = (o.top || []).concat([mk(spec)]); break; }
     if (!/gold-trim/.test(name)) for (const [re, mk] of PAT) if (re.test(nm)) { const dk = M.shade(o.color || '#888888', -0.35); o.pattern = mk(dk); break; }
     if (/ghost|wraith|spectre|phantom|spirit|spook/.test(nm)) o.ghost = true;
+    // per-skin signature so two skins with the same colour words never render identically: coloured iris ring + slightly different rim
+    if (!/gold-trim/.test(name)) { const irisCols = ['#ffd94a', '#5ad0ff', '#ff7a7a', '#9aff7a', '#d89aff', '#ffa84a', '#7affd8', '#ffffff']; if (o.eyes && !o.eyes.tiny && o.eyes.r > 2) o.eyes = Object.assign({}, o.eyes, { iris: irisCols[h % irisCols.length] }); else o.top = (o.top || []).concat([['crest', { n: 2 + (h % 4), w: 5, c: irisCols[h % irisCols.length] }]]); o.rimColor = M.shade(o.color || '#888888', -0.38 - (h % 6) * 0.025); }
+    else { o.rimColor = M.shade('#d9a21c', -((h % 5) * 0.03)); }
+    if (!/gold-trim/.test(name)) { if (o.pattern && o.pattern.seed !== undefined) o.pattern = Object.assign({}, o.pattern, { seed: h % 1000 }); else if (!o.pattern) o.pattern = { kind: 'spots', c: M.shade(o.color || '#888888', -0.3), n: 3 + (h % 5), r: 3 + (h % 3), seed: h % 1000 }; }  // the seed makes every skin's markings unique
     if (!/gold-trim/.test(name) && !pickPal(nm) && !ACC.some(([re]) => re.test(nm))) o.top = (o.top || []).concat([['crest', { n: 3 + (h % 3), w: 6, c: hueShift(((h >> 4) % 12) * 30)('#c85a5a') }]]); // accent so unthemed names still differ from the base
     return o;
   }

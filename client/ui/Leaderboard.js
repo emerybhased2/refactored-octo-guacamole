@@ -2,7 +2,7 @@
   const M = (g.Mope = g.Mope || {});
   M.Leaderboard = {
     draw(ctx, vw, cfg, rows, myId) {
-      const small = typeof window !== 'undefined' && window.innerHeight < 520, L = small ? Object.assign({}, cfg, { width: Math.min(cfg.width, 150), max: Math.min(cfg.max, 5), marginTop: 6, marginRight: 6 }) : cfg, x = vw - L.width - L.marginRight, y = L.marginTop, rowH = small ? 16 : 20, shown = Math.min(rows.length, L.max), h = (small ? 22 : 30) + shown * rowH; // compact on short (phone landscape) screens
+      const small = typeof window !== 'undefined' && (window.innerHeight < 520 || window.innerWidth < 600), L = small ? Object.assign({}, cfg, { width: Math.min(cfg.width, 150), max: Math.min(cfg.max, 5), marginTop: 6, marginRight: 6 }) : cfg, x = vw - L.width - L.marginRight, y = L.marginTop, rowH = small ? 16 : 20, shown = Math.min(rows.length, L.max), h = (small ? 22 : 30) + shown * rowH; // compact on short (phone landscape) screens
       ctx.save(); ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.fillRect(x, y, L.width, h);
       ctx.fillStyle = '#fff'; ctx.font = (small ? 'bold 12px' : 'bold 15px') + ' Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(L.title, x + L.width / 2, y + (small ? 11 : 15));
       ctx.font = (small ? '11px' : '13px') + ' Arial';

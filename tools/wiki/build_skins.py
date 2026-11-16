@@ -14,6 +14,7 @@ existing_names={norm(i['name']) for i in shop}; GOLD_DONE={'blackdragon','kingdr
 items=[];used=set();dropped=[]
 for r in raw:
     if r['category'].startswith('Classic'): continue
+    if r['animal']=='dinomonster' and 'lava' in r['skin'].lower(): r=dict(r,animal='lavamonster')  # the wiki links 'Golden Lava Monster' to the old 'Land Monster' page
     if norm(r['skin']) in existing_names or (r['category'].startswith('Golden') and r['animal'] in GOLD_DONE): dropped.append(r['skin']); continue
     base=f"{r['animal']}_{slug(r['skin'])}"; i=base; n=2
     while i in used: i=f'{base}_{n}'; n+=1
