@@ -14,6 +14,14 @@ public final class World {
     public boolean redemption, redPro; public int redLevel = 1;
     public final Abilities.State fxState = new Abilities.State();
     private final List<Object[]> lateDeaths = new ArrayList<>();
+    private Map<String, List<double[]>> terrainIdx;
+    /** Terrain objects of one kind (hill, rock, mud, hole, bush, ice_patch, lava_pool ...) as {x, y, radius}. */
+    private List<double[]> terrainOf(String id) {
+        if (terrainIdx == null) { Map<String, List<double[]>> m = new HashMap<>(); for (double[] t : terrain) { Defs.TerrainDef d = cfg.terrain.get((int) t[0]); m.computeIfAbsent(d.id, k -> new ArrayList<>()).add(new double[] { t[1], t[2], d.radius }); } terrainIdx = m; }
+        return terrainIdx.getOrDefault(id, List.of());
+    }
+    /** True when (x, y) is inside a terrain object of that kind (its radius plus `pad`). Only versions with features.terrainEffects use this. */
+    public boolean onTerrain(String id, double x, double y, double pad) { for (double[] o : terrainOf(id)) { double dx = x - o[0], dy = y - o[1], r = o[2] + pad; if (dx * dx + dy * dy <= r * r) return true; } return false; }
     /** Deaths caused outside a tick loop that has a `dying` list (ability damage): collected at the end of the tick. */
     public void dieLater(Player o, String by) { lateDeaths.add(new Object[] { o, by }); }
     public final double size;
@@ -218,12 +226,13 @@ public final class World {
                 double sp = 220 * p.animal.speed * mag * abilities.speedMultiplier(p, (long) now) * (running ? 1.5 : 1) * p.disasterSpeed * Modes.speedMul(this, p) * Abilities.speedFactor(this, p);
                 double nx = p.x + Math.cos(p.angle) * sp * dt, ny = p.y + Math.sin(p.angle) * sp * dt;
                 nx = Math.max(p.radius, Math.min(size - p.radius, nx)); ny = Math.max(p.radius, Math.min(size - p.radius, ny));
-                if (Abilities.flying(this, p) || biomes.canEnter(p.animal, nx, ny)) { p.x = nx; p.y = ny; }
+                if (Abilities.blockedByTerrain(this, p, nx, ny)) { /* hills and rocks stop animals that cannot climb them */ }
+                else if (Abilities.flying(this, p) || biomes.canEnter(p.animal, nx, ny)) { p.x = nx; p.y = ny; }
             }
             if (arena) { p.water = 100; /* no healing in the arena (archived note: Black Dragon not healing in the 1v1 arena) */ }
             else if (!p.bot && !sandbox) { // thirst (bots and sandbox are exempt)
                 if (inWater(p.x, p.y)) p.water = Math.min(100, p.water + 30 * dt);
-                else p.water = Math.max(0, p.water - ((Abilities.has(p, "dry_land") ? 0.3 : 0.5) + (running ? (Abilities.has(p, "reduced_boost") ? 3 : 5) : 0)) * dt);
+                else p.water = Math.max(0, p.water - ((Abilities.has(p, "dry_land") ? 0.3 : 0.5) + (running ? (Abilities.has(p, "reduced_boost") ? 3 : 5) : 0)) * dt * Modes.waterDrainMul(this, p));
                 if (p.water <= 0) { p.health -= 6 * dt; if (p.health <= 0) { die(p, "thirst", THIRST, dying); continue; } }
                 else p.health = Math.min(p.maxHealth(), p.health + 2 * dt);
             } else { p.water = 100; p.health = Math.min(p.maxHealth(), p.health + 2 * dt); }
@@ -251,6 +260,7 @@ public final class World {
         Abilities.tick(this, dt, dying);
         if (!arena) Modes.tick(this, dt, dying);
         for (Object[] ld : lateDeaths) die((Player) ld[0], (String) ld[1], EATEN, dying); lateDeaths.clear();
+        for (Player o : dying) for (Player q : players.values()) if (!q.dead && q != o && Abilities.has(q, "carcasses") && Collision.dist2(q, o) < 500.0 * 500.0) q.xp += 6 * o.animal.tier; // consume carcasses / bones
         for (Player o : dying) { players.remove(o.id); onDeath.accept(o); if (o.bot && !arena && !(ms != null && mode.equals("royale"))) { Player nb = join(o.name, null, true); nb.kills = 0; } }
         foods.tick(now);
 

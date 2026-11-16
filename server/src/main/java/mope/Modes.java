@@ -20,6 +20,7 @@ public final class Modes {
     public static final class State {
         final World w; public final String mode;
         // battle royale
+        public long lobbyUntil;
         public double cx, cy, r, fromR, toR; public int phase; public long phaseStart, shrinkStart, roundStart, overTick; public boolean over; public String winner = "";
         // team
         public final List<Stone> stones = new ArrayList<>(); public final List<Meteor> meteors = new ArrayList<>(); public long apocalypseUntil, nextMeteor; public int apocalypseTeam; public boolean apocalypseDone;
@@ -36,8 +37,9 @@ public final class Modes {
     public static State create(World w, String mode) {
         State s = new State(w, mode);
         switch (mode) {
-            case "royale" -> newRound(s);
+            case "royale" -> { newRound(s); healingStones(s, 6); }
             case "team" -> { for (int i = 0; i < 12; i++) { Stone st = new Stone(); st.id = i; st.perk = i % PERKS.length; double[] pt = w.biomes.randomPoint(w.rnd, w.cfg.biomeIds); st.x = pt[0]; st.y = pt[1]; s.stones.add(st); } }
+            case "zombie" -> { healingStones(s, 6); for (int i = 0; i < 14; i++) addPickup(s, 3); }
             case "pandemic" -> {
                 for (int i = 0; i < 70; i++) { Virus v = new Virus(); double[] pt = w.biomes.randomPoint(w.rnd, w.cfg.biomeIds); v.x = pt[0]; v.y = pt[1]; double a = w.rnd.nextDouble() * 6.28; v.vx = Math.cos(a) * 30; v.vy = Math.sin(a) * 30; s.viruses.add(v); }
                 for (int i = 0; i < 40; i++) addPickup(s, i < 28 ? 1 : 2);
@@ -54,12 +56,15 @@ public final class Modes {
         for (double d : new double[] { 0, 0, 1, 0.68 }) lr.add(d); for (double d : new double[] { 0, 0.68, 1, 0.32 }) orr.add(d); layout.add("land", lr); layout.add("ocean", orr); o.add("layout", layout);
         o.add("classic", Data.read("data/modes/classic.json").getAsJsonObject()); return VersionManager.resolve(o);
     }
+    /** Healing stones (wiki: Battle Royale and Zombie Infection mention them): static zones that heal everyone standing on them. */
+    static void healingStones(State s, int n) { for (int i = 0; i < n; i++) { Abilities.Zone z = new Abilities.Zone(); double[] pt = s.w.biomes.randomPoint(s.w.rnd, s.w.cfg.biomeIds); z.x = pt[0]; z.y = pt[1]; z.r = 120; z.heal = 8; z.kind = "camp"; z.until = Long.MAX_VALUE; z.owner = 0; s.w.fxState.zones.add(z); } }
+    static boolean onHealingStone(World w, Player p) { for (Abilities.Zone z : w.fxState.zones) if (z.owner == 0 && z.heal > 0) { double dx = p.x - z.x, dy = p.y - z.y, r = z.r + p.radius; if (dx * dx + dy * dy <= r * r) return true; } return false; }
     private static void addPickup(State s, int type) { Pickup p = new Pickup(); p.id = s.pickups.size() + 1 + (int) (s.w.tick % 100000) * 100; p.type = type; double[] pt = s.w.biomes.randomPoint(s.w.rnd, s.w.cfg.biomeIds); p.x = pt[0]; p.y = pt[1]; s.pickups.add(p); }
 
     static void newRound(State s) {
         World w = s.w; s.over = false; s.winner = ""; s.phase = 0; s.roundStart = w.tick;
         s.cx = w.size * (0.3 + 0.4 * w.rnd.nextDouble()); s.cy = w.size * (0.3 + 0.4 * w.rnd.nextDouble());
-        s.r = w.size * ROYALE_RADII[0] * 1.6; s.fromR = s.r; s.toR = s.r; s.phaseStart = w.tick; s.shrinkStart = w.tick + (long) ROYALE_PHASE_SECONDS * w.cfg.tickRate;
+        s.lobbyUntil = w.tick + 8L * w.cfg.tickRate; s.r = w.size * ROYALE_RADII[0] * 1.6; s.fromR = s.r; s.toR = s.r; s.phaseStart = w.tick; s.shrinkStart = w.tick + (long) ROYALE_PHASE_SECONDS * w.cfg.tickRate;
     }
 
     /** Called from World.join. */
@@ -76,13 +81,24 @@ public final class Modes {
     /** Evolving cures a zombie / infection (wiki: 'zombies can only remove infection by progressing to the next tier'). */
     public static void onEvolve(World w, Player p) { if (w.ms != null && w.ms.mode.equals("zombie")) { p.infection = 0; p.zombie = false; p.health = Math.min(p.health, p.maxHealth()); } }
 
+    public static boolean teamPerkOf(World w, Player p, String perk) { return w.ms != null && w.mode.equals("team") && teamPerk(w.ms, p.team, perk); }
+    /** Damage multiplier for ability damage a -> v (team perks: +50% vs prey, +25% vs predators, -40% damage taken from enemies; Wild Mope +15%). */
+    public static double dmgMul(World w, Player a, Player v) {
+        double m = 1; if (w.ms == null) return 1;
+        if (w.mode.equals("wild")) m *= 1.15;
+        if (w.mode.equals("team")) { if (teamPerk(w.ms, a.team, "dmgprey") && v.animal.tier <= a.animal.tier) m *= 1.5; if (teamPerk(w.ms, a.team, "dmgpred") && v.animal.tier > a.animal.tier) m *= 1.25; if (teamPerk(w.ms, v.team, "bodydmg") && v.team != a.team) m *= 0.6; }
+        return m;
+    }
+    public static double stunMul(World w, Player victim) { return teamPerkOf(w, victim, "stun") ? 0.75 : 1; }
+    public static double diveMul(World w, Player p) { return teamPerkOf(w, p, "dive") ? 1.3 : 1; }
+    public static double waterDrainMul(World w, Player p) { return teamPerkOf(w, p, "depend") ? 0.5 : 1; }
     private static boolean teamPerk(State s, int team, String perk) { if (team <= 0) return false; int idx = Arrays.asList(PERKS).indexOf(perk); for (Stone st : s.stones) if (st.owner == team && st.perk == idx) return true; return false; }
     private static int teamStones(State s, int team) { int n = 0; for (Stone st : s.stones) if (st.owner == team) n++; return n; }
 
     public static double speedMul(World w, Player p) {
         State s = w.ms; if (s == null) return 1; double m = 1;
         switch (s.mode) {
-            case "wild" -> m = 1.10;                                                  // wiki wave 1: +10% movement speed (tiers 1-6); applied to all tiers here
+            case "wild" -> m = p.animal.tier <= 6 ? 1.10 : 1.06;                      // wiki wave 1: +10% movement speed for tiers 1-6; later waves smaller (inferred)
             case "team" -> { if (teamPerk(s, p.team, "speed")) m = 1.25; }
             case "pandemic" -> { if (p.slowUntilTick > w.tick) m = 0.55; }            // sneezing slows briefly
             case "zombie" -> { if (p.zombie) m = w.inWater(p.x, p.y) == "ocean".equals(p.animal.biome) ? 1.15 : 0.7; } // zombies: faster on their own terrain, slower in the other
@@ -127,6 +143,7 @@ public final class Modes {
             if (w.tick - s.overTick >= (long) ROYALE_RESTART_SECONDS * hz) restartRound(s);
             return;
         }
+        if (w.tick < s.lobbyUntil) { for (Player p : w.players.values()) { p.stunUntilTick = Math.max(p.stunUntilTick, s.lobbyUntil); p.protectedUntilTick = Math.max(p.protectedUntilTick, s.lobbyUntil); } s.shrinkStart = s.lobbyUntil + (long) ROYALE_PHASE_SECONDS * hz; s.roundStart = s.lobbyUntil; return; } // spawn eggs: nobody moves or can be hurt until the round starts
         // phases: hold for 25s, then shrink to the next radius over 10s
         if (w.tick >= s.shrinkStart && s.phase < ROYALE_RADII.length - 1 && s.toR == s.fromR) { s.fromR = s.r; s.toR = w.size * ROYALE_RADII[s.phase + 1]; }
         if (s.toR != s.fromR) {
@@ -183,7 +200,7 @@ public final class Modes {
     }
 
     private static void zombieTick(State s, double dt, List<Player> dying) {
-        World w = s.w; int hz = w.cfg.tickRate; List<Player> zs = new ArrayList<>(); for (Player p : w.players.values()) if (!p.dead && p.zombie) zs.add(p);
+        World w = s.w; int hz = w.cfg.tickRate; List<Pickup> eaten = new ArrayList<>(); List<Player> zs = new ArrayList<>(); for (Player p : w.players.values()) if (!p.dead && p.zombie) zs.add(p);
         for (Player z : zs) { // two zombies touching heal each other; touching a human infects it
             for (Player o : w.players.values()) { if (o == z || o.dead) continue; if (!Collision.overlap(z, o)) continue;
                 if (o.zombie) z.health = Math.min(z.maxHealth(), z.health + 10 * dt); else if (o.protectedUntilTick <= w.tick) o.infection = Math.min(100, o.infection + 22 * dt); }
@@ -191,6 +208,8 @@ public final class Modes {
         for (Player p : w.players.values()) {
             if (p.dead) continue;
             if (p.zombie) { if (w.tick % (10L * hz) == (p.id % (10L * hz))) { /* 'RAAAUGH' flavour is client-side */ } continue; }
+            for (Pickup k : s.pickups) { double dx = p.x - k.x, dy = p.y - k.y, r = 24 + p.radius; if (k.type == 3 && dx * dx + dy * dy <= r * r) { p.infection = 0; eaten.add(k); } } // lotus flowers cure the infection (wiki)
+            if (p.infection > 0 && onHealingStone(w, p)) p.infection = Math.max(0, p.infection - 12 * dt);            // so do healing stones
             if (p.infection > 0) {
                 if (w.inWater(p.x, p.y)) p.infection = Math.max(0, p.infection - 4 * dt);       // washing off the virus (stands in for healing stones / lotus, which do not exist here)
                 else p.infection = Math.min(100, p.infection + 1.2 * dt);                     // the virus keeps spreading
@@ -199,6 +218,7 @@ public final class Modes {
                 else if (p.health <= 0) w.die(p, "the zombie virus", World.EATEN, dying);
             }
         }
+        for (Pickup k : eaten) if (s.pickups.remove(k)) addPickup(s, 3);
         if (w.tick >= s.nextZombie) { s.nextZombie = w.tick + 20L * hz; if (zs.size() < 3) { List<Player> hs = new ArrayList<>(); for (Player p : w.players.values()) if (!p.dead && !p.zombie && p.infection == 0) hs.add(p); if (!hs.isEmpty()) hs.get(w.rnd.nextInt(hs.size())).infection = 35; } }
     }
 
@@ -214,8 +234,9 @@ public final class Modes {
             double drain = p.immunity <= 0 ? (p.infection >= 100 ? 1.2 : 0.3 + 0.6 * p.infection / 100.0) : (p.immunity < 100 ? 0.02 : 0); // wiki: 0.2hp/10s while losing immunity, doubled and faster when fully infected
             p.health -= drain * dt; if (p.health <= 0) { w.die(p, "the virus", World.EATEN, dying); continue; }
             if (p.infection >= 30 && w.tick >= p.nextSneezeTick) { p.nextSneezeTick = w.tick + (long) ((p.infection >= 100 ? 4 : 10) * hz); p.slowUntilTick = w.tick + (long) (0.8 * hz); Virus v = new Virus(); v.x = p.x; v.y = p.y; v.vx = (w.rnd.nextDouble() - 0.5) * 80; v.vy = (w.rnd.nextDouble() - 0.5) * 80; if (s.viruses.size() < 160) s.viruses.add(v); } // 'ACHOO!'
-            Iterator<Pickup> it = s.pickups.iterator();
-            while (it.hasNext()) { Pickup k = it.next(); double dx = p.x - k.x, dy = p.y - k.y, r = 24 + p.radius; if (dx * dx + dy * dy <= r * r) { it.remove(); if (k.type == 1) p.maskUntilTick = w.tick + 90L * hz; else { p.sanitizedUntilTick = w.tick + 45L * hz; p.immunity = Math.min(100, p.immunity + 40); } addPickup(s, k.type); } }
+            Iterator<Pickup> it = s.pickups.iterator(); List<Integer> respawn = new ArrayList<>();
+            while (it.hasNext()) { Pickup k = it.next(); double dx = p.x - k.x, dy = p.y - k.y, r = 24 + p.radius; if (dx * dx + dy * dy <= r * r) { it.remove(); if (k.type == 1) p.maskUntilTick = w.tick + 90L * hz; else { p.sanitizedUntilTick = w.tick + 45L * hz; p.immunity = Math.min(100, p.immunity + 40); } respawn.add(k.type); } }
+            for (int ty : respawn) addPickup(s, ty); // after the loop: adding while iterating threw ConcurrentModificationException (found by the soak test)
         }
     }
 
@@ -225,11 +246,11 @@ public final class Modes {
         StringBuilder b = new StringBuilder(",\"md\":{\"m\":\"").append(s.mode).append('"');
         switch (s.mode) {
             case "royale" -> { int alive = 0; for (Player p : w.players.values()) if (!p.dead) alive++; double nx = s.toR != s.fromR ? 0 : Math.max(0, (s.shrinkStart - w.tick) / (double) w.cfg.tickRate);
-                b.append(",\"z\":[").append(Math.round(s.cx)).append(',').append(Math.round(s.cy)).append(',').append(Math.round(s.r)).append("],\"ph\":").append(s.phase).append(",\"nx\":").append(Math.round(nx)).append(",\"al\":").append(alive).append(",\"over\":").append(s.over ? 1 : 0).append(",\"out\":").append(me.x < 0 ? 0 : (Math.hypot(me.x - s.cx, me.y - s.cy) > s.r ? 1 : 0)).append(",\"dps\":").append(ROYALE_DPS[Math.min(s.phase, ROYALE_DPS.length - 1)]); }
+                b.append(",\"z\":[").append(Math.round(s.cx)).append(',').append(Math.round(s.cy)).append(',').append(Math.round(s.r)).append("],\"lobby\":").append(Math.max(0, (s.lobbyUntil - w.tick) / w.cfg.tickRate)).append(",\"ph\":").append(s.phase).append(",\"nx\":").append(Math.round(nx)).append(",\"al\":").append(alive).append(",\"over\":").append(s.over ? 1 : 0).append(",\"out\":").append(me.x < 0 ? 0 : (Math.hypot(me.x - s.cx, me.y - s.cy) > s.r ? 1 : 0)).append(",\"dps\":").append(ROYALE_DPS[Math.min(s.phase, ROYALE_DPS.length - 1)]); }
             case "team" -> { int[] n = new int[4]; for (Player p : w.players.values()) if (!p.dead && p.team > 0) n[p.team]++; b.append(",\"tm\":[").append(n[1]).append(',').append(n[2]).append(',').append(n[3]).append("],\"me\":").append(me.team).append(",\"own\":[").append(teamStones(s, 1)).append(',').append(teamStones(s, 2)).append(',').append(teamStones(s, 3)).append("],\"ap\":").append(s.apocalypseUntil > 0 ? Math.max(0, (s.apocalypseUntil - w.tick) * 1000 / w.cfg.tickRate) : 0).append(",\"st\":[");
                 boolean f = true; for (Stone st : s.stones) { if (!f) b.append(','); f = false; b.append('[').append(st.id).append(',').append(Math.round(st.x)).append(',').append(Math.round(st.y)).append(',').append(st.owner).append(',').append(Math.round(st.hp)).append(',').append(st.perk).append(']'); }
                 b.append("],\"mt\":["); f = true; for (Meteor m : s.meteors) { if (!f) b.append(','); f = false; b.append('[').append(Math.round(m.x)).append(',').append(Math.round(m.y)).append(',').append(Math.max(0, (m.hitTick - w.tick) * 1000 / w.cfg.tickRate)).append(']'); } b.append(']'); }
-            case "zombie" -> b.append(",\"inf\":").append(Math.round(me.infection)).append(",\"zb\":").append(me.zombie ? 1 : 0);
+            case "zombie" -> { b.append(",\"inf\":").append(Math.round(me.infection)).append(",\"zb\":").append(me.zombie ? 1 : 0).append(",\"pk\":["); boolean f = true; for (Pickup k : s.pickups) { if (Math.abs(k.x - me.x) > 1100 || Math.abs(k.y - me.y) > 1100) continue; if (!f) b.append(','); f = false; b.append('[').append(k.id).append(',').append(Math.round(k.x)).append(',').append(Math.round(k.y)).append(',').append(k.type).append(']'); } b.append(']'); }
             case "pandemic" -> { b.append(",\"im\":").append(Math.round(me.immunity)).append(",\"inf\":").append(Math.round(me.infection)).append(",\"mask\":").append(Math.max(0, (me.maskUntilTick - w.tick) / w.cfg.tickRate)).append(",\"san\":").append(Math.max(0, (me.sanitizedUntilTick - w.tick) / w.cfg.tickRate)).append(",\"vr\":[");
                 boolean f = true; for (Virus v : s.viruses) { if (Math.abs(v.x - me.x) > 1100 || Math.abs(v.y - me.y) > 1100) continue; if (!f) b.append(','); f = false; b.append('[').append(Math.round(v.x)).append(',').append(Math.round(v.y)).append(']'); }
                 b.append("],\"pk\":["); f = true; for (Pickup k : s.pickups) { if (Math.abs(k.x - me.x) > 1100 || Math.abs(k.y - me.y) > 1100) continue; if (!f) b.append(','); f = false; b.append('[').append(k.id).append(',').append(Math.round(k.x)).append(',').append(Math.round(k.y)).append(',').append(k.type).append(']'); } b.append(']'); }
@@ -239,5 +260,5 @@ public final class Modes {
         return b.append('}').toString();
     }
     /** Player flag bits for the snapshot: low 2 bits team (1-3), 4 = zombie, 8 = infected. */
-    public static int flags(Player p) { return (p.team & 3) | (p.zombie ? 4 : 0) | (!p.zombie && p.infection >= 10 ? 8 : 0); }
+    public static int flags(Player p) { int f = (p.team & 3) | (p.zombie ? 4 : 0) | (!p.zombie && p.infection >= 10 ? 8 : 0); if (p.world != null && p.world.ms != null && p.world.ms.mode.equals("royale") && p.world.tick < p.world.ms.lobbyUntil) f |= 4096; return f; }
 }

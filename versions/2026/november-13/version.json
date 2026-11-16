@@ -67,7 +67,8 @@
     "noXpPopups": true,
     "mopeId": true,
     "wikiSourced": true,
-    "wikiAbilities": true
+    "wikiAbilities": true,
+    "terrainEffects": true
   },
   "tickRate": 30,
   "netRate": 20,

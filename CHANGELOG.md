@@ -1,5 +1,10 @@
 # Project changelog
 
+## 1.2.0 - Completion pass (in progress)
+- Terrain effects (2020+ builds, `features.terrainEffects`): bushes/holes hide small animals, mud (fast/diving for the 2020 mud animals, slow for others), ice patches, lava pools hurt, hills and rocks block non-climbers (wiki-sourced build). Pull-from-hole reaches animals hiding in holes.
+- 26 of 28 passives simulated (the other two - river current, biome debuffs - do not apply: the game has neither).
+- Soak test (ability-spamming players of every animal in every mode/version) found and fixed a ConcurrentModificationException in Viral Pandemic.
+
 ## 1.1.0 - Every Mope.io ability + skin picker on upgrade choices
 - **Abilities (Mope.io Wiki: 64 special + 28 passive, `data/research/wiki-abilities.json`):** all 64 special abilities are implemented through data-driven effect archetypes (`Abilities.java`): speed bursts, area stun/knockback/damage, fire/poison/web/ink/stink/frost/wave/whirlpool/campfire zones, shields (shell, inflate, spikes), hiding/digging, invisibility, flight (glide, sky dive, jump), grabs (fly/bite/suffocate/sting), projectiles (venom, spit, spear, fruit, snow), summoned babies, food conjuring, water refill. Wiki names, users, press/hold activation and descriptions are verified; cooldowns, radii, durations and damage are inferred. 10 of the 28 passives are simulated (faster in water, speed-up, sprint when hurt, reduced boost interval, dry-land survival, fly over everything, exhale food, stationary invisibility, poison immunity, tree climbing); the other 18 are catalogued but not simulated (terrain ones: mud, quicksand, ice grip, hills/rocks; lava/ink/bee-sting immunity; frost/fire bite; and a few niche ones).
 - Controls: W / right-click (hold abilities run while held), S for a second ability (King Dragon's tail slap, otherwise S still climbs), touch hold buttons; HUD shows both abilities with cooldowns; zones, projectiles, shockwaves, stun stars, shields, flight and poison are drawn; hidden/invisible animals disappear for others.

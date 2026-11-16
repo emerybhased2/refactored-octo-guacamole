@@ -1494,14 +1494,16 @@
     "biomes": [
       "arctic"
     ],
-    "implemented": false,
+    "implemented": true,
     "releaseDate": "2019-12-30",
     "verified": true,
     "keyboard": "(passive)",
     "clientId": null,
     "icon": "assets/icons/abilities/camouflage.png",
     "iconStatus": "recreated",
-    "note": "Passive: if not moving the Snowman camouflages (carrot turns orange = hidden); ends when it moves or is hurt (2019-12-23 note). Not simulated."
+    "note": "Passive: if not moving the Snowman camouflages (carrot turns orange = hidden); ends when it moves or is hurt (2019-12-23 note). Not simulated.",
+    "simulated": true,
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred"
   },
   {
     "id": "throw_spear",
@@ -2422,7 +2424,7 @@
     "name": "Climbing on hills",
     "type": "passive",
     "keyboard": "(passive)",
-    "simulated": false,
+    "simulated": true,
     "usedBy": [
       "pigeon",
       "chukar",
@@ -2461,9 +2463,9 @@
       "icemonster"
     ],
     "wikiText": "Climbing on hills is an ability that allows certain animals to move around on hills, like they do on low ground. When standing on a hill, FoV is increased. However, the latter effect does not apply to animals that have the ability to , as their FoV will not change.",
-    "implemented": false,
+    "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); NOT simulated (needs terrain effects the game does not have)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred (hills block animals that cannot climb them; wiki-sourced version)",
     "releaseDate": "2017-02-13",
     "icon": "assets/icons/abilities/climb_hills.png",
     "iconStatus": "recreated"
@@ -2473,7 +2475,7 @@
     "name": "Climbing on rocks",
     "type": "passive",
     "keyboard": "(passive)",
-    "simulated": false,
+    "simulated": true,
     "usedBy": [
       "crab",
       "flyinglizard",
@@ -2488,9 +2490,9 @@
       "scorpion"
     ],
     "wikiText": "Rocks are a little different to hills, but have comparable mechanics. While the majority of hill-climbers are unable to climb on rocks, all rock-climbers are also able to use hills. Like hills, rocks will also advance one's field of view. However, the latter effect does not apply to animals that have the ability to , as their FoV will not change.",
-    "implemented": false,
+    "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); NOT simulated (needs terrain effects the game does not have)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred (rocks block animals that cannot climb them; wiki-sourced version)",
     "releaseDate": "2017-02-13",
     "icon": "assets/icons/abilities/climb_rocks.png",
     "iconStatus": "recreated"
@@ -2535,7 +2537,7 @@
     "wikiText": "Trees are similar to hills in some ways; it should be noted that not all hill-climbers automatically can access trees, and vice versa. By pressing S at the trunk of a tree, an animal will be transported to the higher layer of the tree. Pressing S whilst on top of the tree will cause the animal to be brought back down to ground-level. Animals with the ability will automatically reside on the canopy of the tree, and cannot go underneath trees.",
     "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated (numbers inferred)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred",
     "releaseDate": "2017-02-13",
     "icon": "assets/icons/abilities/climb_trees.png",
     "iconStatus": "recreated"
@@ -2562,7 +2564,7 @@
     "wikiText": "All Ocean animals by default can move fast in water. However, if a non-Ocean animal is able to move at a pace that is not very slow, then it is considered a passive ability. While all animals with this ability are quick in water compared to slower dry-land-based animals, the speed that each moves at varies. All passively flying animals except for the Phoenix and Land Monster can move over water almost entirely unhindered.",
     "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated (numbers inferred)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred",
     "releaseDate": "2017-02-13",
     "icon": "assets/icons/abilities/fast_water.png",
     "iconStatus": "recreated"
@@ -2572,7 +2574,7 @@
     "name": "Faster movement in mud",
     "type": "passive",
     "keyboard": "(passive)",
-    "simulated": false,
+    "simulated": true,
     "usedBy": [
       "chicken",
       "pig",
@@ -2595,9 +2597,9 @@
       "scorpion"
     ],
     "wikiText": "While mud patches slow most animals down when they move around in it, certain animals have the ability to have mostly or entirely unhindered speed whilst in mud. Most don't receive the muddy effect afterwards, with the exception of the Cobra, Ostrich, Elephant, Cassowary, T-Rex, and all Rares whose normal counterpart is slowed. All animals who can can move over Mud without slowing down at all or receiving the muddy effect.",
-    "implemented": false,
+    "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); NOT simulated (needs terrain effects the game does not have)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred (mud terrain)",
     "releaseDate": "2017-02-13",
     "icon": "assets/icons/abilities/fast_mud.png",
     "iconStatus": "recreated"
@@ -2607,7 +2609,7 @@
     "name": "Diving in mud",
     "type": "passive",
     "keyboard": "(passive)",
-    "simulated": false,
+    "simulated": true,
     "usedBy": [
       "chicken",
       "pig",
@@ -2620,9 +2622,9 @@
       "komodo"
     ],
     "wikiText": "Some fast-moving mud animals are also able to dive in mud. Unlike diving in water, this trait is mostly exclusive to a few animals, and is therefore considered a passive ability. Moreover, while not all animals that are speedy in mud can dive in it, all mud-diving animals are quick in mud. However, after an animal emerges from diving in mud, they will become muddy and slow until the mud fades (by leaving the mud patch). This ability also applies for the muddy ground that is left behind from the ",
-    "implemented": false,
+    "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); NOT simulated (needs terrain effects the game does not have)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred (stand still in mud to hide)",
     "releaseDate": "2017-02-13",
     "icon": "assets/icons/abilities/dive_mud.png",
     "iconStatus": "recreated"
@@ -2632,7 +2634,7 @@
     "name": "Faster movement in quicksand",
     "type": "passive",
     "keyboard": "(passive)",
-    "simulated": false,
+    "simulated": true,
     "usedBy": [
       "meerkat",
       "camel",
@@ -2647,9 +2649,9 @@
       "scorpion"
     ],
     "wikiText": "The animals listed are able to move quickly over quicksand instead of being slowed. While this applies to both quicksand in its own patches and the layer surrounding oases for most animals, the Pterodactyl and Dino Monster are slowed in oasis quicksand but not in separate patches of quicksand.",
-    "implemented": false,
+    "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); NOT simulated (needs terrain effects the game does not have)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred (approximated by mud: the game has no quicksand)",
     "releaseDate": "2017-02-13",
     "icon": "assets/icons/abilities/fast_quicksand.png",
     "iconStatus": "recreated"
@@ -2659,7 +2661,7 @@
     "name": "Grip on ice",
     "type": "passive",
     "keyboard": "(passive)",
-    "simulated": false,
+    "simulated": true,
     "usedBy": [
       "reindeer",
       "muskox",
@@ -2671,9 +2673,9 @@
       "icemonster"
     ],
     "wikiText": "Grip allows for animals to turn much easier on ice, even more than normal turning, and with increased speed than on normal ground. In contrast, animals without this ability will slide around with less control, and are mildly slowed by ice. Animals with the ability technically have grip on ice by virtue of constantly hovering above the ground.",
-    "implemented": false,
+    "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); NOT simulated (needs terrain effects the game does not have)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred (ice patches slow non-gripping animals)",
     "releaseDate": "2017-02-13",
     "icon": "assets/icons/abilities/ice_grip.png",
     "iconStatus": "recreated"
@@ -2691,7 +2693,7 @@
     "wikiText": "Certain animals and Rares cover more ground naturally than normal to different degrees of speed, making them faster than most animals. A good deal of these animals drain water faster as a caveat.",
     "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated (numbers inferred)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred",
     "releaseDate": "2017-02-13",
     "icon": "assets/icons/abilities/speed_up.png",
     "iconStatus": "recreated"
@@ -2709,7 +2711,7 @@
     "wikiText": "While all animals can boost, the Cheetah and Ostrich can boost more frequently with less delay per boost to different intervals. Because of this, while consistently boosting, they cover more ground but also drain their Water Bar more in the same duration in comparison.",
     "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated (numbers inferred)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred",
     "releaseDate": "2017-02-13",
     "icon": "assets/icons/abilities/reduced_boost.png",
     "iconStatus": "recreated"
@@ -2727,7 +2729,7 @@
     "wikiText": "All Tier 1 animals have the passive ability of sprinting when hurt. When their health bar is reduced/damaged in any way, these animals will immediately dash for a moderate distance and their speed will also increase for about 6 seconds. While this occurs, the Shrimp will say \"SPLASH!!!\" and the Mouse, Tarsier, Desert Rat and Chipmunk will say \"SQUEAK!!!\" in the Chat. The chicken also possesses this ability, but instead of being just a passive ability that is activated by taking damage, it is in ",
     "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated (numbers inferred)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred",
     "releaseDate": "2017-02-13",
     "icon": "assets/icons/abilities/sprint_hurt.png",
     "iconStatus": "recreated"
@@ -2749,7 +2751,7 @@
     "wikiText": "For the poison bite, when touching prey or predators, non-immune animals will have their outline turn light yellowish-green and their health will gradually decrease (it is more effective if the poisoned animal is prey). The potency of the poison varies per animal. ---- Animals that are immune to poison\u2013meaning poisonous entities will not affect them\u2013such as the Boa Constrictor and Giant Scorpion do not all have a poisonous bite. However, all animals with a poisonous bite are by default immune to",
     "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated (numbers inferred)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred",
     "releaseDate": "2018-04-21",
     "icon": "assets/icons/abilities/poison_immunity.png",
     "iconStatus": "recreated"
@@ -2759,7 +2761,7 @@
     "name": "Lava Immunity",
     "type": "passive",
     "keyboard": "(passive)",
-    "simulated": false,
+    "simulated": true,
     "usedBy": [
       "dragon",
       "phoenix",
@@ -2768,9 +2770,9 @@
       "kingdragon"
     ],
     "wikiText": "When the player is on a lava source, they will be immune to burning from lava and from fire produced by lava. The Dragon technically does not have this ability, but its \"\" ability causes it to be unaffected by lava by virtue of the mechanics of that ability. It is still burnt by fire produced by lava.",
-    "implemented": false,
+    "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); NOT simulated (no lava/ink/bee-sting mechanic hook yet)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred (lava pools and eruptions)",
     "releaseDate": "2017-02-13",
     "icon": "assets/icons/abilities/lava_immunity.png",
     "iconStatus": "recreated"
@@ -2780,15 +2782,15 @@
     "name": "Ink immunity",
     "type": "passive",
     "keyboard": "(passive)",
-    "simulated": false,
+    "simulated": true,
     "usedBy": [
       "squid",
       "octopus"
     ],
     "wikiText": "While ink from the special abilities of the Squid and Octopus normally stuns most animals, each animal named in this section will be completely unaffected by it when moving around in it.",
-    "implemented": false,
+    "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); NOT simulated (no lava/ink/bee-sting mechanic hook yet)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred (ink no longer blinds)",
     "releaseDate": "2017-02-13",
     "icon": "assets/icons/abilities/ink_immunity.png",
     "iconStatus": "recreated"
@@ -2798,15 +2800,15 @@
     "name": "Bee Sting Immunity",
     "type": "passive",
     "keyboard": "(passive)",
-    "simulated": false,
+    "simulated": true,
     "usedBy": [
       "bear",
       "polarbear"
     ],
     "wikiText": "Animals with Bee Sting Immunity are immune to all of the effects that are inflicted by Honey Bees when they use their sting. While Bees will normally cause a slight health bar reduction and slowed movement upon stinging, Bears and Polar Bears will not be damaged and their movement speed will barely be affected. However, when they turn red from the Bee sting, the aforementioned animals will also not be able to use their special abilities.",
-    "implemented": false,
+    "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); NOT simulated (no lava/ink/bee-sting mechanic hook yet)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred (grab-and-sting cannot grab)",
     "releaseDate": "2017-02-13",
     "icon": "assets/icons/abilities/bee_immunity.png",
     "iconStatus": "recreated"
@@ -2829,7 +2831,7 @@
     "wikiText": "When animals with this ability are moving on the river, their movement will be unaffected by the river's current. When moving with the current, they will not become faster, and vice versa. Animals with the \"\" ability will also be unaffected by the current by virtue of the mechanics of that ability.",
     "implemented": false,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); NOT simulated (needs terrain effects the game does not have)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); NOT APPLICABLE: the game has no river current",
     "releaseDate": "2017-02-13",
     "icon": "assets/icons/abilities/river_immunity.png",
     "iconStatus": "recreated"
@@ -2856,7 +2858,7 @@
     "wikiText": "This Passive Ability allows animals to survive in other biomes without experiencing the effects of debuff (i.e. freezing or burning). For instance, the Lion, unlike most other Land-spawning animals, can enter the Desert biome without burning periodically. Despite this, these animals still lose water at a faster rate than in their native biome and are slightly slower.",
     "implemented": false,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); NOT simulated (needs terrain effects the game does not have)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); NOT APPLICABLE: the game has no per-biome debuffs",
     "releaseDate": "2017-02-13",
     "icon": "assets/icons/abilities/biome_immunity.png",
     "iconStatus": "recreated"
@@ -2877,7 +2879,7 @@
     "wikiText": "In the same way that speed in water for non-Ocean animals is not a common trait and thereby deemed a passive ability, Ocean animals are normally not able to go at a fast pace on dry land and lose water fast when outside of a water source. However, the named animals above are able to survive in the Land, Arctic and Desert biomes on dry land for extended periods of time compared to other Ocean animals (though they experience debuff in the latter two biomes). Notably, Ocean animals that can survive",
     "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated (numbers inferred)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred",
     "releaseDate": "2017-02-13",
     "icon": "assets/icons/abilities/dry_land.png",
     "iconStatus": "recreated"
@@ -2887,14 +2889,14 @@
     "name": "Frostbite",
     "type": "passive",
     "keyboard": "(passive)",
-    "simulated": false,
+    "simulated": true,
     "usedBy": [
       "icemonster"
     ],
     "wikiText": "The animal with this ability will produce a stunning freeze effect every time it bites prey (not including predators). The stun is similar to the debuff effect of a non-Arctic animal going into the Arctic biome; the prey will be slowed down for a second and lose additional health, but will also slow down the predator for a slightly shorter time. Freezing lasts longer in the Arctic and shorter against Arctic animals.",
-    "implemented": false,
+    "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); NOT simulated (needs terrain effects the game does not have)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred (contact slows smaller animals)",
     "releaseDate": "2019-08-25",
     "icon": "assets/icons/abilities/frostbite.png",
     "iconStatus": "recreated"
@@ -2904,14 +2906,14 @@
     "name": "Fiery Bite",
     "type": "passive",
     "keyboard": "(passive)",
-    "simulated": false,
+    "simulated": true,
     "usedBy": [
       "phoenix"
     ],
     "wikiText": "This effect only works on prey, and for the Phoenix and Land Monster, their tier 15/16 equivalents when biting them in 1v1. Animals affected by the Fiery Bite will be set on fire for a brief period, draining their water bar and doing additional damage. If killed through the extra damage alone, the inflicter receives the XP.",
-    "implemented": false,
+    "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); NOT simulated (needs terrain effects the game does not have)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred (contact burns smaller animals)",
     "releaseDate": "2019-12-30",
     "icon": "assets/icons/abilities/fiery_bite.png",
     "iconStatus": "recreated"
@@ -2930,7 +2932,7 @@
     "wikiText": "The passive ability of Flying over everything differs from the special ability of flying that many animals have. Though the term 'fly' in this ability is confusing, a more accurate description would be that this ability allows animals that use it to hover over ground-level. It is a constant presence that allows the movement consistency of animals that have the ability to remain relatively unhindered; the terrain of different biomes will not affect how fast an animal moves (exceptions are the Pho",
     "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated (numbers inferred)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred",
     "releaseDate": "2017-02-13",
     "icon": "assets/icons/abilities/fly_over.png",
     "iconStatus": "recreated"
@@ -2940,7 +2942,7 @@
     "name": "Consume Carcasses",
     "type": "passive",
     "keyboard": "(passive)",
-    "simulated": false,
+    "simulated": true,
     "usedBy": [
       "hyena",
       "vulture",
@@ -2951,9 +2953,9 @@
       "pterodactyl"
     ],
     "wikiText": "The animals with this ability are able to consume animal carcasses, by affecting their health bar. Animals that have the ability to consume carcasses can also eat bones (the latter of which are created through ). Whilst damaging the carcass, small meat pieces will be produced around it; one will appear each time the carcass is hit.",
-    "implemented": false,
+    "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); NOT simulated (needs terrain effects the game does not have)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred (XP from nearby deaths)",
     "releaseDate": "2017-02-13",
     "icon": "assets/icons/abilities/carcasses.png",
     "iconStatus": "recreated"
@@ -2971,7 +2973,7 @@
     "wikiText": "In the wake of either of these animals diving, food will appear from out of their blowhole. It can be a varying mix of Plankton, water droplets, or mushroom species. This ability has no fixed cooldown; but if a player dives and emerges, if they dive again within the next few seconds, the ability won't activate.",
     "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated (numbers inferred)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred",
     "releaseDate": "2017-02-13",
     "icon": "assets/icons/abilities/exhale_food.png",
     "iconStatus": "recreated"
@@ -2981,14 +2983,14 @@
     "name": "Shoot Fire",
     "type": "passive",
     "keyboard": "(passive)",
-    "simulated": false,
+    "simulated": true,
     "usedBy": [
       "phoenix"
     ],
     "wikiText": "It is activated by pressing S , similarly to non-Volcanic animals also being able to spit water pods by pressing S . However, there are some notable differences between the latter and shooting fire. Unlike water, when fire is shot at another player, it will not replenish their lava if they have a lava bar, but will reduce their health and water bar in the same way that all fire does. Furthermore, fire shooting reduces the lava bar of the animal doing it much faster than water, meaning it cannot ",
-    "implemented": false,
+    "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); NOT simulated (needs terrain effects the game does not have)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred (grants the Fire ability)",
     "releaseDate": "2019-12-30",
     "icon": "assets/icons/abilities/shoot_fire.png",
     "iconStatus": "recreated"
@@ -3006,7 +3008,7 @@
     "wikiText": "When they are at a standstill, the animals with this ability can turn completely invisible. For the Lioness and Black Lion Cub, this ability is called 'Camouflage' while it is 'Invisibility' for The Snowman and The Snowgirl. If their special ability is used or if they move, the player will become visible once again. This ability will also deactivate if a predator touches the Snowman/Snowgirl.",
     "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated (numbers inferred)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred",
     "releaseDate": "2019-12-30",
     "icon": "assets/icons/abilities/invisible_still.png",
     "iconStatus": "recreated"
@@ -3016,14 +3018,14 @@
     "name": "Tentacle Sting",
     "type": "passive",
     "keyboard": "(passive)",
-    "simulated": false,
+    "simulated": true,
     "usedBy": [
       "jellyfish"
     ],
     "wikiText": "When another player within 1 to approximately 9 attempts to bite its tail, it loses 1% of its XP up to 1K, receives loss of health and gets stunned. There is a 1-2 second cooldown for it. Interestingly, the tentacle sting also affects AI such as the Snail.",
-    "implemented": false,
+    "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); NOT simulated (needs terrain effects the game does not have)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred (contact stuns bigger animals)",
     "releaseDate": "2017-02-13",
     "icon": "assets/icons/abilities/tentacle_sting.png",
     "iconStatus": "recreated"
@@ -3033,14 +3035,14 @@
     "name": "See animals inside Hiding Holes",
     "type": "passive",
     "keyboard": "(passive)",
-    "simulated": false,
+    "simulated": true,
     "usedBy": [
       "fennecfox"
     ],
     "wikiText": "In August of 2020, all animals were given the ability to see animals that have been hiding inside Hiding Holes for under 15 seconds. However, the Fennec Fox has the ability to see any animals that are using hiding holes in spite of however long they have been inside. Moreover, the Fennec Fox can see inside holes even if it is not in one itself. The ability will apply to any type of hiding holes that are within the Fennec Fox's FoV, but does not apply to Caves or Igloos, where all animals will be",
-    "implemented": false,
+    "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); NOT simulated (needs terrain effects the game does not have)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred (reveals animals hiding in holes)",
     "releaseDate": "2026-11-13",
     "icon": "assets/icons/abilities/see_holes.png",
     "iconStatus": "recreated"
@@ -3050,14 +3052,42 @@
     "name": "Mad Donkey",
     "type": "passive",
     "keyboard": "(passive)",
-    "simulated": false,
+    "simulated": true,
     "usedBy": [],
     "wikiText": "The Jackass gains a significant speed increase for a maximum of around 10 seconds, reduced boost interval, and will stun any animal it comes into contact with. The Jackass must keep boosting to keep the ability active, or it'll stop. As a visual indicator, its face contorts into anger while its passive ability is active.",
-    "implemented": false,
+    "implemented": true,
     "verified": true,
-    "confidence": "name/users/description VERIFIED (Mope.io Wiki); NOT simulated (needs terrain effects the game does not have)",
+    "confidence": "name/users/description VERIFIED (Mope.io Wiki); simulated, numbers inferred (faster when badly hurt)",
     "releaseDate": "2017-02-13",
     "icon": "assets/icons/abilities/mad_donkey.png",
     "iconStatus": "recreated"
+  },
+  {
+    "id": "infect_orb",
+    "name": "Infection Orb",
+    "type": "special",
+    "activation": "press",
+    "cooldownMs": 3500,
+    "durationMs": 0,
+    "keyboard": "W",
+    "needs": null,
+    "effects": [
+      {
+        "k": "proj",
+        "pk": "infect",
+        "speed": 650,
+        "range": 520,
+        "r": 20,
+        "stun": 0
+      }
+    ],
+    "glyph": "venom_spit",
+    "usedBy": [],
+    "implemented": true,
+    "verified": true,
+    "releaseDate": "2017-02-13",
+    "icon": "assets/icons/abilities/infect_orb.png",
+    "iconStatus": "recreated",
+    "confidence": "EXISTENCE verified (Mope.io Wiki, Zombie Infection: zombies shoot red infection orbs); numbers inferred"
   }
 ]

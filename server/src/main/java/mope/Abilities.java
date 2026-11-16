@@ -15,7 +15,7 @@ public final class Abilities {
     public static final class State { public final List<Zone> zones = new ArrayList<>(); public final List<Proj> projs = new ArrayList<>(); public final List<Fx> fx = new ArrayList<>(); }
 
     static final Map<String, Integer> KIND_IDX = new HashMap<>();
-    public static final String[] KINDS = { "ring", "fire", "venom", "fruit", "spit", "spear", "snow", "ink", "whirl", "frost", "wave", "web", "stink", "sink", "firetornado", "camp", "slash", "boom" };
+    public static final String[] KINDS = { "ring", "fire", "venom", "fruit", "spit", "spear", "snow", "ink", "whirl", "frost", "wave", "web", "stink", "sink", "firetornado", "camp", "slash", "boom", "infect" };
     static { for (int i = 0; i < KINDS.length; i++) KIND_IDX.put(KINDS[i], i); }
     static int kindIdx(String k) { return KIND_IDX.getOrDefault(k, 0); }
 
@@ -40,13 +40,30 @@ public final class Abilities {
         if (p.hiddenUntilTick > t) m *= p.hideSpeed;
         if (p.shieldUntilTick > t) m *= p.shieldSpeed;
         if (p.flyUntilTick > t) m *= p.flySpeed;
+        if (has(p, "mad_donkey") && p.health < 0.3 * p.maxHealth()) m *= 1.4;
+        return m * terrainSpeed(w, p);
+    }
+    // ---- terrain effects (versions with features.terrainEffects) ----
+    static final Set<String> MUD_ANIMALS = Set.of("hippo", "komodo", "pig", "warthog", "croc", "rhino", "boaconstrictor", "chicken", "swinehoe"); // 2020-03-12 note: mud diving
+    static final Set<String> HOLE_DWELLERS = Set.of("cobra", "giantspider", "blackwidow");
+    public static boolean terrainOn(World w) { return w.cfg.feature("terrainEffects"); }
+    public static boolean blockedByTerrain(World w, Player p, double nx, double ny) {
+        if (!terrainOn(w) || !w.cfg.feature("wikiAbilities") || flying(w, p)) return false;
+        return w.onTerrain("hill", nx, ny, p.radius * 0.2) && !has(p, "climb_hills") || w.onTerrain("rock", nx, ny, p.radius * 0.2) && !has(p, "climb_rocks");
+    }
+    static double terrainSpeed(World w, Player p) {
+        if (!terrainOn(w)) return 1; double m = 1;
+        if (w.onTerrain("mud", p.x, p.y, 0)) m *= MUD_ANIMALS.contains(p.animal.id) || has(p, "fast_mud") || has(p, "fast_quicksand") ? 1.35 : 0.8;
+        if (w.onTerrain("ice_patch", p.x, p.y, 0)) m *= has(p, "ice_grip") || p.animal.biome.equals("arctic") ? 1.1 : 0.85;
         return m;
     }
     public static boolean flying(World w, Player p) { return p.flyUntilTick > w.tick || has(p, "fly_over"); }
 
     // ---- activation ----
     static List<Defs.AbilityDef> defsFor(World w, Player p) {
+        if (w.ms != null && w.mode.equals("zombie") && p.zombie) { Defs.AbilityDef orb = w.abilities.def("infect_orb"); return orb == null ? List.of() : List.of(orb); } // zombies shoot infection orbs instead (wiki)
         List<String> ids = w.cfg.feature("wikiAbilities") && p.animal.abilities != null && !p.animal.abilities.isEmpty() ? p.animal.abilities : (p.animal.ability != null ? List.of(p.animal.ability) : List.of());
+        if (has(p, "shoot_fire") && !ids.contains("fire")) { ids = new ArrayList<>(ids); ((List<String>) ids).add("fire"); }
         List<Defs.AbilityDef> out = new ArrayList<>(); for (String id : ids) { Defs.AbilityDef d = w.abilities.def(id); if (d != null && d.effects != null) out.add(d); }
         return out;
     }
@@ -72,7 +89,7 @@ public final class Abilities {
         if (p.stunUntilTick > t || p.carriedBy != 0) return false;
         Defs.AbilityDef d = pick(w, p, slot); if (d == null) return false;
         long ready = slot == 1 ? p.abilityReadyAt2 : p.abilityReadyAt; if (now < ready) return false;
-        double cm = Modes.cooldownMul(w, p), dm = Modes.durationMul(w);
+        double cm = Modes.cooldownMul(w, p), dm = Modes.durationMul(w) * Modes.diveMul(w, p);
         long cd = (long) (d.cooldownMs * cm); if (slot == 1) p.abilityReadyAt2 = now + cd; else p.abilityReadyAt = now + cd;
         for (com.google.gson.JsonElement je : d.effects) apply(w, p, je.getAsJsonObject(), dm, d);
         if ("hold".equals(d.activation)) { p.holdAbility = d.id; p.holdSince = t; }
@@ -112,21 +129,22 @@ public final class Abilities {
     }
     private static void placeZone(Zone z, Player p) { double off = z.front ? p.radius + z.r * 0.6 : 0; z.x = p.x + Math.cos(p.angle) * off; z.y = p.y + Math.sin(p.angle) * off; }
 
+    private static boolean validHidden(World w, Player p, Player o) { return o != p && !o.dead && o.protectedUntilTick <= w.tick && o.ownerId != p.id && p.ownerId != o.id; }
     private static boolean valid(World w, Player p, Player o) { return o != p && !o.dead && o.protectedUntilTick <= w.tick && o.ownerId != p.id && p.ownerId != o.id && !(w.ms != null && w.mode.equals("team") && o.team == p.team) && !(o.hiddenUntilTick > w.tick); }
-    static void hurt(World w, Player by, Player o, double amount, List<Player> dying) { if (amount <= 0 || o.dead) return; o.health -= amount; if (o.health <= 0) w.dieLater(o, by == null ? "an ability" : by.name); }
+    static void hurt(World w, Player by, Player o, double amount, List<Player> dying) { if (amount <= 0 || o.dead) return; o.health -= amount * (by == null ? 1 : Modes.dmgMul(w, by, o)); if (o.health <= 0) w.dieLater(o, by == null ? "an ability" : by.name); }
 
     /** Instant area effect around (or in front of / behind) the caster: stun, knockback, pull, damage, poison. */
     static void area(World w, Player p, double r, boolean front, boolean back, double stunPrey, double stunPred, double knock, double dmg, double dot, double dotMs, double pull, int maxTier, String fxKind) {
         double ox = p.x + (front ? Math.cos(p.angle) * p.radius * 0.8 : back ? -Math.cos(p.angle) * p.radius * 0.8 : 0), oy = p.y + (front ? Math.sin(p.angle) * p.radius * 0.8 : back ? -Math.sin(p.angle) * p.radius * 0.8 : 0);
         Fx f = new Fx(); f.x = ox; f.y = oy; f.r = r + p.radius * (front || back ? 0 : 1); f.kind = fxKind; f.until = w.tick + Math.max(6, w.cfg.tickRate / 3); w.fxState.fx.add(f);
         for (Player o : new ArrayList<>(w.players.values())) {
-            if (!valid(w, p, o) || o.animal.tier > maxTier && maxTier < 99) continue;
+            if (!(maxTier < 99 ? validHidden(w, p, o) : valid(w, p, o)) || o.animal.tier > maxTier && maxTier < 99) continue; // pull-from-hole (maxTier set) also reaches animals hiding in holes
             double dx = o.x - ox, dy = o.y - oy, dist = Math.hypot(dx, dy); if (dist > r + p.radius * (front || back ? 0 : 1) + o.radius) continue;
             if (front || back) { double ang = Math.atan2(dy, dx), face = back ? p.angle + Math.PI : p.angle, diff = Math.abs(Math.atan2(Math.sin(ang - face), Math.cos(ang - face))); if (diff > 1.1 && dist > o.radius) continue; }
             boolean prey = o.animal.tier <= p.animal.tier; double sMs = prey ? stunPrey : stunPred;
-            if (sMs > 0) o.stunUntilTick = Math.max(o.stunUntilTick, w.tick + ticks(w, sMs));
+            if (sMs > 0) o.stunUntilTick = Math.max(o.stunUntilTick, w.tick + ticks(w, sMs * Modes.stunMul(w, o)));
             if (dmg > 0 && prey) hurt(w, p, o, dmg, null); else if (dmg > 0) hurt(w, p, o, dmg * 0.4, null);
-            if (dot > 0 && !has(o, "poison_immunity")) { o.dotDps = dot; o.dotUntilTick = w.tick + ticks(w, dotMs); o.dotBy = p.id; }
+            if (dot > 0 && !has(o, "poison_immunity") && !Modes.teamPerkOf(w, o, "poison")) { o.dotDps = dot; o.dotUntilTick = w.tick + ticks(w, dotMs); o.dotBy = p.id; }
             double len = Math.max(1, dist); if (knock > 0) shove(w, o, dx / len * knock * (prey ? 1 : 0.5), dy / len * knock * (prey ? 1 : 0.5)); if (pull > 0) shove(w, o, -dx / len * pull, -dy / len * pull);
         }
     }
@@ -134,6 +152,7 @@ public final class Abilities {
     private static void grab(World w, Player p, double r, long ticks, double dps, boolean flyToo) {
         Player best = null; double bd = 1e18; for (Player o : w.players.values()) { if (!valid(w, p, o) || o.animal.tier >= p.animal.tier || o.carriedBy != 0) continue; double dd = Collision.dist2(p, o); if (dd < (r + p.radius + o.radius) * (r + p.radius + o.radius) && dd < bd) { bd = dd; best = o; } }
         if (flyToo) { p.flyUntilTick = w.tick + ticks; p.flySpeed = 1.1; }
+        if (best != null && (has(best, "bee_immunity") && "grab_sting".equals(p.holdAbility))) best = null;
         if (best != null) { best.carriedBy = p.id; best.carryUntilTick = w.tick + ticks; best.dotDps = dps; best.dotUntilTick = w.tick + ticks; best.dotBy = p.id; best.stunUntilTick = best.carryUntilTick; }
     }
 
@@ -151,6 +170,18 @@ public final class Abilities {
             if (p.landBurst && p.flyUntilTick > 0 && t >= p.flyUntilTick) { p.landBurst = false; area(w, p, 140, false, false, 1500, 1500, 0, 12, 0, 0, 0, 99, "boom"); }
             if (p.burstAtEndTick > 0 && t >= p.burstAtEndTick && !p.holdAbility.isEmpty()) { p.holdAbility = ""; burst(w, p); p.burstAtEndTick = 0; }
             if (!p.holdAbility.isEmpty() && p.hiddenUntilTick <= t && p.flyUntilTick <= t && p.invisUntilTick <= t && !hasActiveZone(s, p)) p.holdAbility = "";
+            if (terrainOn(w) && p.inputMag < 0.05 && p.stunUntilTick <= t && !p.dead) { // standing still in cover hides small animals (bushes, holes) and mud divers (mud)
+                boolean hide = p.animal.tier <= 9 && w.onTerrain("bush", p.x, p.y, 0) || (p.animal.tier <= 6 || HOLE_DWELLERS.contains(p.animal.id)) && w.onTerrain("hole", p.x, p.y, 0) || (MUD_ANIMALS.contains(p.animal.id) || has(p, "dive_mud")) && w.onTerrain("mud", p.x, p.y, 0);
+                if (hide) { p.hiddenUntilTick = Math.max(p.hiddenUntilTick, t + 2); p.hideSpeed = Math.max(p.hideSpeed, 0.8); }
+                if (w.mode.equals("pandemic") && w.onTerrain("hole", p.x, p.y, 0)) p.immunity = Math.min(100, p.immunity + 3 * dt); // quarantine in a hiding hole
+            }
+            if (terrainOn(w) && !p.animal.biome.equals("volcano") && !has(p, "lava_immunity") && !flying(w, p) && w.onTerrain("lava_pool", p.x, p.y, 0)) { p.health -= 6 * dt; if (p.health <= 0) { w.die(p, "lava", World.EATEN, dying); continue; } }
+            if (has(p, "frostbite") || has(p, "fiery_bite") || has(p, "tentacle_sting")) for (Player o : w.players.values()) { // contact effects: the bite/sting happens when bodies touch
+                if (o == p || o.dead || o.protectedUntilTick > t || o.ownerId == p.id || !Collision.overlap(p, o)) continue;
+                if (o.animal.tier < p.animal.tier && has(p, "frostbite")) { o.abSlowUntilTick = t + 20; o.abSlowMul = Math.min(o.abSlowMul, 0.6); }
+                if (o.animal.tier < p.animal.tier && has(p, "fiery_bite") && !has(o, "lava_immunity")) { o.dotDps = 5; o.dotUntilTick = t + 3L * w.cfg.tickRate; o.dotBy = p.id; }
+                if (o.animal.tier > p.animal.tier && has(p, "tentacle_sting") && t >= p.nextStingTick) { p.nextStingTick = t + 6L * w.cfg.tickRate; o.stunUntilTick = Math.max(o.stunUntilTick, t + (long) (0.9 * w.cfg.tickRate)); }
+            }
             if (has(p, "invisible_still") && p.inputMag < 0.05 && p.stunUntilTick <= t) p.invisUntilTick = Math.max(p.invisUntilTick, t + 2);          // camouflage: invisible while standing still
             if (has(p, "exhale_food") && t >= p.nextExhaleTick) { p.nextExhaleTick = t + 8L * w.cfg.tickRate; w.foods.spawnAt(p.x + Math.cos(p.angle) * (p.radius + 25), p.y + Math.sin(p.angle) * (p.radius + 25), w.rnd.nextInt(Math.max(1, w.foods.typeCount()))); }
         }
@@ -164,8 +195,9 @@ public final class Abilities {
                 if (o.dead) continue; double dx = o.x - z.x, dy = o.y - z.y, rr = z.r + o.radius; if (dx * dx + dy * dy > rr * rr) continue;
                 boolean ally = own != null && (o == own || o.ownerId == own.id || (w.ms != null && w.mode.equals("team") && o.team == own.team));
                 if (z.heal > 0 && ally) o.health = Math.min(o.maxHealth(), o.health + z.heal * dt);
+                if (z.heal > 0 && z.owner == 0) o.health = Math.min(o.maxHealth(), o.health + z.heal * dt); // healing stones heal everyone
                 if (ally || o.hiddenUntilTick > t) continue;
-                if (z.dps > 0 && !(z.kind.equals("stink") && o.animal.tier > (own == null ? 99 : own.animal.tier) + 2)) { o.health -= z.dps * dt; if (o.health <= 0) { w.die(o, own == null ? "an ability" : own.name, World.EATEN, dying); continue; } }
+                if (z.dps > 0 && !(Modes.teamPerkOf(w, o, "burn") && (z.kind.equals("fire") || z.kind.equals("firetornado"))) && !(z.kind.equals("stink") && o.animal.tier > (own == null ? 99 : own.animal.tier) + 2)) { o.health -= z.dps * dt; if (o.health <= 0) { w.die(o, own == null ? "an ability" : own.name, World.EATEN, dying); continue; } }
                 if (z.slow > 0) { o.abSlowUntilTick = t + 3; o.abSlowMul = Math.min(o.abSlowUntilTick > t ? o.abSlowMul : 1, 1 - z.slow); }
                 if (z.pull > 0) { double len = Math.max(1, Math.hypot(dx, dy)); shove(w, o, -dx / len * z.pull * dt, -dy / len * z.pull * dt); }
             }
@@ -176,7 +208,8 @@ public final class Abilities {
             Proj pr = pi.next(); if (t >= pr.until) { pi.remove(); continue; } pr.x += pr.vx * dt; pr.y += pr.vy * dt; Player own = byId.get(pr.owner); boolean hit = false;
             if (pr.x < 0 || pr.y < 0 || pr.x > w.size || pr.y > w.size) { pi.remove(); continue; }
             for (Player o : w.players.values()) { if (o.dead || own == null || !valid(w, own, o) || o.flyUntilTick > t && !"spear".equals(pr.kind)) continue; double dx = o.x - pr.x, dy = o.y - pr.y, rr = pr.r + o.radius; if (dx * dx + dy * dy <= rr * rr) {
-                if (pr.stunMs > 0) o.stunUntilTick = Math.max(o.stunUntilTick, t + ticks(w, pr.stunMs)); if (pr.dmg > 0) { o.health -= pr.dmg; if (o.health <= 0) { w.die(o, own.name, World.EATEN, dying); } }
+                if ("infect".equals(pr.kind) && w.ms != null && w.mode.equals("zombie") && !o.zombie) o.infection = Math.min(100, o.infection + 40);
+                if (pr.stunMs > 0) o.stunUntilTick = Math.max(o.stunUntilTick, t + ticks(w, pr.stunMs * Modes.stunMul(w, o))); if (pr.dmg > 0) { o.health -= pr.dmg; if (o.health <= 0) { w.die(o, own.name, World.EATEN, dying); } }
                 if (pr.dot > 0 && !has(o, "poison_immunity")) { o.dotDps = pr.dot; o.dotUntilTick = t + ticks(w, pr.dotMs); o.dotBy = pr.owner; }
                 Fx f = new Fx(); f.x = pr.x; f.y = pr.y; f.r = 40; f.kind = pr.kind; f.until = t + w.cfg.tickRate / 4; s.fx.add(f); hit = true; break; } }
             if (hit) pi.remove();
@@ -187,16 +220,17 @@ public final class Abilities {
 
     // ---- network ----
     /** Per-player flag bits (shared with Modes.flags): 16 stunned, 32 shielded, 64 hidden, 128 flying, 256 invisible, 512 carried, 1024 poisoned, 2048 grown. */
+    static boolean blinded(World w, Player p) { if (has(p, "ink_immunity")) return false; for (Zone z : w.fxState.zones) if (z.blind && z.owner != p.id) { double dx = p.x - z.x, dy = p.y - z.y; if (dx * dx + dy * dy <= z.r * z.r) return true; } return false; }
     public static int flags(World w, Player p) {
         long t = w.tick; int f = 0;
-        if (p.stunUntilTick > t) f |= 16; if (p.shieldUntilTick > t) f |= 32; if (p.hiddenUntilTick > t) f |= 64; if (flying(w, p)) f |= 128; if (p.invisUntilTick > t) f |= 256; if (p.carriedBy != 0) f |= 512; if (p.dotUntilTick > t) f |= 1024;
+        if (p.stunUntilTick > t) f |= 16; if (p.shieldUntilTick > t) f |= 32; if (p.hiddenUntilTick > t) f |= 64; if (flying(w, p)) f |= 128; if (p.invisUntilTick > t) f |= 256; if (p.carriedBy != 0) f |= 512; if (p.dotUntilTick > t) f |= 1024; if (blinded(w, p)) f |= 2048;
         return f;
     }
-    public static boolean visibleTo(World w, Player o, Player me) { long t = w.tick; if (o == me) return true; if (!(o.hiddenUntilTick > t || o.invisUntilTick > t)) return true; return Collision.dist2(o, me) < Math.pow(o.radius + me.radius + 40, 2) || (w.ms != null && w.mode.equals("team") && o.team == me.team && me.team > 0); }
+    public static boolean visibleTo(World w, Player o, Player me) { long t = w.tick; if (o == me) return true; if (has(me, "see_holes") && o.hiddenUntilTick > t) return true; if (!(o.hiddenUntilTick > t || o.invisUntilTick > t)) return true; return Collision.dist2(o, me) < Math.pow(o.radius + me.radius + 40, 2) || (w.ms != null && w.mode.equals("team") && o.team == me.team && me.team > 0); }
     public static String snapshotJson(World w, Player me) {
         State s = w.fxState; if (s.zones.isEmpty() && s.projs.isEmpty() && s.fx.isEmpty()) return "";
         StringBuilder b = new StringBuilder(",\"ab\":{\"zn\":["); boolean f = true; long t = w.tick;
-        for (Zone z : s.zones) { if (Math.abs(z.x - me.x) > 1300 || Math.abs(z.y - me.y) > 1300) continue; if (!f) b.append(','); f = false; b.append('[').append(Math.round(z.x)).append(',').append(Math.round(z.y)).append(',').append(Math.round(z.r)).append(',').append(kindIdx(z.kind)).append(',').append(Math.max(0, z.until - t) * 1000 / w.cfg.tickRate).append(']'); }
+        for (Zone z : s.zones) { if (Math.abs(z.x - me.x) > 1300 || Math.abs(z.y - me.y) > 1300) continue; if (!f) b.append(','); f = false; b.append('[').append(Math.round(z.x)).append(',').append(Math.round(z.y)).append(',').append(Math.round(z.r)).append(',').append(kindIdx(z.kind)).append(',').append(Math.min(3_600_000L, Math.max(0, z.until - t)) * 1000 / w.cfg.tickRate).append(']'); }
         b.append("],\"pj\":["); f = true; for (Proj p : s.projs) { if (Math.abs(p.x - me.x) > 1300 || Math.abs(p.y - me.y) > 1300) continue; if (!f) b.append(','); f = false; b.append('[').append(Math.round(p.x)).append(',').append(Math.round(p.y)).append(',').append(kindIdx(p.kind)).append(',').append(Math.round(p.r)).append(']'); }
         b.append("],\"fx\":["); f = true; for (Fx x : s.fx) { if (Math.abs(x.x - me.x) > 1300 || Math.abs(x.y - me.y) > 1300) continue; if (!f) b.append(','); f = false; b.append('[').append(Math.round(x.x)).append(',').append(Math.round(x.y)).append(',').append(Math.round(x.r)).append(',').append(kindIdx(x.kind)).append(',').append(Math.max(0, x.until - t) * 1000 / w.cfg.tickRate).append(']'); }
         return b.append("]}").toString();

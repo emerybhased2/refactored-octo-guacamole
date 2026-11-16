@@ -90,7 +90,7 @@ final class Disasters {
                 double dx = p.x - a.x, dy = p.y - a.y, d = Math.hypot(dx, dy); if (d > a.r) continue;
                 boolean natives = "any".equals(a.def.biome) || a.def.biome.equals(p.animal.biome);
                 double sm = a.def.fx("speedMul", 1); if (sm < 1 && (!a.def.fb("freezeNonNative") || !natives)) p.disasterSpeed *= sm;
-                double dps = a.def.fx("dps", 0); if (dps > 0) p.health -= dps * dt;
+                double dps = a.def.fx("dps", 0); if (dps > 0 && !(Abilities.has(p, "lava_immunity") && (a.def.id.contains("lava") || a.def.id.contains("eruption")))) p.health -= dps * dt;
                 double rain = a.def.fx("waterPerSec", 0); if (rain > 0) p.water = Math.min(100, p.water + rain * dt);
                 double push = a.def.fx("pushPerSec", 0), pull = a.def.fx("pullPerSec", 0);
                 if (push > 0 && d > 1e-6 && !(a.def.fb("washOutNonOcean") && "ocean".equals(p.animal.biome))) { mx += dx / d * push * dt; my += dy / d * push * dt; }

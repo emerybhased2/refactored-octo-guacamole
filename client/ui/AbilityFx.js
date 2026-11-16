@@ -1,10 +1,10 @@
 (function (g) {
   const M = (g.Mope = g.Mope || {});
   /* Visuals for special abilities (original, cosmetic): lingering zones, projectiles and one-shot rings. The server applies all effects. */
-  const KINDS = ['ring', 'fire', 'venom', 'fruit', 'spit', 'spear', 'snow', 'ink', 'whirl', 'frost', 'wave', 'web', 'stink', 'sink', 'firetornado', 'camp', 'slash', 'boom']; // same order as Abilities.KINDS (server)
-  const COL = { ring: '#ffffff', fire: '#ff8a2a', venom: '#9be05a', fruit: '#f2d43d', spit: '#bfe6a0', spear: '#caa070', snow: '#e6f6ff', ink: '#1f2430', whirl: '#7ad0ff', frost: '#bfe6f7', wave: '#4fb4dc', web: '#f4f4f4', stink: '#c8e07a', sink: '#3a2a1c', firetornado: '#ff5a2a', camp: '#ffd06a', slash: '#ffffff', boom: '#ff9a4a' };
+  const KINDS = ['ring', 'fire', 'venom', 'fruit', 'spit', 'spear', 'snow', 'ink', 'whirl', 'frost', 'wave', 'web', 'stink', 'sink', 'firetornado', 'camp', 'slash', 'boom', 'infect']; // same order as Abilities.KINDS (server)
+  const COL = { ring: '#ffffff', fire: '#ff8a2a', venom: '#9be05a', fruit: '#f2d43d', spit: '#bfe6a0', spear: '#caa070', snow: '#e6f6ff', ink: '#1f2430', whirl: '#7ad0ff', frost: '#bfe6f7', wave: '#4fb4dc', web: '#f4f4f4', stink: '#c8e07a', sink: '#3a2a1c', firetornado: '#ff5a2a', camp: '#ffd06a', slash: '#ffffff', boom: '#ff9a4a', infect: '#d83a3a' };
   /** Flag bits shared with the server: 1-3 team, 4 zombie, 8 infected, 16 stunned, 32 shielded, 64 hidden, 128 flying, 256 invisible, 512 carried, 1024 poisoned. */
-  const flagsOf = (f) => ({ team: (f | 0) & 3, zombie: !!((f | 0) & 4), infected: !!((f | 0) & 8), stun: !!((f | 0) & 16), shield: !!((f | 0) & 32), hidden: !!((f | 0) & 64), fly: !!((f | 0) & 128), invis: !!((f | 0) & 256), carried: !!((f | 0) & 512), poison: !!((f | 0) & 1024) });
+  const flagsOf = (f) => ({ team: (f | 0) & 3, zombie: !!((f | 0) & 4), infected: !!((f | 0) & 8), stun: !!((f | 0) & 16), shield: !!((f | 0) & 32), hidden: !!((f | 0) & 64), fly: !!((f | 0) & 128), invis: !!((f | 0) & 256), carried: !!((f | 0) & 512), poison: !!((f | 0) & 1024), blind: !!((f | 0) & 2048), egg: !!((f | 0) & 4096) });
   function drawZone(ctx, z, sx, sy, r, t) {
     const k = KINDS[z[3]] || 'ring', col = COL[k]; ctx.save(); ctx.translate(sx, sy);
     if (k === 'fire' || k === 'firetornado' || k === 'camp') { const gr = ctx.createRadialGradient(0, 0, r * 0.1, 0, 0, r); gr.addColorStop(0, k === 'camp' ? 'rgba(255,220,120,.85)' : 'rgba(255,230,120,.8)'); gr.addColorStop(0.6, 'rgba(255,120,40,' + (0.45 + 0.15 * Math.sin(t * 9)) + ')'); gr.addColorStop(1, 'rgba(200,40,20,0)'); ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(0, 0, r, 0, 7); ctx.fill(); if (k === 'firetornado') { ctx.rotate(t * 5); ctx.strokeStyle = 'rgba(255,200,120,.8)'; ctx.lineWidth = Math.max(3, r * 0.08); for (let i = 0; i < 3; i++) { ctx.beginPath(); ctx.arc(0, 0, r * (0.35 + 0.2 * i), i, i + 2.4); ctx.stroke(); } } }
@@ -28,6 +28,7 @@
     if (f.shield) { ctx.save(); ctx.strokeStyle = 'rgba(120,190,255,.95)'; ctx.lineWidth = Math.max(3, pr * 0.12); ctx.beginPath(); ctx.arc(0, 0, pr * 1.08, 0, 7); ctx.stroke(); ctx.restore(); }
     if (f.poison) { ctx.save(); ctx.globalAlpha = 0.28; ctx.fillStyle = '#7ad04a'; ctx.beginPath(); ctx.arc(0, 0, pr * 0.95, 0, 7); ctx.fill(); ctx.restore(); }
     if (f.stun) { ctx.save(); ctx.fillStyle = '#ffe15a'; for (let i = 0; i < 3; i++) { const a = now / 250 + i * 2.09, x = Math.cos(a) * pr * 0.7, y = -pr * 1.05 + Math.sin(a) * pr * 0.18; ctx.beginPath(); ctx.arc(x, y, Math.max(3, pr * 0.09), 0, 7); ctx.fill(); } ctx.restore(); }
+    if (f.egg) { ctx.save(); ctx.fillStyle = 'rgba(250,246,232,.92)'; ctx.strokeStyle = '#b8a888'; ctx.lineWidth = 3; ctx.beginPath(); ctx.ellipse(0, 0, pr * 1.15, pr * 1.4, 0, 0, 7); ctx.fill(); ctx.stroke(); ctx.fillStyle = 'rgba(160,140,110,.5)'; for (const [x, y] of [[-0.4, -0.5], [0.3, 0.2], [-0.1, 0.7]]) { ctx.beginPath(); ctx.arc(x * pr, y * pr, pr * 0.14, 0, 7); ctx.fill(); } ctx.restore(); }
     if (f.carried) { ctx.save(); ctx.strokeStyle = 'rgba(255,255,255,.7)'; ctx.setLineDash([4, 4]); ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(0, 0, pr * 1.05, 0, 7); ctx.stroke(); ctx.restore(); }
   }
   M.AbilityFx = { draw, drawFlags, flagsOf, KINDS };

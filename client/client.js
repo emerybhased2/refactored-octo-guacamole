@@ -165,6 +165,7 @@
     renderer.drawWorld(camera, V, lakes, interp.sample(performance.now()), foods, you.id, pred, chats, performance.now(), terrain); if (V.disasterDefs && zones.length) M.Disasters.draw(renderer.ctx, camera, renderer.vw, renderer.vh, zones, V.disasterDefs, performance.now());
     const ctx = renderer.ctx;
     M.HUD.draw(ctx, renderer.vw, renderer.vh, V, you, V.animals[pred.ai], lb, DEV ? dbg : null, count);
+    if (myFlags & 2048) { ctx.save(); ctx.fillStyle = 'rgba(10,12,20,.82)'; ctx.fillRect(0, 0, renderer.vw, renderer.vh); ctx.restore(); } // blinded by ink
     M.ModeHud.drawHud(ctx, renderer.vw, renderer.vh, gm, modeData, redState, t);
     if (you.a2 && V.hud && V.hud.abilityButton) { // second ability (S key), e.g. the King Dragon's tail slap
       const A = V.hud.abilityButton, s = A.size * 0.8, x = renderer.vw - A.marginRight - A.size * 2 - 14, y = renderer.vh - A.marginBottom - s, d2 = (V.abilities || []).find((q) => q.id === you.a2), icon = d2 && M.Sprites.getAbilityIcon(d2);

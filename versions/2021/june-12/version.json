@@ -65,7 +65,8 @@
     "settingsGraphicsLevels": true,
     "snowfall": true,
     "noXpPopups": true,
-    "mopeId": true
+    "mopeId": true,
+    "terrainEffects": true
   },
   "tickRate": 30,
   "netRate": 20,
