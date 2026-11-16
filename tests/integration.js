@@ -148,10 +148,11 @@ function client(port = PORT) {
       const n = client(PORT); await n.ready; n.send({ t: 'join', name: 'Xp2', v: '2021-06-12' }); await n.until('welcome'); n.send({ t: 'dev-xp', n: 500 }); await sleep(1500); const m2 = n.msgs.filter((x) => x.t === 'snap').pop(); assert.ok(!m2 || !m2.you.ev || m2.you.ev.length === 0); n.ws.close();
     });
     await t('game modes: each shared mode joins, reports gm + mode data; royale spectate-of works; redemption needs an account and credits', async () => {
-      for (const gm of ['classic', 'zombie', 'royale', 'team', 'wild', 'pandemic']) {
+      for (const gm of ['classic', 'zombie', 'royale', 'team', 'wild', 'pandemic', 'beta']) {
         const c = client(PORT_DEV); await c.ready; c.send({ t: 'join', name: 'M' + gm, v: '2021-06-12', mode: gm }); const w = await c.until('welcome'); assert.strictEqual(w.gm, gm); assert.strictEqual(w.mode, 'normal');
-        if (gm === 'classic') { assert.strictEqual(w.version.tiers.length, 14); assert.deepStrictEqual(w.version.biomes.map((b) => b.id), ['land', 'ocean']); assert.strictEqual(w.version.animals.length, 23); }
-        else { const t0 = Date.now(); let md = null; while (Date.now() - t0 < 3000 && !md) { await sleep(80); const s = c.msgs.filter((x) => x.t === 'snap').pop(); if (s && s.md) md = s.md; } assert.ok(md && md.m === gm, gm + ' snapshot data'); if (gm === 'royale') assert.ok(md.z && md.z.length === 3 && md.al >= 25); if (gm === 'team') assert.ok(md.st.length === 12 && md.tm.length === 3); if (gm === 'pandemic') assert.ok(md.im > 0); }
+        if (gm === 'beta') { assert.deepStrictEqual(w.version.biomes.map((b) => b.id), ['land', 'ocean', 'arctic', 'desert', 'volcano', 'deepocean', 'underground']); assert.ok(w.version.animals.some((a) => a.id === 'deathworm')); }
+        else if (gm === 'classic') { assert.strictEqual(w.version.tiers.length, 14); assert.deepStrictEqual(w.version.biomes.map((b) => b.id), ['land', 'ocean']); assert.strictEqual(w.version.animals.length, 23); }
+        else if (gm !== 'beta') { const t0 = Date.now(); let md = null; while (Date.now() - t0 < 3000 && !md) { await sleep(80); const s = c.msgs.filter((x) => x.t === 'snap').pop(); if (s && s.md) md = s.md; } assert.ok(md && md.m === gm, gm + ' snapshot data'); if (gm === 'royale') assert.ok(md.z && md.z.length === 3 && md.al >= 25); if (gm === 'team') assert.ok(md.st.length === 12 && md.tm.length === 3); if (gm === 'pandemic') assert.ok(md.im > 0); }
         c.ws.close();
       }
       const sp = client(PORT_DEV); await sp.ready; sp.send({ t: 'join', name: 'Spec', v: '2021-06-12', mode: 'spectate', of: 'royale' }); await sp.until('welcome'); const t1 = Date.now(); let md2 = null; while (Date.now() - t1 < 3000 && !md2) { await sleep(80); const s = sp.msgs.filter((x) => x.t === 'snap').pop(); if (s && s.md) md2 = s.md; } assert.ok(md2 && md2.m === 'royale', 'spectators watch the royale world'); sp.ws.close();
@@ -166,6 +167,14 @@ function client(port = PORT) {
       const t0 = Date.now(); let you = null; while (Date.now() - t0 < 3000 && !you) { await sleep(80); const s = c.msgs.filter((x) => x.t === 'snap').pop(); if (s) you = s.you; } assert.strictEqual(you.a1, 'fire'); assert.strictEqual(you.a2, null); assert.ok('cd' in you && 'cd2' in you);
       c.send({ t: 'ability', slot: 0, d: 1 }); const t1 = Date.now(); let zn = null; while (Date.now() - t1 < 3000 && !zn) { await sleep(80); const s = c.msgs.filter((x) => x.t === 'snap').pop(); if (s && s.ab && s.ab.zn && s.ab.zn.length) zn = s.ab.zn; } assert.ok(zn, 'fire zone in the snapshot'); c.send({ t: 'ability', slot: 0, d: 0 });
       c.ws.close();
+    });
+    await t('single-port hosting: the web server serves the client and proxies WebSocket /ws to the game server', async () => {
+      const PORT_WEB = 18083, web = spawn('node', [path.join(ROOT, 'scripts/devserver.js')], { env: Object.assign({}, process.env, { PORT: PORT_WEB, MOPE_PORT: PORT_DEV }), stdio: 'ignore' });
+      try {
+        await sleep(700); const r = await fetch('http://127.0.0.1:' + PORT_WEB + '/'); assert.strictEqual(r.status, 200); const vs = await (await fetch('http://127.0.0.1:' + PORT_WEB + '/api/versions')).json(); assert.strictEqual(vs.length, 7);
+        const ws = new WebSocket('ws://127.0.0.1:' + PORT_WEB + '/ws'); const got = await new Promise((res, rej) => { ws.onopen = () => ws.send(JSON.stringify({ t: 'join', name: 'Proxy', v: '2017-02-13' })); ws.onmessage = (e) => { const m = JSON.parse(e.data); if (m.t === 'welcome') res(m); }; ws.onerror = () => rej(new Error('ws error')); setTimeout(() => rej(new Error('timeout')), 4000); }); assert.strictEqual(got.version.id, '2017-02-13'); ws.close();
+        const bad = await new Promise((res) => { const w2 = new WebSocket('ws://127.0.0.1:' + PORT_WEB + '/elsewhere'); w2.onopen = () => res('open'); w2.onerror = () => res('refused'); w2.onclose = () => res('refused'); setTimeout(() => res('refused'), 2000); }); assert.strictEqual(bad, 'refused');
+      } finally { web.kill('SIGTERM'); }
     });
     await t('sessions: resume restores coins/inventory; logout invalidates the token', async () => {
       const c = await login(PORT_DEV); c.send({ t: 'dev-coins', v: '2019-12-30', n: 500 }); await c.until('shop'); c.ws.close();

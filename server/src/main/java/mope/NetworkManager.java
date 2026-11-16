@@ -32,12 +32,14 @@ public final class NetworkManager extends WebSocketServer {
     public World world(String versionId, boolean sandbox) { return world(versionId, sandbox ? "sandbox" : "normal"); }
     private VersionManager.Config classicCfg;
     /** Classic Mode: the 2017 build restricted to Land + Ocean, 14 tiers (data/modes/classic.json). */
+    private VersionManager.Config betaCfg;
+    synchronized VersionManager.Config betaConfig() { if (betaCfg == null) betaCfg = Modes.betaConfig(versions.get("2026-11-13")); return betaCfg; }
     synchronized VersionManager.Config classicConfig() { if (classicCfg == null) classicCfg = Modes.classicConfig(versions.get("2017-02-13")); return classicCfg; }
     /** Shared world per (version, mode): normal, sandbox, classic, zombie, royale, team, wild, pandemic. */
     public World world(String versionId, String mode) {
         final String md = mode == null ? "normal" : mode;
         return worlds.computeIfAbsent(versionId + (md.equals("normal") ? "" : "|" + md), key -> {
-            World w = new World(md.equals("classic") ? classicConfig() : versions.get(versionId), seed + key.hashCode(), md.equals("sandbox"), false, md.equals("sandbox") ? "normal" : md);
+            World w = new World(md.equals("classic") ? classicConfig() : md.equals("beta") ? betaConfig() : versions.get(versionId), seed + key.hashCode(), md.equals("sandbox"), false, md.equals("sandbox") ? "normal" : md);
             w.onReward = p -> { if (p.bonusCoins <= 0 || p.account == null || p.bot) { p.bonusCoins = 0; return; } long n = (long) p.bonusCoins; p.bonusCoins = 0; accounts.addCoins(p.account, n); if (p.sender != null) p.sender.send("{\"t\":\"coins\",\"coins\":" + accounts.coins(p.account) + ",\"earned\":" + n + ",\"bonus\":1}"); };
             w.onDeath = p -> {
                 if (p.account == null || p.bot) return;

@@ -293,11 +293,29 @@ public final class SelfTest {
             am.recordGame("alice", 500, 3); am.recordGame("alice", 200, 1);
             eq("stats best_xp", am.stats("alice")[0], 500L); eq("stats kills", am.stats("alice")[1], 4L);
         }
-        modeTests(vm); abilityTests(vm);
+        modeTests(vm); abilityTests(vm); soakTests(vm);
         System.out.printf("SelfTest: %d passed, %d failed%n", passed, failed);
         System.exit(failed == 0 ? 0 : 1);
     }
 
+    /** Soak: every game mode on the newest build + every older build, ability-spamming players of EVERY animal; no exception, ticks stay fast. */
+    static void soakTests(VersionManager vm) {
+        java.util.Random rr = new java.util.Random(7); int worlds = 0; double worst = 0; boolean ok = true; String err = "";
+        List<String> modes = new ArrayList<>(Modes.WORLD_MODES);
+        for (VersionManager.Config v : vm.all()) for (String md : (v.id.equals("2026-11-13") ? modes : List.of("normal"))) {
+            try {
+                VersionManager.Config cfg = md.equals("classic") ? Modes.classicConfig(vm.get("2017-02-13")) : md.equals("beta") ? Modes.betaConfig(vm.get("2026-11-13")) : v;
+                com.google.gson.JsonObject o = cfg.raw.deepCopy(); o.addProperty("bots", 14); VersionManager.Config c = md.equals("classic") || md.equals("beta") ? cfg : VersionManager.resolve(o);
+                World w = new World(c, 500 + worlds, false, false, md); worlds++;
+                List<Player> humans = new ArrayList<>(); for (Animal a : c.animals.values()) { Player p = w.join("H" + a.id, null, false); p.setAnimal(a); p.xp = a.xpRequired; p.health = p.maxHealth(); humans.add(p); }
+                long t0 = System.nanoTime();
+                for (int i = 0; i < 240; i++) { for (Player p : humans) if (!p.dead) { p.inputAngle = rr.nextDouble() * 6.28; p.inputMag = rr.nextDouble(); p.boost = rr.nextInt(4) == 0; if (rr.nextInt(12) == 0) { Abilities.use(w, p, rr.nextInt(2), true); } if (rr.nextInt(25) == 0) Abilities.use(w, p, 0, false); if (rr.nextInt(300) == 0) w.toggleClimb(p); } w.tick(); }
+                double ms = (System.nanoTime() - t0) / 1e6 / 240; worst = Math.max(worst, ms);
+            } catch (Throwable e) { ok = false; err = v.id + "/" + md + ": " + e; e.printStackTrace(); }
+        }
+        check("soak: ability-spamming players of every animal in " + worlds + " worlds (all modes + all versions) run without errors " + err, ok);
+        check("soak: worst average tick " + String.format("%.1f", worst) + " ms stays under 33 ms", worst < 33);
+    }
     static World quietWorld(VersionManager.Config c, long seed) { return new World(quiet(c), seed); }
     static void abilityTests(VersionManager vm) throws Exception {
         VersionManager.Config v7 = vm.get("2026-11-13"), v6 = vm.get("2021-06-12");
@@ -334,6 +352,14 @@ public final class SelfTest {
         Player df = human(w, "Df", null); df.setAnimal(v7.animals.get("deer")); df.animal.abilities = List.of("dig_for_food"); place(df, 700, 5600); int f0 = w.foods.foods.size(); Abilities.use(w, df, 0, true); check("dig food conjures food nearby", w.foods.foods.size() == f0 + 3);
         Player ps = human(w, "Ps", null); ps.setAnimal(v7.animals.get("penguin")); check("fast_water passive speeds swimming (wiki version)", ps.animal.passives != null && ps.animal.passives.contains("fast_water"));
         // legacy versions still use their own single ability field (no wiki mapping)
+        // ---- terrain effects + passives (wiki-sourced build)
+        double[] hill = w.terrain.stream().filter(o -> v7.terrain.get((int) o[0]).id.equals("hill")).findFirst().orElse(null), mud = w.terrain.stream().filter(o -> v7.terrain.get((int) o[0]).id.equals("mud")).findFirst().orElse(null), hole = w.terrain.stream().filter(o -> v7.terrain.get((int) o[0]).id.equals("hole")).findFirst().orElse(null), lava = w.terrain.stream().filter(o -> v7.terrain.get((int) o[0]).id.equals("lava_pool")).findFirst().orElse(null);
+        check("v7 has hills, mud, holes and lava pools", hill != null && mud != null && hole != null);
+        if (hill != null) { Player nc = human(w, "Nc", null); nc.setAnimal(v7.animals.get("lion")); double hr = v7.terrain.get((int) hill[0]).radius; place(nc, hill[1] - hr - nc.radius - 30, hill[2]); nc.inputAngle = 0; nc.inputMag = 1; double x0 = nc.x; for (int i = 0; i < 90; i++) w.tick(); check("a lion cannot walk onto a hill", nc.x < hill[1] - hr * 0.5 || !w.biomes.canEnter(nc.animal, nc.x, nc.y)); nc.inputMag = 0; }
+        if (mud != null) { Player pg = human(w, "Pg", null), ln = human(w, "Ln", null); pg.setAnimal(v7.animals.get("pig")); ln.setAnimal(v7.animals.get("lion")); place(pg, mud[1], mud[2]); place(ln, mud[1], mud[2]); check("mud: pigs are faster than others", Abilities.speedFactor(w, pg) > 1.2 && Abilities.speedFactor(w, ln) < 1); pg.inputMag = 0; Abilities.tick(w, 1.0 / 30, new ArrayList<>()); check("a pig standing still in mud dives (hidden)", pg.hiddenUntilTick > w.tick); }
+        if (hole != null) { Player rb = human(w, "Rb", null); rb.setAnimal(v7.animals.get("rabbit")); place(rb, hole[1], hole[2]); rb.inputMag = 0; Abilities.tick(w, 1.0 / 30, new ArrayList<>()); check("a small animal standing still in a hole hides", rb.hiddenUntilTick > w.tick); Player fx = human(w, "Fx", null); fx.setAnimal(v7.animals.get("fox")); fx.animal.abilities = List.of("pull_from_hole"); place(fx, hole[1] + 20, hole[2]); fx.angle = 0; Abilities.use(w, fx, 0, true); check("pull from hole stuns an animal hiding in the hole", rb.stunUntilTick > w.tick); }
+        Player sf = human(w, "Sf", null); sf.setAnimal(v7.animals.get("penguin")); check("penguins have fast_water; swimming is faster", Abilities.has(sf, "fast_water") && (w.inWater(sf.x, sf.y) ? Abilities.passiveSpeed(w, sf) > 1.2 : true));
+        Player gd = human(w, "Gd", null); gd.setAnimal(v7.animals.get("polarbear")); gd.health = 20; check("sprint when hurt (passive) is faster at low health", Abilities.has(gd, "sprint_hurt") ? Abilities.passiveSpeed(w, gd) > 1.2 : true);
         World w6 = quietWorld(v6, 92); Player vp = human(w6, "V", null); vp.setAnimal(v6.animals.get("cobra")); check("2021 build: cobra uses its archived single ability", "venom_spit".equals(Abilities.abilityIdFor(w6, vp, 0)));
     }
 
@@ -377,6 +403,21 @@ public final class SelfTest {
         World rw = new World(quiet(v6), 75, false, false, "royale"); Player ra = human(rw, "Ra", null), rb = human(rw, "Rb", null);
         check("royale: the zone shrinks over time", rw.ms.r > 0); double r0 = rw.ms.r; for (int i = 0; i < 60 * 30; i++) { rw.tick(); if (rw.players.isEmpty()) break; } check("royale: the safe zone has shrunk after the first phase", rw.ms.r < r0);
         Player rc2 = human(rw, "Out", null); rc2.x = rw.ms.cx + rw.ms.r + 500; rc2.y = rw.ms.cy; rc2.protectedUntilTick = 0; double hp0 = rc2.health; rw.tick(); check("royale: standing outside the zone costs health", rc2.health < hp0 || rc2.dead);
+        // ---- completion pass: royale eggs, healing stones, zombie orbs + lotus, team perks, wild waves
+        World re = new World(quiet(v6), 81, false, false, "royale"); Player ep = human(re, "Eg", null); re.tick();
+        check("royale: players start in eggs (stunned, protected, egg flag) until the round starts", ep.stunUntilTick > re.tick && (Modes.flags(ep) & 4096) != 0 && re.ms.lobbyUntil > re.tick); for (int i = 0; i < 9 * 30; i++) re.tick(); check("royale: the eggs hatch after the lobby", (Modes.flags(ep) & 4096) == 0);
+        World hz = new World(quiet(v6), 82, false, false, "zombie"); Player inf = human(hz, "In", null); inf.setAnimal(v6.animals.get("mouse")); Abilities.Zone stone = hz.fxState.zones.stream().filter(q -> q.owner == 0).findFirst().orElse(null);
+        check("zombie: healing stones and lotus flowers exist", stone != null && hz.ms.pickups.stream().anyMatch(q -> q.type == 3)); inf.infection = 60; place(inf, stone.x, stone.y); inf.health = 30; for (int i = 0; i < 60; i++) { hz.tick(); place(inf, stone.x, stone.y); } check("a healing stone heals and cures infection", inf.health > 30 && inf.infection < 60);
+        Modes.Pickup lotus = hz.ms.pickups.stream().filter(q -> q.type == 3).findFirst().get(); inf.infection = 70; place(inf, lotus.x, lotus.y); hz.tick(); check("eating a lotus cures the infection", inf.infection == 0);
+        Player zo = human(hz, "Zo", null); zo.setAnimal(v6.animals.get("lion")); zo.zombie = true; Player tgt = human(hz, "Tg", null); tgt.setAnimal(v6.animals.get("mouse")); place(zo, 4000, 4000); place(tgt, 4000 + zo.radius + 200, 4000); zo.angle = 0; check("a zombie's ability is the infection orb", "infect_orb".equals(Abilities.abilityIdFor(hz, zo, 0))); Abilities.use(hz, zo, 0, true); for (int i = 0; i < 40; i++) { hz.tick(); place(tgt, 4000 + zo.radius + 200, 4000); } check("an infection orb infects its target", tgt.infection >= 40 || tgt.zombie);
+        World tm = new World(quiet(v6), 83, false, false, "team"); Player pa = human(tm, "Pa", null), pb = human(tm, "Pb", null); pa.team = 1; pb.team = 2; tm.ms.stones.get(0).owner = 2; tm.ms.stones.get(0).perk = java.util.Arrays.asList(Modes.PERKS).indexOf("stun"); tm.ms.stones.get(1).owner = 1; tm.ms.stones.get(1).perk = java.util.Arrays.asList(Modes.PERKS).indexOf("dmgprey");
+        check("team perks: decreased stun for the holder, +50% damage vs prey for the other team", Modes.stunMul(tm, pb) == 0.75 && Modes.stunMul(tm, pa) == 1 && Modes.dmgMul(tm, pa, pb) >= 1.5 - 1e-9);
+        tm.ms.stones.get(2).owner = 2; tm.ms.stones.get(2).perk = java.util.Arrays.asList(Modes.PERKS).indexOf("bodydmg"); tm.ms.stones.get(3).owner = 2; tm.ms.stones.get(3).perk = java.util.Arrays.asList(Modes.PERKS).indexOf("depend"); check("team perks: body damage -40% and water dependency", Modes.dmgMul(tm, pa, pb) < 1.5 && Modes.waterDrainMul(tm, pb) == 0.5);
+        World wl = new World(quiet(v6), 84, false, false, "wild"); Player w1 = human(wl, "W1", null), w2 = human(wl, "W2", null); w1.setAnimal(v6.animals.get("mouse")); w2.setAnimal(v6.animals.get("elephant")); check("wild: low tiers get the bigger speed wave, +15% ability damage", Modes.speedMul(wl, w1) == 1.10 && Modes.speedMul(wl, w2) == 1.06 && Modes.dmgMul(wl, w1, w2) > 1.1);
+        VersionManager.Config bt = Modes.betaConfig(vm.get("2026-11-13"));
+        check("beta: unreleased animals (Deathworm, Anglerfish, Ant...) are playable in 7 biomes", bt.animals.containsKey("deathworm") && bt.animals.containsKey("anglerfish") && bt.animals.containsKey("ant") && bt.biomeIds.size() == 7 && !bt.animals.containsKey("foresmonster"));
+        Set<String> rbt = new HashSet<>(bt.starters); boolean gbt = true; while (gbt) { gbt = false; for (Defs.Edge e : bt.edges) if (rbt.contains(e.from) && rbt.add(e.to)) gbt = true; } check("beta: every animal is reachable from the starters", rbt.containsAll(bt.animals.keySet()));
+        check("beta: Deep Ocean and Underground have food", bt.foods.stream().anyMatch(f -> f.biomes.contains("deepocean")) && bt.foods.stream().anyMatch(f -> f.biomes.contains("underground")));
         // ---- 1v1 Redemption
         World dw = new World(NetworkManager.arenaConfig(v6), 76, false, true); dw.redemption = true; dw.arenaBot = true; Player dp = dw.joinArena("Me", null, false, "dragon");
         for (int i = 0; i < 200; i++) dw.tick(); check("redemption: a level-1 boss appears and the fight starts", dw.arenaState.equals("fight") && dw.players.values().stream().anyMatch(q -> q.boss) && dw.redLevel == 1);

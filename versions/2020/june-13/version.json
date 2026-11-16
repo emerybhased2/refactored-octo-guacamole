@@ -59,7 +59,8 @@
     "rareVariants": true,
     "treeTransparency": true,
     "graphicsOptions": true,
-    "poisonLake": true
+    "poisonLake": true,
+    "terrainEffects": true
   },
   "tickRate": 30,
   "netRate": 20,

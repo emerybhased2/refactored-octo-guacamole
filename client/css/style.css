@@ -166,3 +166,11 @@ body:not(.t2021) #wardrobeButton { width: 250px; height: 36px; font-size: 17px; 
 /* ---- skin popover (right-click / long-press on an upgrade choice) ---- */
 #skinPop { position: fixed; z-index: 60; min-width: 200px; max-width: min(92vw, 420px); padding: 8px 10px 10px; border-radius: 16px; background: rgba(14,44,28,.96); border: 2px solid #8af5af; color: #fff; font-family: Arial, sans-serif; box-shadow: 0 10px 30px rgba(0,0,0,.5); } .spTitle { font: 700 13px Arial; color: #ffe15a; margin: 0 2px 6px; } #skinPop p { margin: 4px 2px; font-size: 12px; opacity: .85; }
 .spRow { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; } .spItem { flex: 0 0 auto; width: 78px; padding: 5px 3px; border-radius: 12px; border: 2px solid rgba(255,255,255,.2); background: rgba(255,255,255,.08); color: #fff; font: 700 11px Arial; text-align: center; cursor: pointer; } .spItem img { width: 56px; height: 56px; display: block; margin: 0 auto 2px; } .spItem.on { border-color: #ffe15a; background: rgba(255,225,90,.18); } .spItem:hover { background: rgba(255,255,255,.18); }
+
+/* ---- portrait phones ---- */
+@media (orientation: portrait) and (max-width: 600px) {
+  #loginDiv { transform: scale(.62); right: 0; top: 0; } #startMenu { margin-top: 70px; } body.t2021 #mopeMenu { padding-top: 6px; } #logo { width: 230px !important; height: auto !important; }
+  #tuBtns { bottom: max(150px, calc(env(safe-area-inset-bottom) + 130px)); right: 8px; gap: 8px; } #tuBtns button { width: 54px; height: 54px; font-size: 10px; } #tuBtns #tuBoost { width: 72px; height: 72px; }
+  #evoTray { width: calc(100vw - 12px); bottom: max(6px, env(safe-area-inset-bottom)); } .evoCard { width: 88px; } .evoCard.suggested { width: 100px; } #evoRow { justify-content: flex-start; }
+  #gmRow { width: 270px; } #optionsDiv { top: 130px; } .wdBox { padding: 10px !important; } #skinPop { max-width: 94vw; }
+}

@@ -17,7 +17,7 @@
     }
     return out;
   }
-  const flagsOf = (f) => ({ team: (f | 0) & 3, zombie: !!((f | 0) & 4), infected: !!((f | 0) & 8), stun: !!((f | 0) & 16), shield: !!((f | 0) & 32), hidden: !!((f | 0) & 64), fly: !!((f | 0) & 128), invis: !!((f | 0) & 256), carried: !!((f | 0) & 512), poison: !!((f | 0) & 1024) });
+  const flagsOf = (f) => ({ team: (f | 0) & 3, zombie: !!((f | 0) & 4), infected: !!((f | 0) & 8), stun: !!((f | 0) & 16), shield: !!((f | 0) & 32), hidden: !!((f | 0) & 64), fly: !!((f | 0) & 128), invis: !!((f | 0) & 256), carried: !!((f | 0) & 512), poison: !!((f | 0) & 1024), blind: !!((f | 0) & 2048), egg: !!((f | 0) & 4096) });
 
   function banner(ctx, vw, text, y, color) { ctx.save(); ctx.textAlign = 'center'; ctx.font = 'bold 22px Arial'; ctx.fillStyle = color || '#fff'; ctx.strokeStyle = 'rgba(0,0,0,.7)'; ctx.lineWidth = 4; ctx.strokeText(text, vw / 2, y); ctx.fillText(text, vw / 2, y); ctx.restore(); }
   function bar(ctx, x, y, w, h, frac, fill, label) { ctx.save(); ctx.fillStyle = 'rgba(0,0,0,.5)'; ctx.fillRect(x, y, w, h); ctx.fillStyle = fill; ctx.fillRect(x + 2, y + 2, Math.max(0, (w - 4) * Math.min(1, frac)), h - 4); if (label) { ctx.fillStyle = '#fff'; ctx.font = 'bold 11px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(label, x + w / 2, y + h / 2); } ctx.restore(); }
@@ -39,15 +39,15 @@
       }
       for (const m of md.mt || []) { const [sx, sy] = cam.worldToScreen(m[0], m[1], vw, vh), k = Math.max(0, m[2]) / 1200; ctx.save(); ctx.strokeStyle = 'rgba(255,90,40,.9)'; ctx.fillStyle = 'rgba(255,90,40,.18)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(sx, sy, 120 * cam.zoom * (1 - 0.25 * k), 0, 7); ctx.fill(); ctx.stroke(); const fy = sy - k * 400 * cam.zoom; ctx.fillStyle = '#ffb04a'; ctx.beginPath(); ctx.arc(sx, fy, 16 * cam.zoom, 0, 7); ctx.fill(); ctx.restore(); }
     }
-    if (md.m === 'pandemic') {
-      for (const k of md.pk || []) { const [sx, sy] = cam.worldToScreen(k[1], k[2], vw, vh), r = 18 * cam.zoom; ctx.save(); ctx.translate(sx, sy); if (k[3] === 1) { ctx.fillStyle = '#d8c8a0'; ctx.beginPath(); ctx.ellipse(0, 0, r * 1.2, r * 0.8, 0, 0, 7); ctx.fill(); ctx.fillStyle = '#c0392b'; ctx.beginPath(); ctx.arc(0, -r * 0.2, r * 0.7, Math.PI, 0); ctx.fill(); } else { ctx.fillStyle = '#4ea84a'; for (let a = 0; a < 5; a++) { ctx.beginPath(); ctx.ellipse(Math.cos(a * 1.26) * r * 0.5, Math.sin(a * 1.26) * r * 0.5, r * 0.45, r * 0.18, a * 1.26, 0, 7); ctx.fill(); } } ctx.restore(); }
+    if (md.m === 'pandemic' || md.m === 'zombie') {
+      for (const k of md.pk || []) { const [sx, sy] = cam.worldToScreen(k[1], k[2], vw, vh), r = 18 * cam.zoom; ctx.save(); ctx.translate(sx, sy); if (k[3] === 3) { ctx.fillStyle = '#f08ac0'; for (let a = 0; a < 6; a++) { ctx.beginPath(); ctx.ellipse(Math.cos(a * 1.047) * r * 0.55, Math.sin(a * 1.047) * r * 0.55, r * 0.5, r * 0.25, a * 1.047, 0, 7); ctx.fill(); } ctx.fillStyle = '#ffe15a'; ctx.beginPath(); ctx.arc(0, 0, r * 0.28, 0, 7); ctx.fill(); } else if (k[3] === 1) { ctx.fillStyle = '#d8c8a0'; ctx.beginPath(); ctx.ellipse(0, 0, r * 1.2, r * 0.8, 0, 0, 7); ctx.fill(); ctx.fillStyle = '#c0392b'; ctx.beginPath(); ctx.arc(0, -r * 0.2, r * 0.7, Math.PI, 0); ctx.fill(); } else { ctx.fillStyle = '#4ea84a'; for (let a = 0; a < 5; a++) { ctx.beginPath(); ctx.ellipse(Math.cos(a * 1.26) * r * 0.5, Math.sin(a * 1.26) * r * 0.5, r * 0.45, r * 0.18, a * 1.26, 0, 7); ctx.fill(); } } ctx.restore(); }
       for (const v of md.vr || []) { const [sx, sy] = cam.worldToScreen(v[0], v[1], vw, vh), r = 11 * cam.zoom; ctx.save(); ctx.translate(sx, sy); ctx.rotate(t); ctx.fillStyle = '#9be35a'; ctx.strokeStyle = '#3f7a1a'; ctx.lineWidth = 2; for (let a = 0; a < 8; a++) { ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(a * 0.785) * r * 1.7, Math.sin(a * 0.785) * r * 1.7); ctx.stroke(); } ctx.beginPath(); ctx.arc(0, 0, r, 0, 7); ctx.fill(); ctx.stroke(); ctx.restore(); }
     }
   }
   /** Screen-space HUD for the mode. `gm` = game mode id; `red` = Redemption state. */
   function drawHud(ctx, vw, vh, gm, md, red, now) {
     if (md && md.m === 'royale') {
-      banner(ctx, vw, md.over ? 'ROUND OVER' : 'ALIVE: ' + md.al + (md.nx > 0 ? '   -   zone shrinks in ' + md.nx + 's' : '   -   zone closing!'), 78, md.over ? '#ffe15a' : '#fff');
+      if (md.lobby > 0) banner(ctx, vw, 'BATTLE ROYALE - the round starts in ' + md.lobby + 's (you hatch from your egg)', 78, '#ffe15a'); else banner(ctx, vw, md.over ? 'ROUND OVER' : 'ALIVE: ' + md.al + (md.nx > 0 ? '   -   zone shrinks in ' + md.nx + 's' : '   -   zone closing!'), 78, md.over ? '#ffe15a' : '#fff');
       if (md.out) banner(ctx, vw, "You can't stay out of the safe area for long!", vh * 0.22, '#ffb09a');
     }
     if (md && md.m === 'team') {
