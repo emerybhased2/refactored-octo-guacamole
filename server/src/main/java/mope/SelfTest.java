@@ -304,8 +304,8 @@ public final class SelfTest {
         List<String> modes = new ArrayList<>(Modes.WORLD_MODES);
         for (VersionManager.Config v : vm.all()) for (String md : (v.id.equals("2026-11-13") ? modes : List.of("normal"))) {
             try {
-                VersionManager.Config cfg = md.equals("classic") ? Modes.classicConfig(vm.get("2017-02-13")) : v;
-                com.google.gson.JsonObject o = cfg.raw.deepCopy(); o.addProperty("bots", 14); VersionManager.Config c = md.equals("classic") ? cfg : VersionManager.resolve(o);
+                VersionManager.Config cfg = md.equals("classic") ? Modes.classicConfig(vm.get("2017-02-13")) : md.equals("beta") ? Modes.betaConfig(vm.get("2026-11-13")) : v;
+                com.google.gson.JsonObject o = cfg.raw.deepCopy(); o.addProperty("bots", 14); VersionManager.Config c = md.equals("classic") || md.equals("beta") ? cfg : VersionManager.resolve(o);
                 World w = new World(c, 500 + worlds, false, false, md); worlds++;
                 List<Player> humans = new ArrayList<>(); for (Animal a : c.animals.values()) { Player p = w.join("H" + a.id, null, false); p.setAnimal(a); p.xp = a.xpRequired; p.health = p.maxHealth(); humans.add(p); }
                 long t0 = System.nanoTime();
@@ -414,6 +414,10 @@ public final class SelfTest {
         check("team perks: decreased stun for the holder, +50% damage vs prey for the other team", Modes.stunMul(tm, pb) == 0.75 && Modes.stunMul(tm, pa) == 1 && Modes.dmgMul(tm, pa, pb) >= 1.5 - 1e-9);
         tm.ms.stones.get(2).owner = 2; tm.ms.stones.get(2).perk = java.util.Arrays.asList(Modes.PERKS).indexOf("bodydmg"); tm.ms.stones.get(3).owner = 2; tm.ms.stones.get(3).perk = java.util.Arrays.asList(Modes.PERKS).indexOf("depend"); check("team perks: body damage -40% and water dependency", Modes.dmgMul(tm, pa, pb) < 1.5 && Modes.waterDrainMul(tm, pb) == 0.5);
         World wl = new World(quiet(v6), 84, false, false, "wild"); Player w1 = human(wl, "W1", null), w2 = human(wl, "W2", null); w1.setAnimal(v6.animals.get("mouse")); w2.setAnimal(v6.animals.get("elephant")); check("wild: low tiers get the bigger speed wave, +15% ability damage", Modes.speedMul(wl, w1) == 1.10 && Modes.speedMul(wl, w2) == 1.06 && Modes.dmgMul(wl, w1, w2) > 1.1);
+        VersionManager.Config bt = Modes.betaConfig(vm.get("2026-11-13"));
+        check("beta: unreleased animals (Deathworm, Anglerfish, Ant...) are playable in 7 biomes", bt.animals.containsKey("deathworm") && bt.animals.containsKey("anglerfish") && bt.animals.containsKey("ant") && bt.biomeIds.size() == 7 && !bt.animals.containsKey("foresmonster"));
+        Set<String> rbt = new HashSet<>(bt.starters); boolean gbt = true; while (gbt) { gbt = false; for (Defs.Edge e : bt.edges) if (rbt.contains(e.from) && rbt.add(e.to)) gbt = true; } check("beta: every animal is reachable from the starters", rbt.containsAll(bt.animals.keySet()));
+        check("beta: Deep Ocean and Underground have food", bt.foods.stream().anyMatch(f -> f.biomes.contains("deepocean")) && bt.foods.stream().anyMatch(f -> f.biomes.contains("underground")));
         // ---- 1v1 Redemption
         World dw = new World(NetworkManager.arenaConfig(v6), 76, false, true); dw.redemption = true; dw.arenaBot = true; Player dp = dw.joinArena("Me", null, false, "dragon");
         for (int i = 0; i < 200; i++) dw.tick(); check("redemption: a level-1 boss appears and the fight starts", dw.arenaState.equals("fight") && dw.players.values().stream().anyMatch(q -> q.boss) && dw.redLevel == 1);

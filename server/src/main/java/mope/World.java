@@ -95,7 +95,7 @@ public final class World {
         List<String> bo = cfg.biomeIds;
         sandboxOrder.sort(Comparator.comparingInt((Animal a) -> a.tier).thenComparingInt(a -> bo.indexOf(a.biome)).thenComparingInt(a -> a.internalId));
         disasters = new Disasters(this);
-        ms = Modes.WORLD_MODES.contains(mode) && !mode.equals("normal") && !mode.equals("classic") && !arena && !sandbox ? Modes.create(this, mode) : null;
+        ms = Modes.WORLD_MODES.contains(mode) && !mode.equals("normal") && !mode.equals("classic") && !mode.equals("beta") && !arena && !sandbox ? Modes.create(this, mode) : null;
         if (!arena && !sandbox) disasters.addPermanentHazards(); // e.g. the poison lake ringed by hills (2020)
         if (!sandbox && !arena) for (int i = 0; i < (mode.equals("royale") ? Math.max(cfg.bots, 30) : cfg.bots); i++) join("Bot" + (i + 1), null, true); // battle royale needs >= 25 players (wiki)
     }

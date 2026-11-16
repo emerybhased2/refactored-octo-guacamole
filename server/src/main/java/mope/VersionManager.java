@@ -98,7 +98,7 @@ public final class VersionManager {
         c.biomeIds = strings(o.getAsJsonArray("biomes")); c.foodIds = strings(o.getAsJsonArray("foods"));
 
         for (Animal a : Data.read("data/progression/animals.json", Animal[].class))
-            if (Data.active(a.releaseDate, a.removalDate, c.date)) c.animals.put(a.id, a);
+            if (Data.active(a.releaseDate, a.removalDate, c.date) || (o.has("includeUnreleased") && a.classification != null && a.classification.contains("unreleased"))) c.animals.put(a.id, a); // Beta Mope.io previews the unreleased animals
         // historical xp overrides
         JsonArray xp = Data.read("data/progression/xp-requirements.json").getAsJsonObject().get("entries").getAsJsonArray();
         applyLatest(xp, c.date, (entry) -> entry.getAsJsonObject().get("xp").getAsJsonObject().entrySet().forEach(e -> { Animal a = c.animals.get(e.getKey()); if (a != null) a.xpRequired = e.getValue().getAsDouble(); }));
@@ -119,6 +119,7 @@ public final class VersionManager {
         }
         c.animals.values().removeIf(a -> !c.biomeIds.contains(a.biome)); // availability is decided AFTER per-version biome overrides
         if (o.has("classic")) applyClassic(c, o.getAsJsonObject("classic"));
+        else if (o.has("autoTierEdges")) { applyTierEdges(c); }
         else for (Defs.Edge e : Data.read("data/progression/evolution.json", Defs.Edge[].class))
             if (Data.active(e.releaseDate, e.removalDate, c.date) && c.animals.containsKey(e.from) && c.animals.containsKey(e.to)) c.edges.add(e);
         for (Defs.Tier t : Data.read("data/progression/tiers.json", Defs.Tier[].class)) if (Data.active(t.releaseDate, t.removalDate, c.date)) {
@@ -126,9 +127,9 @@ public final class VersionManager {
             if (!o.has("classic") || t.tier <= o.getAsJsonObject("classic").get("maxTier").getAsInt()) c.tiers.add(t);
         }
         for (Defs.FoodDef f : Data.read("data/food/foods.json", Defs.FoodDef[].class))
-            if (c.foodIds.contains(f.id) && Data.active(f.releaseDate, f.removalDate, c.date)) c.foods.add(f);
+            if (c.foodIds.contains(f.id) && Data.active(f.releaseDate, f.removalDate, c.date)) { if (o.has("foodBiomeAlias")) { Defs.FoodDef cp = Data.GSON.fromJson(Data.GSON.toJson(f), Defs.FoodDef.class); for (Map.Entry<String, JsonElement> al : o.getAsJsonObject("foodBiomeAlias").entrySet()) if (cp.biomes != null && cp.biomes.contains(al.getValue().getAsString()) && !cp.biomes.contains(al.getKey())) { cp.biomes = new ArrayList<>(cp.biomes); cp.biomes.add(al.getKey()); } c.foods.add(cp); } else c.foods.add(f); }
         for (Defs.BiomeDef b : Data.read("data/biomes/biomes.json", Defs.BiomeDef[].class))
-            if (c.biomeIds.contains(b.id) && Data.active(b.releaseDate, b.removalDate, c.date)) {
+            if (c.biomeIds.contains(b.id) && (Data.active(b.releaseDate, b.removalDate, c.date) || o.has("includeUnreleased"))) {
                 if (o.has("layout") && o.getAsJsonObject("layout").has(b.id)) { JsonArray r = o.getAsJsonObject("layout").getAsJsonArray(b.id); b.rect = new double[] { r.get(0).getAsDouble(), r.get(1).getAsDouble(), r.get(2).getAsDouble(), r.get(3).getAsDouble() }; }
                 c.biomes.add(b);
             }
@@ -149,6 +150,11 @@ public final class VersionManager {
 
     private static List<String> strings(JsonArray a) { List<String> l = new ArrayList<>(); a.forEach(e -> l.add(e.getAsString())); return l; }
 
+    /** Beta: every animal of one tier can evolve into every animal of the next (the wiki's upgrade rule), including the unreleased ones. */
+    private static void applyTierEdges(Config c) {
+        List<Animal> all = new ArrayList<>(c.animals.values());
+        for (Animal a : all) for (Animal b : all) if (b.tier == a.tier + 1) { Defs.Edge e = new Defs.Edge(); e.from = a.id; e.to = b.id; e.releaseDate = "2026-11-13"; e.confidence = "wiki rule (Beta)"; c.edges.add(e); }
+    }
     /** Classic Mode: whitelist + tier table from data/modes/classic.json, project XP curve, rule-based evolution edges. */
     private static void applyClassic(Config c, JsonObject cl) {
         JsonObject tiers = cl.getAsJsonObject("tiers"); JsonObject curve = Data.read("data/progression/xp-requirements.json").getAsJsonObject().getAsJsonObject("tierXpCurve");

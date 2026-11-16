@@ -8,7 +8,7 @@ import java.util.*;
  */
 public final class Modes {
     private Modes() {}
-    public static final List<String> WORLD_MODES = List.of("normal", "classic", "zombie", "royale", "team", "wild", "pandemic");
+    public static final List<String> WORLD_MODES = List.of("normal", "classic", "zombie", "royale", "team", "wild", "pandemic", "beta");
     public static final String[] TEAM_NAMES = { "", "Yellow", "Cyan", "Purple" };
     /** Team Stone perks (wiki, 2022). Only the first five are simulated; the rest are listed in data/modes/modes.json as not simulated. */
     public static final String[] PERKS = { "xp", "killxp", "coins", "speed", "recharge", "dmgprey", "dmgpred", "dive", "bodydmg", "depend", "burn", "poison", "stun" };
@@ -59,6 +59,17 @@ public final class Modes {
     /** Healing stones (wiki: Battle Royale and Zombie Infection mention them): static zones that heal everyone standing on them. */
     static void healingStones(State s, int n) { for (int i = 0; i < n; i++) { Abilities.Zone z = new Abilities.Zone(); double[] pt = s.w.biomes.randomPoint(s.w.rnd, s.w.cfg.biomeIds); z.x = pt[0]; z.y = pt[1]; z.r = 120; z.heal = 8; z.kind = "camp"; z.until = Long.MAX_VALUE; z.owner = 0; s.w.fxState.zones.add(z); } }
     static boolean onHealingStone(World w, Player p) { for (Abilities.Zone z : w.fxState.zones) if (z.owner == 0 && z.heal > 0) { double dx = p.x - z.x, dy = p.y - z.y, r = z.r + p.radius; if (dx * dx + dy * dy <= r * r) return true; } return false; }
+    /** Beta Mope.io: the 2026 build plus the unreleased animals, with Deep Ocean and Underground biomes (food borrowed from Ocean / Land). Forest Monster is left out (no Forest biome). */
+    public static VersionManager.Config betaConfig(VersionManager.Config v7) {
+        com.google.gson.JsonObject o = v7.raw.deepCopy(); o.addProperty("id", "beta"); o.addProperty("label", "Beta Mope.io (unreleased animals)");
+        com.google.gson.JsonArray b = new com.google.gson.JsonArray(); for (String s : new String[] { "land", "ocean", "arctic", "desert", "volcano", "deepocean", "underground" }) b.add(s); o.add("biomes", b);
+        com.google.gson.JsonObject layout = new com.google.gson.JsonObject(); double[][] rects = { { 0, 0.26, 0.64, 0.52 }, { 0, 0.78, 1, 0.12 }, { 0, 0, 1, 0.16 }, { 0.64, 0.26, 0.36, 0.26 }, { 0.64, 0.52, 0.36, 0.26 }, { 0, 0.90, 1, 0.10 }, { 0, 0.16, 1, 0.10 } }; String[] ids = { "land", "ocean", "arctic", "desert", "volcano", "deepocean", "underground" };
+        for (int i = 0; i < ids.length; i++) { com.google.gson.JsonArray r = new com.google.gson.JsonArray(); for (double d : rects[i]) r.add(d); layout.add(ids[i], r); } o.add("layout", layout);
+        o.addProperty("includeUnreleased", true); o.addProperty("autoTierEdges", true);
+        com.google.gson.JsonObject alias = new com.google.gson.JsonObject(); alias.addProperty("deepocean", "ocean"); alias.addProperty("underground", "land"); o.add("foodBiomeAlias", alias);
+        com.google.gson.JsonArray st = new com.google.gson.JsonArray(); for (String s : new String[] { "mouse", "shrimp", "chipmunk", "lemming", "kangaroorat", "ant", "monkfish" }) st.add(s); o.add("starters", st);
+        return VersionManager.resolve(o);
+    }
     private static void addPickup(State s, int type) { Pickup p = new Pickup(); p.id = s.pickups.size() + 1 + (int) (s.w.tick % 100000) * 100; p.type = type; double[] pt = s.w.biomes.randomPoint(s.w.rnd, s.w.cfg.biomeIds); p.x = pt[0]; p.y = pt[1]; s.pickups.add(p); }
 
     static void newRound(State s) {

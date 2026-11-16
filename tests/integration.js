@@ -148,10 +148,11 @@ function client(port = PORT) {
       const n = client(PORT); await n.ready; n.send({ t: 'join', name: 'Xp2', v: '2021-06-12' }); await n.until('welcome'); n.send({ t: 'dev-xp', n: 500 }); await sleep(1500); const m2 = n.msgs.filter((x) => x.t === 'snap').pop(); assert.ok(!m2 || !m2.you.ev || m2.you.ev.length === 0); n.ws.close();
     });
     await t('game modes: each shared mode joins, reports gm + mode data; royale spectate-of works; redemption needs an account and credits', async () => {
-      for (const gm of ['classic', 'zombie', 'royale', 'team', 'wild', 'pandemic']) {
+      for (const gm of ['classic', 'zombie', 'royale', 'team', 'wild', 'pandemic', 'beta']) {
         const c = client(PORT_DEV); await c.ready; c.send({ t: 'join', name: 'M' + gm, v: '2021-06-12', mode: gm }); const w = await c.until('welcome'); assert.strictEqual(w.gm, gm); assert.strictEqual(w.mode, 'normal');
-        if (gm === 'classic') { assert.strictEqual(w.version.tiers.length, 14); assert.deepStrictEqual(w.version.biomes.map((b) => b.id), ['land', 'ocean']); assert.strictEqual(w.version.animals.length, 23); }
-        else { const t0 = Date.now(); let md = null; while (Date.now() - t0 < 3000 && !md) { await sleep(80); const s = c.msgs.filter((x) => x.t === 'snap').pop(); if (s && s.md) md = s.md; } assert.ok(md && md.m === gm, gm + ' snapshot data'); if (gm === 'royale') assert.ok(md.z && md.z.length === 3 && md.al >= 25); if (gm === 'team') assert.ok(md.st.length === 12 && md.tm.length === 3); if (gm === 'pandemic') assert.ok(md.im > 0); }
+        if (gm === 'beta') { assert.deepStrictEqual(w.version.biomes.map((b) => b.id), ['land', 'ocean', 'arctic', 'desert', 'volcano', 'deepocean', 'underground']); assert.ok(w.version.animals.some((a) => a.id === 'deathworm')); }
+        else if (gm === 'classic') { assert.strictEqual(w.version.tiers.length, 14); assert.deepStrictEqual(w.version.biomes.map((b) => b.id), ['land', 'ocean']); assert.strictEqual(w.version.animals.length, 23); }
+        else if (gm !== 'beta') { const t0 = Date.now(); let md = null; while (Date.now() - t0 < 3000 && !md) { await sleep(80); const s = c.msgs.filter((x) => x.t === 'snap').pop(); if (s && s.md) md = s.md; } assert.ok(md && md.m === gm, gm + ' snapshot data'); if (gm === 'royale') assert.ok(md.z && md.z.length === 3 && md.al >= 25); if (gm === 'team') assert.ok(md.st.length === 12 && md.tm.length === 3); if (gm === 'pandemic') assert.ok(md.im > 0); }
         c.ws.close();
       }
       const sp = client(PORT_DEV); await sp.ready; sp.send({ t: 'join', name: 'Spec', v: '2021-06-12', mode: 'spectate', of: 'royale' }); await sp.until('welcome'); const t1 = Date.now(); let md2 = null; while (Date.now() - t1 < 3000 && !md2) { await sleep(80); const s = sp.msgs.filter((x) => x.t === 'snap').pop(); if (s && s.md) md2 = s.md; } assert.ok(md2 && md2.m === 'royale', 'spectators watch the royale world'); sp.ws.close();
