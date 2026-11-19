@@ -17,6 +17,7 @@ function listVersions() {
 }
 const server = http.createServer((req, res) => {
   const url = decodeURIComponent(req.url.split('?')[0]);
+  if (url === '/api/dev') { res.writeHead(200, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }); return res.end(JSON.stringify({ on: process.env.MOPE_DEV === '1' })); } // same env as the game server (start-all.sh / Dockerfile)
   if (url === '/api/versions') { res.writeHead(200, { 'Content-Type': 'application/json' }); return res.end(JSON.stringify(listVersions())); }
   const parts = url.split('/').filter(Boolean); let base = path.join(ROOT, 'client'), rel = parts.join('/');
   if (MOUNTS[parts[0]]) { base = path.join(ROOT, MOUNTS[parts[0]]); rel = parts.slice(1).join('/'); }

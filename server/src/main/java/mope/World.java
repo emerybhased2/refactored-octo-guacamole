@@ -184,6 +184,11 @@ public final class World {
         if (!cfg.feature("climbing") || p.dead || !(cfg.climbers.contains(p.animal.id) || Abilities.has(p, "climb_trees"))) return false;
         p.climbing = !p.climbing; return true;
     }
+    /** Dev tool: become any animal of this build right away (XP raised to its requirement, full health, moved to its biome). */
+    public boolean devSetAnimal(Player p, String id) {
+        Animal a = cfg.animals.get(id); if (a == null || p.dead) return false;
+        setAnimalAndMove(p, a); p.xp = Math.max(p.xp, a.xpRequired); p.climbing = false; p.holdAbility = ""; p.hiddenUntilTick = p.shieldUntilTick = p.flyUntilTick = p.invisUntilTick = p.stunUntilTick = 0; p.protectedUntilTick = tick + 2L * cfg.tickRate; rollVariant(p); return true;
+    }
     /** Ability key (slot 0 = W / right click, 1 = S) down or up. Cooldown/duration scaling by game mode happens inside Abilities.use. */
     public boolean useAbility(Player p, int slot, boolean down) { return Abilities.use(this, p, slot, down); }
     /** Dev/test hook: start a disaster now. */

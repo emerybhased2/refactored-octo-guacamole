@@ -435,6 +435,11 @@ const arch = J('data/research/archive-2017-02-13-animals.json').animals;
     assert.ok(J('versions/2026/november-13/version.json').features.wikiAbilities && !J('versions/2021/june-12/version.json').features.wikiAbilities);
   });
 
+  await t('dev bar markup: coin balance changer + animal changer; deployment starts in dev mode (Dockerfile + render.yaml)', () => {
+    const html = fs.readFileSync(path.join(ROOT, 'client/index.html'), 'utf8'), cs = fs.readFileSync(path.join(ROOT, 'client/client.js'), 'utf8');
+    for (const id of ['devCoins', 'devCoinsAmt', 'devSetCoins', 'devXp', 'devAnimal', 'devAnimalGo']) assert.ok(html.includes('id="' + id + '"'), id);
+    assert.ok(/dev-setcoins/.test(cs) && /dev-animal/.test(cs) && /fillDevAnimals/.test(cs) && /DEV_OFF/.test(cs)); assert.ok(/MOPE_DEV=1/.test(fs.readFileSync(path.join(ROOT, 'Dockerfile'), 'utf8'))); assert.ok(/MOPE_DEV/.test(fs.readFileSync(path.join(ROOT, 'render.yaml'), 'utf8')) && /value: "1"/.test(fs.readFileSync(path.join(ROOT, 'render.yaml'), 'utf8')));
+  });
   // ---- art QA (every sprite exists, is non-trivial, and looks different from its siblings)
   await t('art QA: no blank or duplicated sprites among animals (148), wiki skins (375) and abilities (97); skins differ from their base animal', () => {
     const crypto = require('crypto'), hash = (f) => crypto.createHash('sha1').update(fs.readFileSync(path.join(ROOT, f))).digest('hex'), A = J('data/progression/animals.json'), S = J('data/shop/skins-wiki.json').items, AB = J('data/abilities/abilities.json');

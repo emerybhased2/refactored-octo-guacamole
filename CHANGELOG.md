@@ -1,5 +1,10 @@
 # Project changelog
 
+## 1.3.0 - Deployment starts in dev mode; coin balance + animal changers
+- The Docker image and `render.yaml` set `MOPE_DEV=1`: dev mode starts automatically for every visitor (the web server reports it at `/api/dev`; `?dev=0` hides it). Set `MOPE_DEV=0` for a public server.
+- Dev bar: **Set coins** (exact balance, any amount 0..1,000,000,000, also lowers it) next to +1000 coins and +XP, and a **Become** picker with every animal of the current build (by tier): the server moves you to its biome, raises XP to its requirement and gives full health. Dev-only messages `dev-setcoins` / `dev-animal`; normal servers ignore them.
+- Tests: server 218, client/data 73, integration 33.
+
 ## 1.2.0 - Completion pass
 - Terrain effects (2020+ builds, `features.terrainEffects`): bushes/holes hide small animals, mud (fast/diving for the 2020 mud animals, slow for others), ice patches, lava pools hurt, hills and rocks block non-climbers (wiki-sourced build). Pull-from-hole reaches animals hiding in holes.
 - 26 of 28 passives simulated (the other two - river current, biome debuffs - do not apply: the game has neither).
