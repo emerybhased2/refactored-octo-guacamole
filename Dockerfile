@@ -17,7 +17,8 @@ COPY versions versions
 COPY scripts/devserver.js scripts/devserver.js
 COPY docker/start.sh start.sh
 RUN mkdir -p database && chmod +x start.sh
-# NEVER set MOPE_DEV in production: it enables the dev-only cheat messages (dev-coins, dev-disaster).
-ENV MOPE_PORT=8081 PORT=8080 MOPE_DB=/app/database/mope.db
+# The deployment starts in DEV MODE on purpose: MOPE_DEV=1 enables the dev bar (+coins, +XP, disaster trigger) for every visitor.
+# For a public server set MOPE_DEV=0 (then visitors can no longer give themselves coins, XP or another animal).
+ENV MOPE_PORT=8081 PORT=8080 MOPE_DB=/app/database/mope.db MOPE_DEV=1
 EXPOSE 8080
 CMD ["./start.sh"]

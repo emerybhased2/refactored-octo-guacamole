@@ -102,6 +102,11 @@ public final class AccountManager implements AutoCloseable {
         try (PreparedStatement ps = db.prepareStatement("SELECT coins FROM wallet WHERE username=?")) { ps.setString(1, user); try (ResultSet rs = ps.executeQuery()) { return rs.next() ? rs.getLong(1) : 0; } }
         catch (SQLException e) { throw new IllegalStateException(e); }
     }
+    /** Dev tool: sets the wallet to an exact amount. */
+    public synchronized void setCoins(String user, long n) {
+        try (PreparedStatement ps = db.prepareStatement("INSERT INTO wallet(username,coins) VALUES(?,?) ON CONFLICT(username) DO UPDATE SET coins = excluded.coins")) { ps.setString(1, user); ps.setLong(2, Math.max(0, n)); ps.executeUpdate(); }
+        catch (SQLException e) { throw new IllegalStateException(e); }
+    }
     public synchronized void addCoins(String user, long n) {
         if (n <= 0) return;
         try (PreparedStatement ps = db.prepareStatement("INSERT INTO wallet(username,coins) VALUES(?,?) ON CONFLICT(username) DO UPDATE SET coins = coins + excluded.coins")) { ps.setString(1, user); ps.setLong(2, n); ps.executeUpdate(); }

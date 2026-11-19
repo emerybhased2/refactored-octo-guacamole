@@ -171,10 +171,16 @@ function client(port = PORT) {
     await t('single-port hosting: the web server serves the client and proxies WebSocket /ws to the game server', async () => {
       const PORT_WEB = 18083, web = spawn('node', [path.join(ROOT, 'scripts/devserver.js')], { env: Object.assign({}, process.env, { PORT: PORT_WEB, MOPE_PORT: PORT_DEV }), stdio: 'ignore' });
       try {
-        await sleep(700); const r = await fetch('http://127.0.0.1:' + PORT_WEB + '/'); assert.strictEqual(r.status, 200); const vs = await (await fetch('http://127.0.0.1:' + PORT_WEB + '/api/versions')).json(); assert.strictEqual(vs.length, 7);
+        await sleep(700); const r = await fetch('http://127.0.0.1:' + PORT_WEB + '/'); assert.strictEqual(r.status, 200); assert.strictEqual((await (await fetch('http://127.0.0.1:' + PORT_WEB + '/api/dev')).json()).on, false); const vs = await (await fetch('http://127.0.0.1:' + PORT_WEB + '/api/versions')).json(); assert.strictEqual(vs.length, 7);
         const ws = new WebSocket('ws://127.0.0.1:' + PORT_WEB + '/ws'); const got = await new Promise((res, rej) => { ws.onopen = () => ws.send(JSON.stringify({ t: 'join', name: 'Proxy', v: '2017-02-13' })); ws.onmessage = (e) => { const m = JSON.parse(e.data); if (m.t === 'welcome') res(m); }; ws.onerror = () => rej(new Error('ws error')); setTimeout(() => rej(new Error('timeout')), 4000); }); assert.strictEqual(got.version.id, '2017-02-13'); ws.close();
         const bad = await new Promise((res) => { const w2 = new WebSocket('ws://127.0.0.1:' + PORT_WEB + '/elsewhere'); w2.onopen = () => res('open'); w2.onerror = () => res('refused'); w2.onclose = () => res('refused'); setTimeout(() => res('refused'), 2000); }); assert.strictEqual(bad, 'refused');
       } finally { web.kill('SIGTERM'); }
+    });
+    await t('dev tools: set exact coins and become any animal on a dev server; a normal server ignores both', async () => {
+      const c = await login(PORT_DEV, '2021-06-12'); c.send({ t: 'dev-setcoins', v: '2021-06-12', n: 777 }); const sh = await (async () => { const t0 = Date.now(); while (Date.now() - t0 < 3000) { const r = c.msgs.filter((x) => x.t === 'shop' && x.coins === 777).pop(); if (r) return r; await sleep(50); } return null; })(); assert.ok(sh, 'balance set to 777');
+      c.send({ t: 'dev-setcoins', v: '2021-06-12', n: 12 }); await sleep(300); assert.strictEqual(c.msgs.filter((x) => x.t === 'shop').pop().coins, 12);
+      c.send({ t: 'join', name: 'Dv', v: '2021-06-12' }); await c.until('welcome'); c.send({ t: 'dev-animal', id: 'lion' }); const t1 = Date.now(); let a = null; while (Date.now() - t1 < 3000 && a !== 'lion') { await sleep(80); const s = c.msgs.filter((x) => x.t === 'snap').pop(); if (s) a = s.you.a; } assert.strictEqual(a, 'lion'); c.ws.close();
+      const n = client(PORT); await n.ready; n.send({ t: 'join', name: 'Nd', v: '2021-06-12' }); await n.until('welcome'); n.send({ t: 'dev-animal', id: 'lion' }); await sleep(900); const sn = n.msgs.filter((x) => x.t === 'snap').pop(); assert.notStrictEqual(sn.you.a, 'lion'); n.ws.close();
     });
     await t('sessions: resume restores coins/inventory; logout invalidates the token', async () => {
       const c = await login(PORT_DEV); c.send({ t: 'dev-coins', v: '2019-12-30', n: 500 }); await c.until('shop'); c.ws.close();
